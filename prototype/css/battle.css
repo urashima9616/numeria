@@ -22,10 +22,10 @@ canvas.sprite { width: 112px; height: 112px; image-rendering: pixelated;
 .sprite.attack { animation: lunge .35s; }
 @keyframes hit { 25% { transform: translateX(-8px); filter: brightness(2.2); } 75% { transform: translateX(8px); } }
 @keyframes lunge { 40% { transform: translate(24px, -12px) scale(1.08); } }
-.side.player canvas.sprite { animation: bob 2.4s ease-in-out infinite; }
-.side.enemy canvas.sprite { animation: bob 2.8s ease-in-out infinite reverse; }
+/* 待机浮动只在没有攻击/受击动画时生效,避免优先级压过它们 */
+.side.player canvas.sprite:not(.hit):not(.attack) { animation: bob 2.4s ease-in-out infinite; }
+.side.enemy canvas.sprite:not(.hit):not(.attack) { animation: bob 2.8s ease-in-out infinite reverse; }
 @keyframes bob { 50% { transform: translateY(-5px); } }
-.sprite.hit, .sprite.attack { animation-duration: .4s; } /* 受击/攻击时覆盖 bob */
 
 canvas.icon { width: 20px; height: 20px; image-rendering: pixelated; vertical-align: -4px; }
 
@@ -90,5 +90,30 @@ canvas.icon { width: 20px; height: 20px; image-rendering: pixelated; vertical-al
   background: #ef6c00; color: #fff; font-weight: 800; min-height: 60px; cursor: pointer;
   font-family: "Press Start 2P", monospace; box-shadow: 0 5px 0 #a34c00; }
 .banner button:active { transform: translateY(4px); box-shadow: 0 1px 0 #a34c00; }
+
+/* ---- 战斗特效 ---- */
+.dmg-pop { position: fixed; z-index: 25; pointer-events: none;
+  font-family: "Press Start 2P", monospace; font-size: 22px;
+  text-shadow: 2px 2px 0 rgba(0,0,0,.45); animation: rise .8s ease-out forwards; }
+@keyframes rise {
+  0% { transform: translateY(0) scale(.6); opacity: 0; }
+  15% { transform: translateY(-8px) scale(1.25); opacity: 1; }
+  100% { transform: translateY(-56px) scale(1); opacity: 0; }
+}
+
+.shake { animation: shake .35s; }
+@keyframes shake {
+  20% { transform: translate(-6px, 2px); } 40% { transform: translate(5px, -3px); }
+  60% { transform: translate(-4px, 2px); } 80% { transform: translate(3px, -1px); }
+}
+
+.projectile { position: fixed; z-index: 24; pointer-events: none; font-size: 40px;
+  transition: left .38s ease-in, top .38s ease-in; filter: drop-shadow(0 0 8px #ff9d3a); }
+
+.shield.shatter { animation: shatter .5s forwards; }
+@keyframes shatter { 30% { transform: scale(1.5) rotate(-8deg); } 100% { transform: scale(2) rotate(10deg); opacity: 0; } }
+.shard { position: fixed; z-index: 24; pointer-events: none; width: 9px; height: 9px;
+  background: #3f7fc4; border: 2px solid #20406e; animation: shardfly .6s ease-in forwards; }
+@keyframes shardfly { to { transform: translate(var(--dx), 72px) rotate(200deg); opacity: 0; } }
 
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }

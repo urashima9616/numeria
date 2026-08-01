@@ -43,12 +43,64 @@ async function animate(el, cls) {
   el.classList.remove(cls);
 }
 
+function popDamage(targetEl, text, color) {
+  const r = targetEl.getBoundingClientRect();
+  const d = document.createElement('div');
+  d.className = 'dmg-pop';
+  d.textContent = text;
+  d.style.color = color;
+  d.style.left = r.left + r.width / 2 - 14 + 'px';
+  d.style.top = r.top - 6 + 'px';
+  document.body.appendChild(d);
+  setTimeout(() => d.remove(), 850);
+}
+
+function shakeScreen() {
+  const b = document.querySelector('.battle');
+  b.classList.remove('shake');
+  void b.offsetWidth;
+  b.classList.add('shake');
+}
+
+async function throwProjectile(fromEl, toEl, glyph) {
+  const a = fromEl.getBoundingClientRect(), b = toEl.getBoundingClientRect();
+  const p = document.createElement('div');
+  p.className = 'projectile';
+  p.textContent = glyph;
+  p.style.left = a.left + a.width / 2 + 'px';
+  p.style.top = a.top + 'px';
+  document.body.appendChild(p);
+  void p.offsetWidth;
+  p.style.left = b.left + b.width / 2 - 20 + 'px';
+  p.style.top = b.top + b.height / 2 - 20 + 'px';
+  await sleep(400);
+  p.remove();
+}
+
+async function shatterShield() {
+  const sh = $('enemy-shield');
+  const r = sh.getBoundingClientRect();
+  sh.classList.add('shatter');
+  for (let i = 0; i < 6; i++) {
+    const s = document.createElement('div');
+    s.className = 'shard';
+    s.style.left = r.left + r.width / 2 + 'px';
+    s.style.top = r.top + 'px';
+    s.style.setProperty('--dx', (i - 2.5) * 26 + 'px');
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 650);
+  }
+  await sleep(500);
+  sh.classList.remove('shatter');
+}
+
 export async function endPlayerTurn() {
   if (state.outcome) return showOutcome();
   await sleep(600);
   setLog(`${state.enemy.name} attacks!`);
   await animate($('enemy-sprite'), 'attack');
   const { dmg } = enemyTurn(state);
+  popDamage($('player-sprite'), `-${dmg}`, '#ff6b6b');
   await animate($('player-sprite'), 'hit');
   renderAll();
   setLog(`${state.player.name} took ${dmg} damage!`);
@@ -75,6 +127,7 @@ $('btn-tackle').addEventListener('click', async () => {
   setActionsEnabled(false);
   await animate($('player-sprite'), 'attack');
   const { dmg } = useSkill(state, 'tackle');
+  popDamage($('enemy-sprite'), `-${dmg}`, '#ffd24a');
   await animate($('enemy-sprite'), 'hit');
   renderAll();
   setLog(`Tackle hits for ${dmg}!`);
@@ -184,7 +237,10 @@ $('btn-formula').addEventListener('click', async () => {
   setActionsEnabled(false);
   const correct = await runFormulaPuzzle();
   await animate($('player-sprite'), 'attack');
+  await throwProjectile($('player-sprite'), $('enemy-sprite'), correct ? '🔥' : '✨');
   const { dmg, powered } = useSkill(state, 'flame-formula', { correct });
+  popDamage($('enemy-sprite'), `-${dmg}`, powered ? '#ff9d3a' : '#ffd24a');
+  if (powered) shakeScreen();
   await animate($('enemy-sprite'), 'hit');
   renderAll();
   setLog(powered ? `🔥 Flame Formula! ${dmg} damage!` : `Flame fizzles… still ${dmg} damage!`);
@@ -255,8 +311,10 @@ $('btn-shield').addEventListener('click', async () => {
   setActionsEnabled(false);
   const ok = await runMakeTenPuzzle();
   if (ok) {
+    await shatterShield();
     breakShield(state);
     renderAll();
+    shakeScreen();
     setLog('💥 Shield shattered! Double damage for 2 turns!');
     await animate($('enemy-sprite'), 'hit');
   } else {
