@@ -40,3 +40,25 @@ export function generateFormulaPuzzle(rng, { max = 10 } = {}) {
 }
 
 export function checkFormula(puzzle, answer) { return answer === puzzle.missing; }
+
+export function findMakeTenPair(hand, target) {
+  for (let i = 0; i < hand.length; i++)
+    for (let j = i + 1; j < hand.length; j++)
+      if (hand[i] + hand[j] === target) return [i, j];
+  return null;
+}
+
+export function generateMakeTenPuzzle(rng, { target = 10, handSize = 4 } = {}) {
+  const a = pick(rng, 1, target - 1);
+  const hand = [a, target - a];
+  while (hand.length < handSize) {
+    const d = pick(rng, 1, target - 1);
+    // 干扰项不得与现有任何牌凑成 target,避免出现第二组解
+    if (hand.every(h => h + d !== target)) hand.push(d);
+  }
+  return { target, hand: shuffle(rng, hand), prompt: `Pick two crystals that make ${numberWord(target)}!` };
+}
+
+export function checkMakeTen(puzzle, i, j) {
+  return i !== j && puzzle.hand[i] + puzzle.hand[j] === puzzle.target;
+}

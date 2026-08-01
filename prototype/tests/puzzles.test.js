@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { makeRng, numberWord, generateFormulaPuzzle, checkFormula } from '../js/puzzles.js';
+import { makeRng, numberWord, generateFormulaPuzzle, checkFormula,
+  generateMakeTenPuzzle, checkMakeTen, findMakeTenPair } from '../js/puzzles.js';
 
 test('makeRng is deterministic in [0,1)', () => {
   const a = makeRng(42), b = makeRng(42);
@@ -30,6 +31,25 @@ test('formula puzzle is consistent and answerable', () => {
     assert.ok(checkFormula(p, p.missing));
     for (const c of p.candidates) if (c !== p.missing) assert.ok(!checkFormula(p, c));
   }
+});
+
+test('make-ten puzzle has exactly one valid pair', () => {
+  for (let seed = 1; seed <= 50; seed++) {
+    const p = generateMakeTenPuzzle(makeRng(seed), { target: 10, handSize: 4 });
+    assert.equal(p.hand.length, 4);
+    let pairs = 0;
+    for (let i = 0; i < 4; i++)
+      for (let j = i + 1; j < 4; j++)
+        if (p.hand[i] + p.hand[j] === 10) pairs++;
+    assert.equal(pairs, 1, `seed ${seed} hand ${p.hand}`);
+    const [i, j] = findMakeTenPair(p.hand, 10);
+    assert.ok(checkMakeTen(p, i, j));
+    assert.equal(p.prompt, 'Pick two crystals that make ten!');
+  }
+});
+
+test('findMakeTenPair returns null when no pair', () => {
+  assert.equal(findMakeTenPair([1, 2, 3, 4], 10), null);
 });
 
 test('formula prompt reads numbers as words', () => {
