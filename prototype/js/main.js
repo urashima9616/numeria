@@ -1,5 +1,6 @@
 import { PLAYER, ENEMY } from './data.js';
 import { createBattle, startPlayerTurn, useSkill, breakShield, enemyTurn } from './battle.js';
+import { generateFormulaPuzzle, checkFormula, makeRng } from './puzzles.js';
 
 const $ = id => document.getElementById(id);
 export const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -77,7 +78,113 @@ $('btn-tackle').addEventListener('click', async () => {
   await endPlayerTurn();
 });
 
-// Task 7 接管 btn-formula,Task 8 接管 btn-shield
+export let speak = text => {}; // Task 9 替换为 Web Speech
+const rng = makeRng(Date.now() % 2 ** 31);
+
+function buildHintTenframe(a, sum) {
+  const tf = document.createElement('div');
+  tf.className = 'tenframe';
+  for (let i = 0; i < 10; i++) {
+    const cell = document.createElement('i');
+    if (i < a) cell.classList.add('on');
+    else if (i < sum) cell.classList.add('need');
+    tf.appendChild(cell);
+  }
+  return tf;
+}
+
+export function runFormulaPuzzle() {
+  return new Promise(resolve => {
+    const p = generateFormulaPuzzle(rng, { max: 10 });
+    let attempts = 0;
+    const overlay = $('overlay');
+    overlay.classList.remove('hidden');
+    overlay.innerHTML = `
+      <div class="prompt">${p.prompt}</div>
+      <div class="equation"><span>${p.a}</span><span>+</span>
+        <span class="slot" id="slot"></span><span>=</span><span>${p.sum}</span></div>
+      <div class="crystals" id="crystals"></div>
+      <div class="hint" id="hint"></div>`;
+    speak(p.prompt);
+
+    const slot = overlay.querySelector('#slot');
+    const tray = overlay.querySelector('#crystals');
+
+    function finish(correct) {
+      setTimeout(() => { overlay.classList.add('hidden'); overlay.innerHTML = ''; resolve(correct); }, correct ? 600 : 400);
+    }
+
+    function submit(value, crystalEl) {
+      attempts++;
+      slot.textContent = value;
+      slot.classList.add('filled');
+      if (checkFormula(p, value)) {
+        crystalEl.classList.add('correct');
+        speak('Great job!');
+        finish(true);
+      } else if (attempts === 1) {
+        // 零惩罚引导重试:十格阵提示 + 重读题目
+        slot.textContent = ''; slot.classList.remove('filled');
+        crystalEl.remove();
+        const hint = overlay.querySelector('#hint');
+        hint.innerHTML = '<span>Let\'s count together!</span>';
+        hint.appendChild(buildHintTenframe(p.a, p.sum));
+        speak(`Hmm, not quite. ${p.prompt}`);
+      } else {
+        speak('Nice try! Your move still works!');
+        finish(false);
+      }
+    }
+
+    for (const value of p.candidates) {
+      const c = document.createElement('div');
+      c.className = 'crystal';
+      c.textContent = value;
+      tray.appendChild(c);
+
+      // 方式一:点选即提交(最低门槛)
+      c.addEventListener('click', () => submit(value, c));
+
+      // 方式二:Pointer 拖拽到空格
+      c.addEventListener('pointerdown', e => {
+        c.setPointerCapture(e.pointerId);
+        let moved = false;
+        const move = ev => {
+          moved = true;
+          c.classList.add('dragging');
+          c.style.left = ev.clientX - 36 + 'px';
+          c.style.top = ev.clientY - 36 + 'px';
+        };
+        const up = ev => {
+          c.removeEventListener('pointermove', move);
+          c.removeEventListener('pointerup', up);
+          if (!moved) return; // 纯点击交给 click 处理
+          c.classList.remove('dragging');
+          c.style.left = c.style.top = '';
+          const r = slot.getBoundingClientRect();
+          if (ev.clientX >= r.left && ev.clientX <= r.right && ev.clientY >= r.top && ev.clientY <= r.bottom) {
+            submit(value, c);
+          }
+        };
+        c.addEventListener('pointermove', move);
+        c.addEventListener('pointerup', up);
+      });
+    }
+  });
+}
+
+$('btn-formula').addEventListener('click', async () => {
+  setActionsEnabled(false);
+  const correct = await runFormulaPuzzle();
+  await animate($('player-sprite'), 'attack');
+  const { dmg, powered } = useSkill(state, 'flame-formula', { correct });
+  await animate($('enemy-sprite'), 'hit');
+  renderAll();
+  setLog(powered ? `🔥 Flame Formula! ${dmg} damage!` : `Flame fizzles… still ${dmg} damage!`);
+  await endPlayerTurn();
+});
+
+// Task 8 接管 btn-shield
 export { state, $, animate, setActionsEnabled };
 
 renderAll();
