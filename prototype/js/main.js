@@ -79,7 +79,8 @@ $('btn-tackle').addEventListener('click', async () => {
   await endPlayerTurn();
 });
 
-export let speak = text => {}; // Task 9 替换为 Web Speech
+import { createSpeaker } from './speech.js';
+export const speak = createSpeaker();
 const rng = makeRng(Date.now() % 2 ** 31);
 
 function buildHintTenframe(a, sum) {
