@@ -2,6 +2,7 @@ import { PLAYER, ENEMY } from './data.js';
 import { createBattle, startPlayerTurn, useSkill, breakShield, enemyTurn } from './battle.js';
 import { generateFormulaPuzzle, checkFormula, makeRng,
   generateMakeTenPuzzle, checkMakeTen, findMakeTenPair } from './puzzles.js';
+import { drawSprite, paintBackground, ADDMANDER, DUPLIROCK, GEM, SHIELD } from './sprites.js';
 
 const $ = id => document.getElementById(id);
 export const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -265,6 +266,12 @@ $('btn-shield').addEventListener('click', async () => {
 });
 
 export { state, $, animate, setActionsEnabled };
+
+paintBackground($('bg'));
+drawSprite($('player-sprite'), ADDMANDER);
+drawSprite($('enemy-sprite'), DUPLIROCK);
+drawSprite($('icon-gem'), GEM);
+drawSprite($('icon-shield'), SHIELD);
 
 renderAll();
 setTimeout(() => speak('A wild Duplirock appeared! It has a number shield!'), 400);

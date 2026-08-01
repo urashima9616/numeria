@@ -4,25 +4,28 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Numeria — Battle Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/battle.css">
 </head>
 <body>
+<canvas id="bg" aria-hidden="true"></canvas>
 <main class="battle">
   <section class="side enemy">
     <div class="plate">
       <span class="name">Duplirock</span>
       <div class="tenframe" id="enemy-hp"></div>
-      <div class="shield" id="enemy-shield">🛡️ <b>10</b></div>
+      <div class="shield" id="enemy-shield"><canvas class="icon" id="icon-shield"></canvas> <b>10</b></div>
     </div>
-    <div class="sprite" id="enemy-sprite">🪨</div>
+    <canvas class="sprite" id="enemy-sprite"></canvas>
   </section>
 
   <section class="side player">
-    <div class="sprite" id="player-sprite">🦎</div>
+    <canvas class="sprite" id="player-sprite"></canvas>
     <div class="plate">
       <span class="name">Addmander</span>
       <div class="tenframe" id="player-hp"></div>
-      <div class="gems">⚡ <b id="gem-count">2</b></div>
+      <div class="gems"><canvas class="icon" id="icon-gem"></canvas> <b id="gem-count">2</b></div>
     </div>
   </section>
 
