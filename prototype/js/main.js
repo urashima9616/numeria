@@ -1,6 +1,7 @@
 import { PLAYER, ENEMY } from './data.js';
 import { createBattle, startPlayerTurn, useSkill, breakShield, enemyTurn } from './battle.js';
-import { generateFormulaPuzzle, checkFormula, makeRng } from './puzzles.js';
+import { generateFormulaPuzzle, checkFormula, makeRng,
+  generateMakeTenPuzzle, checkMakeTen, findMakeTenPair } from './puzzles.js';
 
 const $ = id => document.getElementById(id);
 export const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -184,7 +185,80 @@ $('btn-formula').addEventListener('click', async () => {
   await endPlayerTurn();
 });
 
-// Task 8 接管 btn-shield
+export function runMakeTenPuzzle() {
+  return new Promise(resolve => {
+    const p = generateMakeTenPuzzle(rng, { target: 10, handSize: 4 });
+    let attempts = 0;
+    let picked = []; // 选中的下标
+    const overlay = $('overlay');
+    overlay.classList.remove('hidden');
+    overlay.innerHTML = `
+      <div class="prompt">${p.prompt}</div>
+      <div class="equation"><span class="slot" id="pick-a"></span><span>+</span>
+        <span class="slot" id="pick-b"></span><span>=</span><span>${p.target}</span></div>
+      <div class="crystals" id="crystals"></div>`;
+    speak(p.prompt);
+    const tray = overlay.querySelector('#crystals');
+
+    function finish(ok) {
+      setTimeout(() => { overlay.classList.add('hidden'); overlay.innerHTML = ''; resolve(ok); }, ok ? 600 : 400);
+    }
+
+    function refreshSlots() {
+      overlay.querySelector('#pick-a').textContent = picked[0] != null ? p.hand[picked[0]] : '';
+      overlay.querySelector('#pick-b').textContent = picked[1] != null ? p.hand[picked[1]] : '';
+    }
+
+    function judge() {
+      attempts++;
+      const [i, j] = picked;
+      if (checkMakeTen(p, i, j)) {
+        speak('Shield break!');
+        for (const el of tray.children) el.classList.add('correct');
+        finish(true);
+      } else if (attempts === 1) {
+        speak(`Hmm, ${p.hand[i]} plus ${p.hand[j]} is not ten. Try again!`);
+        picked = [];
+        for (const el of tray.children) el.classList.remove('picked', 'selected');
+        const [hi] = findMakeTenPair(p.hand, p.target);
+        tray.children[hi].classList.add('selected'); // 提示:高亮正确对的其中一颗
+        refreshSlots();
+      } else {
+        speak('Nice try! The shield holds for now.');
+        finish(false);
+      }
+    }
+
+    p.hand.forEach((value, idx) => {
+      const c = document.createElement('div');
+      c.className = 'crystal';
+      c.textContent = value;
+      c.addEventListener('click', () => {
+        if (picked.includes(idx)) return;
+        picked.push(idx);
+        c.classList.add('picked', 'selected');
+        refreshSlots();
+        if (picked.length === 2) setTimeout(judge, 350);
+      });
+      tray.appendChild(c);
+    });
+  });
+}
+
+$('btn-shield').addEventListener('click', async () => {
+  setActionsEnabled(false);
+  const ok = await runMakeTenPuzzle();
+  if (ok) {
+    breakShield(state);
+    renderAll();
+    setLog('💥 Shield shattered! Double damage for 2 turns!');
+    await animate($('enemy-sprite'), 'hit');
+  } else {
+    setLog('The shield holds…');
+  }
+  await endPlayerTurn();
+});
+
 export { state, $, animate, setActionsEnabled };
 
 renderAll();
