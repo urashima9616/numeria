@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Numeria — 数学魔法宝可梦 RPG 设计文档</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false}]});"></script>
+<style>
+  :root {
+    --paper: #f3f7f3;
+    --panel: #ffffff;
+    --ink: #21302a;
+    --muted: #5c6f66;
+    --line: #d8e2da;
+    --forest: #2e7d52;
+    --forest-soft: #e3f0e7;
+    --mountain: #c07b2a;
+    --mountain-soft: #f6ecdd;
+    --sky: #3f7fc4;
+    --sky-soft: #e2edf8;
+    --hero-bg: #14231b;
+    --hero-ink: #eaf5ec;
+    --code-bg: #eef3ee;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #101815;
+      --panel: #17221d;
+      --ink: #dce8df;
+      --muted: #93a89b;
+      --line: #2a3a31;
+      --forest: #5fbd8a;
+      --forest-soft: #1b2f24;
+      --mountain: #e0a458;
+      --mountain-soft: #302517;
+      --sky: #7db2e8;
+      --sky-soft: #172636;
+      --hero-bg: #0b120e;
+      --hero-ink: #eaf5ec;
+      --code-bg: #1c2822;
+    }
+  }
+  :root[data-theme="light"] {
+    --paper: #f3f7f3; --panel: #ffffff; --ink: #21302a; --muted: #5c6f66;
+    --line: #d8e2da; --forest: #2e7d52; --forest-soft: #e3f0e7;
+    --mountain: #c07b2a; --mountain-soft: #f6ecdd; --sky: #3f7fc4; --sky-soft: #e2edf8;
+    --hero-bg: #14231b; --hero-ink: #eaf5ec; --code-bg: #eef3ee;
+  }
+  :root[data-theme="dark"] {
+    --paper: #101815; --panel: #17221d; --ink: #dce8df; --muted: #93a89b;
+    --line: #2a3a31; --forest: #5fbd8a; --forest-soft: #1b2f24;
+    --mountain: #e0a458; --mountain-soft: #302517; --sky: #7db2e8; --sky-soft: #172636;
+    --hero-bg: #0b120e; --hero-ink: #eaf5ec; --code-bg: #1c2822;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Segoe UI", "Microsoft YaHei", sans-serif;
+    line-height: 1.75;
+    font-size: 16px;
+  }
+  .pixel { font-family: "Press Start 2P", "Courier New", monospace; }
+
+  main { max-width: 880px; margin: 0 auto; padding: 0 24px 96px; }
+
+  /* ---- Hero: game title screen ---- */
+  .hero {
+    background:
+      linear-gradient(180deg, rgba(20,35,27,.0) 60%, rgba(0,0,0,.35)),
+      var(--hero-bg);
+    color: var(--hero-ink);
+    border-radius: 4px;
+    margin: 40px 0 56px;
+    padding: 64px 32px 48px;
+    text-align: center;
+    border: 3px solid var(--forest);
+    box-shadow: 0 0 0 3px var(--hero-bg), 0 0 0 6px var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero .stars { position: absolute; inset: 0; opacity: .5;
+    background-image: radial-gradient(1.5px 1.5px at 20% 30%, #9fd8b4 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 70% 20%, #8fc2ee 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 85% 60%, #e8c184 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 40% 75%, #9fd8b4 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 10% 80%, #8fc2ee 50%, transparent 51%);
+  }
+  .hero h1 { font-size: clamp(28px, 6vw, 44px); letter-spacing: .12em; position: relative; }
+  .hero h1 span { color: #7fd8a4; }
+  .hero .tagline { margin-top: 20px; font-size: 15px; color: #bcd8c4; position: relative; }
+  .hero .press { margin-top: 36px; font-size: 11px; color: #e8c184; letter-spacing: .2em; position: relative; animation: blink 1.4s steps(2) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .hero .press { animation: none; } }
+  .hero .meta { margin-top: 28px; font-size: 12px; color: #86a08e; position: relative; }
+
+  /* ---- Sections ---- */
+  section { margin-top: 64px; }
+  .eyebrow { font-size: 10px; letter-spacing: .18em; color: var(--forest); text-transform: uppercase; margin-bottom: 10px; }
+  h2 { font-size: 26px; line-height: 1.3; text-wrap: balance; margin-bottom: 18px; }
+  h3 { font-size: 18px; margin: 28px 0 10px; }
+  p { margin: 10px 0; max-width: 70ch; }
+  ul, ol { padding-left: 1.4em; margin: 10px 0; }
+  li { margin: 6px 0; }
+  strong { color: var(--forest); }
+  em { font-style: italic; }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+
+  /* ---- Principles ---- */
+  .principles { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; margin-top: 18px; }
+  .principle { background: var(--panel); border: 1px solid var(--line); border-top: 4px solid var(--forest); border-radius: 8px; padding: 18px; }
+  .principle:nth-child(2) { border-top-color: var(--mountain); }
+  .principle:nth-child(3) { border-top-color: var(--sky); }
+  .principle h4 { font-size: 15px; margin-bottom: 8px; }
+  .principle p { font-size: 14px; color: var(--muted); margin: 0; }
+
+  /* ---- Core loop diagram ---- */
+  .loop { display: flex; flex-wrap: wrap; align-items: stretch; justify-content: center; gap: 8px; margin: 24px 0 8px; }
+  .loop .node {
+    background: var(--panel); border: 2px solid var(--forest); border-radius: 8px;
+    padding: 10px 14px; font-size: 14px; font-weight: 600; display: flex; align-items: center; text-align: center;
+  }
+  .loop .node.hot { background: var(--forest); color: #fff; }
+  .loop .arrow { display: flex; align-items: center; color: var(--muted); font-size: 18px; }
+  .loop-note { text-align: center; font-size: 13px; color: var(--muted); }
+
+  /* ---- Layer table ---- */
+  .layers { display: grid; gap: 14px; margin-top: 18px; }
+  .layer { display: grid; grid-template-columns: 72px 1fr; gap: 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; align-items: start; }
+  .layer .tag { font-size: 11px; padding: 8px 0; text-align: center; border-radius: 6px; color: #fff; font-weight: 700; }
+  .layer:nth-child(1) .tag { background: var(--sky); }
+  .layer:nth-child(2) .tag { background: var(--mountain); }
+  .layer:nth-child(3) .tag { background: var(--forest); }
+  .layer h4 { font-size: 15px; margin-bottom: 4px; }
+  .layer p { font-size: 14px; color: var(--muted); margin: 4px 0 0; }
+
+  /* ---- Battle flow ---- */
+  .flow { display: grid; gap: 0; margin: 20px 0; }
+  .flow .step { display: grid; grid-template-columns: 34px 1fr; gap: 14px; padding: 14px 0; border-bottom: 1px dashed var(--line); }
+  .flow .step:last-child { border-bottom: none; }
+  .flow .num { width: 34px; height: 34px; border-radius: 50%; background: var(--forest-soft); color: var(--forest); font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 15px; }
+  .flow p { margin: 4px 0 0; font-size: 14.5px; }
+  .ok { color: var(--forest); font-weight: 700; }
+  .retry { color: var(--mountain); font-weight: 700; }
+
+  /* ---- Map cards ---- */
+  .maps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 20px; }
+  .map { border-radius: 12px; padding: 22px; border: 1px solid var(--line); }
+  .map.forest { background: var(--forest-soft); border-color: var(--forest); }
+  .map.mountain { background: var(--mountain-soft); border-color: var(--mountain); }
+  .map.sky { background: var(--sky-soft); border-color: var(--sky); }
+  .map .m-emoji { font-size: 30px; }
+  .map h4 { font-size: 17px; margin: 8px 0 2px; }
+  .map .m-en { font-size: 12px; color: var(--muted); letter-spacing: .06em; }
+  .map .m-role { display: inline-block; margin: 10px 0; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 99px; color: #fff; }
+  .map.forest .m-role { background: var(--forest); }
+  .map.mountain .m-role { background: var(--mountain); }
+  .map.sky .m-role { background: var(--sky); }
+  .map ul { list-style: none; padding: 0; margin: 6px 0 0; }
+  .map li { font-size: 14px; padding: 5px 0; border-top: 1px dashed rgba(0,0,0,.12); margin: 0; }
+  .portal { text-align: center; font-size: 14px; color: var(--muted); margin-top: 14px; }
+
+  /* ---- Tables ---- */
+  .tablewrap { overflow-x: auto; margin: 16px 0; border: 1px solid var(--line); border-radius: 10px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; background: var(--panel); }
+  th { background: var(--forest-soft); color: var(--ink); text-align: left; font-size: 13px; letter-spacing: .03em; }
+  th, td { padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  td .en-voice { color: var(--muted); font-style: italic; }
+  .num-col { font-variant-numeric: tabular-nums; }
+
+  /* ---- Ten frame ---- */
+  .tenframe { display: inline-grid; grid-template-columns: repeat(5, 20px); grid-template-rows: repeat(2, 20px); gap: 3px; vertical-align: middle; margin: 0 6px; }
+  .tenframe i { border: 1.5px solid var(--forest); border-radius: 3px; background: var(--panel); }
+  .tenframe i.on { background: var(--forest); }
+
+  code, pre { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13.5px; }
+  pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 16px 18px; overflow-x: auto; margin: 14px 0; line-height: 1.6; }
+  code { background: var(--code-bg); padding: 1px 6px; border-radius: 4px; }
+  pre code { background: none; padding: 0; }
+
+  .callout { border-left: 4px solid var(--mountain); background: var(--mountain-soft); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 16px 0; font-size: 14.5px; }
+  .callout.green { border-left-color: var(--forest); background: var(--forest-soft); }
+
+  footer { margin-top: 72px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); text-align: center; }
+  a { color: var(--sky); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--mountain); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<main>
+
+  <div class="hero">
+    <div class="stars"></div>
+    <h1 class="pixel">NUME<span>RIA</span></h1>
+    <p class="tagline">数字与图形就是魔法 —— 为 5 岁数灵训练师设计的数学 RPG</p>
+    <p class="press pixel">▶ PRESS START</p>
+    <p class="meta">设计文档 v1.0 · 2026-08-01 · iOS · 像素风大地图 + 2D 动画战斗 · <a href="numeria-game-design.md" style="color:#8fc2ee">Markdown 版</a></p>
+  </div>
+
+  <!-- 1 Vision -->
+  <section>
+    <p class="eyebrow pixel">01 · Vision</p>
+    <h2>Vision 与玩家画像</h2>
+    <p>一款为 5 岁孩子设计的宝可梦式 RPG:在 Numeria 大陆,<strong>数字与图形本身就是魔法</strong>。孩子通过解开数学谜题释放强力技能、暴露敌人弱点、开启宝箱与完成进化——数学永远是让你变强的力量,而不是拦路的考试。</p>
+    <div class="card">
+      <h3 style="margin-top:0">玩家画像</h3>
+      <ul>
+        <li><strong>年龄</strong>:5 岁男孩,iPad 触屏操作(拖拽 + 点击,不要求书写)</li>
+        <li><strong>数学</strong>:已掌握 10 以内加减法;20 以内练习中;热爱图形、对称与规律</li>
+        <li><strong>语言</strong>:英文游戏,全程英文语音旁白 + 图形提示;能读简单英文句子,关键信息不依赖阅读</li>
+      </ul>
+    </div>
+    <div class="principles">
+      <div class="principle">
+        <h4>🛡️ 零惩罚原则</h4>
+        <p>答错不掉血、不受罚,技能仍以基础威力释放;十格阵数块动画引导重试一次,重试答对依然满威力。数学永远是加成,不是门槛。</p>
+      </div>
+      <div class="principle">
+        <h4>✨ 数学是魔法,不是测验</h4>
+        <p>谜题以咒语、封印、符文锁的形式存在于世界观内部,没有任何"跳出游戏做题"的时刻。</p>
+      </div>
+      <div class="principle">
+        <h4>🔊 听得懂就能玩</h4>
+        <p>所有题目配英文语音旁白,UI 以数字、符号(\(+\)、\(-\)、\(=\))和图标为主。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 Core loop -->
+  <section>
+    <p class="eyebrow pixel">02 · Core Loop</p>
+    <h2>核心循环</h2>
+    <div class="loop">
+      <div class="node">🗺️ 探索地图</div><div class="arrow">→</div>
+      <div class="node">👾 遭遇野生数灵</div><div class="arrow">→</div>
+      <div class="node hot">⚔️ 战斗(数学高潮点)</div><div class="arrow">→</div>
+      <div class="node">🎁 经验·金币·宝箱</div><div class="arrow">→</div>
+      <div class="node">📈 升级 / 进化</div><div class="arrow">→</div>
+      <div class="node">🌀 解锁传送门</div>
+    </div>
+    <p class="loop-note">一次 5–10 分钟的冒险 ≈ 10–20 次数学微练习,孩子毫无察觉。</p>
+  </section>
+
+  <!-- 3 Three layers -->
+  <section>
+    <p class="eyebrow pixel">03 · Math Model</p>
+    <h2>三层数学融入模型(设计的灵魂)</h2>
+    <p>数学按"浓度"分三层织进玩法,情绪最高点与数学时刻重合;每场普通战斗出现 2–3 次 L3 显式谜题,L1/L2 无处不在但永不打断游戏流。</p>
+    <div class="layers">
+      <div class="layer">
+        <div class="tag pixel">L1</div>
+        <div>
+          <h4>环境层 · 无意识浸泡(不要求答对)</h4>
+          <p>HP 条画成十格阵 <span class="tenframe" role="img" aria-label="十格阵示例,10 格中 7 格点亮"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span>;金币逐个数着捡;地图上编号的门;地砖藏着 ABAB 规律纹样。</p>
+        </div>
+      </div>
+      <div class="layer">
+        <div class="tag pixel">L2</div>
+        <div>
+          <h4>决策层 · 轻数学策略(算错只是战术亏)</h4>
+          <p>能量宝石系统:技能标注消耗(⚡×3),孩子看着自己的 5 颗宝石盘算"放完还剩几颗"——减法藏在战术里,他为了赢会主动算。</p>
+        </div>
+      </div>
+      <div class="layer">
+        <div class="tag pixel">L3</div>
+        <div>
+          <h4>高潮层 · 显式谜题(零惩罚可重试)</h4>
+          <p>大招咒语算式、凑十破盾、图形锁宝箱、进化试炼、收服友谊谜题——只出现在情绪最高点。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 Battle -->
+  <section>
+    <p class="eyebrow pixel">04 · Battle</p>
+    <h2>战斗系统(回合制 · 2D 动画演出)</h2>
+    <ul>
+      <li>双方轮流行动;玩家侧上场 1 只数灵,<strong>切换不耗回合</strong>,降低决策压力</li>
+      <li>每回合自动获得 2 颗能量宝石(上限 8);技能消耗 ⚡×1 / ⚡×3 / ⚡×5</li>
+      <li>普通攻击零门槛保底,永远可用,伤害数字大而清晰地跳出</li>
+    </ul>
+
+    <h3>⚡ 强力技能 = 咒语算式</h3>
+    <div class="card">
+      <div class="flow">
+        <div class="step"><div class="num">1</div><p>点击技能图标 → 画面暗下,浮现咒语算式 \(3 + \square = 7\)</p></div>
+        <div class="step"><div class="num">2</div><p>屏幕下方漂浮 3–4 颗<strong>候选数字水晶</strong>(如 2、4、6、9),语音同步读题:<em>"Three plus what makes seven?"</em></p></div>
+        <div class="step"><div class="num">3</div><p><strong>拖拽</strong>水晶填入空格</p></div>
+        <div class="step"><div class="num">4</div><p><span class="ok">✅ 答对</span> → 水晶炸裂,全屏大招动画,满威力伤害;<br><span class="retry">❌ 答错</span> → 技能仍以基础威力释放(零惩罚)+ 十格阵数块提示,引导<strong>重试一次</strong>,重试答对依然满威力</p></div>
+      </div>
+    </div>
+
+    <h3>🛡️ 破盾机制(凑十法)</h3>
+    <p>精英怪与 Boss 携带<strong>数字护盾</strong>,盾面显示盾值(如 <strong>10</strong>)。从手牌数字卡 2、3、7、5 中<strong>选两张凑成盾值</strong>(\(3+7=10\))→ 护盾碎裂,之后 2 回合敌方受到双倍伤害。直接训练进位加法的核心策略——凑十法。</p>
+
+    <h3>👑 Boss 战:多段护盾的节奏段落</h3>
+    <div class="callout">第一段 <strong>算式填空</strong> → 第二段 <strong>凑十破盾</strong> → 第三段 <strong>图形规律</strong>。每破一段,Boss 形态受损、演出升级,像音乐游戏一样有段落感。</div>
+
+    <h3>💖 收服机制(友谊谜题)</h3>
+    <p>把野生数灵打到低血量(HP 十格阵只剩 1–2 格)后,它头顶浮现一道<strong>友谊谜题</strong>;答对即被感化收服,伴随爱心动画——收服本身就是一次数学时刻。</p>
+  </section>
+
+  <!-- 5 Maps -->
+  <section>
+    <p class="eyebrow pixel">05 · World</p>
+    <h2>三张地图 = 三档难度(线性解锁)</h2>
+    <div class="maps">
+      <div class="map forest">
+        <div class="m-emoji">🌲</div>
+        <h4>神秘森林</h4>
+        <div class="m-en">MYSTIC FOREST</div><br>
+        <span class="m-role">舒适区 · 建立自信</span>
+        <ul>
+          <li>10 以内加减填空 \(3+\square=7\)</li>
+          <li>点数(数萤火虫)</li>
+          <li>数量比较(哪边蘑菇多)</li>
+        </ul>
+      </div>
+      <div class="map mountain">
+        <div class="m-emoji">⛰️</div>
+        <h4>静寂山脉</h4>
+        <div class="m-en">SILENT PEAKS</div><br>
+        <span class="m-role">成长区 · 主练习场</span>
+        <ul>
+          <li>20 以内加减 \(13+\square=17\)</li>
+          <li>凑十法(选两张凑 10)</li>
+          <li>连加 \(2+3+4\) · 翻倍 \(6+6\)</li>
+        </ul>
+      </div>
+      <div class="map sky">
+        <div class="m-emoji">☁️</div>
+        <h4>蔚蓝天空城</h4>
+        <div class="m-en">AZURE SKY CITY</div><br>
+        <span class="m-role">兴趣区 · 高级几何魔法</span>
+        <ul>
+          <li>图形规律 🔺🔵🔺🔵❓</li>
+          <li>对称(补全蝴蝶翅膀)</li>
+          <li>旋转匹配 · 序列 2,4,6,❓</li>
+        </ul>
+      </div>
+    </div>
+    <p class="portal">🌀 传送门钥匙 = 击败地图 Boss + 一道综合谜题(混合该图全部题型的三连题,零惩罚可重试);已解锁地图可随时传送回去自由冒险。</p>
+
+    <h3>数据驱动的 DLC 架构</h3>
+    <p>地图、题库、数灵、掉落全部为 JSON 配置,未来 DLC(如"齿轮沙漠"教乘法萌芽)只需新增配置文件 + 美术资源,零代码改动:</p>
+    <pre><code>content/
+  maps/forest.json        # 场景、NPC、宝箱位置、遭遇表
+  puzzles/forest.json     # 该地图题型池与难度参数
+  mathmon/roster.json     # 15 只数灵的属性/技能/进化链
+  items/equipment.json    # 装备数值与掉落表</code></pre>
+  </section>
+
+  <!-- 6 Roster -->
+  <section>
+    <p class="eyebrow pixel">06 · Mathmon</p>
+    <h2>数灵阵容(首发 15 只)</h2>
+    <p>命名原则:<strong>数学词根 + 生物词根</strong>(Add+salamander、Ten+fin、Mirror+owl)——孩子念出名字时就在复述数学概念。</p>
+    <h3>御三家(三段进化 × 3 线 = 9 只)</h3>
+    <div class="tablewrap"><table>
+      <tr><th>进化线</th><th>属性</th><th>谜题亲和</th><th>代表技能(题型)</th></tr>
+      <tr><td><strong>Addmander → Sumdrake → Equadragon</strong></td><td>🔥 火</td><td>算式填空</td><td>Flame Formula(加法填空)→ Blaze Equation(20 以内)</td></tr>
+      <tr><td><strong>Tenfin → Decaqua → Tidalten</strong></td><td>💧 水</td><td>凑十 / 组合</td><td>Splash Ten(凑十选卡)→ Tidal Combo(三数凑目标)</td></tr>
+      <tr><td><strong>Shapling → Pattervine → Geoflora</strong></td><td>🌿 草</td><td>图形规律</td><td>Leaf Pattern(ABAB 规律)→ Bloom Symmetry(对称)</td></tr>
+    </table></div>
+    <h3>地图特色野生线(两段进化 × 3 线 = 6 只)</h3>
+    <div class="tablewrap"><table>
+      <tr><th>进化线</th><th>出没地图</th><th>属性</th><th>谜题亲和</th></tr>
+      <tr><td><strong>Countipillar → Numberfly</strong></td><td>🌲 神秘森林</td><td>🐛 虫</td><td>点数、数量比较</td></tr>
+      <tr><td><strong>Doublit → Duplirock</strong></td><td>⛰️ 静寂山脉</td><td>🪨 岩</td><td>翻倍、连加</td></tr>
+      <tr><td><strong>Mirrowl → Symmetrix</strong></td><td>☁️ 蔚蓝天空城</td><td>🕊️ 飞行</td><td>对称、旋转</td></tr>
+    </table></div>
+  </section>
+
+  <!-- 7 Progression -->
+  <section>
+    <p class="eyebrow pixel">07 · Progression</p>
+    <h2>养成:升级 · 进化 · 装备</h2>
+    <h3>📈 升级</h3>
+    <p>升级时属性数字<strong>跳动放大</strong>并配语音:<em>"Attack goes from 8 to 10!"</em> —— 把读数字变成仪式感。属性刻意保持小数字(个位数到 20 以内),孩子能亲自心算成长量。</p>
+    <h3>🌟 进化三条件</h3>
+    <div class="card">
+      <ol>
+        <li><strong>等级达标</strong>:御三家 Lv.8 → 二段,Lv.15 → 三段</li>
+        <li><strong>进化石</strong>:藏在地图谜题之后(如推开刻着 \(12-4=\square\) 的封印石门)</li>
+        <li><strong>进化试炼</strong>:3 道该数灵谜题亲和主题的题目(火系=算式、水系=凑十、草系=图形),零惩罚无限重试</li>
+      </ol>
+      <p style="margin-bottom:0">通过后播放进化动画:形态蜕变、旧技能威力升级、习得一个新强力技能。<strong>进化 = 数学能力的里程碑证书。</strong></p>
+    </div>
+    <h3>🎁 数学宝箱与装备</h3>
+    <ul>
+      <li>宝箱散落各地图,<strong>锁就是谜题</strong>(题型随地图);稀有宝箱为三连题</li>
+      <li>开出武器 / 防具 / 饰品,数值刻意简单:<code>Sword +2 Attack</code>、<code>Shield +3 Defense</code></li>
+      <li>装备时 UI 展示 \(8+2=\square\),孩子心算确认后数值才跳到 10 —— <strong>穿装备也是一道加法题</strong></li>
+    </ul>
+  </section>
+
+  <!-- 8 Adaptive -->
+  <section>
+    <p class="eyebrow pixel">08 · Adaptive</p>
+    <h2>自适应难度引擎与家长面板</h2>
+    <div class="callout green"><strong>隐形原则:</strong>孩子只感觉"我一直在赢"。系统记录每题正误与用时,连续答对悄悄升一档(数字变大、干扰项更接近),连续犹豫或出错悄悄降一档;答错的题型会在之后战斗中<strong>换数字、换皮肤变形复现</strong>(间隔重复),绝不标注"你上次错了"。</div>
+    <p><strong>家长面板</strong>(设置内 PIN 门):各题型掌握度热图(地图 × 题型)、游戏时长统计与单次时长提醒(默认 20 分钟温柔提示:数灵想睡觉了)、难度上下限手动调节。</p>
+  </section>
+
+  <!-- 9 Roadmap -->
+  <section>
+    <p class="eyebrow pixel">09 · Roadmap</p>
+    <h2>路线图</h2>
+    <div class="tablewrap"><table>
+      <tr><th>阶段</th><th>内容</th><th>验证目标</th></tr>
+      <tr><td>✅ 设计</td><td>本文档</td><td>玩法与数学融入模型定稿</td></tr>
+      <tr><td>⬜ Web 原型</td><td>HTML5 战斗原型,iPad Safari 可玩</td><td>咒语算式 + 凑十破盾好不好玩,孩子实测</td></tr>
+      <tr><td>⬜ 垂直切片</td><td>神秘森林完整一张图(iOS 工程)</td><td>核心循环 + 养成闭环</td></tr>
+      <tr><td>⬜ 首发版本</td><td>三张地图 + 15 只数灵</td><td>上 TestFlight 给孩子长期玩</td></tr>
+      <tr><td>⬜ DLC</td><td>新地图(乘法萌芽等)</td><td>数据驱动架构验证</td></tr>
+    </table></div>
+  </section>
+
+  <footer>
+    Numeria 设计文档 v1.0 · 由设计 brainstorm 会议整理 · <a href="numeria-game-design.md">Markdown 版</a>
+  </footer>
+</main>
+</body>
+</html>
