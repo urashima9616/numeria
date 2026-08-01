@@ -1,0 +1,74 @@
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: -apple-system, "Segoe UI", sans-serif;
+  background: linear-gradient(180deg, #a8d8ea 0%, #c8e6c9 55%, #7cb342 55.2%, #558b2f 100%);
+  touch-action: manipulation; user-select: none; -webkit-user-select: none;
+}
+.battle { position: relative; height: 100%; max-width: 900px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; }
+
+.side { display: flex; align-items: center; gap: 16px; }
+.side.enemy { justify-content: flex-end; margin-top: 8px; }
+.side.player { justify-content: flex-start; margin-top: auto; }
+
+.sprite { font-size: 72px; line-height: 1; filter: drop-shadow(0 6px 4px rgba(0,0,0,.25)); }
+.sprite.hit { animation: hit .4s; }
+.sprite.attack { animation: lunge .35s; }
+@keyframes hit { 25% { transform: translateX(-8px); filter: brightness(2); } 75% { transform: translateX(8px); } }
+@keyframes lunge { 40% { transform: translate(24px, -12px) scale(1.08); } }
+
+.plate { background: rgba(255,255,255,.92); border: 3px solid #33691e; border-radius: 14px; padding: 10px 14px; min-width: 210px; }
+.plate .name { font-weight: 800; font-size: 17px; color: #263238; }
+
+.tenframe { display: grid; grid-template-columns: repeat(5, 24px); grid-auto-rows: 24px; gap: 4px; margin: 8px 0 4px; }
+.tenframe i { border: 2px solid #33691e; border-radius: 5px; background: #fff; transition: background .3s; }
+.tenframe i.on { background: #66bb6a; }
+
+.shield { margin-top: 4px; font-weight: 700; color: #1565c0; }
+.shield.broken { display: none; }
+.gems { margin-top: 4px; font-weight: 700; color: #ef6c00; font-size: 18px; }
+
+.log { position: absolute; left: 50%; top: 44%; transform: translate(-50%, -50%);
+  background: rgba(38,50,56,.88); color: #fff; padding: 10px 22px; border-radius: 999px;
+  font-size: 17px; font-weight: 600; white-space: nowrap; }
+
+.actions { display: flex; gap: 12px; margin-top: 14px; }
+.actions button {
+  flex: 1; min-height: 64px; font-size: 18px; font-weight: 800; border-radius: 16px;
+  border: 3px solid #33691e; background: #fffde7; color: #263238; cursor: pointer;
+}
+.actions button:active { transform: scale(.96); }
+.actions button:disabled { opacity: .4; }
+.actions button:focus-visible { outline: 3px solid #ef6c00; outline-offset: 2px; }
+.actions small { display: block; font-size: 12px; color: #ef6c00; }
+
+/* ---- 谜题遮罩 ---- */
+.overlay { position: absolute; inset: 0; background: rgba(20,30,40,.86); border-radius: 12px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; z-index: 10; }
+.overlay.hidden { display: none; }
+.overlay .prompt { color: #fff; font-size: 26px; font-weight: 800; text-align: center; padding: 0 20px; }
+.overlay .equation { display: flex; align-items: center; gap: 14px; font-size: 44px; font-weight: 900; color: #ffe082; }
+.overlay .slot { width: 76px; height: 76px; border: 4px dashed #ffe082; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,.08); }
+.overlay .slot.filled { border-style: solid; background: rgba(255,224,130,.25); }
+.crystals { display: flex; gap: 18px; }
+.crystal { width: 72px; height: 72px; border-radius: 22px; display: flex; align-items: center; justify-content: center;
+  font-size: 32px; font-weight: 900; color: #fff; touch-action: none; cursor: grab;
+  background: radial-gradient(circle at 30% 25%, #7e57c2, #4527a0); border: 3px solid #b39ddb;
+  box-shadow: 0 6px 14px rgba(0,0,0,.4); }
+.crystal.selected { transform: scale(1.15); border-color: #ffe082; }
+.crystal.dragging { position: fixed; z-index: 20; pointer-events: none; transform: scale(1.2); }
+.crystal.correct { animation: burst .5s forwards; }
+@keyframes burst { to { transform: scale(1.8); opacity: 0; } }
+.hint { display: flex; flex-direction: column; align-items: center; gap: 10px; color: #fff; font-size: 16px; }
+.hint .tenframe i { border-color: #ffe082; background: rgba(255,255,255,.12); }
+.hint .tenframe i.on { background: #ffb300; }
+.hint .tenframe i.need { background: rgba(102,187,106,.65); }
+
+.banner { position: absolute; inset: 0; z-index: 30; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 14px; background: rgba(20,30,40,.92);
+  color: #fff; font-size: 40px; font-weight: 900; border-radius: 12px; }
+.banner button { font-size: 20px; padding: 14px 34px; border-radius: 14px; border: 3px solid #ffe082;
+  background: #ef6c00; color: #fff; font-weight: 800; min-height: 60px; }
+
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }

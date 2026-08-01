@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Numeria — Battle Prototype</title>
+<link rel="stylesheet" href="css/battle.css">
+</head>
+<body>
+<main class="battle">
+  <section class="side enemy">
+    <div class="plate">
+      <span class="name">Duplirock</span>
+      <div class="tenframe" id="enemy-hp"></div>
+      <div class="shield" id="enemy-shield">🛡️ <b>10</b></div>
+    </div>
+    <div class="sprite" id="enemy-sprite">🪨</div>
+  </section>
+
+  <section class="side player">
+    <div class="sprite" id="player-sprite">🦎</div>
+    <div class="plate">
+      <span class="name">Addmander</span>
+      <div class="tenframe" id="player-hp"></div>
+      <div class="gems">⚡ <b id="gem-count">2</b></div>
+    </div>
+  </section>
+
+  <div id="battle-log" class="log">A wild Duplirock appeared!</div>
+
+  <nav id="actions" class="actions">
+    <button id="btn-tackle">👊 Tackle</button>
+    <button id="btn-formula">🔥 Flame Formula <small>⚡×3</small></button>
+    <button id="btn-shield">🛡️ Break Shield</button>
+  </nav>
+
+  <div id="overlay" class="overlay hidden"></div>
+</main>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
