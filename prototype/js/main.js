@@ -60,10 +60,11 @@ export async function endPlayerTurn() {
 }
 
 export function showOutcome() {
+  speak(state.outcome === 'win' ? 'You win! Addmander got five experience points!' : "Oh no! Let's try again!");
   const banner = document.createElement('div');
   banner.className = 'banner';
   banner.innerHTML = state.outcome === 'win'
-    ? '<div>🎉 YOU WIN!</div><button id="btn-again">Play Again</button>'
+    ? '<div>🎉 YOU WIN!</div><div style="font-size:22px">Addmander got <b style="color:#ffe082">+5 XP</b>!</div><button id="btn-again">Play Again</button>'
     : '<div>💤 Addmander fainted…</div><button id="btn-again">Try Again</button>';
   document.querySelector('.battle').appendChild(banner);
   banner.querySelector('#btn-again').addEventListener('click', () => location.reload());
@@ -144,14 +145,14 @@ export function runFormulaPuzzle() {
       c.textContent = value;
       tray.appendChild(c);
 
-      // 方式一:点选即提交(最低门槛)
-      c.addEventListener('click', () => submit(value, c));
-
-      // 方式二:Pointer 拖拽到空格
+      // 点按即提交;超过 8px 阈值才进入拖拽,松手落在空格内也提交。
+      // 手指点按常带 1-2px 抖动,没有阈值会吞掉点击。
       c.addEventListener('pointerdown', e => {
         c.setPointerCapture(e.pointerId);
+        const startX = e.clientX, startY = e.clientY;
         let moved = false;
         const move = ev => {
+          if (!moved && Math.hypot(ev.clientX - startX, ev.clientY - startY) < 8) return;
           moved = true;
           c.classList.add('dragging');
           c.style.left = ev.clientX - 36 + 'px';
@@ -160,9 +161,11 @@ export function runFormulaPuzzle() {
         const up = ev => {
           c.removeEventListener('pointermove', move);
           c.removeEventListener('pointerup', up);
-          if (!moved) return; // 纯点击交给 click 处理
+          c.removeEventListener('pointercancel', up);
           c.classList.remove('dragging');
           c.style.left = c.style.top = '';
+          if (ev.type === 'pointercancel') return;
+          if (!moved) { submit(value, c); return; }
           const r = slot.getBoundingClientRect();
           if (ev.clientX >= r.left && ev.clientX <= r.right && ev.clientY >= r.top && ev.clientY <= r.bottom) {
             submit(value, c);
@@ -170,6 +173,7 @@ export function runFormulaPuzzle() {
         };
         c.addEventListener('pointermove', move);
         c.addEventListener('pointerup', up);
+        c.addEventListener('pointercancel', up);
       });
     }
   });
@@ -263,3 +267,4 @@ $('btn-shield').addEventListener('click', async () => {
 export { state, $, animate, setActionsEnabled };
 
 renderAll();
+setTimeout(() => speak('A wild Duplirock appeared! It has a number shield!'), 400);
