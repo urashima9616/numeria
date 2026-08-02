@@ -39,6 +39,7 @@ namespace Numeria.Game
         private Image _formulaBg;
         private Button _btnShield;
         private Button _btnCatch;
+        private CanvasGroup _dockGroup;
         private int _playerLevel = 1;
 
         // 参考图配色(与菜单一致)
@@ -99,9 +100,9 @@ namespace Numeria.Game
                 _state.Enemy.Name, _state.Enemy.Shield.HasValue ? "BOSS" : "WILD",
                 out _enemyHpFill, out _enemyHpText);
             BuildShieldRow(enemyPlate);
-            var enemyImg = Ui.SpriteImg(_shakeRoot, "EnemySprite", SpriteLib.LargeIcon(_state.Enemy.Id));
+            var enemyImg = Ui.SpriteImg(_shakeRoot, "EnemySprite", SpriteLib.EnemyBattleSprite(_state.Enemy.Id));
             enemyImg.preserveAspect = true;
-            Ui.Place(enemyImg.rectTransform, new Vector2(1, 1), new Vector2(-140, -140), new Vector2(220, 220));
+            Ui.Place(enemyImg.rectTransform, new Vector2(1, 1), new Vector2(-140, -140), new Vector2(230, 230));
             _enemySprite = enemyImg.rectTransform;
 
             // 我方:立绘左下,名牌右侧
@@ -114,78 +115,72 @@ namespace Numeria.Game
                 out _playerHpFill, out _playerHpText);
             BuildGemRow(playerPlate);
 
-            // 回合横幅(琥珀色,顶部居中)
-            var logFrame = Ui.Img(_shakeRoot, "LogFrame", TitleGreen);
-            Ui.Place(logFrame.rectTransform, new Vector2(0.5f, 1), new Vector2(0, -18), new Vector2(400, 106));
-            var logPlate = Ui.Img(logFrame.transform, "LogPlate", Amber);
-            Ui.Stretch(logPlate.rectTransform);
-            logPlate.rectTransform.offsetMin = new Vector2(5, 5);
-            logPlate.rectTransform.offsetMax = new Vector2(-5, -5);
+            // 回合横幅(素材包 Turn_Banner,顶部居中)
+            var logPlate = Ui.SpriteImg(_shakeRoot, "LogPlate", SpriteLib.Pack("UI/Panels/Turn_Banner"));
+            logPlate.type = Image.Type.Sliced;
+            Ui.Place(logPlate.rectTransform, new Vector2(0.5f, 1), new Vector2(0, -18), new Vector2(400, 110));
             _logMain = Ui.Label(logPlate.transform, "LogMain", "", 26, TitleGreen);
-            Ui.Place(_logMain.rectTransform, new Vector2(0.5f, 1), new Vector2(0, -30), new Vector2(380, 34));
+            Ui.Place(_logMain.rectTransform, new Vector2(0.5f, 1), new Vector2(0, -34), new Vector2(360, 34));
             _logSub = Ui.Label(logPlate.transform, "LogSub", "", 20, Ui.Hex("#8a5a1a"));
-            Ui.Place(_logSub.rectTransform, new Vector2(0.5f, 0), new Vector2(0, 22), new Vector2(380, 28));
+            Ui.Place(_logSub.rectTransform, new Vector2(0.5f, 0), new Vector2(0, 26), new Vector2(360, 28));
 
-            // 行动按钮条(底部整条)
-            var barFrame = Ui.Img(_shakeRoot, "ActionsFrame", TitleGreen);
-            var barRt = barFrame.rectTransform;
+            // 行动按钮坞(素材包 Command_Dock,底部整条)
+            var dock = Ui.SpriteImg(_shakeRoot, "CommandDock", SpriteLib.Pack("UI/Panels/Command_Dock"));
+            dock.type = Image.Type.Sliced;
+            var barRt = dock.rectTransform;
             barRt.anchorMin = new Vector2(0, 0);
             barRt.anchorMax = new Vector2(1, 0);
             barRt.pivot = new Vector2(0.5f, 0);
             barRt.anchoredPosition = new Vector2(0, 16);
             barRt.sizeDelta = new Vector2(-52, 150);
-            var barPlate = Ui.Img(barFrame.transform, "ActionsPlate", Cream);
-            Ui.Stretch(barPlate.rectTransform);
-            barPlate.rectTransform.offsetMin = new Vector2(5, 5);
-            barPlate.rectTransform.offsetMax = new Vector2(-5, -5);
-            var layout = barPlate.gameObject.AddComponent<HorizontalLayoutGroup>();
-            layout.padding = new RectOffset(14, 14, 12, 12);
-            layout.spacing = 14;
+            _dockGroup = dock.gameObject.AddComponent<CanvasGroup>();
+            var layout = dock.gameObject.AddComponent<HorizontalLayoutGroup>();
+            layout.padding = new RectOffset(22, 22, 16, 16);
+            layout.spacing = 16;
             layout.childControlWidth = true;
             layout.childControlHeight = true;
             layout.childForceExpandWidth = true;
             layout.childForceExpandHeight = true;
 
             var formulaSkill = System.Array.Find(_state.Player.Skills, s => s.Id == "flame-formula");
-            _btnTackle = ActionButton(barPlate.rectTransform, "icon-sword", "TACKLE", "FREE", Ui.Hex("#5c8a3f"), out _);
+            _btnTackle = ActionButton(dock.rectTransform, SpriteLib.Pack("UI/Icons/Tackle"),
+                "TACKLE", "FREE", Ui.Hex("#5c8a3f"), out _);
             _btnTackle.onClick.AddListener(() => StartCoroutine(TackleRoutine()));
-            _btnFormula = ActionButton(barPlate.rectTransform, "icon-flame",
+            _btnFormula = ActionButton(dock.rectTransform, SpriteLib.Pack("UI/Icons/Flame_Formula"),
                 formulaSkill.Name.ToUpperInvariant(), $"COST {formulaSkill.Cost}", SubOrange, out _formulaBg);
             _btnFormula.onClick.AddListener(() => StartCoroutine(FormulaRoutine()));
-            _btnShield = ActionButton(barPlate.rectTransform, "shield", "BREAK SHIELD",
-                $"MAKE {_state.Enemy.Shield ?? 10}", Ui.ShieldBlue, out _);
+            _btnShield = ActionButton(dock.rectTransform, SpriteLib.One("Art/Sprites/shield"),
+                "BREAK SHIELD", $"MAKE {_state.Enemy.Shield ?? 10}", Ui.ShieldBlue, out _);
             _btnShield.onClick.AddListener(() => StartCoroutine(BreakShieldRoutine()));
-            _btnCatch = ActionButton(barPlate.rectTransform, "icon-net", "CATCH", "FRIEND PUZZLE", SubOrange, out _);
+            _btnCatch = ActionButton(dock.rectTransform, SpriteLib.Pack("UI/Icons/Catch"),
+                "CATCH", "FRIEND PUZZLE", SubOrange, out _);
             _btnCatch.onClick.AddListener(() => StartCoroutine(CatchRoutine()));
         }
 
-        /// <summary>状态名牌:深绿描边 + 奶油底,名字/副标题/HP 文字/血条。</summary>
+        /// <summary>状态名牌:素材包 Status_Panel(9-slice),名字/副标题/HP 文字/血条。</summary>
         private RectTransform BuildStatusPlate(string plateName, Vector2 anchor, Vector2 offset, Vector2 size,
             string title, string subtitle, out Image hpFill, out Text hpText)
         {
-            var frame = Ui.Img(_shakeRoot, plateName + "Frame", TitleGreen);
-            Ui.Place(frame.rectTransform, anchor, offset, size);
-            var plate = Ui.Img(frame.transform, plateName, Cream);
-            Ui.Stretch(plate.rectTransform);
-            plate.rectTransform.offsetMin = new Vector2(5, 5);
-            plate.rectTransform.offsetMax = new Vector2(-5, -5);
+            var plate = Ui.SpriteImg(_shakeRoot, plateName, SpriteLib.Pack("UI/Panels/Status_Panel"));
+            plate.type = Image.Type.Sliced;
+            Ui.Place(plate.rectTransform, anchor, offset, size);
 
             var name = Ui.Label(plate.transform, "Name", title.ToUpperInvariant(), 28, TitleGreen, TextAnchor.UpperLeft);
-            Ui.Place(name.rectTransform, new Vector2(0, 1), new Vector2(18, -12), new Vector2(300, 32));
+            Ui.Place(name.rectTransform, new Vector2(0, 1), new Vector2(22, -16), new Vector2(300, 32));
             var sub = Ui.Label(plate.transform, "Sub", subtitle, 20, SubOrange, TextAnchor.UpperLeft);
-            Ui.Place(sub.rectTransform, new Vector2(0, 1), new Vector2(18, -48), new Vector2(200, 24));
+            Ui.Place(sub.rectTransform, new Vector2(0, 1), new Vector2(22, -52), new Vector2(200, 24));
             hpText = Ui.Label(plate.transform, "HpText", "", 20, TitleGreen, TextAnchor.UpperLeft);
-            Ui.Place(hpText.rectTransform, new Vector2(0, 1), new Vector2(18, -78), new Vector2(240, 24));
+            Ui.Place(hpText.rectTransform, new Vector2(0, 1), new Vector2(22, -82), new Vector2(240, 24));
 
-            var track = Ui.Img(plate.transform, "HpTrack", HpTrack);
-            Ui.Place(track.rectTransform, new Vector2(0, 0), new Vector2(18, 14), new Vector2(size.x - 74, 16));
-            track.rectTransform.pivot = new Vector2(0, 0);
-            Ui.AddOutline(track.gameObject);
-            var fill = Ui.Img(track.transform, "HpFill", HpGreen);
+            // 血条:素材包外框 + 填充
+            var frame = Ui.SpriteImg(plate.transform, "HpFrame", SpriteLib.Pack("UI/Bars/HP_Bar_Frame"));
+            Ui.Place(frame.rectTransform, new Vector2(0, 0), new Vector2(22, 16), new Vector2(size.x - 84, 26));
+            frame.rectTransform.pivot = new Vector2(0, 0);
+            var fill = Ui.SpriteImg(frame.transform, "HpFill", SpriteLib.Pack("UI/Bars/HP_Bar_Fill"));
             fill.rectTransform.anchorMin = Vector2.zero;
             fill.rectTransform.anchorMax = Vector2.one;
-            fill.rectTransform.offsetMin = Vector2.zero;
-            fill.rectTransform.offsetMax = Vector2.zero;
+            fill.rectTransform.offsetMin = new Vector2(4, 5);
+            fill.rectTransform.offsetMax = new Vector2(-4, -5);
             hpFill = fill;
 
             return plate.rectTransform;
@@ -208,41 +203,44 @@ namespace Numeria.Game
         {
             var row = Ui.Node(plate, "GemRow");
             Ui.Place(row, new Vector2(1, 1), new Vector2(-16, -50), new Vector2(220, 30));
+            var gemSprite = SpriteLib.Pack("UI/Icons/Gem");
             for (int i = 0; i < 8; i++)
             {
-                var icon = Ui.SpriteImg(row, $"Gem{i}", SpriteLib.One("Art/Sprites/gem"));
-                Ui.Place(icon.rectTransform, new Vector2(0, 0.5f), new Vector2(i * 26, 0), new Vector2(22, 22));
+                var icon = Ui.SpriteImg(row, $"Gem{i}", gemSprite != null ? gemSprite : SpriteLib.One("Art/Sprites/gem"));
+                icon.preserveAspect = true;
+                Ui.Place(icon.rectTransform, new Vector2(0, 0.5f), new Vector2(i * 26, 0), new Vector2(24, 24));
                 _gemIcons.Add(icon);
             }
             _gemLabel = Ui.Label(plate, "GemLabel", "", 20, SubOrange, TextAnchor.LowerRight);
             Ui.Place(_gemLabel.rectTransform, new Vector2(1, 0), new Vector2(-18, 36), new Vector2(160, 24));
         }
 
-        /// <summary>大按钮:图标 + 标题 + 副标题。</summary>
-        private Button ActionButton(RectTransform parent, string iconName, string title, string subtitle,
+        /// <summary>大按钮:素材包按钮底(9-slice)+ 图标 + 标题 + 副标题。</summary>
+        private Button ActionButton(RectTransform parent, Sprite icon, string title, string subtitle,
             Color subtitleColor, out Image bgImage)
         {
-            var frame = Ui.Img(parent, $"Btn-{title}", TitleGreen);
-            var inner = Ui.Img(frame.transform, "Inner", Cream);
-            Ui.Stretch(inner.rectTransform);
-            inner.rectTransform.offsetMin = new Vector2(4, 4);
-            inner.rectTransform.offsetMax = new Vector2(-4, -4);
-            bgImage = inner;
+            var bg = Ui.SpriteImg(parent, $"Btn-{title}", SpriteLib.Pack("UI/Buttons/Button_Normal"));
+            bg.type = Image.Type.Sliced;
+            bgImage = bg;
 
-            var icon = Ui.SpriteImg(inner.transform, "Icon", SpriteLib.One($"Art/Sprites/{iconName}"));
-            icon.preserveAspect = true;
-            Ui.Place(icon.rectTransform, new Vector2(0, 0.5f), new Vector2(20, 0), new Vector2(48, 48));
+            var iconImg = Ui.SpriteImg(bg.transform, "Icon", icon);
+            iconImg.preserveAspect = true;
+            Ui.Place(iconImg.rectTransform, new Vector2(0, 0.5f), new Vector2(22, 0), new Vector2(52, 52));
 
-            var titleText = Ui.Label(inner.transform, "Title", title, 24, TitleGreen);
-            Ui.Place(titleText.rectTransform, new Vector2(0.5f, 1), new Vector2(24, -34), new Vector2(280, 30));
-            var subText = Ui.Label(inner.transform, "SubT", subtitle, 18, subtitleColor);
-            Ui.Place(subText.rectTransform, new Vector2(0.5f, 0), new Vector2(24, 26), new Vector2(280, 24));
+            var titleText = Ui.Label(bg.transform, "Title", title, 24, TitleGreen);
+            Ui.Place(titleText.rectTransform, new Vector2(0.5f, 1), new Vector2(26, -36), new Vector2(280, 30));
+            var subText = Ui.Label(bg.transform, "SubT", subtitle, 18, subtitleColor);
+            Ui.Place(subText.rectTransform, new Vector2(0.5f, 0), new Vector2(26, 28), new Vector2(280, 24));
 
-            var btn = frame.gameObject.AddComponent<Button>();
-            btn.targetGraphic = inner;
-            var colors = btn.colors;
-            colors.disabledColor = new Color(1f, 1f, 1f, 0.5f);
-            btn.colors = colors;
+            var btn = bg.gameObject.AddComponent<Button>();
+            btn.targetGraphic = bg;
+            btn.transition = Selectable.Transition.SpriteSwap;
+            var swap = btn.spriteState;
+            swap.highlightedSprite = SpriteLib.Pack("UI/Buttons/Button_Selected");
+            swap.pressedSprite = SpriteLib.Pack("UI/Buttons/Button_Pressed");
+            swap.selectedSprite = SpriteLib.Pack("UI/Buttons/Button_Selected");
+            swap.disabledSprite = SpriteLib.Pack("UI/Buttons/Button_Normal");
+            btn.spriteState = swap;
             return btn;
         }
 
@@ -259,7 +257,10 @@ namespace Numeria.Game
 
             _shieldRow.SetActive(_state.EnemyShielded);
             _btnFormula.interactable = _state.Gems >= 3;
-            _formulaBg.color = _state.Gems >= 3 ? Amber : Cream;
+            _formulaBg.sprite = _state.Gems >= 3
+                ? SpriteLib.Pack("UI/Buttons/Button_Selected")
+                : SpriteLib.Pack("UI/Buttons/Button_Normal");
+            _formulaBg.color = _state.Gems >= 3 ? Color.white : new Color(1f, 1f, 1f, 0.85f);
             _btnShield.gameObject.SetActive(_state.Enemy.Shield.HasValue);
             _btnShield.interactable = _state.EnemyShielded;
             _btnCatch.gameObject.SetActive(
@@ -270,7 +271,8 @@ namespace Numeria.Game
         {
             float t = maxHp == 0 ? 0 : (float)hp / maxHp;
             fill.rectTransform.anchorMax = new Vector2(t, 1);
-            fill.color = t > 0.5f ? HpGreen : t > 0.25f ? Ui.Hex("#e0a83a") : Ui.Hex("#d9603a");
+            // 填充是素材包绿色贴图,低血用染色提示
+            fill.color = t > 0.5f ? Color.white : t > 0.25f ? Ui.Hex("#ffd27a") : Ui.Hex("#ff9c9c");
             label.text = $"HP {hp} / {maxHp}";
         }
 
@@ -286,6 +288,11 @@ namespace Numeria.Game
             _btnFormula.interactable = on;
             _btnShield.interactable = on;
             _btnCatch.interactable = on;
+            if (_dockGroup != null)
+            {
+                _dockGroup.alpha = on ? 1f : 0.6f;
+                _dockGroup.interactable = on;
+            }
             if (on) RenderAll();
         }
 

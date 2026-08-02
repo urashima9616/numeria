@@ -50,7 +50,7 @@ namespace Numeria.Game
                 "TTTTTTTTTTTTTTTTTTTT",
             },
             Tier = 1,
-            BattleBg = "generated/scene/grassland",
+            BattleBg = "generated/NUMERIA_Unity_Battle_Assets/Backgrounds/Sunny_Meadow_2048x1152",
             CameraBg = "#2f4f2f",
             Wild = GameData.Countipillar,
             Boss = GameData.Duplirock,

@@ -1,0 +1,61 @@
+{
+  "reference_resolution": [
+    1920,
+    1080
+  ],
+  "canvas_scaler": {
+    "mode": "Scale With Screen Size",
+    "match": 0.5
+  },
+  "sprite_import": {
+    "texture_type": "Sprite (2D and UI)",
+    "filter_mode": "Point (no filter)",
+    "compression": "None",
+    "generate_mip_maps": false,
+    "alpha_is_transparency": true
+  },
+  "nine_slice_borders": {
+    "UI/Panels/Status_Panel.png": [
+      32,
+      32,
+      32,
+      32
+    ],
+    "UI/Panels/Turn_Banner.png": [
+      28,
+      28,
+      28,
+      28
+    ],
+    "UI/Panels/Command_Dock.png": [
+      32,
+      32,
+      32,
+      32
+    ],
+    "UI/Panels/Generic_Panel.png": [
+      32,
+      32,
+      32,
+      32
+    ],
+    "UI/Buttons/Button_Normal.png": [
+      32,
+      32,
+      32,
+      32
+    ],
+    "UI/Buttons/Button_Selected.png": [
+      32,
+      32,
+      32,
+      32
+    ],
+    "UI/Buttons/Button_Pressed.png": [
+      32,
+      32,
+      32,
+      32
+    ]
+  }
+}

@@ -23,13 +23,29 @@ namespace Numeria.Game
             return large != null ? large : One($"Art/Sprites/{id}");
         }
 
+        private const string PackRoot = "generated/NUMERIA_Unity_Battle_Assets/";
+
+        /// <summary>NUMERIA 战斗素材包内的资源(相对包根路径)。</summary>
+        public static Sprite Pack(string relativePath) => Resources.Load<Sprite>(PackRoot + relativePath);
+
+        private static string CapId(string id) => char.ToUpperInvariant(id[0]) + id.Substring(1);
+
         /// <summary>
-        /// 玩家战斗立绘:优先背面图(generated/{id}_battle_back),再退高清正面,再退像素图。
+        /// 玩家战斗立绘:素材包背面图 → 旧抠图背面 → 高清正面 → 像素图。
         /// </summary>
         public static Sprite PlayerBattleSprite(string id)
         {
+            var packBack = Pack($"Characters/{CapId(id)}_Battle_Back");
+            if (packBack != null) return packBack;
             var back = Resources.Load<Sprite>($"generated/{id}_battle_back");
             return back != null ? back : LargeIcon(id);
+        }
+
+        /// <summary>敌方战斗立绘:素材包正面图 → 高清大图 → 像素图。</summary>
+        public static Sprite EnemyBattleSprite(string id)
+        {
+            var packFront = Pack($"Characters/{CapId(id)}_Battle_Front");
+            return packFront != null ? packFront : LargeIcon(id);
         }
 
         /// <summary>按切片名从 Cainos 雪碧图取子精灵,如 Cainos("TX Props", "TX Props Chest")。</summary>
