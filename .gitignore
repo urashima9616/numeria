@@ -1,2 +1,30 @@
 .DS_Store
 node_modules/
+
+# ---- Unity (unity/ project) ----
+unity/[Ll]ibrary/
+unity/[Tt]emp/
+unity/[Oo]bj/
+unity/[Bb]uild/
+unity/[Bb]uilds/
+unity/[Ll]ogs/
+unity/[Uu]ser[Ss]ettings/
+unity/[Mm]emoryCaptures/
+unity/[Rr]ecordings/
+
+# Visual Studio / Rider caches
+unity/.vs/
+unity/.idea/
+unity/*.csproj
+unity/*.sln
+unity/*.user
+
+# Unity crash reports & artifacts
+unity/sysinfo.txt
+unity/*.stackdump
+unity/crashlytics-build.properties
+
+# Builds
+*.apk
+*.aab
+*.ipa
