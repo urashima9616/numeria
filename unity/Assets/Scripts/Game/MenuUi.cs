@@ -132,7 +132,8 @@ namespace Numeria.Game
             var title = Ui.Label(row, "Title", "NUMERIA", 56, TitleGreen, TextAnchor.UpperLeft);
             Ui.Place(title.rectTransform, new Vector2(0, 1), new Vector2(4, 0), new Vector2(500, 58));
             var summary = Ui.Label(row, "Summary",
-                $"Lv. {growth.Level}   XP {growth.Xp}/{growth.XpToNext}   ATK +{growth.AttackBonus}",
+                $"Lv. {growth.Level}   XP {growth.Xp}/{growth.XpToNext}   " +
+                $"ATK +{growth.AttackBonus}   DEF +{growth.DefenseBonus}",
                 28, SummaryOrange, TextAnchor.UpperLeft);
             Ui.Place(summary.rectTransform, new Vector2(0, 1), new Vector2(6, -61), new Vector2(700, 34));
 
@@ -408,8 +409,8 @@ namespace Numeria.Game
             var identity = Ui.SpriteImg(parent, "IdentityPanel", SpriteLib.Pack("UI/Panels/Generic_Panel"));
             identity.type = Image.Type.Sliced;
             var identityLe = identity.gameObject.AddComponent<LayoutElement>();
-            identityLe.preferredHeight = 315;
-            identityLe.minHeight = 315;
+            identityLe.preferredHeight = 360;
+            identityLe.minHeight = 360;
             identityLe.flexibleHeight = 0;
 
             var sprite = Ui.SpriteImg(identity.transform, "BigSprite", SpriteLib.LargeIcon(DisplaySpriteId(id)));
@@ -445,9 +446,10 @@ namespace Numeria.Game
                 });
             }
 
-            int atk = 2 + growth.AttackBonus;
+            int atk = def.AttackPower + growth.AttackBonus;
+            int defense = def.DefensePower + growth.DefenseBonus;
             var formula = Array.Find(def.Skills, s => s.Id == "flame-formula");
-            BuildStatTable(identity.transform, def.MaxHp, atk, formula);
+            BuildStatTable(identity.transform, def.MaxHp, atk, defense, formula);
 
             var evolution = Ui.SpriteImg(parent, "EvolutionPanel", SpriteLib.Pack("UI/Panels/Generic_Panel"));
             evolution.type = Image.Type.Sliced;
@@ -457,15 +459,22 @@ namespace Numeria.Game
             BuildEvolutionBlock(evolution.rectTransform, id);
         }
 
-        private void BuildStatTable(Transform parent, int hp, int atk, SkillDef formula)
+        private void BuildStatTable(Transform parent, int hp, int atk, int defense, SkillDef formula)
         {
             var table = Ui.Img(parent, "Stats", Cream);
-            Ui.Place(table.rectTransform, new Vector2(1, 0), new Vector2(-28, 0), new Vector2(398, 142));
+            Ui.Place(table.rectTransform, new Vector2(1, 0), new Vector2(-28, 0), new Vector2(398, 188));
             Ui.AddOutline(table.gameObject);
 
-            string[] labels = { "HP", "ATK", formula != null ? formula.Name.ToUpperInvariant() : "SKILL" };
-            string[] values = { $"{hp} / {hp}", atk.ToString(), formula != null ? $"POWER {formula.Power}" : "-" };
-            string[] icons = { "Art/Sprites/gem", "Art/Sprites/icon-sword", "Art/Sprites/icon-flame" };
+            string[] labels = { "HP", "ATK", "DEF", formula != null ? formula.Name.ToUpperInvariant() : "SKILL" };
+            string[] values =
+            {
+                $"{hp} / {hp}", atk.ToString(), defense.ToString(),
+                formula != null ? $"POWER {formula.Power}" : "-"
+            };
+            string[] icons =
+            {
+                "Art/Sprites/gem", "Art/Sprites/icon-sword", "Art/Sprites/shield", "Art/Sprites/icon-flame"
+            };
             for (int i = 0; i < labels.Length; i++)
             {
                 float y = -(i * 46 + 6);

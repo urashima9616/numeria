@@ -65,6 +65,13 @@
 | 破盾(凑十法) | L3 | 见 4.4 |
 | 换数灵 / 用道具 | L2 | 道具数量逐个数,背包格子编号 |
 
+### 4.2.1 攻击、防御与血量
+
+- 每只数灵都有清楚显示的 **ATK** 与 **DEF**。基础伤害为 `ATK − DEF + 1`,每次只做 `−1 / 0 / +1` 的小幅波动,最低始终为 1;孩子能观察“攻击高打得多、防御高受伤少”,随机性不会盖过策略。
+- 升级每级 ATK +1,每逢偶数等级 DEF +1;武器提升攻击,护符/戒指/盾提升防御。
+- 普通怪 HP 随遭遇浮动:第一关 8–12,第二关 14–20,第三关 22–30。
+- Boss 使用可预期的递增曲线:20 → 36 → 54 HP,并同步提高 ATK、DEF 与护盾目标。
+
 ### 4.3 强力技能 = 咒语算式
 
 1. 点击技能图标 → 画面暗下,浮现咒语算式,例如 $3 + \square = 7$
@@ -103,24 +110,28 @@ Boss 拥有**多段护盾**,每段对应一种题型,像音乐游戏一样有节
 | 10 以内减法填空 | $9 - \square = 5$ | "Nine take away what leaves five?" |
 | 点数 | 数出屏幕上的萤火虫:🪲×6 | "How many fireflies do you see?" |
 | 数量比较 | 左边 5 只蘑菇 vs 右边 8 只,哪边多? | "Which side has more mushrooms?" |
+| 图形识别 | 从四张图形卡中找到三角形 | "Find the triangle!" |
+| 对称 | 为单个图形找到镜像另一半 | "Find the matching wing!" |
+| 入门规律 | ABAB / AABB 选下一个 | "What comes next in the pattern?" |
 
 ### ⛰️ 静寂山脉(Silent Peaks)— 成长区,主练习场
 
 | 题型 | 示例 | 语音旁白示例 |
 |---|---|---|
 | 20 以内加减 | $13 + \square = 17$ | "Thirteen plus what makes seventeen?" |
-| 凑十法 | 从 2、3、7、5 中选两张凑成 $10$ | "Pick two crystals that make ten!" |
+| 凑目标 | 从候选数中选两张凑成 $20$ | "Pick two crystals that make twenty!" |
 | 连加 | $2 + 3 + 4 = \square$ | "Add them all up!" |
-| 翻倍 | $6 + 6 = \square$ | "Double it!" |
+| 中级规律/对称 | ABC 循环、按边数识图、向右转 1 次 | 图形语音提示 |
 
-### ☁️ 蔚蓝天空城(Azure Sky City)— 兴趣区,"高级几何魔法"
+### ☁️ 蔚蓝天空城(Azure Sky City)— 30 以内综合区
 
 | 题型 | 示例 | 语音旁白示例 |
 |---|---|---|
-| 图形规律 | 🔺🔵🔺🔵❓ 选下一个 | "What comes next in the pattern?" |
-| 对称 | 选出蝴蝶翅膀缺失的另一半 | "Find the matching wing!" |
-| 旋转匹配 | 哪个图形是它转了一下? | "Which one is it after a turn?" |
-| 序列 | 2, 4, 6, ❓ | "What number comes next?" |
+| 30 以内加减 | $18 + \square = 27$ / $30 - \square = 19$ | 完整数字语音读题 |
+| 四项连加 | $3+4+6+5=\square$ | "Add them all up!" |
+| 高级图形规律 | ABCD ABC❓ 选下一个 | "What comes next in the pattern?" |
+| 对称/旋转 | 镜像匹配、向右转 2–3 次 | 图形语音提示 |
+| 数列 | 按 2–5 递增且结果不超过 30 | "What number comes next?" |
 
 ---
 

@@ -43,6 +43,7 @@ bake "The portal is open! A new world awaits!"
 bake "Level up! Addmander is getting stronger!"
 bake "A math chest! Solve the lock!"
 bake "Attack goes up by one!"
+bake "Defense goes up by one!"
 bake "Let's rest and try again!"
 bake "Portal trial! Solve three magic puzzles!"
 bake "How many fireflies do you see?"
@@ -50,17 +51,19 @@ bake "Which side has more mushrooms?"
 
 # ---- 咒语算式读题(与 PuzzleGenerator 一致) ----
 lower=(zero one two three four five six seven eight nine ten
-  eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty)
+  eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty
+  twenty-one twenty-two twenty-three twenty-four twenty-five twenty-six twenty-seven
+  twenty-eight twenty-nine thirty)
 
-# 加法填空:a + ? = sum,sum 3..20
-for sum in {3..20}; do
+# 加法填空:a + ? = sum,sum 3..30
+for sum in {3..30}; do
   for a in {1..$((sum - 1))}; do
     bake "${lower[$((a + 1))]} plus what makes ${lower[$((sum + 1))]}?"
   done
 done
 
-# 减法填空:a - ? = c,a 3..20
-for a in {3..20}; do
+# 减法填空:a - ? = c,a 3..30
+for a in {3..30}; do
   for c in {1..$((a - 1))}; do
     bake "${lower[$((a + 1))]} take away what leaves ${lower[$((c + 1))]}?"
   done
@@ -71,8 +74,10 @@ for n in {2..10}; do
   bake "What is double ${lower[$((n + 1))]}?"
 done
 
-# 凑十二(山脉 Boss 护盾)
+# 三关护盾 / 凑数题
 bake "Pick two crystals that make twelve!"
+bake "Pick two crystals that make twenty!"
+bake "Pick two crystals that make thirty!"
 
 # ---- P3 山脉与进化台词 ----
 bake "A wild Doublit appeared!"
@@ -100,6 +105,14 @@ bake "Find the matching wing!"
 bake "Which one is it after a turn?"
 bake "What number comes next?"
 bake "Add them all up!"
+bake "Find the circle!"
+bake "Find the triangle!"
+bake "Find the square!"
+bake "Find the diamond!"
+bake "Which shape has three straight sides?"
+bake "Which shape has no straight sides?"
+bake "Find the four-sided shape with a flat top!"
+bake "Find the four-sided shape standing on a point!"
 bake "Welcome to Azure Sky City!"
 bake "A wild Mirrowl appeared!"
 bake "Gotcha! Mirrowl joined your team!"

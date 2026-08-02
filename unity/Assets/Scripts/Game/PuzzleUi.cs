@@ -102,28 +102,31 @@ namespace Numeria.Game
             switch (kind)
             {
                 case MapPuzzleKind.Counting:
-                    yield return RunCounting(done);
+                    yield return RunCounting(done, PuzzleGenerator.MaxForTier(tier));
                     break;
                 case MapPuzzleKind.Comparison:
-                    yield return RunComparison(done);
+                    yield return RunComparison(done, PuzzleGenerator.MaxForTier(tier));
                     break;
                 case MapPuzzleKind.MakeTen:
-                    yield return RunMakeTen(done, 10);
+                    yield return RunMakeTen(done, PuzzleGenerator.MaxForTier(tier));
                     break;
                 case MapPuzzleKind.ChainSum:
-                    yield return RunChainSum(done);
+                    yield return RunChainSum(done, tier);
                     break;
                 case MapPuzzleKind.Pattern:
-                    yield return RunPattern(done);
+                    yield return RunPattern(done, tier);
                     break;
                 case MapPuzzleKind.Symmetry:
                     yield return RunSymmetry(done);
                     break;
                 case MapPuzzleKind.Rotation:
-                    yield return RunRotation(done);
+                    yield return RunRotation(done, tier);
                     break;
                 case MapPuzzleKind.NumberSequence:
-                    yield return RunNumberSequence(done);
+                    yield return RunNumberSequence(done, tier);
+                    break;
+                case MapPuzzleKind.Shape:
+                    yield return RunShape(done, tier);
                     break;
                 default:
                     yield return RunFormula(done, tier);
@@ -131,9 +134,9 @@ namespace Numeria.Game
             }
         }
 
-        public IEnumerator RunPattern(Action<bool> done)
+        public IEnumerator RunPattern(Action<bool> done, int tier = 1)
         {
-            var p = PuzzleGenerator.GeneratePattern(_rng);
+            var p = PuzzleGenerator.GeneratePattern(_rng, tier);
             var overlay = BuildOverlay(p.Prompt, out var choiceRow);
 
             var sequenceRow = Ui.Node(overlay, "PatternSequence");
@@ -254,9 +257,9 @@ namespace Numeria.Game
             done(result.Value);
         }
 
-        public IEnumerator RunRotation(Action<bool> done)
+        public IEnumerator RunRotation(Action<bool> done, int tier = 2)
         {
-            var p = PuzzleGenerator.GenerateRotation(_rng);
+            var p = PuzzleGenerator.GenerateRotation(_rng, tier);
             var overlay = BuildOverlay(p.Prompt, out var choiceRow);
             var focus = Ui.Node(overlay, "RotationFocus");
             Ui.Place(focus, new Vector2(0.5f, 0.6f), Vector2.zero, new Vector2(560, 116));
@@ -307,13 +310,60 @@ namespace Numeria.Game
             done(result.Value);
         }
 
-        public IEnumerator RunNumberSequence(Action<bool> done)
+        public IEnumerator RunNumberSequence(Action<bool> done, int tier = 3)
         {
-            var p = PuzzleGenerator.GenerateNumberSequence(_rng);
+            var p = PuzzleGenerator.GenerateNumberSequence(_rng, tier);
             // 使用逗号而不是 ">"，避免低龄玩家把序列分隔误读为“大于号”。
             string display = string.Join("  ,  ", p.Sequence) + "  ,  ?";
             yield return RunNumberChoice(p.Prompt, display, p.Candidates,
                 answer => PuzzleGenerator.CheckNumberSequence(p, answer), done);
+        }
+
+        public IEnumerator RunShape(Action<bool> done, int tier = 1)
+        {
+            var p = PuzzleGenerator.GenerateShape(_rng, tier);
+            var overlay = BuildOverlay(p.Prompt, out var choiceRow);
+            var clue = Ui.Label(overlay, "ShapeClue", tier == 1 ? "LOOK AT EACH SHAPE" : "COUNT THE STRAIGHT SIDES",
+                34, Ui.Hex("#ffe082"));
+            Ui.Place(clue.rectTransform, new Vector2(0.5f, 0.59f), Vector2.zero, new Vector2(700, 56));
+
+            int attempts = 0;
+            bool? result = null;
+            void Submit(ShapeKind shape, Button button)
+            {
+                if (result.HasValue) return;
+                attempts++;
+                if (PuzzleGenerator.CheckShape(p, shape))
+                {
+                    Sfx.Play(SfxCue.Correct);
+                    Say("Great job!");
+                    result = true;
+                }
+                else if (attempts == 1)
+                {
+                    Sfx.Play(SfxCue.SoftMiss, 0.7f);
+                    button.interactable = false;
+                    Say("Hmm, not quite.", p.Prompt);
+                }
+                else
+                {
+                    Sfx.Play(SfxCue.SoftMiss, 0.7f);
+                    Say("Nice try! Your move still works!");
+                    result = false;
+                }
+            }
+
+            foreach (ShapeKind shape in p.Candidates)
+            {
+                Button button = null;
+                ShapeKind captured = shape;
+                button = MakeShapeCard(choiceRow, shape, 96, () => Submit(captured, button));
+            }
+            Say(p.Prompt);
+            yield return new WaitUntil(() => result.HasValue);
+            yield return new WaitForSeconds(result.Value ? 0.65f : 0.4f);
+            UnityEngine.Object.Destroy(overlay.gameObject);
+            done(result.Value);
         }
 
         private static Button MakeShapeCard(Transform parent, ShapeKind shape, float size, Action onClick)
@@ -463,19 +513,14 @@ namespace Numeria.Game
 
         // ---------- 咒语算式 ----------
 
-        /// <summary>按难度层选题:tier1 = 10 以内加/减;tier2 = 20 以内加/减 + 翻倍。</summary>
+        /// <summary>按关卡严格限制到 10/20/30 以内，并在每关混合加法与减法。</summary>
         public FormulaPuzzle PickPuzzle(int tier)
         {
             double roll = _rng.Next();
-            if (tier >= 2)
-            {
-                if (roll < 0.4) return PuzzleGenerator.GenerateFormula(_rng, 20);
-                if (roll < 0.75) return PuzzleGenerator.GenerateSubtraction(_rng, 20);
-                return PuzzleGenerator.GenerateDouble(_rng, 20);
-            }
-            return roll < 0.65
-                ? PuzzleGenerator.GenerateFormula(_rng, 10)
-                : PuzzleGenerator.GenerateSubtraction(_rng, 10);
+            int max = PuzzleGenerator.MaxForTier(tier);
+            return roll < 0.55
+                ? PuzzleGenerator.GenerateFormula(_rng, max)
+                : PuzzleGenerator.GenerateSubtraction(_rng, max);
         }
 
         public IEnumerator RunFormula(Action<bool> done, int tier = 1)
@@ -568,17 +613,17 @@ namespace Numeria.Game
 
         // ---------- 森林与山脉补充题型 ----------
 
-        public IEnumerator RunCounting(Action<bool> done)
+        public IEnumerator RunCounting(Action<bool> done, int max = 10)
         {
-            var p = PuzzleGenerator.GenerateCounting(_rng);
+            var p = PuzzleGenerator.GenerateCounting(_rng, max);
             yield return RunNumberChoice(p.Prompt, null, p.Candidates,
                 answer => PuzzleGenerator.CheckCounting(p, answer), done,
                 focus => BuildCountGrid(focus, p.Count, SpriteLib.One("generated/puzzle_firefly")));
         }
 
-        public IEnumerator RunComparison(Action<bool> done)
+        public IEnumerator RunComparison(Action<bool> done, int max = 10)
         {
-            var p = PuzzleGenerator.GenerateComparison(_rng);
+            var p = PuzzleGenerator.GenerateComparison(_rng, max);
             var overlay = BuildOverlay(p.Prompt, out var choiceRow);
             var focus = Ui.Node(overlay, "ComparisonFocus");
             Ui.Place(focus, new Vector2(0.5f, 0.59f), Vector2.zero, new Vector2(760, 146));
@@ -636,10 +681,11 @@ namespace Numeria.Game
             done(result.Value);
         }
 
-        public IEnumerator RunChainSum(Action<bool> done)
+        public IEnumerator RunChainSum(Action<bool> done, int tier = 2)
         {
-            var p = PuzzleGenerator.GenerateChainSum(_rng);
-            string display = $"{p.Terms[0]}  +  {p.Terms[1]}  +  {p.Terms[2]}  =  ?";
+            int termCount = tier >= 3 ? 4 : 3;
+            var p = PuzzleGenerator.GenerateChainSum(_rng, PuzzleGenerator.MaxForTier(tier), termCount);
+            string display = string.Join("  +  ", p.Terms) + "  =  ?";
             yield return RunNumberChoice(p.Prompt, display, p.Candidates,
                 answer => PuzzleGenerator.CheckChainSum(p, answer), done);
         }

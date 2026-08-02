@@ -47,7 +47,14 @@ namespace Numeria.Core
 
     public enum ShapeKind { Circle, Triangle, Square, Diamond }
 
-    public enum PatternRule { Alternating, Pairs, CycleThree }
+    public enum PatternRule { Alternating, Pairs, CycleThree, CycleFour }
+
+    public class ShapePuzzle
+    {
+        public ShapeKind Answer;
+        public List<ShapeKind> Candidates;
+        public string Prompt;
+    }
 
     public class PatternPuzzle
     {
@@ -96,7 +103,8 @@ namespace Numeria.Core
         Pattern,
         Symmetry,
         Rotation,
-        NumberSequence
+        NumberSequence,
+        Shape
     }
 
     /// <summary>
@@ -108,10 +116,15 @@ namespace Numeria.Core
         {
             "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
             "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen",
-            "eighteen", "nineteen", "twenty"
+            "eighteen", "nineteen", "twenty", "twenty-one", "twenty-two", "twenty-three",
+            "twenty-four", "twenty-five", "twenty-six", "twenty-seven", "twenty-eight",
+            "twenty-nine", "thirty"
         };
 
         public static string NumberWord(int n) => Words[n];
+
+        /// <summary>幼儿园课程的三段数字边界:10、20、30。</summary>
+        public static int MaxForTier(int tier) => tier >= 3 ? 30 : tier == 2 ? 20 : 10;
 
         private static string Cap(string s) => char.ToUpperInvariant(s[0]) + s.Substring(1);
 
@@ -248,15 +261,22 @@ namespace Numeria.Core
         public static bool CheckComparison(ComparisonPuzzle puzzle, ComparisonSide answer) =>
             answer == puzzle.Answer;
 
-        public static ChainSumPuzzle GenerateChainSum(Rng rng, int max = 20)
+        public static ChainSumPuzzle GenerateChainSum(Rng rng, int max = 20, int termCount = 3)
         {
-            int a = rng.Pick(1, 6);
-            int b = rng.Pick(1, 6);
-            int c = rng.Pick(1, System.Math.Min(6, max - a - b));
-            int answer = a + b + c;
+            termCount = System.Math.Max(2, System.Math.Min(4, termCount));
+            var terms = new List<int>();
+            int answer = 0;
+            for (int i = 0; i < termCount; i++)
+            {
+                int remainingTerms = termCount - i - 1;
+                int largest = System.Math.Min(9, max - answer - remainingTerms);
+                int term = rng.Pick(1, System.Math.Max(1, largest));
+                terms.Add(term);
+                answer += term;
+            }
             return new ChainSumPuzzle
             {
-                Terms = new List<int> { a, b, c },
+                Terms = terms,
                 Answer = answer,
                 Candidates = BuildCandidates(rng, answer, max),
                 Prompt = "Add them all up!"
@@ -268,7 +288,7 @@ namespace Numeria.Core
         /// <summary>
         /// 天空城图形规律。三种规则都只要求选择“下一个”，候选形状互不重复且答案唯一。
         /// </summary>
-        public static PatternPuzzle GeneratePattern(Rng rng)
+        public static PatternPuzzle GeneratePattern(Rng rng, int tier = 1)
         {
             var shapes = new List<ShapeKind>
             {
@@ -276,7 +296,10 @@ namespace Numeria.Core
             };
             Shuffle(rng, shapes);
             ShapeKind a = shapes[0], b = shapes[1], c = shapes[2];
-            var rule = (PatternRule)rng.Pick(0, 2);
+            // 第一关只出现 ABAB/AABB；第二关加入 ABC；第三关使用更长的四图形循环。
+            var rule = tier >= 3 ? PatternRule.CycleFour
+                : tier == 2 ? (PatternRule)rng.Pick(1, 2)
+                : (PatternRule)rng.Pick(0, 1);
             var sequence = new List<ShapeKind>();
             ShapeKind answer;
 
@@ -289,6 +312,11 @@ namespace Numeria.Core
                 case PatternRule.CycleThree:
                     sequence.AddRange(new[] { a, b, c, a, b });
                     answer = c;
+                    break;
+                case PatternRule.CycleFour:
+                    ShapeKind d = shapes[3];
+                    sequence.AddRange(new[] { a, b, c, d, a, b, c });
+                    answer = d;
                     break;
                 default:
                     sequence.AddRange(new[] { a, b, a, b, a });
@@ -327,10 +355,10 @@ namespace Numeria.Core
 
         public static bool CheckSymmetry(SymmetryPuzzle puzzle, ShapeKind answer) => answer == puzzle.Wing;
 
-        public static RotationPuzzle GenerateRotation(Rng rng)
+        public static RotationPuzzle GenerateRotation(Rng rng, int tier = 2)
         {
             var start = (DirectionKind)rng.Pick(0, 3);
-            int turns = rng.Pick(1, 3);
+            int turns = tier >= 3 ? rng.Pick(2, 3) : 1;
             var candidates = new List<DirectionKind>
             {
                 DirectionKind.Up, DirectionKind.Right, DirectionKind.Down, DirectionKind.Left
@@ -348,10 +376,11 @@ namespace Numeria.Core
 
         public static bool CheckRotation(RotationPuzzle puzzle, DirectionKind answer) => answer == puzzle.Answer;
 
-        public static NumberSequencePuzzle GenerateNumberSequence(Rng rng)
+        public static NumberSequencePuzzle GenerateNumberSequence(Rng rng, int tier = 3)
         {
-            int step = rng.Pick(1, 2);
-            int start = rng.Pick(1, step == 1 ? 14 : 10);
+            int max = MaxForTier(tier);
+            int step = tier >= 3 ? rng.Pick(2, 5) : rng.Pick(1, 3);
+            int start = rng.Pick(1, System.Math.Max(1, max - step * 3));
             var sequence = new List<int> { start, start + step, start + step * 2 };
             int answer = start + step * 3;
             return new NumberSequencePuzzle
@@ -359,43 +388,83 @@ namespace Numeria.Core
                 Sequence = sequence,
                 Step = step,
                 Answer = answer,
-                Candidates = BuildCandidates(rng, answer, 20),
+                Candidates = BuildCandidates(rng, answer, max),
                 Prompt = "What number comes next?"
             };
         }
 
         public static bool CheckNumberSequence(NumberSequencePuzzle puzzle, int answer) => answer == puzzle.Answer;
 
+        public static ShapePuzzle GenerateShape(Rng rng, int tier = 1)
+        {
+            var candidates = AllShapes();
+            Shuffle(rng, candidates);
+            ShapeKind answer;
+            string prompt;
+            if (tier >= 3)
+            {
+                answer = rng.Next() < 0.5 ? ShapeKind.Square : ShapeKind.Diamond;
+                prompt = answer == ShapeKind.Square
+                    ? "Find the four-sided shape with a flat top!"
+                    : "Find the four-sided shape standing on a point!";
+            }
+            else if (tier == 2)
+            {
+                answer = rng.Next() < 0.5 ? ShapeKind.Triangle : ShapeKind.Circle;
+                prompt = answer == ShapeKind.Triangle
+                    ? "Which shape has three straight sides?"
+                    : "Which shape has no straight sides?";
+            }
+            else
+            {
+                answer = candidates[rng.Pick(0, candidates.Count - 1)];
+                prompt = $"Find the {answer.ToString().ToLowerInvariant()}!";
+            }
+            return new ShapePuzzle { Answer = answer, Candidates = candidates, Prompt = prompt };
+        }
+
+        public static bool CheckShape(ShapePuzzle puzzle, ShapeKind answer) => answer == puzzle.Answer;
+
         public static List<MapPuzzleKind> MapPuzzleKindsForTier(int tier)
         {
             if (tier >= 3)
                 return new List<MapPuzzleKind>
                 {
-                    MapPuzzleKind.Pattern, MapPuzzleKind.Symmetry,
-                    MapPuzzleKind.Rotation, MapPuzzleKind.NumberSequence
+                    MapPuzzleKind.Formula, MapPuzzleKind.MakeTen, MapPuzzleKind.ChainSum,
+                    MapPuzzleKind.Pattern, MapPuzzleKind.Symmetry, MapPuzzleKind.Rotation,
+                    MapPuzzleKind.NumberSequence, MapPuzzleKind.Shape
                 };
             if (tier == 2)
                 return new List<MapPuzzleKind>
                 {
-                    MapPuzzleKind.Formula, MapPuzzleKind.MakeTen, MapPuzzleKind.ChainSum
+                    MapPuzzleKind.Formula, MapPuzzleKind.MakeTen, MapPuzzleKind.ChainSum,
+                    MapPuzzleKind.Pattern, MapPuzzleKind.Symmetry, MapPuzzleKind.Rotation,
+                    MapPuzzleKind.Shape
                 };
             return new List<MapPuzzleKind>
             {
-                MapPuzzleKind.Formula, MapPuzzleKind.Counting, MapPuzzleKind.Comparison
+                MapPuzzleKind.Formula, MapPuzzleKind.Pattern, MapPuzzleKind.Symmetry,
+                MapPuzzleKind.Shape, MapPuzzleKind.Counting, MapPuzzleKind.Comparison
             };
         }
 
         public static MapPuzzleKind PickMapPuzzleKind(Rng rng, int tier)
         {
             var pool = MapPuzzleKindsForTier(tier);
+            // 加减法是每关主线，保持约 35% 出现率；其余题型分享剩余机会。
+            if (rng.Next() < 0.35) return MapPuzzleKind.Formula;
+            pool.Remove(MapPuzzleKind.Formula);
             return pool[rng.Pick(0, pool.Count - 1)];
         }
 
         public static List<MapPuzzleKind> GatePuzzleKinds(Rng rng, int tier)
         {
             var pool = MapPuzzleKindsForTier(tier);
+            pool.Remove(MapPuzzleKind.Formula);
             Shuffle(rng, pool);
-            return pool.GetRange(0, System.Math.Min(3, pool.Count));
+            var result = new List<MapPuzzleKind> { MapPuzzleKind.Formula };
+            result.AddRange(pool.GetRange(0, System.Math.Min(2, pool.Count)));
+            return result;
         }
 
         private static List<ShapeKind> AllShapes() => new List<ShapeKind>

@@ -20,6 +20,7 @@ namespace Numeria.Core.Tests
             Assert.AreEqual(0, p.Xp);
             Assert.AreEqual(2, p.Level);
             Assert.AreEqual(1, p.AttackBonus);
+            Assert.AreEqual(1, p.DefenseBonus);
         }
 
         [Test]
@@ -31,6 +32,7 @@ namespace Numeria.Core.Tests
             Assert.AreEqual(3, p.Level);
             Assert.AreEqual(5, p.Xp);
             Assert.AreEqual(2, p.AttackBonus);
+            Assert.AreEqual(1, p.DefenseBonus);
         }
 
         [Test]
@@ -50,8 +52,8 @@ namespace Numeria.Core.Tests
         {
             var s = new BattleState(GameData.Addmander(), GameData.Countipillar());
             s.PlayerAttackBonus = 2;
-            var r = s.UseSkill("tackle"); // 2 + 2 = 4,无盾
-            Assert.AreEqual(4, r.Damage);
+            var r = s.UseSkill("tackle");
+            Assert.That(r.Damage, Is.InRange(4, 6));
         }
 
         [Test]
@@ -123,6 +125,7 @@ namespace Numeria.Core.Tests
             Assert.AreEqual(6, growth.Level);
             Assert.AreEqual(4, growth.Xp);
             Assert.AreEqual(3, growth.AttackBonus);
+            Assert.AreEqual(3, growth.DefenseBonus); // Lv.6 旧存档按每两级 +1 补齐
             Assert.AreEqual(1, growth.Stage);
             Assert.AreEqual(1, legacy.EvolutionStones);
         }

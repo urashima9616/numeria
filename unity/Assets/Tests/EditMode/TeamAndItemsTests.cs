@@ -93,6 +93,8 @@ namespace Numeria.Core.Tests
                 Assert.AreEqual(species.Id, player.Id);
                 Assert.NotNull(System.Array.Find(player.Skills, skill => skill.Id == "tackle"));
                 Assert.NotNull(System.Array.Find(player.Skills, skill => skill.Id == "flame-formula"));
+                Assert.Greater(player.AttackPower, 0);
+                Assert.Greater(player.DefensePower, 0);
             }
         }
     }

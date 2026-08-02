@@ -10,6 +10,7 @@ namespace Numeria.Core
         public int Level = 1;
         public int Xp;
         public int AttackBonus;
+        public int DefenseBonus;
         public int Stage;
 
         public int XpToNext => Level * 10;
@@ -23,6 +24,7 @@ namespace Numeria.Core
                 Xp -= XpToNext;
                 Level++;
                 AttackBonus++;
+                if (Level % 2 == 0) DefenseBonus++;
                 levelsGained++;
             }
             return levelsGained;
@@ -36,12 +38,13 @@ namespace Numeria.Core
     [Serializable]
     public class Progress
     {
-        public const int CurrentSaveVersion = 3;
+        public const int CurrentSaveVersion = 4;
 
         public int SaveVersion = CurrentSaveVersion;
         public int Level = 1;
         public int Xp;
         public int AttackBonus;
+        public int DefenseBonus;
         public bool BossBeaten;
         public bool VoiceEnabled = true;
         public bool SfxEnabled = true;
@@ -83,10 +86,16 @@ namespace Numeria.Core
                         Level = Math.Max(1, Level),
                         Xp = Xp,
                         AttackBonus = AttackBonus,
+                        DefenseBonus = DefenseBonus,
                         Stage = Evolved ? 1 : 0,
                     });
                 }
                 foreach (string id in CaughtIds) EnsureGrowth(id);
+            }
+            if (SaveVersion < 4)
+            {
+                foreach (var growth in MonGrowth)
+                    growth.DefenseBonus = Math.Max(growth.DefenseBonus, growth.Level / 2);
             }
             SaveVersion = CurrentSaveVersion;
             SyncLegacyFields();
@@ -114,6 +123,7 @@ namespace Numeria.Core
                     Level = Math.Max(1, Level),
                     Xp = Xp,
                     AttackBonus = AttackBonus,
+                    DefenseBonus = DefenseBonus,
                     Stage = Evolved ? 1 : 0,
                 });
             }
@@ -125,6 +135,7 @@ namespace Numeria.Core
                 found.Level = Math.Max(1, Level);
                 found.Xp = Xp;
                 found.AttackBonus = AttackBonus;
+                found.DefenseBonus = DefenseBonus;
                 found.Stage = Evolved ? 1 : 0;
             }
             MonGrowth.Add(found);
@@ -199,6 +210,7 @@ namespace Numeria.Core
             Level = active.Level;
             Xp = active.Xp;
             AttackBonus = active.AttackBonus;
+            DefenseBonus = active.DefenseBonus;
 
             var starter = FindGrowth("addmander");
             Evolved = starter != null && starter.Stage > 0;

@@ -61,9 +61,10 @@ namespace Numeria.Game
             _battleBg = battleBg;
             var growth = progress.ActiveGrowth;
             _playerLevel = growth.Level;
-            _state = new BattleState(GameData.PlayerMon(progress.ActiveMonId, growth.Stage), enemy);
-            _state.PlayerAttackBonus = growth.AttackBonus;
             _rng = new Rng((uint)Environment.TickCount);
+            _state = new BattleState(GameData.PlayerMon(progress.ActiveMonId, growth.Stage), enemy, _rng);
+            _state.PlayerAttackBonus = growth.AttackBonus;
+            _state.PlayerDefenseBonus = growth.DefenseBonus;
             _voice = gameObject.AddComponent<Voice>();
             BuildUi();
             _puzzles = new PuzzleUi(this, _canvasRoot, _rng, lines => _voice.Say(lines));
@@ -103,7 +104,8 @@ namespace Numeria.Game
 
             // 敌方:左上状态牌。目标稿需要足够的纵向空间让名字、等级、HP 与血条各占一行。
             var enemyPlate = BuildStatusPlate("EnemyPlate", new Vector2(0, 1), new Vector2(28, -28), new Vector2(480, 228),
-                _state.Enemy.Name, $"Lv. {_tier}",
+                _state.Enemy.Name,
+                $"Lv. {_tier}   ATK {_state.Enemy.AttackPower}   DEF {_state.Enemy.DefensePower}",
                 out _enemyHpFill, out _enemyHpText);
             BuildShieldRow(enemyPlate);
             // 敌方立绘落在右上草圈，避开状态牌与回合横幅。
@@ -118,7 +120,9 @@ namespace Numeria.Game
             Ui.PlaceCentered(playerImg.rectTransform, new Vector2(0.235f, 0.49f), Vector2.zero, new Vector2(490, 490));
             _playerSprite = playerImg.rectTransform;
             var playerPlate = BuildStatusPlate("PlayerPlate", new Vector2(1, 0), new Vector2(-28, 267), new Vector2(560, 310),
-                _state.Player.Name, $"Lv. {_playerLevel}",
+                _state.Player.Name,
+                $"Lv. {_playerLevel}   ATK {_state.Player.AttackPower + _state.PlayerAttackBonus}   " +
+                $"DEF {_state.Player.DefensePower + _state.PlayerDefenseBonus}",
                 out _playerHpFill, out _playerHpText);
             BuildGemRow(playerPlate);
 
@@ -310,7 +314,7 @@ namespace Numeria.Game
             _btnShield.gameObject.SetActive(_state.Enemy.Shield.HasValue);
             _btnShield.interactable = _state.EnemyShielded;
             _btnCatch.gameObject.SetActive(!_state.Enemy.Shield.HasValue && _state.Enemy.Catchable && _state.EnemyHp > 0);
-            _btnCatch.interactable = _state.EnemyHp <= 3;
+            _btnCatch.interactable = _state.EnemyHp <= Math.Max(3, _state.Enemy.MaxHp / 5);
         }
 
         private static void SetHpBar(Image fill, TMP_Text label, int hp, int maxHp)
@@ -381,7 +385,7 @@ namespace Numeria.Game
         {
             SetActionsEnabled(false);
             bool? ok = null;
-            if (_tier >= 3) yield return _puzzles.RunPattern(v => ok = v);
+            if (_tier >= 3) yield return _puzzles.RunPattern(v => ok = v, _tier);
             else yield return _puzzles.RunMakeTen(v => ok = v, _state.Enemy.Shield ?? 10);
             if (ok.Value)
             {

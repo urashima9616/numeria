@@ -21,6 +21,7 @@ namespace Numeria.Core
         public string Name;
         public int MaxHp;
         public int AttackPower;
+        public int DefensePower;
         public int? Shield;
         public bool Catchable;
         public SkillDef[] Skills;
@@ -49,12 +50,15 @@ namespace Numeria.Core
         public bool EnemyShielded;
         public int VulnerableTurns;
         public int PlayerAttackBonus;
+        public int PlayerDefenseBonus;
         public BattleOutcome Outcome = BattleOutcome.None;
+        private readonly Rng _rng;
 
-        public BattleState(CombatantDef player, CombatantDef enemy)
+        public BattleState(CombatantDef player, CombatantDef enemy, Rng rng = null)
         {
             Player = player;
             Enemy = enemy;
+            _rng = rng ?? new Rng(1);
             PlayerHp = player.MaxHp;
             EnemyHp = enemy.MaxHp;
             EnemyShielded = enemy.Shield.HasValue;
@@ -62,11 +66,22 @@ namespace Numeria.Core
 
         public void StartPlayerTurn() => Gems = Math.Min(MaxGems, Gems + 2);
 
-        public int DamageToEnemy(int baseDamage)
+        /// <summary>
+        /// 幼儿可观察的攻防关系:攻击越高、对方防御越低，伤害越大。
+        /// 每次只在 -1/0/+1 内浮动，且永远至少造成 1 点，避免随机性压过策略。
+        /// </summary>
+        public int RollDamage(int attack, int defense)
         {
-            if (VulnerableTurns > 0) return baseDamage * 2;
-            if (EnemyShielded) return Math.Max(1, baseDamage / 2);
-            return baseDamage;
+            int expected = Math.Max(1, attack - defense + 1);
+            return Math.Max(1, expected + _rng.Pick(-1, 1));
+        }
+
+        public int DamageToEnemy(int attack)
+        {
+            int damage = RollDamage(attack, Enemy.DefensePower);
+            if (VulnerableTurns > 0) return damage * 2;
+            if (EnemyShielded) return Math.Max(1, damage / 2);
+            return damage;
         }
 
         public SkillResult UseSkill(string skillId, bool correct = true)
@@ -76,7 +91,9 @@ namespace Numeria.Core
             Gems -= skill.Cost;
 
             bool powered = skill.Type != SkillType.Formula || correct;
-            int dmg = DamageToEnemy((powered ? skill.Power : skill.BasePower) + PlayerAttackBonus);
+            int attack = (powered ? skill.Power : skill.BasePower) +
+                         Player.AttackPower + PlayerAttackBonus;
+            int dmg = DamageToEnemy(attack);
             EnemyHp = Math.Max(0, EnemyHp - dmg);
             if (EnemyHp == 0) Outcome = BattleOutcome.Win;
 
@@ -91,7 +108,7 @@ namespace Numeria.Core
 
         public int EnemyTurn()
         {
-            int dmg = Enemy.AttackPower;
+            int dmg = RollDamage(Enemy.AttackPower, Player.DefensePower + PlayerDefenseBonus);
             PlayerHp = Math.Max(0, PlayerHp - dmg);
             if (VulnerableTurns > 0) VulnerableTurns--;
             if (PlayerHp == 0) Outcome = BattleOutcome.Lose;

@@ -23,6 +23,7 @@ namespace Numeria.Core
         public string Name;
         public int MaxHp;
         public int AttackPower;
+        public int DefensePower;
         public string SkillName;
         public int SkillPower;
         public bool Catchable;
@@ -52,24 +53,24 @@ namespace Numeria.Core
 
         private static readonly SpeciesDef[] Species =
         {
-            Mon("addmander", "Addmander", 10, 1, "Flame Formula", 5),
-            Mon("sumdrake", "Sumdrake", 12, 2, "Blaze Equation", 6),
-            Mon("equadragon", "Equadragon", 15, 3, "Equalizer Blaze", 7),
+            Mon("addmander", "Addmander", 10, 1, 1, "Flame Formula", 5),
+            Mon("sumdrake", "Sumdrake", 12, 2, 2, "Blaze Equation", 6),
+            Mon("equadragon", "Equadragon", 15, 3, 3, "Equalizer Blaze", 7),
 
-            Mon("tenfin", "Tenfin", 10, 1, "Splash Ten", 5),
-            Mon("decaqua", "Decaqua", 12, 2, "Decimal Wave", 6),
-            Mon("tidalten", "Tidalten", 15, 3, "Tidal Combo", 7),
+            Mon("tenfin", "Tenfin", 10, 1, 2, "Splash Ten", 5),
+            Mon("decaqua", "Decaqua", 12, 2, 3, "Decimal Wave", 6),
+            Mon("tidalten", "Tidalten", 15, 3, 4, "Tidal Combo", 7),
 
-            Mon("shapling", "Shapling", 10, 1, "Leaf Pattern", 5),
-            Mon("pattervine", "Pattervine", 12, 2, "Vine Sequence", 6),
-            Mon("geoflora", "Geoflora", 15, 3, "Bloom Symmetry", 7),
+            Mon("shapling", "Shapling", 10, 1, 2, "Leaf Pattern", 5),
+            Mon("pattervine", "Pattervine", 12, 2, 3, "Vine Sequence", 6),
+            Mon("geoflora", "Geoflora", 15, 3, 4, "Bloom Symmetry", 7),
 
-            Mon("countipillar", "Countipillar", 8, 1, "Count Crunch", 5, true),
-            Mon("numberfly", "Numberfly", 12, 2, "Number Wing", 6),
-            Mon("doublit", "Doublit", 9, 2, "Double Trouble", 5, true),
-            Mon("duplirock", "Duplirock", 13, 3, "Double Boulder", 6),
-            Mon("mirrowl", "Mirrowl", 10, 2, "Mirror Pattern", 5, true),
-            Mon("symmetrix", "Symmetrix", 14, 3, "Symmetry Beam", 6),
+            Mon("countipillar", "Countipillar", 8, 1, 1, "Count Crunch", 5, true),
+            Mon("numberfly", "Numberfly", 12, 3, 2, "Number Wing", 6),
+            Mon("doublit", "Doublit", 9, 2, 2, "Double Trouble", 5, true),
+            Mon("duplirock", "Duplirock", 13, 4, 4, "Double Boulder", 6),
+            Mon("mirrowl", "Mirrowl", 10, 3, 2, "Mirror Pattern", 5, true),
+            Mon("symmetrix", "Symmetrix", 14, 5, 5, "Symmetry Beam", 6),
         };
 
         public static IReadOnlyList<EvolutionLineDef> Lines => EvolutionLines;
@@ -86,13 +87,15 @@ namespace Numeria.Core
             EvolutionLevels = levels,
         };
 
-        private static SpeciesDef Mon(string id, string name, int hp, int attack, string skill, int power,
+        private static SpeciesDef Mon(string id, string name, int hp, int attack, int defense,
+            string skill, int power,
             bool catchable = false) => new SpeciesDef
         {
             Id = id,
             Name = name,
             MaxHp = hp,
             AttackPower = attack,
+            DefensePower = defense,
             SkillName = skill,
             SkillPower = power,
             Catchable = catchable,
@@ -168,22 +171,41 @@ namespace Numeria.Core
         public static CombatantDef Pattervine() => PlayerMon("shapling", 1);
         public static CombatantDef Geoflora() => PlayerMon("shapling", 2);
         public static CombatantDef Countipillar() => ById("countipillar");
-        public static CombatantDef Numberfly() => Boss("numberfly", 10);
+        public static CombatantDef Numberfly() => Boss("numberfly", 10, null, 20, 3, 2);
         public static CombatantDef Doublit() => ById("doublit");
-        public static CombatantDef Duplirock() => Boss("duplirock", 10, null, 10, 2);
-        public static CombatantDef DuplirockElder() => Boss("duplirock", 12, "Duplirock Elder", 10, 2);
+        public static CombatantDef Duplirock() => Boss("duplirock", 20, null, 30, 4, 4);
+        public static CombatantDef DuplirockElder() => Boss("duplirock", 20, "Duplirock Elder", 36, 5, 4);
         public static CombatantDef Mirrowl() => ById("mirrowl");
-        public static CombatantDef Symmetrix() => Boss("symmetrix", 12);
+        public static CombatantDef Symmetrix() => Boss("symmetrix", 30, null, 54, 7, 5);
 
         private static CombatantDef Boss(string id, int shield, string displayName = null,
-            int? maxHp = null, int? attack = null)
+            int? maxHp = null, int? attack = null, int? defense = null)
         {
             var species = SpeciesById(id);
             var result = ToCombatant(species, false, shield, false);
             if (displayName != null) result.Name = displayName;
             if (maxHp.HasValue) result.MaxHp = maxHp.Value;
             if (attack.HasValue) result.AttackPower = attack.Value;
+            if (defense.HasValue) result.DefensePower = defense.Value;
             return result;
+        }
+
+        /// <summary>普通怪每次遭遇在关卡区间内抽取 HP，Boss 保持可设计的固定曲线。</summary>
+        public static CombatantDef RollWild(CombatantDef template, int tier, Rng rng)
+        {
+            int min = tier >= 3 ? 22 : tier == 2 ? 14 : 8;
+            int max = tier >= 3 ? 30 : tier == 2 ? 20 : 12;
+            return new CombatantDef
+            {
+                Id = template.Id,
+                Name = template.Name,
+                MaxHp = rng.Pick(min, max),
+                AttackPower = template.AttackPower,
+                DefensePower = template.DefensePower,
+                Shield = template.Shield,
+                Catchable = template.Catchable,
+                Skills = template.Skills,
+            };
         }
 
         private static CombatantDef ToCombatant(SpeciesDef species, bool catchable, int? shield,
@@ -194,7 +216,8 @@ namespace Numeria.Core
                 Id = species.Id,
                 Name = species.Name,
                 MaxHp = includeSkills ? Math.Max(10, species.MaxHp) : species.MaxHp,
-                AttackPower = includeSkills ? 0 : species.AttackPower,
+                AttackPower = species.AttackPower,
+                DefensePower = species.DefensePower,
                 Shield = shield,
                 Catchable = catchable,
                 Skills = includeSkills

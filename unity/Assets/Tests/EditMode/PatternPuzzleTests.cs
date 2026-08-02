@@ -45,7 +45,31 @@ namespace Numeria.Core.Tests
                         Assert.AreEqual(p.Sequence[1], p.Sequence[4]);
                         Assert.AreEqual(p.Sequence[2], p.Answer);
                         break;
+                    case PatternRule.CycleFour:
+                        Assert.Fail("Tier-one patterns must not use the tier-three CycleFour rule.");
+                        break;
                 }
+            }
+        }
+
+        [Test]
+        public void PatternDifficulty_ProgressesByTier()
+        {
+            for (uint seed = 1; seed <= 50; seed++)
+            {
+                var tier1 = PuzzleGenerator.GeneratePattern(new Rng(seed), 1);
+                Assert.That(tier1.Rule, Is.EqualTo(PatternRule.Alternating).Or.EqualTo(PatternRule.Pairs));
+
+                var tier2 = PuzzleGenerator.GeneratePattern(new Rng(seed), 2);
+                Assert.That(tier2.Rule, Is.EqualTo(PatternRule.Pairs).Or.EqualTo(PatternRule.CycleThree));
+
+                var tier3 = PuzzleGenerator.GeneratePattern(new Rng(seed), 3);
+                Assert.AreEqual(PatternRule.CycleFour, tier3.Rule);
+                Assert.AreEqual(7, tier3.Sequence.Count);
+                Assert.AreEqual(tier3.Sequence[0], tier3.Sequence[4]);
+                Assert.AreEqual(tier3.Sequence[1], tier3.Sequence[5]);
+                Assert.AreEqual(tier3.Sequence[2], tier3.Sequence[6]);
+                Assert.Contains(tier3.Answer, tier3.Candidates);
             }
         }
     }

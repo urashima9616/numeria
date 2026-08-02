@@ -20,12 +20,14 @@ namespace Numeria.Core.Tests
         }
 
         [Test]
-        public void NumberWord_Covers0To20()
+        public void NumberWord_Covers0To30()
         {
             Assert.AreEqual("zero", PuzzleGenerator.NumberWord(0));
             Assert.AreEqual("seven", PuzzleGenerator.NumberWord(7));
             Assert.AreEqual("thirteen", PuzzleGenerator.NumberWord(13));
             Assert.AreEqual("twenty", PuzzleGenerator.NumberWord(20));
+            Assert.AreEqual("twenty-five", PuzzleGenerator.NumberWord(25));
+            Assert.AreEqual("thirty", PuzzleGenerator.NumberWord(30));
         }
 
         [Test]

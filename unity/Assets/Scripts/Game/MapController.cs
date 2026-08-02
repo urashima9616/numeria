@@ -241,7 +241,7 @@ namespace Numeria.Game
         {
             var growth = _progress.ActiveGrowth;
             _hudText.text = $"{PlayerName} Lv.{growth.Level}  XP {growth.Xp}/{growth.XpToNext}  " +
-                            $"ATK +{growth.AttackBonus}  {_def.DisplayName}";
+                            $"ATK +{growth.AttackBonus}  DEF +{growth.DefenseBonus}  {_def.DisplayName}";
         }
 
         private string ChestId(int x, int y) => $"{_def.Id}-chest-{x}-{y}";
@@ -297,7 +297,7 @@ namespace Numeria.Game
                 case Tile.Bush:
                     if (_rng.Next() < EncounterChance)
                     {
-                        StartBattle(_def.Wild(), false);
+                        StartBattle(GameData.RollWild(_def.Wild(), _def.Tier, _rng), false);
                         return true;
                     }
                     return false;
@@ -430,7 +430,8 @@ namespace Numeria.Game
                 _progress.OpenChest(id);
                 if (_chestRenderers.TryGetValue((x, y), out var sr))
                     sr.sprite = SpriteLib.Cainos("TX Props", "TX Props Chest Opened");
-                if (_def.ChestItems != null && _def.ChestItems.TryGetValue(id, out var itemName))
+                string itemName = null;
+                if (_def.ChestItems != null && _def.ChestItems.TryGetValue(id, out itemName))
                     _progress.Items.Add(itemName);
 
                 if (id == _def.EvoChestId)
@@ -448,8 +449,18 @@ namespace Numeria.Game
                 }
                 else
                 {
-                    _progress.ActiveGrowth.AttackBonus++;
-                    _voice.Say("Attack goes up by one!");
+                    bool defenseReward = !string.IsNullOrEmpty(itemName) &&
+                        (itemName.Contains("Charm") || itemName.Contains("Ring") || itemName.Contains("Shield"));
+                    if (defenseReward)
+                    {
+                        _progress.ActiveGrowth.DefenseBonus++;
+                        _voice.Say("Defense goes up by one!");
+                    }
+                    else
+                    {
+                        _progress.ActiveGrowth.AttackBonus++;
+                        _voice.Say("Attack goes up by one!");
+                    }
                 }
                 SaveSystem.Save(_progress);
                 UpdateHud();
