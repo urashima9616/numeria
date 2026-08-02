@@ -1,5 +1,6 @@
 using System.Collections;
 using Numeria.Core;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -25,7 +26,7 @@ namespace Numeria.Game
         private GameObject _hudRoot;
         private RectTransform _hudCanvasRoot;
         private Transform _avatar;
-        private Text _hudText;
+        private TMP_Text _hudText;
         private SpriteRenderer _portalGlow;
         private readonly System.Collections.Generic.Dictionary<(int, int), SpriteRenderer> _chestRenderers =
             new System.Collections.Generic.Dictionary<(int, int), SpriteRenderer>();

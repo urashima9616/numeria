@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Numeria.Core;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -73,7 +74,7 @@ namespace Numeria.Game
             return slot.rectTransform;
         }
 
-        private Text EqLabel(Transform parent, string name, string text, Vector2 offset, Vector2 size)
+        private TMP_Text EqLabel(Transform parent, string name, string text, Vector2 offset, Vector2 size)
         {
             var label = Ui.Label(parent, name, text, 64, Ui.Hex("#ffe082"));
             Ui.Place(label.rectTransform, new Vector2(0.5f, 0.5f), offset, size);

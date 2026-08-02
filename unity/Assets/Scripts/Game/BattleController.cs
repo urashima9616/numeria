@@ -366,7 +366,7 @@ namespace Numeria.Game
             RenderAll();
             SetLog("Flame Formula!", result.Powered
                 ? $"{result.Damage} DAMAGE"
-                : $"{result.Damage} DAMAGE · NICE TRY");
+                : $"{result.Damage} DAMAGE - NICE TRY");
             yield return EndPlayerTurn();
         }
 
@@ -381,7 +381,7 @@ namespace Numeria.Game
                 _state.BreakShield();
                 RenderAll();
                 StartCoroutine(Shake());
-                SetLog("Shield broken!", "DOUBLE DAMAGE · 2 TURNS");
+                SetLog("Shield broken!", "DOUBLE DAMAGE - 2 TURNS");
                 yield return Flash(_enemySprite);
             }
             else
@@ -400,7 +400,7 @@ namespace Numeria.Game
             if (correct.Value)
             {
                 _voice.Say($"Gotcha! {_state.Enemy.Name} joined your team!");
-                yield return HeartBurst(_enemySprite);
+                yield return FriendGemBurst(_enemySprite);
                 ShowBanner($"Caught {_state.Enemy.Name}!", "+5 XP", () => _onEnd(BattleEnd.Caught));
             }
             else
@@ -558,12 +558,17 @@ namespace Numeria.Game
             foreach (var s in shards) Destroy(s.gameObject);
         }
 
-        private IEnumerator HeartBurst(RectTransform target)
+        private IEnumerator FriendGemBurst(RectTransform target)
         {
             var hearts = new List<RectTransform>();
             for (int i = 0; i < 5; i++)
             {
-                var heart = Ui.Label(_canvasRoot, $"Heart{i}", "♥", 40, Ui.Hex("#ff6b8a"));
+                // Jersey 10 不含爱心字形；使用 Numeria 自己的宝石图标表达结交成功，
+                // 避免为单个符号混入另一套字体或显示缺字方框。
+                var heart = Ui.SpriteImg(_canvasRoot, $"FriendGem{i}", SpriteLib.Pack("UI/Icons/Gem"));
+                heart.color = Ui.Hex("#ff6b8a");
+                heart.preserveAspect = true;
+                heart.rectTransform.sizeDelta = new Vector2(40, 40);
                 heart.rectTransform.position = target.position;
                 hearts.Add(heart.rectTransform);
             }

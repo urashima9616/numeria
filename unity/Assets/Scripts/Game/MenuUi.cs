@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Numeria.Core;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -557,7 +558,7 @@ namespace Numeria.Game
                 {
                     _progress.VoiceEnabled = !_progress.VoiceEnabled;
                     Voice.Enabled = _progress.VoiceEnabled;
-                    voiceBtn.GetComponentInChildren<Text>().text = _progress.VoiceEnabled ? "Voice: ON" : "Voice: OFF";
+                    voiceBtn.GetComponentInChildren<TMP_Text>().text = _progress.VoiceEnabled ? "Voice: ON" : "Voice: OFF";
                     SaveSystem.Save(_progress);
                 });
             });

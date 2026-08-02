@@ -20,44 +20,43 @@ namespace Numeria.Game
         public static readonly Color GemOrange = Hex("#b06e00");
         public static readonly Color ShieldBlue = Hex("#1565c0");
 
-        private static Font _pixelFont;
-        private static bool _pixelFontLoaded;
-        private static TMP_FontAsset _battleFont;
+        private static Font _uiFont;
+        private static bool _uiFontLoaded;
+        private static TMP_FontAsset _defaultTmpFont;
 
-        /// <summary>像素字体(Press Start 2P, OFL),缺失时回退系统字体。</summary>
+        /// <summary>
+        /// 全局 UI 字体源。Jersey 10 是所有页面的唯一正常运行字体；保留旧字体和系统字体作为
+        /// 资源损坏时的防御性回退，避免整套 UI 变成空白。
+        /// </summary>
         public static Font DefaultFont
         {
             get
             {
-                if (!_pixelFontLoaded)
+                if (!_uiFontLoaded)
                 {
-                    _pixelFont = Resources.Load<Font>("Fonts/PressStart2P");
-                    _pixelFontLoaded = true;
+                    _uiFont = Resources.Load<Font>("Fonts/Jersey10-Regular");
+                    if (_uiFont == null) _uiFont = Resources.Load<Font>("Fonts/PressStart2P");
+                    _uiFontLoaded = true;
                 }
-                return _pixelFont != null ? _pixelFont : Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+                return _uiFont != null ? _uiFont : Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             }
         }
 
         /// <summary>
-        /// 战斗界面使用更窄、更高的 Jersey 10，并在运行时生成动态 SDF atlas。
-        /// 字体文件缺失时自动回退到已有 Press Start 2P，避免 UI 整体失效。
+        /// 所有运行时文字共享同一个动态 SDF 字体资产，保证地图、菜单、谜题和战斗的
+        /// 字形、抗锯齿与字距完全一致。
         /// </summary>
-        public static TMP_FontAsset BattleFont
+        public static TMP_FontAsset DefaultTmpFont
         {
             get
             {
-                if (_battleFont != null) return _battleFont;
-                var source = Resources.Load<Font>("Fonts/Jersey10-Regular");
-                if (source == null) source = DefaultFont;
-                _battleFont = TMP_FontAsset.CreateFontAsset(source);
-                if (_battleFont != null) _battleFont.name = $"{source.name} Battle SDF";
-                return _battleFont;
+                if (_defaultTmpFont != null) return _defaultTmpFont;
+                var source = DefaultFont;
+                _defaultTmpFont = TMP_FontAsset.CreateFontAsset(source);
+                if (_defaultTmpFont != null) _defaultTmpFont.name = $"{source.name} UI SDF";
+                return _defaultTmpFont;
             }
         }
-
-        /// <summary>Press Start 2P 同字号远宽于普通字体,全局缩放以适配既有布局。</summary>
-        private static int ScaleFontSize(int size) =>
-            _pixelFont != null || !_pixelFontLoaded ? Mathf.Max(9, Mathf.RoundToInt(size * 0.62f)) : size;
 
         public static RectTransform Node(Transform parent, string name)
         {
@@ -84,44 +83,32 @@ namespace Numeria.Game
             return img;
         }
 
-        public static Text Label(Transform parent, string name, string text, int size, Color color,
-            TextAnchor anchor = TextAnchor.MiddleCenter, FontStyle style = FontStyle.Bold)
+        public static TextMeshProUGUI Label(Transform parent, string name, string text, int size, Color color,
+            TextAnchor anchor = TextAnchor.MiddleCenter)
         {
             var rt = Node(parent, name);
-            var t = rt.gameObject.AddComponent<Text>();
-            t.font = DefaultFont;
+            var t = rt.gameObject.AddComponent<TextMeshProUGUI>();
+            t.font = DefaultTmpFont;
             t.text = text;
-            t.fontSize = ScaleFontSize(size);
-            t.lineSpacing = 1.25f; // 像素字体行距偏紧,放宽一点
+            t.fontSize = size;
+            t.fontStyle = FontStyles.Normal;
             t.color = color;
-            t.alignment = anchor;
-            // 像素字体单权重,伪加粗会糊;回退字体时保留原样式
-            t.fontStyle = _pixelFont != null ? FontStyle.Normal : style;
-            t.horizontalOverflow = HorizontalWrapMode.Overflow;
-            t.verticalOverflow = VerticalWrapMode.Overflow;
+            t.alignment = ToTmpAlignment(anchor);
+            t.textWrappingMode = TextWrappingModes.NoWrap;
+            t.overflowMode = TextOverflowModes.Overflow;
+            t.raycastTarget = false;
+            t.extraPadding = true;
             return t;
         }
 
         /// <summary>
-        /// 大型展示文字使用设计稿中的实际字号，不套用旧界面为紧凑控件准备的 62% 缩放。
-        /// 适用于战斗状态牌、回合横幅和大触控按钮；普通菜单文字继续使用 Label。
+        /// 战斗场景保留 DisplayLabel 这一语义入口，但字体、字号规则和渲染方式与全局 Label 一致。
+        /// 这样无需复制文字配置，也能让调用代码继续区分展示标题和普通控件。
         /// </summary>
         public static TextMeshProUGUI DisplayLabel(Transform parent, string name, string text, int size, Color color,
-            TextAnchor anchor = TextAnchor.MiddleCenter, FontStyle style = FontStyle.Bold)
+            TextAnchor anchor = TextAnchor.MiddleCenter)
         {
-            var rt = Node(parent, name);
-            var label = rt.gameObject.AddComponent<TextMeshProUGUI>();
-            label.font = BattleFont;
-            label.text = text;
-            label.fontSize = size;
-            label.fontStyle = FontStyles.Normal;
-            label.color = color;
-            label.alignment = ToTmpAlignment(anchor);
-            label.textWrappingMode = TextWrappingModes.NoWrap;
-            label.overflowMode = TextOverflowModes.Overflow;
-            label.raycastTarget = false;
-            label.extraPadding = true;
-            return label;
+            return Label(parent, name, text, size, color, anchor);
         }
 
         private static TextAlignmentOptions ToTmpAlignment(TextAnchor anchor)
