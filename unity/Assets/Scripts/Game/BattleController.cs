@@ -120,11 +120,11 @@ namespace Numeria.Game
             // 回合横幅(素材包 Turn_Banner,顶部居中)
             var logPlate = Ui.SpriteImg(_shakeRoot, "LogPlate", SpriteLib.Pack("UI/Panels/Turn_Banner"));
             logPlate.type = Image.Type.Sliced;
-            Ui.Place(logPlate.rectTransform, new Vector2(0.5f, 1), new Vector2(0, -18), new Vector2(400, 110));
-            _logMain = Ui.Label(logPlate.transform, "LogMain", "", 26, TitleGreen);
-            Ui.Place(_logMain.rectTransform, new Vector2(0.5f, 1), new Vector2(0, -34), new Vector2(360, 34));
-            _logSub = Ui.Label(logPlate.transform, "LogSub", "", 20, Ui.Hex("#8a5a1a"));
-            Ui.Place(_logSub.rectTransform, new Vector2(0.5f, 0), new Vector2(0, 26), new Vector2(360, 28));
+            Ui.Place(logPlate.rectTransform, new Vector2(0.5f, 1), new Vector2(0, -16), new Vector2(680, 108));
+            _logMain = Ui.Label(logPlate.transform, "LogMain", "", 21, TitleGreen);
+            Ui.Place(_logMain.rectTransform, new Vector2(0.5f, 1), new Vector2(0, -32), new Vector2(620, 30));
+            _logSub = Ui.Label(logPlate.transform, "LogSub", "", 17, Ui.Hex("#8a5a1a"));
+            Ui.Place(_logSub.rectTransform, new Vector2(0.5f, 0), new Vector2(0, 26), new Vector2(620, 24));
 
             // 行动按钮坞(素材包 Command_Dock,底部整条)
             var dock = Ui.SpriteImg(_shakeRoot, "CommandDock", SpriteLib.Pack("UI/Panels/Command_Dock"));
@@ -138,10 +138,11 @@ namespace Numeria.Game
             _dockGroup = dock.gameObject.AddComponent<CanvasGroup>();
             var layout = dock.gameObject.AddComponent<HorizontalLayoutGroup>();
             layout.padding = new RectOffset(22, 22, 16, 16);
-            layout.spacing = 16;
+            layout.spacing = 18;
+            layout.childAlignment = TextAnchor.MiddleCenter;
             layout.childControlWidth = true;
             layout.childControlHeight = true;
-            layout.childForceExpandWidth = true;
+            layout.childForceExpandWidth = false; // 按钮固定宽居中,不再被拉成超宽扁条
             layout.childForceExpandHeight = true;
 
             var formulaSkill = System.Array.Find(_state.Player.Skills, s => s.Id == "flame-formula");
@@ -167,16 +168,16 @@ namespace Numeria.Game
             plate.type = Image.Type.Sliced;
             Ui.Place(plate.rectTransform, anchor, offset, size);
 
-            var name = Ui.Label(plate.transform, "Name", title.ToUpperInvariant(), 28, TitleGreen, TextAnchor.UpperLeft);
-            Ui.Place(name.rectTransform, new Vector2(0, 1), new Vector2(22, -16), new Vector2(300, 32));
-            var sub = Ui.Label(plate.transform, "Sub", subtitle, 20, SubOrange, TextAnchor.UpperLeft);
-            Ui.Place(sub.rectTransform, new Vector2(0, 1), new Vector2(22, -52), new Vector2(200, 24));
-            hpText = Ui.Label(plate.transform, "HpText", "", 20, TitleGreen, TextAnchor.UpperLeft);
-            Ui.Place(hpText.rectTransform, new Vector2(0, 1), new Vector2(22, -82), new Vector2(240, 24));
+            var name = Ui.Label(plate.transform, "Name", title.ToUpperInvariant(), 26, TitleGreen, TextAnchor.UpperLeft);
+            Ui.Place(name.rectTransform, new Vector2(0, 1), new Vector2(30, -28), new Vector2(300, 30));
+            var sub = Ui.Label(plate.transform, "Sub", subtitle, 19, SubOrange, TextAnchor.UpperLeft);
+            Ui.Place(sub.rectTransform, new Vector2(0, 1), new Vector2(30, -62), new Vector2(200, 24));
+            hpText = Ui.Label(plate.transform, "HpText", "", 19, TitleGreen, TextAnchor.UpperLeft);
+            Ui.Place(hpText.rectTransform, new Vector2(0, 1), new Vector2(30, -92), new Vector2(240, 24));
 
-            // 血条:素材包外框 + 填充
+            // 血条:素材包外框 + 填充,留出面板装饰边
             var frame = Ui.SpriteImg(plate.transform, "HpFrame", SpriteLib.Pack("UI/Bars/HP_Bar_Frame"));
-            Ui.Place(frame.rectTransform, new Vector2(0, 0), new Vector2(22, 16), new Vector2(size.x - 84, 26));
+            Ui.Place(frame.rectTransform, new Vector2(0, 0), new Vector2(30, 24), new Vector2(size.x - 60, 24));
             frame.rectTransform.pivot = new Vector2(0, 0);
             var fill = Ui.SpriteImg(frame.transform, "HpFill", SpriteLib.Pack("UI/Bars/HP_Bar_Fill"));
             fill.rectTransform.anchorMin = Vector2.zero;
@@ -192,7 +193,7 @@ namespace Numeria.Game
         private void BuildShieldRow(RectTransform plate)
         {
             var row = Ui.Node(plate, "ShieldRow");
-            Ui.Place(row, new Vector2(1, 1), new Vector2(-16, -14), new Vector2(96, 32));
+            Ui.Place(row, new Vector2(1, 1), new Vector2(-30, -26), new Vector2(96, 32));
             var icon = Ui.SpriteImg(row, "Icon", SpriteLib.One("Art/Sprites/shield"));
             Ui.Place(icon.rectTransform, new Vector2(0, 0.5f), Vector2.zero, new Vector2(28, 28));
             var text = Ui.Label(row, "Value", _state.Enemy.Shield?.ToString() ?? "", 24, Ui.ShieldBlue, TextAnchor.MiddleLeft);
@@ -204,7 +205,7 @@ namespace Numeria.Game
         private void BuildGemRow(RectTransform plate)
         {
             var row = Ui.Node(plate, "GemRow");
-            Ui.Place(row, new Vector2(1, 1), new Vector2(-16, -50), new Vector2(220, 30));
+            Ui.Place(row, new Vector2(1, 1), new Vector2(-30, -58), new Vector2(212, 30));
             var gemSprite = SpriteLib.Pack("UI/Icons/Gem");
             for (int i = 0; i < 8; i++)
             {
@@ -213,8 +214,8 @@ namespace Numeria.Game
                 Ui.Place(icon.rectTransform, new Vector2(0, 0.5f), new Vector2(i * 26, 0), new Vector2(24, 24));
                 _gemIcons.Add(icon);
             }
-            _gemLabel = Ui.Label(plate, "GemLabel", "", 20, SubOrange, TextAnchor.LowerRight);
-            Ui.Place(_gemLabel.rectTransform, new Vector2(1, 0), new Vector2(-18, 36), new Vector2(160, 24));
+            _gemLabel = Ui.Label(plate, "GemLabel", "", 19, SubOrange, TextAnchor.UpperRight);
+            Ui.Place(_gemLabel.rectTransform, new Vector2(1, 1), new Vector2(-30, -92), new Vector2(160, 24));
         }
 
         /// <summary>大按钮:素材包按钮底(9-slice)+ 图标 + 标题 + 副标题。</summary>
@@ -223,6 +224,9 @@ namespace Numeria.Game
         {
             var bg = Ui.SpriteImg(parent, $"Btn-{title}", SpriteLib.Pack("UI/Buttons/Button_Normal"));
             bg.type = Image.Type.Sliced;
+            var ble = bg.gameObject.AddComponent<LayoutElement>();
+            ble.preferredWidth = 360;
+            ble.flexibleWidth = 0;
             bgImage = bg;
 
             var iconImg = Ui.SpriteImg(bg.transform, "Icon", icon);
