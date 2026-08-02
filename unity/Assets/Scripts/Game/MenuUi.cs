@@ -516,7 +516,8 @@ namespace Numeria.Game
 
             if (toId != null)
             {
-                EvoIconAt(parent, "addmander", new Vector2(0.34f, 0.58f), new Vector2(84, 84), false);
+                // Match the portrait used by the detail/status card, scaled down for the evolution path.
+                EvoIconAt(parent, "addmander", new Vector2(0.34f, 0.58f), new Vector2(84, 84), true);
                 var arrow = Ui.Label(parent, "Arrow", ">", 42, SummaryOrange);
                 Ui.PlaceCentered(arrow.rectTransform, new Vector2(0.5f, 0.60f), Vector2.zero, new Vector2(50, 50));
                 EvoIconAt(parent, toId, new Vector2(0.67f, 0.65f), new Vector2(140, 140), true);
