@@ -25,15 +25,29 @@ namespace Numeria.Game
         private RectTransform _shakeRoot;
         private RectTransform _playerSprite;
         private RectTransform _enemySprite;
-        private readonly Image[] _playerCells = new Image[10];
-        private readonly Image[] _enemyCells = new Image[10];
-        private Text _gemText;
+        private Image _playerHpFill;
+        private Image _enemyHpFill;
+        private Text _playerHpText;
+        private Text _enemyHpText;
+        private readonly List<Image> _gemIcons = new List<Image>();
+        private Text _gemLabel;
         private GameObject _shieldRow;
-        private Text _logText;
+        private Text _logMain;
+        private Text _logSub;
         private Button _btnTackle;
         private Button _btnFormula;
+        private Image _formulaBg;
         private Button _btnShield;
         private Button _btnCatch;
+        private int _playerLevel = 1;
+
+        // 参考图配色(与菜单一致)
+        private static readonly Color Cream = Ui.Hex("#f6efdc");
+        private static readonly Color TitleGreen = Ui.Hex("#3a4d2f");
+        private static readonly Color Amber = Ui.Hex("#f2b04e");
+        private static readonly Color HpGreen = Ui.Hex("#7ac974");
+        private static readonly Color HpTrack = Ui.Hex("#e3d9bd");
+        private static readonly Color SubOrange = Ui.Hex("#c77b3a");
 
         private int _tier = 1;
         private string _battleBg = "forest-battle";
@@ -43,6 +57,7 @@ namespace Numeria.Game
             _onEnd = onEnd;
             _tier = tier;
             _battleBg = battleBg;
+            _playerLevel = progress.Level;
             _state = new BattleState(GameData.PlayerMon(progress.ActiveMonId, progress.Evolved), enemy);
             _state.PlayerAttackBonus = progress.AttackBonus;
             _rng = new Rng((uint)Environment.TickCount);
@@ -79,114 +94,191 @@ namespace Numeria.Game
             var bg = Ui.SpriteImg(_shakeRoot, "Background", SpriteLib.One($"Art/Backgrounds/{_battleBg}"));
             Ui.Stretch(bg.rectTransform);
 
-            // 敌方
-            var enemyPlate = BuildPlate("EnemyPlate", new Vector2(1, 1), new Vector2(-200, -30),
-                _state.Enemy.Name, _enemyCells);
-            _shieldRow = BuildIconRow(enemyPlate, "ShieldRow", "Art/Sprites/shield",
-                _state.Enemy.Shield?.ToString() ?? "", Ui.ShieldBlue);
-            var enemyImg = Ui.SpriteImg(_shakeRoot, "EnemySprite",
-                SpriteLib.LargeIcon(_state.Enemy.Id));
+            // 敌方:名牌左上,立绘右上(经典宝可梦布局)
+            var enemyPlate = BuildStatusPlate("EnemyPlate", new Vector2(0, 1), new Vector2(26, -22), new Vector2(380, 158),
+                _state.Enemy.Name, _state.Enemy.Shield.HasValue ? "BOSS" : "WILD",
+                out _enemyHpFill, out _enemyHpText);
+            BuildShieldRow(enemyPlate);
+            var enemyImg = Ui.SpriteImg(_shakeRoot, "EnemySprite", SpriteLib.LargeIcon(_state.Enemy.Id));
             enemyImg.preserveAspect = true;
-            Ui.Place(enemyImg.rectTransform, new Vector2(1, 1), new Vector2(-40, -40), new Vector2(170, 170));
+            Ui.Place(enemyImg.rectTransform, new Vector2(1, 1), new Vector2(-140, -140), new Vector2(220, 220));
             _enemySprite = enemyImg.rectTransform;
 
-            // 我方
+            // 我方:立绘左下,名牌右侧
             var playerImg = Ui.SpriteImg(_shakeRoot, "PlayerSprite", SpriteLib.LargeIcon(_state.Player.Id));
             playerImg.preserveAspect = true;
-            Ui.Place(playerImg.rectTransform, new Vector2(0, 0), new Vector2(60, 170), new Vector2(170, 170));
+            Ui.Place(playerImg.rectTransform, new Vector2(0, 0), new Vector2(190, 330), new Vector2(260, 260));
             _playerSprite = playerImg.rectTransform;
-            var playerPlate = BuildPlate("PlayerPlate", new Vector2(0, 0), new Vector2(240, 130),
-                _state.Player.Name, _playerCells);
-            var gemRow = BuildIconRow(playerPlate, "GemRow", "Art/Sprites/gem", "2", Ui.GemOrange);
-            _gemText = gemRow.GetComponentInChildren<Text>();
+            var playerPlate = BuildStatusPlate("PlayerPlate", new Vector2(1, 0), new Vector2(-26, 210), new Vector2(410, 180),
+                _state.Player.Name, $"Lv. {_playerLevel}",
+                out _playerHpFill, out _playerHpText);
+            BuildGemRow(playerPlate);
 
-            // 日志
-            var logBg = Ui.Img(_shakeRoot, "Log", new Color(0.15f, 0.2f, 0.22f, 0.9f));
-            Ui.Place(logBg.rectTransform, new Vector2(0.5f, 0.55f), Vector2.zero, new Vector2(620, 56));
-            _logText = Ui.Label(logBg.transform, "LogText", "", 26, Color.white);
-            Ui.Stretch(_logText.rectTransform);
+            // 回合横幅(琥珀色,顶部居中)
+            var logFrame = Ui.Img(_shakeRoot, "LogFrame", TitleGreen);
+            Ui.Place(logFrame.rectTransform, new Vector2(0.5f, 1), new Vector2(0, -18), new Vector2(400, 106));
+            var logPlate = Ui.Img(logFrame.transform, "LogPlate", Amber);
+            Ui.Stretch(logPlate.rectTransform);
+            logPlate.rectTransform.offsetMin = new Vector2(5, 5);
+            logPlate.rectTransform.offsetMax = new Vector2(-5, -5);
+            _logMain = Ui.Label(logPlate.transform, "LogMain", "", 26, TitleGreen);
+            Ui.Place(_logMain.rectTransform, new Vector2(0.5f, 1), new Vector2(0, -30), new Vector2(380, 34));
+            _logSub = Ui.Label(logPlate.transform, "LogSub", "", 20, Ui.Hex("#8a5a1a"));
+            Ui.Place(_logSub.rectTransform, new Vector2(0.5f, 0), new Vector2(0, 22), new Vector2(380, 28));
 
-            // 行动按钮
-            var actions = Ui.Node(_shakeRoot, "Actions");
-            actions.anchorMin = new Vector2(0.5f, 0);
-            actions.anchorMax = new Vector2(0.5f, 0);
-            actions.pivot = new Vector2(0.5f, 0);
-            actions.anchoredPosition = new Vector2(0, 24);
-            actions.sizeDelta = new Vector2(1200, 90);
-            var layout = actions.gameObject.AddComponent<HorizontalLayoutGroup>();
-            layout.spacing = 16;
+            // 行动按钮条(底部整条)
+            var barFrame = Ui.Img(_shakeRoot, "ActionsFrame", TitleGreen);
+            var barRt = barFrame.rectTransform;
+            barRt.anchorMin = new Vector2(0, 0);
+            barRt.anchorMax = new Vector2(1, 0);
+            barRt.pivot = new Vector2(0.5f, 0);
+            barRt.anchoredPosition = new Vector2(0, 16);
+            barRt.sizeDelta = new Vector2(-52, 150);
+            var barPlate = Ui.Img(barFrame.transform, "ActionsPlate", Cream);
+            Ui.Stretch(barPlate.rectTransform);
+            barPlate.rectTransform.offsetMin = new Vector2(5, 5);
+            barPlate.rectTransform.offsetMax = new Vector2(-5, -5);
+            var layout = barPlate.gameObject.AddComponent<HorizontalLayoutGroup>();
+            layout.padding = new RectOffset(14, 14, 12, 12);
+            layout.spacing = 14;
+            layout.childControlWidth = true;
+            layout.childControlHeight = true;
             layout.childForceExpandWidth = true;
             layout.childForceExpandHeight = true;
 
-            _btnTackle = Ui.Btn(actions, "BtnTackle", "Tackle", 26);
-            _btnTackle.onClick.AddListener(() => StartCoroutine(TackleRoutine()));
             var formulaSkill = System.Array.Find(_state.Player.Skills, s => s.Id == "flame-formula");
-            _btnFormula = Ui.Btn(actions, "BtnFormula", $"{formulaSkill.Name} (3 gems)", 24);
+            _btnTackle = ActionButton(barPlate.rectTransform, "icon-sword", "TACKLE", "FREE", Ui.Hex("#5c8a3f"), out _);
+            _btnTackle.onClick.AddListener(() => StartCoroutine(TackleRoutine()));
+            _btnFormula = ActionButton(barPlate.rectTransform, "icon-flame",
+                formulaSkill.Name.ToUpperInvariant(), $"COST {formulaSkill.Cost}", SubOrange, out _formulaBg);
             _btnFormula.onClick.AddListener(() => StartCoroutine(FormulaRoutine()));
-            _btnShield = Ui.Btn(actions, "BtnShield", "Break Shield", 26);
+            _btnShield = ActionButton(barPlate.rectTransform, "shield", "BREAK SHIELD",
+                $"MAKE {_state.Enemy.Shield ?? 10}", Ui.ShieldBlue, out _);
             _btnShield.onClick.AddListener(() => StartCoroutine(BreakShieldRoutine()));
-            _btnCatch = Ui.Btn(actions, "BtnCatch", "Catch!", 26);
+            _btnCatch = ActionButton(barPlate.rectTransform, "icon-net", "CATCH", "FRIEND PUZZLE", SubOrange, out _);
             _btnCatch.onClick.AddListener(() => StartCoroutine(CatchRoutine()));
         }
 
-        private RectTransform BuildPlate(string name, Vector2 anchor, Vector2 offset, string title, Image[] cells)
+        /// <summary>状态名牌:深绿描边 + 奶油底,名字/副标题/HP 文字/血条。</summary>
+        private RectTransform BuildStatusPlate(string plateName, Vector2 anchor, Vector2 offset, Vector2 size,
+            string title, string subtitle, out Image hpFill, out Text hpText)
         {
-            var plate = Ui.Img(_shakeRoot, name, Ui.PlateBg);
-            Ui.Place(plate.rectTransform, anchor, offset, new Vector2(280, 130));
-            Ui.AddOutline(plate.gameObject);
+            var frame = Ui.Img(_shakeRoot, plateName + "Frame", TitleGreen);
+            Ui.Place(frame.rectTransform, anchor, offset, size);
+            var plate = Ui.Img(frame.transform, plateName, Cream);
+            Ui.Stretch(plate.rectTransform);
+            plate.rectTransform.offsetMin = new Vector2(5, 5);
+            plate.rectTransform.offsetMax = new Vector2(-5, -5);
 
-            var titleText = Ui.Label(plate.transform, "Name", title, 26, Ui.Ink, TextAnchor.UpperLeft);
-            Ui.Place(titleText.rectTransform, new Vector2(0, 1), new Vector2(14, -10), new Vector2(240, 30));
+            var name = Ui.Label(plate.transform, "Name", title.ToUpperInvariant(), 28, TitleGreen, TextAnchor.UpperLeft);
+            Ui.Place(name.rectTransform, new Vector2(0, 1), new Vector2(18, -12), new Vector2(300, 32));
+            var sub = Ui.Label(plate.transform, "Sub", subtitle, 20, SubOrange, TextAnchor.UpperLeft);
+            Ui.Place(sub.rectTransform, new Vector2(0, 1), new Vector2(18, -48), new Vector2(200, 24));
+            hpText = Ui.Label(plate.transform, "HpText", "", 20, TitleGreen, TextAnchor.UpperLeft);
+            Ui.Place(hpText.rectTransform, new Vector2(0, 1), new Vector2(18, -78), new Vector2(240, 24));
 
-            var frame = Ui.Node(plate.transform, "TenFrame");
-            Ui.Place(frame, new Vector2(0, 1), new Vector2(14, -44), new Vector2(200, 56));
-            var grid = frame.gameObject.AddComponent<GridLayoutGroup>();
-            grid.cellSize = new Vector2(30, 24);
-            grid.spacing = new Vector2(5, 5);
-            grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
-            grid.constraintCount = 5;
-            for (int i = 0; i < 10; i++)
-            {
-                var cell = Ui.Img(frame, $"Cell{i}", Color.white);
-                Ui.AddOutline(cell.gameObject);
-                cells[i] = cell;
-            }
+            var track = Ui.Img(plate.transform, "HpTrack", HpTrack);
+            Ui.Place(track.rectTransform, new Vector2(0, 0), new Vector2(18, 14), new Vector2(size.x - 74, 16));
+            track.rectTransform.pivot = new Vector2(0, 0);
+            Ui.AddOutline(track.gameObject);
+            var fill = Ui.Img(track.transform, "HpFill", HpGreen);
+            fill.rectTransform.anchorMin = Vector2.zero;
+            fill.rectTransform.anchorMax = Vector2.one;
+            fill.rectTransform.offsetMin = Vector2.zero;
+            fill.rectTransform.offsetMax = Vector2.zero;
+            hpFill = fill;
+
             return plate.rectTransform;
         }
 
-        private GameObject BuildIconRow(RectTransform plate, string name, string spritePath, string value, Color color)
+        /// <summary>敌方名牌右上角的护盾徽章。</summary>
+        private void BuildShieldRow(RectTransform plate)
         {
-            var row = Ui.Node(plate, name);
-            Ui.Place(row, new Vector2(0, 0), new Vector2(14, 8), new Vector2(120, 26));
-            var icon = Ui.SpriteImg(row, "Icon", SpriteLib.One(spritePath));
-            Ui.Place(icon.rectTransform, new Vector2(0, 0.5f), Vector2.zero, new Vector2(24, 24));
-            var text = Ui.Label(row, "Value", value, 24, color, TextAnchor.MiddleLeft);
-            Ui.Place(text.rectTransform, new Vector2(0, 0.5f), new Vector2(32, 0), new Vector2(80, 26));
-            return row.gameObject;
+            var row = Ui.Node(plate, "ShieldRow");
+            Ui.Place(row, new Vector2(1, 1), new Vector2(-16, -14), new Vector2(96, 32));
+            var icon = Ui.SpriteImg(row, "Icon", SpriteLib.One("Art/Sprites/shield"));
+            Ui.Place(icon.rectTransform, new Vector2(0, 0.5f), Vector2.zero, new Vector2(28, 28));
+            var text = Ui.Label(row, "Value", _state.Enemy.Shield?.ToString() ?? "", 24, Ui.ShieldBlue, TextAnchor.MiddleLeft);
+            Ui.Place(text.rectTransform, new Vector2(0, 0.5f), new Vector2(36, 0), new Vector2(60, 30));
+            _shieldRow = row.gameObject;
+        }
+
+        /// <summary>我方名牌底部的宝石行:宝石图标 × 数量 + "N GEMS"。</summary>
+        private void BuildGemRow(RectTransform plate)
+        {
+            var row = Ui.Node(plate, "GemRow");
+            Ui.Place(row, new Vector2(1, 1), new Vector2(-16, -50), new Vector2(220, 30));
+            for (int i = 0; i < 8; i++)
+            {
+                var icon = Ui.SpriteImg(row, $"Gem{i}", SpriteLib.One("Art/Sprites/gem"));
+                Ui.Place(icon.rectTransform, new Vector2(0, 0.5f), new Vector2(i * 26, 0), new Vector2(22, 22));
+                _gemIcons.Add(icon);
+            }
+            _gemLabel = Ui.Label(plate, "GemLabel", "", 20, SubOrange, TextAnchor.LowerRight);
+            Ui.Place(_gemLabel.rectTransform, new Vector2(1, 0), new Vector2(-18, 36), new Vector2(160, 24));
+        }
+
+        /// <summary>大按钮:图标 + 标题 + 副标题。</summary>
+        private Button ActionButton(RectTransform parent, string iconName, string title, string subtitle,
+            Color subtitleColor, out Image bgImage)
+        {
+            var frame = Ui.Img(parent, $"Btn-{title}", TitleGreen);
+            var inner = Ui.Img(frame.transform, "Inner", Cream);
+            Ui.Stretch(inner.rectTransform);
+            inner.rectTransform.offsetMin = new Vector2(4, 4);
+            inner.rectTransform.offsetMax = new Vector2(-4, -4);
+            bgImage = inner;
+
+            var icon = Ui.SpriteImg(inner.transform, "Icon", SpriteLib.One($"Art/Sprites/{iconName}"));
+            icon.preserveAspect = true;
+            Ui.Place(icon.rectTransform, new Vector2(0, 0.5f), new Vector2(20, 0), new Vector2(48, 48));
+
+            var titleText = Ui.Label(inner.transform, "Title", title, 24, TitleGreen);
+            Ui.Place(titleText.rectTransform, new Vector2(0.5f, 1), new Vector2(24, -34), new Vector2(280, 30));
+            var subText = Ui.Label(inner.transform, "SubT", subtitle, 18, subtitleColor);
+            Ui.Place(subText.rectTransform, new Vector2(0.5f, 0), new Vector2(24, 26), new Vector2(280, 24));
+
+            var btn = frame.gameObject.AddComponent<Button>();
+            btn.targetGraphic = inner;
+            var colors = btn.colors;
+            colors.disabledColor = new Color(1f, 1f, 1f, 0.5f);
+            btn.colors = colors;
+            return btn;
         }
 
         // ---------- 渲染 ----------
 
         private void RenderAll()
         {
-            RenderTenFrame(_playerCells, _state.PlayerHp);
-            RenderTenFrame(_enemyCells, _state.EnemyHp);
-            _gemText.text = _state.Gems.ToString();
+            SetHpBar(_playerHpFill, _playerHpText, _state.PlayerHp, _state.Player.MaxHp);
+            SetHpBar(_enemyHpFill, _enemyHpText, _state.EnemyHp, _state.Enemy.MaxHp);
+
+            for (int i = 0; i < _gemIcons.Count; i++)
+                _gemIcons[i].gameObject.SetActive(i < _state.Gems);
+            _gemLabel.text = $"{_state.Gems} GEMS";
+
             _shieldRow.SetActive(_state.EnemyShielded);
             _btnFormula.interactable = _state.Gems >= 3;
+            _formulaBg.color = _state.Gems >= 3 ? Amber : Cream;
             _btnShield.gameObject.SetActive(_state.Enemy.Shield.HasValue);
             _btnShield.interactable = _state.EnemyShielded;
             _btnCatch.gameObject.SetActive(
                 _state.Enemy.Catchable && _state.EnemyHp > 0 && _state.EnemyHp <= 3);
         }
 
-        private static void RenderTenFrame(Image[] cells, int hp)
+        private static void SetHpBar(Image fill, Text label, int hp, int maxHp)
         {
-            for (int i = 0; i < cells.Length; i++)
-                cells[i].color = i < hp ? Ui.CellOn : Color.white;
+            float t = maxHp == 0 ? 0 : (float)hp / maxHp;
+            fill.rectTransform.anchorMax = new Vector2(t, 1);
+            fill.color = t > 0.5f ? HpGreen : t > 0.25f ? Ui.Hex("#e0a83a") : Ui.Hex("#d9603a");
+            label.text = $"HP {hp} / {maxHp}";
         }
 
-        private void SetLog(string text) => _logText.text = text;
+        private void SetLog(string text, string sub = "")
+        {
+            _logMain.text = text.ToUpperInvariant();
+            _logSub.text = sub;
+        }
 
         private void SetActionsEnabled(bool on)
         {
@@ -285,7 +377,7 @@ namespace Numeria.Game
             yield return new WaitForSeconds(0.5f);
             _state.StartPlayerTurn();
             RenderAll();
-            SetLog("Your turn! +2 gems");
+            SetLog("Your turn", "+2 GEMS");
             SetActionsEnabled(true);
         }
 

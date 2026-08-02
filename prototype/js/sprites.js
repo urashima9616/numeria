@@ -174,6 +174,60 @@ export const SUMDRAKE = {
   ],
 };
 
+export const ICON_SWORD = {
+  palette: { O: '#3d3529', S: '#cfd6dd', s: '#9aa4ae', H: '#8d5a2b', G: '#ffd24a' },
+  map: [
+    '..........O.',
+    '.........OSO',
+    '........OSsO',
+    '.......OSsO.',
+    '......OSsO..',
+    '.OO..OSsO...',
+    '.OGOOSsO....',
+    '..OGSsO.....',
+    '...OGO......',
+    '..OHHO......',
+    '.OHHO.......',
+    '.OO.........',
+  ],
+};
+
+export const ICON_FLAME = {
+  palette: { O: '#8a2c14', R: '#ff5a2e', Y: '#ffd24a', W: '#fff3b0' },
+  map: [
+    '.....O......',
+    '....ORO.....',
+    '....ORO..O..',
+    '...ORRO.ORO.',
+    '...ORRROORO.',
+    '..ORYRRORRO.',
+    '..ORYYRRYRO.',
+    '.ORYWYYRYRO.',
+    '.ORYWWYYYRO.',
+    '.ORYWWWYYRO.',
+    '..ORYWWYRO..',
+    '...OOOOOO...',
+  ],
+};
+
+export const ICON_NET = {
+  palette: { O: '#4a3520', N: '#efe8d2', n: '#cbc2a4', H: '#8d5a2b' },
+  map: [
+    '....OOOO....',
+    '...ONNNNO...',
+    '..ONnNnNNO..',
+    '..ONNnNnNO..',
+    '..ONnNnNNO..',
+    '...ONNNNO...',
+    '....OOOOH...',
+    '.......OHH..',
+    '........OHH.',
+    '.........OHH',
+    '..........OH',
+    '............',
+  ],
+};
+
 export const TILE_GRASS = {
   palette: { G: '#7cb342', L: '#8fce5a', D: '#66a234' },
   map: [

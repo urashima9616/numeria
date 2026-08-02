@@ -5,7 +5,8 @@ import { deflateSync } from 'node:zlib';
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { ADDMANDER, DUPLIROCK, GEM, SHIELD, COUNTIPILLAR, DOUBLIT, SUMDRAKE } from '../prototype/js/sprites.js';
+import { ADDMANDER, DUPLIROCK, GEM, SHIELD, COUNTIPILLAR, DOUBLIT, SUMDRAKE,
+  ICON_SWORD, ICON_FLAME, ICON_NET } from '../prototype/js/sprites.js';
 
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -203,6 +204,7 @@ mkdirSync(bgDir, { recursive: true });
 const sprites = {
   addmander: ADDMANDER, duplirock: DUPLIROCK, gem: GEM, shield: SHIELD,
   countipillar: COUNTIPILLAR, doublit: DOUBLIT, sumdrake: SUMDRAKE,
+  'icon-sword': ICON_SWORD, 'icon-flame': ICON_FLAME, 'icon-net': ICON_NET,
 };
 for (const [name, sprite] of Object.entries(sprites)) {
   const path = join(spriteDir, `${name}.png`);
