@@ -91,7 +91,7 @@ namespace Numeria.Game
             _shakeRoot = Ui.Node(_canvasRoot, "ShakeRoot");
             Ui.Stretch(_shakeRoot);
 
-            var bg = Ui.SpriteImg(_shakeRoot, "Background", SpriteLib.One($"Art/Backgrounds/{_battleBg}"));
+            var bg = Ui.SpriteImg(_shakeRoot, "Background", SpriteLib.One(_battleBg));
             Ui.Stretch(bg.rectTransform);
 
             // 敌方:名牌左上,立绘右上(经典宝可梦布局)
@@ -105,7 +105,7 @@ namespace Numeria.Game
             _enemySprite = enemyImg.rectTransform;
 
             // 我方:立绘左下,名牌右侧
-            var playerImg = Ui.SpriteImg(_shakeRoot, "PlayerSprite", SpriteLib.LargeIcon(_state.Player.Id));
+            var playerImg = Ui.SpriteImg(_shakeRoot, "PlayerSprite", SpriteLib.PlayerBattleSprite(_state.Player.Id));
             playerImg.preserveAspect = true;
             Ui.Place(playerImg.rectTransform, new Vector2(0, 0), new Vector2(190, 330), new Vector2(260, 260));
             _playerSprite = playerImg.rectTransform;

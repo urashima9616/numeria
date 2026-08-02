@@ -23,6 +23,15 @@ namespace Numeria.Game
             return large != null ? large : One($"Art/Sprites/{id}");
         }
 
+        /// <summary>
+        /// 玩家战斗立绘:优先背面图(generated/{id}_battle_back),再退高清正面,再退像素图。
+        /// </summary>
+        public static Sprite PlayerBattleSprite(string id)
+        {
+            var back = Resources.Load<Sprite>($"generated/{id}_battle_back");
+            return back != null ? back : LargeIcon(id);
+        }
+
         /// <summary>按切片名从 Cainos 雪碧图取子精灵,如 Cainos("TX Props", "TX Props Chest")。</summary>
         public static Sprite Cainos(string sheet, string spriteName)
         {
