@@ -35,16 +35,17 @@
 - `BattleState`:宝石经济(+2/回合,上限 8)、护盾减半、破盾易伤×2(2 回合)、`PlayerAttackBonus`、零惩罚不变量(有测试锁定)
 - `Progress`:等级(XpToNext = Level×10,每级 ATK+1)、图鉴、宝箱、道具、进化状态、当前地图、出战位 —— JsonUtility 序列化,**新字段必须带默认值**保证旧存档兼容
 - `GridMap`:ASCII 地图解析('.'草地 'T'树 'b'草丛 'C'宝箱 'P'传送门 'S'出生)+ BFS 寻路
-- `GameData`:数灵定义;`PlayerMon(id, evolved)` 出战位技能组;进化 Addmander→Sumdrake
-- 测试:`unity/Assets/Tests/EditMode/`,**32 个**(最后一次 headless 验证为 28,之后加的 4 个未跑过 headless,接手先跑一遍)
+- `GameData`:首发 15 只数灵的统一图鉴与六条进化线;三条御三家为三段(Lv.8/Lv.15),三条地图野生线为两段;每家族配置独立数学亲和
+- 测试:`unity/Assets/Tests/EditMode/`,**53 个**;隔离工程副本最后一次完整 headless 为 **53/53**(当前主工程可保持在编辑器中打开)
 
 ### Game 层(`Numeria.Game`)
 - **全程序化 UGUI,零场景文件**——所有界面代码搭建,SampleScene 只是空壳,`BattleBootstrap` 用 `RuntimeInitializeOnLoadMethod` 拉起 `MapController`
-- `MapController`:多地图(`MapDefs` 注册表:forest tier1 / mountains tier2)、点触 BFS 移动、35% 草丛遇敌、宝箱谜题、Boss 守门、进化试炼(3 题)、菜单入口
+- `MapController`:三地图(`forest` / `mountains` / `sky`)、点触 BFS 移动、35% 草丛遇敌、宝箱谜题、Boss + 三题综合开门试炼、家族亲和进化试炼、菜单入口
 - `BattleController`:`Init(enemy, progress, tier, battleBg, onEnd)` 回调式;收服(Catch)按钮;演出协程(冲撞/受击/伤害数字/火球/碎盾/震屏)
-- `PuzzleUi`:谜题遮罩(战斗/宝箱/试炼共用),tier 选题,拖拽+点按双模式水晶(12px 阈值防手指抖动),零惩罚重试 + 数块提示(≤20 自动两行十格阵)
+- `PuzzleUi`:谜题遮罩(战斗/宝箱/试炼共用);森林含算式/点数/比较,山脉含 20 内算式/凑十/连加,天空城含规律/对称/旋转/数字序列;拖拽+点按双模式,零惩罚重试
 - `MenuUi`:TEAM/ITEMS/SETTINGS 三 tab,TEAM 双栏 master-detail,可滚动
 - `Voice`:预烘焙语音播放,`VoiceKeys.Sanitize` 文本→文件名(**必须与 bake 脚本规则一致**);`Voice.Enabled` 全局开关(存档持久化)
+- `Sfx` / `Music`:独立短音效通道 + Dynamic Music 双通道交叉淡化;地图/战斗/Boss/进化切换 mood,语音播放时自动 duck,Voice/SFX/Music 分别持久化开关
 - `SpriteLib`:资产加载约定(见 §5);`SaveSystem`:persistentDataPath JSON
 - **文字系统近期已被并行会话改为 TextMeshPro + Jersey 10 字体**(`Ui.Label` 返回 TextMeshProUGUI,共享动态 SDF 字体;Jersey10 缺失时回退 PressStart2P → 系统字体)。**不要退回 legacy Text**
 
@@ -59,23 +60,25 @@
 - ✅ **P2** 神秘森林垂直切片(探索/遇敌/收服/升级/存档/宝箱)
 - 🔶 **P3 进行中**:
   - ✅ 静寂山脉(tier2 题型:20 以内加减/翻倍/凑十二)、Doublit、Duplirock Elder Boss
-  - ✅ 进化系统全链(进化石宝箱 + Lv.5 + 三题试炼 + 蜕变演出,全 UI/语音跟随)
+  - ✅ 进化系统全链(御三家 Lv.8/Lv.15、野生线 Lv.5 + 里程碑进化石 + 家族亲和三题试炼 + 蜕变演出)
   - ✅ 菜单(tab 化)、出战位切换、道具栏、重复捕捉转经验
   - ✅ 用户 AI 生成美术管线(`generated/` 约定 + NUMERIA Battle Asset Pack 全面接入战斗)
-  - ⬜ 未做:蔚蓝天空城(图形/规律题型,需要新谜题交互:图案选择而非数字水晶)、15 只数灵剩余阵容、JSON 数据驱动落地(现在数值在 GameData/MapDefs 硬编码)、自适应难度引擎(错题变形复现/隐形升降档)、家长面板(PIN + 掌握度热图)
+  - ✅ 蔚蓝天空城:独立浮空遗迹路线、Mirrowl/Symmetrix、规律/对称/旋转/数字序列、Sky/Boss 音乐
+  - ✅ 首发 15 只数灵:9 只御三家三段 + 6 只地图野生两段,全部有统一高清图标、技能、成长与进化语音
+  - ✅ 音频系统:10 种 SFX + 6 种本地 Dynamic Music mood + 语音 duck/独立开关
+  - ⬜ 未做:JSON 数据驱动落地(现在数值在 GameData/MapDefs 硬编码)、自适应难度引擎(错题变形复现/隐形升降档)、家长面板(PIN + 掌握度热图)
 - ⬜ **P4**:iOS 构建、真机、TestFlight(免费 Apple ID 7 天签名 vs $99/年,已告知用户)
 
 ### 正在收敛的工作(接手第一件事)
 战斗画面按参考图(`~/Documents/battle_design.png`)重构后处于**视觉打磨循环**中:用户截图 → 修排版 → 再截图。最后一轮修了名牌内缩/横幅宽度/按钮固定宽(`7a61472`),之后并行会话又重构了排版与字体(至 `35cd368`)。**用户对当前效果尚未最终满意**,预期还有几轮微调。菜单同理(参考图是用户提供的 mockup)。
 
 ### 未提交的工作区内容
-- `unity/Assets/Casual Game Sounds U6/` —— 用户新导入的**音效包,还没接进游戏**(战斗命中/答对/胜利音效目前全空缺,这是现成的高价值任务)
-- `sumdrake_large_icon.png.meta` 改动(用户似乎加了 Sumdrake 大图)
+- `sumdrake_large_icon.png.meta` 是用户自己的导入参数改动;后续 agent 不应擅自覆盖或提交
 
 ## 5. 资产管线(全部约定式,零代码接新资产)
 
 - **手绘像素**:改 `prototype/js/sprites.js` 字符网格 → `node tools/export-sprites.mjs` → PNG 落到 `Resources/Art/Sprites/`
-- **语音**:台词加进 `tools/bake-voice.sh` → 跑脚本(macOS `say`,Samantha,-r 150)→ wav 落到 `Resources/Voice/`;**C# 里说的每句台词必须有对应烘焙**,`VoiceKeys.Sanitize` = 脚本的 key 规则(小写、非字母数字折叠为 `-`);现有 ~490 条,含全部题目读法组合
+- **语音**:台词加进 `tools/bake-voice.sh` → 跑脚本(macOS `say`,Samantha,-r 150)→ wav 落到 `Resources/Voice/`;**C# 里说的每句台词必须有对应烘焙**,`VoiceKeys.Sanitize` = 脚本的 key 规则(小写、非字母数字折叠为 `-`);现有约 950 条,含全部题目读法组合
 - **AI 生成图**(用户负责生成,放 `Resources/generated/`):
   - `{id}_large_icon.png` → 菜单详情/回退链
   - **NUMERIA_Unity_Battle_Assets/**(结构化素材包):`Characters/{Id}_Battle_Front|Back.png`(战斗立绘)、`UI/`(面板/按钮三态/血条/图标,9-slice)、`Backgrounds/`;包内有 README 和 Unity_Import_Settings.json
@@ -110,14 +113,11 @@
 
 ## 8. 建议的下一步(按价值排序)
 
-1. **接入 Casual Game Sounds U6 音效包**(工作区已有):命中/答对叮咚/答错软音/碎盾/胜利号角/按钮点击;做一个 `Sfx` 静态类 + 约定路径,别忘了 Voice 与 SFX 的音量平衡
-2. **战斗/菜单视觉收敛**:继续用户截图循环,直到满意
-3. **提交工作区**(音效包 + sumdrake meta)
-4. **蔚蓝天空城**:图形规律题型需要新的 PuzzleUi 形态(图案水晶:形状序列选下一个/对称配对)——Core 出 `PatternPuzzle` 生成器(可测)+ UI 出图案按钮;地图 tier3、新数灵 Mirrowl(设计文档有像素画描述)
-5. **JSON 数据驱动**:GameData/MapDefs → StreamingAssets JSON(设计文档承诺的 DLC 架构)
-6. **自适应难度**:Progress 记每题型正误 → 隐形升降档 + 错题变形复现(设计文档 §9)
-7. **家长面板**:菜单加 PIN 门 tab(掌握度热图、时长)
-8. **P4 iOS**:横屏锁定 ProjectSettings、Xcode 导出、真机;分发方案见 roadmap
+1. **战斗/菜单/新谜题视觉收敛**:继续用户截图循环,尤其检查 iPad 4:3 下点数、比较、对称与旋转题
+2. **JSON 数据驱动**:GameData/MapDefs → StreamingAssets JSON(设计文档承诺的 DLC 架构)
+3. **自适应难度**:Progress 记每题型正误 → 隐形升降档 + 错题变形复现(设计文档 §9)
+4. **家长面板**:菜单加 PIN 门 tab(掌握度热图、时长)
+5. **P4 iOS**:横屏锁定 ProjectSettings、Xcode 导出、真机;分发方案见 roadmap
 
 ## 9. 用户偏好速记
 

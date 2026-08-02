@@ -94,7 +94,7 @@ namespace Numeria.Core.Tests
         {
             var progress = new Progress();
             var growth = progress.ActiveGrowth;
-            growth.Level = 5;
+            growth.Level = 8;
             progress.AddEvolutionStone();
 
             Assert.True(progress.CanEvolve("addmander"));
@@ -103,7 +103,7 @@ namespace Numeria.Core.Tests
             Assert.AreEqual(1, progress.EvolutionStones); // key item 不消耗
             Assert.False(progress.CanEvolve("addmander"));
 
-            growth.Level = 10;
+            growth.Level = 15;
             Assert.False(progress.CanEvolve("addmander")); // 三段需要天空城第二颗石头
             progress.AddEvolutionStone();
             Assert.True(progress.CanEvolve("addmander"));

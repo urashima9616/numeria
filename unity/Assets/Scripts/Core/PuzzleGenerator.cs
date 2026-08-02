@@ -20,6 +20,31 @@ namespace Numeria.Core
         public string Prompt;
     }
 
+    public class CountingPuzzle
+    {
+        public int Count;
+        public List<int> Candidates;
+        public string Prompt;
+    }
+
+    public enum ComparisonSide { Left, Right }
+
+    public class ComparisonPuzzle
+    {
+        public int LeftCount;
+        public int RightCount;
+        public ComparisonSide Answer;
+        public string Prompt;
+    }
+
+    public class ChainSumPuzzle
+    {
+        public List<int> Terms;
+        public int Answer;
+        public List<int> Candidates;
+        public string Prompt;
+    }
+
     public enum ShapeKind { Circle, Triangle, Square, Diamond }
 
     public enum PatternRule { Alternating, Pairs, CycleThree }
@@ -31,6 +56,47 @@ namespace Numeria.Core
         public ShapeKind Answer;
         public List<ShapeKind> Candidates;
         public string Prompt;
+    }
+
+    public class SymmetryPuzzle
+    {
+        public ShapeKind Wing;
+        public List<ShapeKind> Candidates;
+        public string Prompt;
+    }
+
+    public enum DirectionKind { Up, Right, Down, Left }
+
+    public class RotationPuzzle
+    {
+        public DirectionKind Start;
+        public int QuarterTurns;
+        public DirectionKind Answer;
+        public List<DirectionKind> Candidates;
+        public string Prompt;
+    }
+
+    public class NumberSequencePuzzle
+    {
+        public List<int> Sequence;
+        public int Step;
+        public int Answer;
+        public List<int> Candidates;
+        public string Prompt;
+    }
+
+    /// <summary>每张地图的题型池。传送门从同一池中抽取三种不同题型。</summary>
+    public enum MapPuzzleKind
+    {
+        Formula,
+        Counting,
+        Comparison,
+        MakeTen,
+        ChainSum,
+        Pattern,
+        Symmetry,
+        Rotation,
+        NumberSequence
     }
 
     /// <summary>
@@ -152,6 +218,53 @@ namespace Numeria.Core
         public static bool CheckMakeTen(MakeTenPuzzle puzzle, int i, int j) =>
             i != j && puzzle.Hand[i] + puzzle.Hand[j] == puzzle.Target;
 
+        public static CountingPuzzle GenerateCounting(Rng rng, int max = 10)
+        {
+            int count = rng.Pick(3, max);
+            return new CountingPuzzle
+            {
+                Count = count,
+                Candidates = BuildCandidates(rng, count, max),
+                Prompt = "How many fireflies do you see?"
+            };
+        }
+
+        public static bool CheckCounting(CountingPuzzle puzzle, int answer) => answer == puzzle.Count;
+
+        public static ComparisonPuzzle GenerateComparison(Rng rng, int max = 10)
+        {
+            int left = rng.Pick(2, max);
+            int right;
+            do right = rng.Pick(2, max); while (right == left);
+            return new ComparisonPuzzle
+            {
+                LeftCount = left,
+                RightCount = right,
+                Answer = left > right ? ComparisonSide.Left : ComparisonSide.Right,
+                Prompt = "Which side has more mushrooms?"
+            };
+        }
+
+        public static bool CheckComparison(ComparisonPuzzle puzzle, ComparisonSide answer) =>
+            answer == puzzle.Answer;
+
+        public static ChainSumPuzzle GenerateChainSum(Rng rng, int max = 20)
+        {
+            int a = rng.Pick(1, 6);
+            int b = rng.Pick(1, 6);
+            int c = rng.Pick(1, System.Math.Min(6, max - a - b));
+            int answer = a + b + c;
+            return new ChainSumPuzzle
+            {
+                Terms = new List<int> { a, b, c },
+                Answer = answer,
+                Candidates = BuildCandidates(rng, answer, max),
+                Prompt = "Add them all up!"
+            };
+        }
+
+        public static bool CheckChainSum(ChainSumPuzzle puzzle, int answer) => answer == puzzle.Answer;
+
         /// <summary>
         /// 天空城图形规律。三种规则都只要求选择“下一个”，候选形状互不重复且答案唯一。
         /// </summary>
@@ -199,5 +312,95 @@ namespace Numeria.Core
         }
 
         public static bool CheckPattern(PatternPuzzle puzzle, ShapeKind answer) => answer == puzzle.Answer;
+
+        public static SymmetryPuzzle GenerateSymmetry(Rng rng)
+        {
+            var candidates = AllShapes();
+            Shuffle(rng, candidates);
+            return new SymmetryPuzzle
+            {
+                Wing = candidates[rng.Pick(0, candidates.Count - 1)],
+                Candidates = candidates,
+                Prompt = "Find the matching wing!"
+            };
+        }
+
+        public static bool CheckSymmetry(SymmetryPuzzle puzzle, ShapeKind answer) => answer == puzzle.Wing;
+
+        public static RotationPuzzle GenerateRotation(Rng rng)
+        {
+            var start = (DirectionKind)rng.Pick(0, 3);
+            int turns = rng.Pick(1, 3);
+            var candidates = new List<DirectionKind>
+            {
+                DirectionKind.Up, DirectionKind.Right, DirectionKind.Down, DirectionKind.Left
+            };
+            Shuffle(rng, candidates);
+            return new RotationPuzzle
+            {
+                Start = start,
+                QuarterTurns = turns,
+                Answer = (DirectionKind)(((int)start + turns) % 4),
+                Candidates = candidates,
+                Prompt = "Which one is it after a turn?"
+            };
+        }
+
+        public static bool CheckRotation(RotationPuzzle puzzle, DirectionKind answer) => answer == puzzle.Answer;
+
+        public static NumberSequencePuzzle GenerateNumberSequence(Rng rng)
+        {
+            int step = rng.Pick(1, 2);
+            int start = rng.Pick(1, step == 1 ? 14 : 10);
+            var sequence = new List<int> { start, start + step, start + step * 2 };
+            int answer = start + step * 3;
+            return new NumberSequencePuzzle
+            {
+                Sequence = sequence,
+                Step = step,
+                Answer = answer,
+                Candidates = BuildCandidates(rng, answer, 20),
+                Prompt = "What number comes next?"
+            };
+        }
+
+        public static bool CheckNumberSequence(NumberSequencePuzzle puzzle, int answer) => answer == puzzle.Answer;
+
+        public static List<MapPuzzleKind> MapPuzzleKindsForTier(int tier)
+        {
+            if (tier >= 3)
+                return new List<MapPuzzleKind>
+                {
+                    MapPuzzleKind.Pattern, MapPuzzleKind.Symmetry,
+                    MapPuzzleKind.Rotation, MapPuzzleKind.NumberSequence
+                };
+            if (tier == 2)
+                return new List<MapPuzzleKind>
+                {
+                    MapPuzzleKind.Formula, MapPuzzleKind.MakeTen, MapPuzzleKind.ChainSum
+                };
+            return new List<MapPuzzleKind>
+            {
+                MapPuzzleKind.Formula, MapPuzzleKind.Counting, MapPuzzleKind.Comparison
+            };
+        }
+
+        public static MapPuzzleKind PickMapPuzzleKind(Rng rng, int tier)
+        {
+            var pool = MapPuzzleKindsForTier(tier);
+            return pool[rng.Pick(0, pool.Count - 1)];
+        }
+
+        public static List<MapPuzzleKind> GatePuzzleKinds(Rng rng, int tier)
+        {
+            var pool = MapPuzzleKindsForTier(tier);
+            Shuffle(rng, pool);
+            return pool.GetRange(0, System.Math.Min(3, pool.Count));
+        }
+
+        private static List<ShapeKind> AllShapes() => new List<ShapeKind>
+        {
+            ShapeKind.Circle, ShapeKind.Triangle, ShapeKind.Square, ShapeKind.Diamond
+        };
     }
 }

@@ -67,6 +67,24 @@ namespace Numeria.Core.Tests
         }
 
         [Test]
+        public void StarterEvolutionLevels_MatchTheApprovedDesign()
+        {
+            foreach (string starter in new[] { "addmander", "tenfin", "shapling" })
+                CollectionAssert.AreEqual(new[] { 8, 15 }, GameData.LineFor(starter).EvolutionLevels);
+        }
+
+        [Test]
+        public void EveryEvolutionTrial_UsesItsFamiliesApprovedMathAffinity()
+        {
+            Assert.AreEqual(PuzzleAffinity.Formula, GameData.LineFor("addmander").Affinity);
+            Assert.AreEqual(PuzzleAffinity.MakeTen, GameData.LineFor("tenfin").Affinity);
+            Assert.AreEqual(PuzzleAffinity.Pattern, GameData.LineFor("shapling").Affinity);
+            Assert.AreEqual(PuzzleAffinity.Counting, GameData.LineFor("countipillar").Affinity);
+            Assert.AreEqual(PuzzleAffinity.RepeatedAddition, GameData.LineFor("doublit").Affinity);
+            Assert.AreEqual(PuzzleAffinity.Symmetry, GameData.LineFor("mirrowl").Affinity);
+        }
+
+        [Test]
         public void AllRosterForms_HaveAPlayableThemeSkill()
         {
             foreach (var species in GameData.Roster)

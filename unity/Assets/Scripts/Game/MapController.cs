@@ -360,6 +360,7 @@ namespace Numeria.Game
                     levelUps = _progress.GainXp(5);
                     if (isBoss && !_def.GateCleared(_progress))
                     {
+                        yield return GateTrialRoutine();
                         _def.ClearGate(_progress);
                         if (_portalGlow != null) _portalGlow.gameObject.SetActive(true);
                         _voice.Say(_def.GateClearLine);
@@ -392,6 +393,27 @@ namespace Numeria.Game
 
             yield return MaybeEvolve();
             _busy = false;
+        }
+
+        /// <summary>
+        /// 传送门钥匙的另一半：Boss 胜利后完成三种不同的本地图谜题。
+        /// 答错不惩罚、同题型可无限重试，直到三枚符文全部点亮。
+        /// </summary>
+        private IEnumerator GateTrialRoutine()
+        {
+            _voice.Say("Portal trial! Solve three magic puzzles!");
+            yield return new WaitForSeconds(1.8f);
+            foreach (MapPuzzleKind kind in PuzzleGenerator.GatePuzzleKinds(_rng, _def.Tier))
+            {
+                bool solved = false;
+                while (!solved)
+                {
+                    bool? ok = null;
+                    yield return _puzzles.RunPuzzleKind(kind, value => ok = value, _def.Tier);
+                    solved = ok.Value;
+                }
+            }
+            Sfx.Play(SfxCue.Victory, 0.8f);
         }
 
         private IEnumerator ChestRoutine(int x, int y)
@@ -460,7 +482,20 @@ namespace Numeria.Game
                         yield return _puzzles.RunMakeTen(v => ok = v, growth.Stage == 0 ? 10 : 12);
                         break;
                     case PuzzleAffinity.Pattern:
-                        yield return _puzzles.RunPattern(v => ok = v);
+                        if (growth.Stage == 0) yield return _puzzles.RunPattern(v => ok = v);
+                        else yield return _puzzles.RunSymmetry(v => ok = v);
+                        break;
+                    case PuzzleAffinity.Counting:
+                        if (_rng.Next() < 0.5) yield return _puzzles.RunCounting(v => ok = v);
+                        else yield return _puzzles.RunComparison(v => ok = v);
+                        break;
+                    case PuzzleAffinity.RepeatedAddition:
+                        if (_rng.Next() < 0.5) yield return _puzzles.RunDouble(v => ok = v);
+                        else yield return _puzzles.RunChainSum(v => ok = v);
+                        break;
+                    case PuzzleAffinity.Symmetry:
+                        if (_rng.Next() < 0.5) yield return _puzzles.RunSymmetry(v => ok = v);
+                        else yield return _puzzles.RunRotation(v => ok = v);
                         break;
                     default:
                         yield return _puzzles.RunFormula(v => ok = v, growth.Stage == 0 ? 2 : 3);

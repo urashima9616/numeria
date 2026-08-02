@@ -44,6 +44,9 @@ bake "Level up! Addmander is getting stronger!"
 bake "A math chest! Solve the lock!"
 bake "Attack goes up by one!"
 bake "Let's rest and try again!"
+bake "Portal trial! Solve three magic puzzles!"
+bake "How many fireflies do you see?"
+bake "Which side has more mushrooms?"
 
 # ---- 咒语算式读题(与 PuzzleGenerator 一致) ----
 lower=(zero one two three four five six seven eight nine ten
@@ -78,7 +81,7 @@ bake "A wild Duplirock Elder appeared! It has a number shield!"
 bake "Welcome to Silent Peaks!"
 bake "Welcome to Mystic Forest!"
 bake "You found the Evolution Stone!"
-bake "Reach level five to evolve!"
+bake "Reach level eight to evolve!"
 bake "Evolution trial! Solve three puzzles!"
 bake "Addmander is evolving!"
 bake "Amazing! Addmander evolved into Sumdrake!"
@@ -93,6 +96,10 @@ bake "Already best friends! Bonus experience!"
 
 # ---- P3 天空城与图形规律 ----
 bake "What comes next in the pattern?"
+bake "Find the matching wing!"
+bake "Which one is it after a turn?"
+bake "What number comes next?"
+bake "Add them all up!"
 bake "Welcome to Azure Sky City!"
 bake "A wild Mirrowl appeared!"
 bake "Gotcha! Mirrowl joined your team!"
@@ -105,7 +112,7 @@ bake "Level up! Mirrowl is getting stronger!"
 # ---- 首发 15 只图鉴与通用进化链 ----
 bake "A wild Numberfly appeared! It has a number shield!"
 bake "Numberfly guards the portal!"
-bake "Reach level 10 to evolve!"
+bake "Reach level 15 to evolve!"
 
 bake "Sumdrake is evolving!"
 bake "Amazing! Sumdrake evolved into Equadragon!"

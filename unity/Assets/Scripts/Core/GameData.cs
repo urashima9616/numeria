@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Numeria.Core
 {
-    public enum PuzzleAffinity { Formula, MakeTen, Pattern }
+    public enum PuzzleAffinity { Formula, MakeTen, Pattern, Counting, RepeatedAddition, Symmetry }
 
     /// <summary>一条进化家族的稳定配置。存档只保存 BaseId + Stage，名称和数值从这里解析。</summary>
     public sealed class EvolutionLineDef
@@ -37,16 +37,16 @@ namespace Numeria.Core
         private static readonly EvolutionLineDef[] EvolutionLines =
         {
             Line("addmander", "FIRE", "equations", PuzzleAffinity.Formula,
-                new[] { "addmander", "sumdrake", "equadragon" }, new[] { 5, 10 }),
+                new[] { "addmander", "sumdrake", "equadragon" }, new[] { 8, 15 }),
             Line("tenfin", "WATER", "make-ten combinations", PuzzleAffinity.MakeTen,
-                new[] { "tenfin", "decaqua", "tidalten" }, new[] { 5, 10 }),
+                new[] { "tenfin", "decaqua", "tidalten" }, new[] { 8, 15 }),
             Line("shapling", "GRASS", "shape patterns", PuzzleAffinity.Pattern,
-                new[] { "shapling", "pattervine", "geoflora" }, new[] { 5, 10 }),
-            Line("countipillar", "BUG", "counting and comparison", PuzzleAffinity.Formula,
+                new[] { "shapling", "pattervine", "geoflora" }, new[] { 8, 15 }),
+            Line("countipillar", "BUG", "counting and comparison", PuzzleAffinity.Counting,
                 new[] { "countipillar", "numberfly" }, new[] { 5 }),
-            Line("doublit", "ROCK", "doubling and repeated addition", PuzzleAffinity.MakeTen,
+            Line("doublit", "ROCK", "doubling and repeated addition", PuzzleAffinity.RepeatedAddition,
                 new[] { "doublit", "duplirock" }, new[] { 5 }),
-            Line("mirrowl", "SKY", "symmetry and rotation", PuzzleAffinity.Pattern,
+            Line("mirrowl", "SKY", "symmetry and rotation", PuzzleAffinity.Symmetry,
                 new[] { "mirrowl", "symmetrix" }, new[] { 5 }),
         };
 
