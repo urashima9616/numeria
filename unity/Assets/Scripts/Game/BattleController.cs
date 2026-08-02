@@ -85,13 +85,15 @@ namespace Numeria.Game
             _shieldRow = BuildIconRow(enemyPlate, "ShieldRow", "Art/Sprites/shield",
                 _state.Enemy.Shield?.ToString() ?? "", Ui.ShieldBlue);
             var enemyImg = Ui.SpriteImg(_shakeRoot, "EnemySprite",
-                SpriteLib.One($"Art/Sprites/{_state.Enemy.Id}"));
-            Ui.Place(enemyImg.rectTransform, new Vector2(1, 1), new Vector2(-40, -40), new Vector2(160, 160));
+                SpriteLib.LargeIcon(_state.Enemy.Id));
+            enemyImg.preserveAspect = true;
+            Ui.Place(enemyImg.rectTransform, new Vector2(1, 1), new Vector2(-40, -40), new Vector2(170, 170));
             _enemySprite = enemyImg.rectTransform;
 
             // 我方
-            var playerImg = Ui.SpriteImg(_shakeRoot, "PlayerSprite", SpriteLib.One($"Art/Sprites/{_state.Player.Id}"));
-            Ui.Place(playerImg.rectTransform, new Vector2(0, 0), new Vector2(60, 170), new Vector2(160, 160));
+            var playerImg = Ui.SpriteImg(_shakeRoot, "PlayerSprite", SpriteLib.LargeIcon(_state.Player.Id));
+            playerImg.preserveAspect = true;
+            Ui.Place(playerImg.rectTransform, new Vector2(0, 0), new Vector2(60, 170), new Vector2(170, 170));
             _playerSprite = playerImg.rectTransform;
             var playerPlate = BuildPlate("PlayerPlate", new Vector2(0, 0), new Vector2(240, 130),
                 _state.Player.Name, _playerCells);
