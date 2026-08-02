@@ -22,6 +22,7 @@ namespace Numeria.Game
         public string PortalTargetMap; // null = 下一区域未实装,显示预告横幅
         public string NextName;
         public string EvoChestId;      // 此图哪个宝箱掉进化石(null 无)
+        public System.Collections.Generic.Dictionary<string, string> ChestItems; // 宝箱 id → 道具名
     }
 
     public static class Maps
@@ -60,6 +61,11 @@ namespace Numeria.Game
             PortalTargetMap = "mountains",
             NextName = "Silent Peaks",
             EvoChestId = null,
+            ChestItems = new System.Collections.Generic.Dictionary<string, string>
+            {
+                { "forest-chest-15-4", "Power Sword" },
+                { "forest-chest-2-7", "Lucky Charm" },
+            },
         };
 
         public static MapDef Mountains() => new MapDef
@@ -94,6 +100,11 @@ namespace Numeria.Game
             PortalTargetMap = null,
             NextName = "Azure Sky City",
             EvoChestId = "mountains-chest-14-2",
+            ChestItems = new System.Collections.Generic.Dictionary<string, string>
+            {
+                { "mountains-chest-5-5", "Brave Ring" },
+                { "mountains-chest-14-2", "Evolution Stone" },
+            },
         };
     }
 }

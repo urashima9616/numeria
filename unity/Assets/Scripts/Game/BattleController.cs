@@ -43,7 +43,7 @@ namespace Numeria.Game
             _onEnd = onEnd;
             _tier = tier;
             _battleBg = battleBg;
-            _state = new BattleState(GameData.Player(progress.Evolved), enemy);
+            _state = new BattleState(GameData.PlayerMon(progress.ActiveMonId, progress.Evolved), enemy);
             _state.PlayerAttackBonus = progress.AttackBonus;
             _rng = new Rng((uint)Environment.TickCount);
             _voice = gameObject.AddComponent<Voice>();
@@ -118,7 +118,8 @@ namespace Numeria.Game
 
             _btnTackle = Ui.Btn(actions, "BtnTackle", "Tackle", 26);
             _btnTackle.onClick.AddListener(() => StartCoroutine(TackleRoutine()));
-            _btnFormula = Ui.Btn(actions, "BtnFormula", "Flame Formula (3 gems)", 24);
+            var formulaSkill = System.Array.Find(_state.Player.Skills, s => s.Id == "flame-formula");
+            _btnFormula = Ui.Btn(actions, "BtnFormula", $"{formulaSkill.Name} (3 gems)", 24);
             _btnFormula.onClick.AddListener(() => StartCoroutine(FormulaRoutine()));
             _btnShield = Ui.Btn(actions, "BtnShield", "Break Shield", 26);
             _btnShield.onClick.AddListener(() => StartCoroutine(BreakShieldRoutine()));
@@ -290,7 +291,7 @@ namespace Numeria.Game
         {
             bool win = _state.Outcome == BattleOutcome.Win;
             _voice.Say(win ? $"You win! {_state.Player.Name} got five experience points!" : "Oh no! Let's try again!");
-            ShowBanner(win ? "YOU WIN!" : "Addmander fainted...", win ? "+5 XP" : "",
+            ShowBanner(win ? "YOU WIN!" : $"{_state.Player.Name} fainted...", win ? "+5 XP" : "",
                 () => _onEnd(win ? BattleEnd.Win : BattleEnd.Lose));
         }
 

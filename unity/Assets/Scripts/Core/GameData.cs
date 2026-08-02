@@ -34,6 +34,36 @@ namespace Numeria.Core
         /// <summary>玩家当前形态(随进化切换)。</summary>
         public static CombatantDef Player(bool evolved) => evolved ? Sumdrake() : Addmander();
 
+        /// <summary>出战数灵的玩家侧配置:每只都有普攻 + 主题算式技。进化只作用于御三家。</summary>
+        public static CombatantDef PlayerMon(string id, bool evolved)
+        {
+            switch (id)
+            {
+                case "countipillar":
+                    return new CombatantDef
+                    {
+                        Id = "countipillar", Name = "Countipillar", MaxHp = 10, AttackPower = 0,
+                        Skills = new[]
+                        {
+                            new SkillDef { Id = "tackle", Name = "Tackle", Cost = 0, Power = 2, BasePower = 2, Type = SkillType.Basic },
+                            new SkillDef { Id = "flame-formula", Name = "Count Crunch", Cost = 3, Power = 5, BasePower = 2, Type = SkillType.Formula },
+                        },
+                    };
+                case "doublit":
+                    return new CombatantDef
+                    {
+                        Id = "doublit", Name = "Doublit", MaxHp = 10, AttackPower = 0,
+                        Skills = new[]
+                        {
+                            new SkillDef { Id = "tackle", Name = "Tackle", Cost = 0, Power = 2, BasePower = 2, Type = SkillType.Basic },
+                            new SkillDef { Id = "flame-formula", Name = "Double Trouble", Cost = 3, Power = 5, BasePower = 2, Type = SkillType.Formula },
+                        },
+                    };
+                default:
+                    return Player(evolved);
+            }
+        }
+
         public static CombatantDef Sumdrake() => new CombatantDef
         {
             Id = "sumdrake", Name = "Sumdrake", MaxHp = 10, AttackPower = 0,

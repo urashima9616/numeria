@@ -33,8 +33,9 @@ namespace Numeria.Game
         private (int x, int y) _pos;
         private bool _busy;
 
-        private string PlayerId => _progress.Evolved ? "sumdrake" : "addmander";
-        private string PlayerName => _progress.Evolved ? "Sumdrake" : "Addmander";
+        private string PlayerId =>
+            _progress.ActiveMonId == "addmander" && _progress.Evolved ? "sumdrake" : _progress.ActiveMonId;
+        private string PlayerName => GameData.PlayerMon(_progress.ActiveMonId, _progress.Evolved).Name;
 
         private void Awake()
         {
@@ -171,6 +172,8 @@ namespace Numeria.Game
                 onClose: () =>
                 {
                     SaveSystem.Save(_progress);
+                    // 出战数灵可能在菜单里换了,刷新头像与 HUD
+                    _avatar.GetComponent<SpriteRenderer>().sprite = SpriteLib.One($"Art/Sprites/{PlayerId}");
                     UpdateHud();
                     _busy = false;
                 },
@@ -322,8 +325,13 @@ namespace Numeria.Game
                     }
                     break;
                 case BattleEnd.Caught:
-                    _progress.Catch(enemy.Id);
-                    levelUps = _progress.GainXp(5);
+                    bool isNew = _progress.Catch(enemy.Id);
+                    levelUps = _progress.GainXp(isNew ? 5 : 10); // 重复捕捉转化为双倍经验
+                    if (!isNew)
+                    {
+                        _voice.Say("Already best friends! Bonus experience!");
+                        yield return new WaitForSeconds(1.8f);
+                    }
                     break;
                 case BattleEnd.Lose:
                     _voice.Say("Let's rest and try again!");
@@ -356,6 +364,8 @@ namespace Numeria.Game
                 _progress.OpenChest(id);
                 if (_chestRenderers.TryGetValue((x, y), out var sr))
                     sr.sprite = SpriteLib.Cainos("TX Props", "TX Props Chest Opened");
+                if (_def.ChestItems != null && _def.ChestItems.TryGetValue(id, out var itemName))
+                    _progress.Items.Add(itemName);
 
                 if (id == _def.EvoChestId)
                 {

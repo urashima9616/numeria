@@ -18,9 +18,11 @@ namespace Numeria.Core
         public bool HasEvoStone;
         public bool Evolved;
         public string CurrentMap = "forest";
+        public string ActiveMonId = "addmander";
         public List<string> CaughtIds = new List<string>();
         public List<string> OpenedChests = new List<string>();
         public List<string> ClearedGates = new List<string>();
+        public List<string> Items = new List<string>();
 
         /// <summary>升到下一级所需经验:等级 × 10,数字小,孩子能心算。</summary>
         public int XpToNext => Level * 10;
