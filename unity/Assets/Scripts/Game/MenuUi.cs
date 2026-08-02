@@ -84,14 +84,22 @@ namespace Numeria.Game
             _overlay = Ui.Img(_canvasRoot, "MenuOverlay", new Color(0.03f, 0.06f, 0.04f, 0.78f));
             Ui.Stretch(_overlay.rectTransform);
 
-            // 与战斗 HUD 共用同一套像素角花与羊皮纸纹理。
-            var frame = Ui.SpriteImg(_overlay.transform, "Frame", SpriteLib.Pack("UI/Panels/Generic_Panel"));
-            frame.type = Image.Type.Sliced;
-            Ui.Place(frame.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1260, 860));
-            var panel = Ui.Node(frame.transform, "MenuPanel");
-            Ui.Stretch(panel.rectTransform);
-            panel.offsetMin = new Vector2(42, 34);
-            panel.offsetMax = new Vector2(-42, -38);
+            // 大外框采用三层硬边，避免 256px 面板的阴影像素被拉伸成角块；内容卡片继续使用角花素材。
+            var frame = Ui.Img(_overlay.transform, "Frame", TitleGreen);
+            Ui.Place(frame.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1220, 840));
+            var trim = Ui.Img(frame.transform, "GoldTrim", Ui.Hex("#8d6039"));
+            Ui.Stretch(trim.rectTransform);
+            trim.rectTransform.offsetMin = new Vector2(6, 6);
+            trim.rectTransform.offsetMax = new Vector2(-6, -6);
+            var surface = Ui.Img(trim.transform, "Parchment", Cream);
+            Ui.Stretch(surface.rectTransform);
+            surface.rectTransform.offsetMin = new Vector2(4, 4);
+            surface.rectTransform.offsetMax = new Vector2(-4, -4);
+
+            var panel = Ui.Node(surface.transform, "MenuPanel");
+            Ui.Stretch(panel);
+            panel.offsetMin = new Vector2(32, 22);
+            panel.offsetMax = new Vector2(-32, 0);
 
             var column = panel.gameObject.AddComponent<VerticalLayoutGroup>();
             column.spacing = 6;
@@ -125,9 +133,14 @@ namespace Numeria.Game
                 28, SummaryOrange, TextAnchor.UpperLeft);
             Ui.Place(summary.rectTransform, new Vector2(0, 1), new Vector2(6, -61), new Vector2(700, 34));
 
-            var close = Ui.SpriteImg(row, "BtnClose", SpriteLib.Pack("UI/Panels/Generic_Panel"));
-            close.type = Image.Type.Sliced;
-            Ui.Place(close.rectTransform, new Vector2(1, 1), new Vector2(-2, -2), new Vector2(72, 72));
+            var close = Ui.Img(row, "BtnClose", Cream);
+            Ui.Place(close.rectTransform, new Vector2(1, 1), new Vector2(-2, -2), new Vector2(68, 68));
+            Ui.AddOutline(close.gameObject);
+            var closeInset = Ui.Img(close.transform, "Inset", Cream);
+            Ui.Stretch(closeInset.rectTransform);
+            closeInset.rectTransform.offsetMin = new Vector2(7, 7);
+            closeInset.rectTransform.offsetMax = new Vector2(-7, -7);
+            Ui.AddOutline(closeInset.gameObject);
             var x = Ui.Label(close.transform, "X", "X", 38, TitleGreen);
             Ui.Stretch(x.rectTransform);
             var btn = close.gameObject.AddComponent<Button>();
@@ -266,11 +279,15 @@ namespace Numeria.Game
             var lle = left.gameObject.AddComponent<LayoutElement>();
             lle.preferredWidth = 478;
             lle.minWidth = 478;
+            lle.flexibleWidth = 0;
             BuildTeamList(left);
 
             // 右栏:详情
             var right = Ui.Node(wrap, "RightCol");
-            right.gameObject.AddComponent<LayoutElement>().flexibleWidth = 1;
+            var rle = right.gameObject.AddComponent<LayoutElement>();
+            rle.preferredWidth = 650;
+            rle.minWidth = 650;
+            rle.flexibleWidth = 1;
             BuildMonDetail(right, _selectedId);
         }
 
@@ -284,7 +301,17 @@ namespace Numeria.Game
             v.childForceExpandHeight = false;
 
             ListRow(parent, "TeamHeader", 42, row =>
-                Ui.Stretch(Ui.Label(row, "Text", "✦  YOUR TEAM  ✦", 28, TitleGreen).rectTransform));
+            {
+                Ui.Stretch(Ui.Label(row, "Text", "YOUR TEAM", 28, TitleGreen).rectTransform);
+                var leftGem = Ui.SpriteImg(row, "LeftGem", SpriteLib.Pack("UI/Icons/Gem"));
+                leftGem.color = Ui.Hex("#5c8a3f");
+                Ui.PlaceCentered(leftGem.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(-112, 0),
+                    new Vector2(24, 24));
+                var rightGem = Ui.SpriteImg(row, "RightGem", SpriteLib.Pack("UI/Icons/Gem"));
+                rightGem.color = Ui.Hex("#5c8a3f");
+                Ui.PlaceCentered(rightGem.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(112, 0),
+                    new Vector2(24, 24));
+            });
 
             var team = TeamIds();
             const int slots = 6;
@@ -365,111 +392,100 @@ namespace Numeria.Game
             bool active = id == _progress.ActiveMonId;
             var (typeLabel, typeColor) = TypeOf(DisplaySpriteId(id));
 
-            // 内框 + 纵向布局,全部由布局组驱动,不用绝对坐标
-            var box = parent.gameObject.AddComponent<Image>();
-            box.color = CreamDeep;
-            Ui.AddOutline(parent.gameObject);
             var v = parent.gameObject.AddComponent<VerticalLayoutGroup>();
-            v.padding = new RectOffset(22, 22, 18, 14);
-            v.spacing = 12;
+            v.spacing = 14;
             v.childControlWidth = true;
             v.childControlHeight = true;
             v.childForceExpandWidth = true;
             v.childForceExpandHeight = false;
 
-            // 头部:大立绘 | 名字/类型/状态
-            ListRow(parent, "DetailHeader", 200, row =>
+            var identity = Ui.SpriteImg(parent, "IdentityPanel", SpriteLib.Pack("UI/Panels/Generic_Panel"));
+            identity.type = Image.Type.Sliced;
+            var identityLe = identity.gameObject.AddComponent<LayoutElement>();
+            identityLe.preferredHeight = 315;
+            identityLe.minHeight = 315;
+            identityLe.flexibleHeight = 0;
+
+            var sprite = Ui.SpriteImg(identity.transform, "BigSprite", SpriteLib.LargeIcon(DisplaySpriteId(id)));
+            sprite.preserveAspect = true;
+            Ui.PlaceCentered(sprite.rectTransform, new Vector2(0, 0.55f), new Vector2(145, 0), new Vector2(240, 240));
+
+            var name = Ui.Label(identity.transform, "Name", def.Name.ToUpperInvariant(), 42, TitleGreen,
+                TextAnchor.MiddleCenter);
+            Ui.Place(name.rectTransform, new Vector2(1, 1), new Vector2(-28, -24), new Vector2(390, 48));
+
+            var chip = Ui.Img(identity.transform, "TypeChip", typeColor);
+            Ui.Place(chip.rectTransform, new Vector2(1, 1), new Vector2(-148, -82), new Vector2(150, 44));
+            Ui.AddOutline(chip.gameObject);
+            var chipText = Ui.Label(chip.transform, "Text", typeLabel, 27, Color.white);
+            Ui.Stretch(chipText.rectTransform);
+
+            if (active)
             {
-                var h = row.gameObject.AddComponent<HorizontalLayoutGroup>();
-                h.spacing = 20;
-                h.childAlignment = TextAnchor.MiddleLeft;
-                h.childControlWidth = true;
-                h.childControlHeight = true;
-                h.childForceExpandWidth = false;
-                h.childForceExpandHeight = false;
-
-                var sprite = Ui.SpriteImg(row, "BigSprite", SpriteLib.LargeIcon(DisplaySpriteId(id)));
-                sprite.preserveAspect = true;
-                var sle = sprite.gameObject.AddComponent<LayoutElement>();
-                sle.preferredWidth = 180;
-                sle.preferredHeight = 180;
-
-                var info = Ui.Node(row, "Info");
-                var ile = info.gameObject.AddComponent<LayoutElement>();
-                ile.preferredWidth = 380;
-                ile.preferredHeight = 190;
-                var iv = info.gameObject.AddComponent<VerticalLayoutGroup>();
-                iv.spacing = 12;
-                iv.childAlignment = TextAnchor.UpperLeft;
-                iv.childControlWidth = true;
-                iv.childControlHeight = true;
-                iv.childForceExpandWidth = false;
-                iv.childForceExpandHeight = false;
-
-                var name = Ui.Label(info, "Name", def.Name.ToUpperInvariant(), 36, TitleGreen, TextAnchor.MiddleLeft);
-                var nle = name.gameObject.AddComponent<LayoutElement>();
-                nle.preferredWidth = 380;
-                nle.preferredHeight = 46;
-
-                var chip = Ui.Img(info, "TypeChip", typeColor);
-                Ui.AddOutline(chip.gameObject);
-                var cle = chip.gameObject.AddComponent<LayoutElement>();
-                cle.preferredWidth = 160;
-                cle.preferredHeight = 44;
-                var chipText = Ui.Label(chip.transform, "Text", typeLabel, 22, Color.white);
-                Ui.Stretch(chipText.rectTransform);
-
-                if (active)
+                var ready = Ui.Label(identity.transform, "Ready", "- BATTLE READY -", 27,
+                    Ui.Hex("#5c8a3f"));
+                Ui.Place(ready.rectTransform, new Vector2(1, 1), new Vector2(-28, -128), new Vector2(390, 38));
+            }
+            else
+            {
+                var pick = Ui.Btn(identity.transform, "BtnPick", "MAKE BATTLE BUDDY", 24);
+                pick.image.color = TabActive;
+                Ui.Place((RectTransform)pick.transform, new Vector2(1, 1), new Vector2(-58, -132),
+                    new Vector2(330, 46));
+                pick.onClick.AddListener(() =>
                 {
-                    var ready = Ui.Label(info, "Ready", "- BATTLE BUDDY -", 22, Ui.Hex("#5c8a3f"), TextAnchor.MiddleLeft);
-                    var rle = ready.gameObject.AddComponent<LayoutElement>();
-                    rle.preferredWidth = 380;
-                    rle.preferredHeight = 40;
-                }
-                else
-                {
-                    var pick = Ui.Btn(info, "BtnPick", "Make battle buddy!", 20);
-                    pick.image.color = TabActive;
-                    var ple = pick.gameObject.AddComponent<LayoutElement>();
-                    ple.preferredWidth = 300;
-                    ple.preferredHeight = 50;
-                    pick.onClick.AddListener(() =>
-                    {
-                        _progress.ActiveMonId = id;
-                        ShowTeam();
-                    });
-                }
-            });
+                    _progress.ActiveMonId = id;
+                    ShowTeam();
+                });
+            }
 
-            // 属性表
             int atk = 2 + _progress.AttackBonus;
             var formula = Array.Find(def.Skills, s => s.Id == "flame-formula");
-            StatRow(parent, "HP", def.MaxHp.ToString());
-            StatRow(parent, "ATK", atk.ToString());
-            StatRow(parent, formula != null ? formula.Name.ToUpperInvariant() : "SKILL",
-                formula != null ? $"power {formula.Power}" : "-");
+            BuildStatTable(identity.transform, def.MaxHp, atk, formula);
 
-            // 进化路线
-            BuildEvolutionBlock(parent, id);
+            var evolution = Ui.SpriteImg(parent, "EvolutionPanel", SpriteLib.Pack("UI/Panels/Generic_Panel"));
+            evolution.type = Image.Type.Sliced;
+            var evoLe = evolution.gameObject.AddComponent<LayoutElement>();
+            evoLe.minHeight = 260;
+            evoLe.flexibleHeight = 1;
+            BuildEvolutionBlock(evolution.rectTransform, id);
         }
 
-        private void StatRow(RectTransform parent, string label, string value)
+        private void BuildStatTable(Transform parent, int hp, int atk, SkillDef formula)
         {
-            ListRow(parent, $"Stat-{label}", 52, row =>
+            var table = Ui.Img(parent, "Stats", Cream);
+            Ui.Place(table.rectTransform, new Vector2(1, 0), new Vector2(-28, 0), new Vector2(398, 142));
+            Ui.AddOutline(table.gameObject);
+
+            string[] labels = { "HP", "ATK", formula != null ? formula.Name.ToUpperInvariant() : "SKILL" };
+            string[] values = { $"{hp} / {hp}", atk.ToString(), formula != null ? $"POWER {formula.Power}" : "-" };
+            string[] icons = { "Art/Sprites/gem", "Art/Sprites/icon-sword", "Art/Sprites/icon-flame" };
+            for (int i = 0; i < labels.Length; i++)
             {
-                var img = row.gameObject.AddComponent<Image>();
-                img.color = Cream;
-                Ui.AddOutline(row.gameObject);
-                var l = Ui.Label(row, "L", label, 23, Ui.Ink, TextAnchor.MiddleLeft);
-                Ui.Place(l.rectTransform, new Vector2(0, 0.5f), new Vector2(18, 0), new Vector2(320, 40));
-                var val = Ui.Label(row, "V", value, 23, TitleGreen, TextAnchor.MiddleRight);
-                Ui.Place(val.rectTransform, new Vector2(1, 0.5f), new Vector2(-18, 0), new Vector2(180, 40));
-            });
+                float y = -(i * 46 + 6);
+                var icon = Ui.SpriteImg(table.transform, $"Icon{i}", SpriteLib.One(icons[i]));
+                icon.preserveAspect = true;
+                if (i == 0) icon.color = Ui.Hex("#d94a3d");
+                Ui.Place(icon.rectTransform, new Vector2(0, 1), new Vector2(14, y), new Vector2(34, 34));
+                var label = Ui.Label(table.transform, $"Label{i}", labels[i], 26, Ui.Ink, TextAnchor.MiddleLeft);
+                Ui.Place(label.rectTransform, new Vector2(0, 1), new Vector2(58, y), new Vector2(240, 36));
+                var value = Ui.Label(table.transform, $"Value{i}", values[i], 25, TitleGreen, TextAnchor.MiddleRight);
+                Ui.Place(value.rectTransform, new Vector2(1, 1), new Vector2(-14, y), new Vector2(160, 36));
+                if (i < labels.Length - 1)
+                {
+                    var divider = Ui.Img(table.transform, $"Divider{i}", Ui.Hex("#a99a75"));
+                    divider.rectTransform.anchorMin = new Vector2(0, 1);
+                    divider.rectTransform.anchorMax = new Vector2(1, 1);
+                    divider.rectTransform.pivot = new Vector2(0.5f, 1);
+                    divider.rectTransform.anchoredPosition = new Vector2(0, -(i + 1) * 46);
+                    divider.rectTransform.sizeDelta = new Vector2(-8, 2);
+                }
+            }
         }
 
         private void BuildEvolutionBlock(RectTransform parent, string id)
         {
-            string fromId = id, toId = null, text;
+            string toId = null, text;
             Color color = Ui.Ink;
             switch (id)
             {
@@ -495,40 +511,50 @@ namespace Numeria.Game
                     break;
             }
 
-            ListRow(parent, "EvoTitle", 30, row =>
-                Ui.Stretch(Ui.Label(row, "Text", "- EVOLUTION -", 20, TitleGreen).rectTransform));
+            var title = Ui.Label(parent, "EvoTitle", "EVOLUTION", 32, TitleGreen);
+            Ui.Place(title.rectTransform, new Vector2(0.5f, 1), new Vector2(0, -16), new Vector2(300, 40));
 
-            ListRow(parent, "EvoIcons", 64, row =>
+            if (toId != null)
             {
-                var h = row.gameObject.AddComponent<HorizontalLayoutGroup>();
-                h.spacing = 12;
-                h.childAlignment = TextAnchor.MiddleCenter;
-                h.childControlWidth = true;
-                h.childControlHeight = true;
-                h.childForceExpandWidth = false;
-                h.childForceExpandHeight = false;
+                EvoIconAt(parent, "addmander", new Vector2(0.34f, 0.58f), new Vector2(84, 84), false);
+                var arrow = Ui.Label(parent, "Arrow", ">", 42, SummaryOrange);
+                Ui.PlaceCentered(arrow.rectTransform, new Vector2(0.5f, 0.60f), Vector2.zero, new Vector2(50, 50));
+                EvoIconAt(parent, toId, new Vector2(0.67f, 0.65f), new Vector2(140, 140), true);
 
-                EvoIcon(row, fromId);
-                if (toId != null)
-                {
-                    var arrow = Ui.Label(row, "Arrow", ">", 30, SummaryOrange);
-                    var ale = arrow.gameObject.AddComponent<LayoutElement>();
-                    ale.preferredWidth = 34;
-                    ale.preferredHeight = 40;
-                    EvoIcon(row, toId);
-                }
-            });
+                var levels = Ui.Label(parent, "Levels", $"Lv. {_progress.Level}     >     Lv. 5", 26,
+                    SummaryOrange);
+                Ui.Place(levels.rectTransform, new Vector2(0.5f, 0), new Vector2(0, 104), new Vector2(430, 34));
 
-            ListRow(parent, "EvoCond", 34, row =>
-                Ui.Stretch(Ui.Label(row, "Text", text, 19, color).rectTransform));
+                RequirementRow(parent, "Stone", SpriteLib.Cainos("TX Props", "TX Props - Stone 01"),
+                    _progress.Evolved ? "Evolution complete" : "Requires Evolution Stone", 68,
+                    _progress.Evolved || _progress.HasEvoStone ? Ui.Hex("#4f7e3d") : Ui.Ink);
+                RequirementRow(parent, "Peaks", SpriteLib.Cainos("TX Props", "TX Props Altar"),
+                    _progress.Evolved ? "Blaze Equation learned" : "Found in Silent Peaks", 34, color);
+            }
+            else
+            {
+                var condition = Ui.Label(parent, "EvoCond", text, 24, color);
+                Ui.PlaceCentered(condition.rectTransform, new Vector2(0.5f, 0.45f), Vector2.zero,
+                    new Vector2(560, 70));
+            }
         }
 
-        private static void EvoIcon(RectTransform parent, string id)
+        private static void EvoIconAt(RectTransform parent, string id, Vector2 anchor, Vector2 size, bool large)
         {
-            var img = Ui.SpriteImg(parent, $"Evo-{id}", SpriteLib.One($"Art/Sprites/{id}"));
-            var le = img.gameObject.AddComponent<LayoutElement>();
-            le.preferredWidth = 56;
-            le.preferredHeight = 56;
+            var sprite = large ? SpriteLib.LargeIcon(id) : SpriteLib.One($"Art/Sprites/{id}");
+            var img = Ui.SpriteImg(parent, $"Evo-{id}", sprite);
+            img.preserveAspect = true;
+            Ui.PlaceCentered(img.rectTransform, anchor, Vector2.zero, size);
+        }
+
+        private static void RequirementRow(RectTransform parent, string name, Sprite sprite, string text,
+            float bottom, Color color)
+        {
+            var icon = Ui.SpriteImg(parent, name, sprite);
+            icon.preserveAspect = true;
+            Ui.Place(icon.rectTransform, new Vector2(0, 0), new Vector2(108, bottom), new Vector2(34, 34));
+            var label = Ui.Label(parent, $"{name}Text", text, 23, color, TextAnchor.MiddleLeft);
+            Ui.Place(label.rectTransform, new Vector2(0, 0), new Vector2(154, bottom), new Vector2(470, 34));
         }
 
         // ---------- ITEMS ----------
