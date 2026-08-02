@@ -5,7 +5,8 @@ import { deflateSync } from 'node:zlib';
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { ADDMANDER, DUPLIROCK, GEM, SHIELD } from '../prototype/js/sprites.js';
+import { ADDMANDER, DUPLIROCK, GEM, SHIELD, COUNTIPILLAR } from '../prototype/js/sprites.js';
+
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -139,7 +140,12 @@ const bgDir = join(root, 'unity/Assets/Resources/Art/Backgrounds');
 mkdirSync(spriteDir, { recursive: true });
 mkdirSync(bgDir, { recursive: true });
 
-const sprites = { addmander: ADDMANDER, duplirock: DUPLIROCK, gem: GEM, shield: SHIELD };
+const sprites = {
+  addmander: ADDMANDER, duplirock: DUPLIROCK, gem: GEM, shield: SHIELD,
+  countipillar: COUNTIPILLAR,
+
+
+};
 for (const [name, sprite] of Object.entries(sprites)) {
   const path = join(spriteDir, `${name}.png`);
   writeFileSync(path, spriteToPng(sprite));

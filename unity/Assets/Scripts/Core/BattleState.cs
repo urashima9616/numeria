@@ -22,6 +22,7 @@ namespace Numeria.Core
         public int MaxHp;
         public int AttackPower;
         public int? Shield;
+        public bool Catchable;
         public SkillDef[] Skills;
     }
 
@@ -47,6 +48,7 @@ namespace Numeria.Core
         public int MaxGems = 8;
         public bool EnemyShielded;
         public int VulnerableTurns;
+        public int PlayerAttackBonus;
         public BattleOutcome Outcome = BattleOutcome.None;
 
         public BattleState(CombatantDef player, CombatantDef enemy)
@@ -74,7 +76,7 @@ namespace Numeria.Core
             Gems -= skill.Cost;
 
             bool powered = skill.Type != SkillType.Formula || correct;
-            int dmg = DamageToEnemy(powered ? skill.Power : skill.BasePower);
+            int dmg = DamageToEnemy((powered ? skill.Power : skill.BasePower) + PlayerAttackBonus);
             EnemyHp = Math.Max(0, EnemyHp - dmg);
             if (EnemyHp == 0) Outcome = BattleOutcome.Win;
 

@@ -33,6 +33,16 @@ bake "Nice try! The shield holds for now."
 bake "You win! Addmander got five experience points!"
 bake "Oh no! Let's try again!"
 
+# ---- P2 森林地图台词 ----
+bake "A wild Countipillar appeared!"
+bake "Gotcha! Countipillar joined your team!"
+bake "Duplirock guards the portal!"
+bake "The portal is open! A new world awaits!"
+bake "Level up! Addmander is getting stronger!"
+bake "A math chest! Solve the lock!"
+bake "Attack goes up by one!"
+bake "Let's rest and try again!"
+
 # ---- 咒语算式读题:a + ? = sum,sum 3..10,a 1..sum-1(与 PuzzleGenerator 一致) ----
 words=(zero One Two Three Four Five Six Seven Eight Nine Ten)
 lower=(zero one two three four five six seven eight nine ten)

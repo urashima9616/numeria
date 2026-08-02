@@ -1,0 +1,37 @@
+[2026-08-02T03:19:18.749Z][INFO] Command-line: /Applications/Unity/Hub/Editor/6000.5.6f1/Unity.app/Contents/Helpers/PackageManager/Server/UnityPackageManager server -s 15485 --ipc-path /tmp/Unity-Upm-15485.sock -l 2 --log-file /Users/yuankunxue/Projects/numeria/Logs/upm.log
+[2026-08-02T03:19:18.757Z][INFO] IPC server started (IPC path=/tmp/Unity-Upm-15485.sock).
+[2026-08-02T03:19:18.757Z][INFO] Hint: To connect to this UPM instance, launch Unity with the command-line parameter -upmIpcPath Upm-15485.
+[2026-08-02T03:19:19.576Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-08-02T03:19:19.616Z][INFO] project:list-packages --> 200 (40 ms)
+[2026-08-02T03:19:19.642Z][INFO] config:project:get-registries <-- Request received
+params: {}
+[2026-08-02T03:19:19.644Z][INFO] config:project:get-registries --> 200 (2 ms)
+[2026-08-02T03:19:19.653Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-08-02T03:19:19.671Z][INFO] project:list-packages --> 200 (18 ms)
+[2026-08-02T03:19:20.270Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-08-02T03:19:20.292Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-08-02T03:19:20.297Z][INFO] project:list-packages --> 200 (27 ms)
+[2026-08-02T03:19:20.308Z][INFO] config:project:get-registries <-- Request received
+params: {}
+[2026-08-02T03:19:20.310Z][INFO] config:project:get-registries --> 200 (2 ms)
+[2026-08-02T03:19:20.310Z][INFO] project:list-packages --> 200 (18 ms)
+[2026-08-02T03:19:20.751Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-08-02T03:19:20.773Z][INFO] project:list-packages --> 200 (22 ms)
+[2026-08-02T03:19:21.880Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-08-02T03:19:22.029Z][INFO] project:list-packages --> 200 (149 ms)
+[2026-08-02T03:19:28.217Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-08-02T03:19:28.237Z][INFO] project:list-packages --> 200 (20 ms)
+[2026-08-02T03:19:28.250Z][INFO] config:project:get-registries <-- Request received
+params: {}
+[2026-08-02T03:19:28.251Z][INFO] config:project:get-registries --> 200 (1 ms)
+[2026-08-02T03:19:48.493Z][INFO] project:list-packages <-- Request received
+params: {}
+[2026-08-02T03:19:48.512Z][INFO] project:list-packages --> 200 (19 ms)
+[2026-08-02T03:20:15.007Z][INFO] Received shutdown request (SIGTERM), shutting down Unity Package Manager

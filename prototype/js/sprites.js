@@ -99,6 +99,141 @@ export const SHIELD = {
   ],
 };
 
+export const COUNTIPILLAR = {
+  palette: {
+    O: '#2e4a24', B: '#79c25a', b: '#a5d98a',
+    E: '#ffffff', P: '#2e3338', R: '#ff9d9d', A: '#5d4037',
+  },
+  map: [
+    '................',
+    '................',
+    '...........A..A.',
+    '...........A..A.',
+    '..........OOOOO.',
+    '.........OBbbbBO',
+    '....OOO..OBEPEPO',
+    '...OBBBO.OBBBBBO',
+    '..OBbBBOOBBRBBO.',
+    '.OBBBBBOBBBBBBO.',
+    '.OBBBBOOBBBBBO..',
+    '..OOOO..OOOOO...',
+    '..O..O...O..O...',
+    '.OO.OO...OO.OO..',
+    '................',
+    '................',
+  ],
+};
+
+export const TILE_GRASS = {
+  palette: { G: '#7cb342', L: '#8fce5a', D: '#66a234' },
+  map: [
+    'GGGGGGGGGGGGGGGG',
+    'GGLGGGGGGGGDGGGG',
+    'GGGGGGGLGGGGGGGG',
+    'GGGGDGGGGGGGGGLG',
+    'GLGGGGGGGGDGGGGG',
+    'GGGGGGGGGGGGGGGG',
+    'GGGGGGLGGGGGGDGG',
+    'GGDGGGGGGGGGGGGG',
+    'GGGGGGGGGLGGGGGG',
+    'GLGGGDGGGGGGGGGG',
+    'GGGGGGGGGGGGLGGG',
+    'GGGGGGGGDGGGGGGG',
+    'GGLGGGGGGGGGGGDG',
+    'GGGGGGGLGGGGGGGG',
+    'GGDGGGGGGGGLGGGG',
+    'GGGGGGGGGGGGGGGG',
+  ],
+};
+
+export const TILE_TREE = {
+  palette: { G: '#7cb342', L: '#8fce5a', D: '#66a234', F: '#2f6b3c', f: '#3e8a4e', O: '#5d4037' },
+  map: [
+    'GGGGGGGGGGGGGGGG',
+    'GGGGGGGffGGGGGGG',
+    'GGGGGGffffGGGGGG',
+    'GGGGGFffffFGGGGG',
+    'GGGGGffffffGGGGL',
+    'GGGGFffffffFGGGG',
+    'GGGFffffffffFGGG',
+    'GGGGffffffffGGGG',
+    'GGFffffffffffFGG',
+    'GFffffffffffffFG',
+    'GGFFffffffffFFGG',
+    'GGGGGGOOGGGGGGGG',
+    'GLGGGGOOGGGGDGGG',
+    'GGGGGGOOGGGGGGGG',
+    'GGGGGDGGGGLGGGGG',
+    'GGGGGGGGGGGGGGGG',
+  ],
+};
+
+export const TILE_BUSH = {
+  palette: { G: '#7cb342', L: '#8fce5a', B: '#3e7a4c', l: '#5aa968' },
+  map: [
+    'GGGGGGGGGGGGGGGG',
+    'GGGGGGGGGGGGGGGG',
+    'GGBGGGBGGGBGGBGG',
+    'GGBGGBBGGGBGGBGG',
+    'GBBBGBBGBBBGBBBG',
+    'GBBBBBBBBBBBBBBG',
+    'GBlBBBBlBBBBlBBG',
+    'BBBBlBBBBBlBBBBB',
+    'BBBBBBBlBBBBBlBB',
+    'BBlBBBBBBBlBBBBB',
+    'BBBBBlBBBBBBBBBB',
+    'GBBBBBBBlBBBBBGG',
+    'GGBBlBBBBBBBBGGG',
+    'GGGBBBBBlBBGGGGG',
+    'GGGGGGGGGGGGGGGG',
+    'GGGGGGGGGGGGGGGG',
+  ],
+};
+
+export const TILE_CHEST = {
+  palette: { G: '#7cb342', L: '#8fce5a', W: '#8d5a2b', w: '#5d3a18', Y: '#ffd24a' },
+  map: [
+    'GGGGGGGGGGGGGGGG',
+    'GGGGGGGGGGGGGGGG',
+    'GGGGGGGGGGGGGGGG',
+    'GGGwwwwwwwwwwGGG',
+    'GGwWWWWWWWWWWwGG',
+    'GGwWWWWWWWWWWwGG',
+    'GGwwwwwwwwwwwwGG',
+    'GGwWWWYYWWWWWwGG',
+    'GGwWWWYYWWWWWwGG',
+    'GGwWWWWWWWWWWwGG',
+    'GGwWWWWWWWWWWwGG',
+    'GGwWWWWWWWWWWwGG',
+    'GGwwwwwwwwwwwwGG',
+    'GGGGGGGGGGGGGGGG',
+    'GGLGGGGGGGGDGGGG',
+    'GGGGGGGGGGGGGGGG',
+  ],
+};
+
+export const TILE_PORTAL = {
+  palette: { G: '#7cb342', P: '#7e57c2', p: '#b39ddb', E: '#ede7f6' },
+  map: [
+    'GGGGGGGGGGGGGGGG',
+    'GGGGGPPPPPPGGGGG',
+    'GGGPPppppppPPGGG',
+    'GGPPpEEEEEEpPPGG',
+    'GGPpEEEEEEEEpPGG',
+    'GPPpEEEEEEEEpPPG',
+    'GPpEEEEEEEEEEpPG',
+    'GPpEEEEEEEEEEpPG',
+    'GPpEEEEEEEEEEpPG',
+    'GPPpEEEEEEEEpPPG',
+    'GGPpEEEEEEEEpPGG',
+    'GGPPpEEEEEEpPPGG',
+    'GGGPPppppppPPGGG',
+    'GGGGGPPPPPPGGGGG',
+    'GGGGGGGGGGGGGGGG',
+    'GGGGGGGGGGGGGGGG',
+  ],
+};
+
 // 像素风战斗背景:固定内部分辨率,CSS 拉伸铺满。
 export function paintBackground(canvas) {
   const W = 480, H = 270;

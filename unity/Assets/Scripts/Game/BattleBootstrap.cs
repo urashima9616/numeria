@@ -12,7 +12,7 @@ namespace Numeria.Game
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void Boot()
         {
-            if (Object.FindFirstObjectByType<BattleController>() != null) return;
+            if (Object.FindFirstObjectByType<MapController>() != null) return;
 
             if (Object.FindFirstObjectByType<EventSystem>() == null)
             {
@@ -21,7 +21,7 @@ namespace Numeria.Game
                 es.AddComponent<InputSystemUIInputModule>();
             }
 
-            new GameObject("Battle").AddComponent<BattleController>();
+            new GameObject("ForestMap").AddComponent<MapController>();
         }
     }
 }

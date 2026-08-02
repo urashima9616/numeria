@@ -27,6 +27,18 @@ namespace Numeria.Core
             MaxHp = 10,
             AttackPower = 2,
             Shield = 10,
+            Catchable = false,
+            Skills = new SkillDef[0],
+        };
+
+        public static CombatantDef Countipillar() => new CombatantDef
+        {
+            Id = "countipillar",
+            Name = "Countipillar",
+            MaxHp = 8,
+            AttackPower = 1,
+            Shield = null,
+            Catchable = true,
             Skills = new SkillDef[0],
         };
     }
