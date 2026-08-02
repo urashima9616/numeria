@@ -11,7 +11,8 @@ namespace Numeria.Editor
     {
         private void OnPreprocessTexture()
         {
-            if (!assetPath.StartsWith("Assets/Resources/Art/")) return;
+            if (!assetPath.StartsWith("Assets/Resources/Art/") &&
+                !assetPath.StartsWith("Assets/Resources/generated/")) return;
 
             var importer = (TextureImporter)assetImporter;
             importer.textureType = TextureImporterType.Sprite;

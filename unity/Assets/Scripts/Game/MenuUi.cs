@@ -366,7 +366,8 @@ namespace Numeria.Game
                 h.childForceExpandWidth = false;
                 h.childForceExpandHeight = false;
 
-                var sprite = Ui.SpriteImg(row, "BigSprite", SpriteLib.One($"Art/Sprites/{DisplaySpriteId(id)}"));
+                var sprite = Ui.SpriteImg(row, "BigSprite", SpriteLib.LargeIcon(DisplaySpriteId(id)));
+                sprite.preserveAspect = true;
                 var sle = sprite.gameObject.AddComponent<LayoutElement>();
                 sle.preferredWidth = 180;
                 sle.preferredHeight = 180;

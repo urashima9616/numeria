@@ -14,6 +14,15 @@ namespace Numeria.Game
         /// <summary>加载单图精灵(Resources 路径,不带扩展名)。</summary>
         public static Sprite One(string path) => Resources.Load<Sprite>(path);
 
+        /// <summary>
+        /// 数灵高清大图(generated/{id}_large_icon),没有就回退到 16px 小立绘。
+        /// </summary>
+        public static Sprite LargeIcon(string id)
+        {
+            var large = Resources.Load<Sprite>($"generated/{id}_large_icon");
+            return large != null ? large : One($"Art/Sprites/{id}");
+        }
+
         /// <summary>按切片名从 Cainos 雪碧图取子精灵,如 Cainos("TX Props", "TX Props Chest")。</summary>
         public static Sprite Cainos(string sheet, string spriteName)
         {
