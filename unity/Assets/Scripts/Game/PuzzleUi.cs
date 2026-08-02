@@ -140,11 +140,13 @@ namespace Numeria.Game
                 slotText.text = value.ToString();
                 if (PuzzleGenerator.CheckFormula(p, value))
                 {
+                    Sfx.Play(SfxCue.Correct);
                     Say("Great job!");
                     result = true;
                 }
                 else if (attempts == 1)
                 {
+                    Sfx.Play(SfxCue.SoftMiss, 0.7f);
                     slotText.text = "";
                     UnityEngine.Object.Destroy(crystal.gameObject);
                     // 数块提示:加法/翻倍 = 已有(橙)补到结果(绿);减法 = 总数里剩下(橙)拿走(绿)
@@ -155,6 +157,7 @@ namespace Numeria.Game
                 }
                 else
                 {
+                    Sfx.Play(SfxCue.SoftMiss, 0.7f);
                     Say("Nice try! Your move still works!");
                     result = false;
                 }
@@ -227,11 +230,13 @@ namespace Numeria.Game
                 attempts++;
                 if (PuzzleGenerator.CheckMakeTen(p, picked[0], picked[1]))
                 {
+                    Sfx.Play(SfxCue.Correct);
                     Say("Shield break!");
                     result = true;
                 }
                 else if (attempts == 1)
                 {
+                    Sfx.Play(SfxCue.SoftMiss, 0.7f);
                     Say("Hmm, not quite.", "Try again!");
                     picked.Clear();
                     slotAText.text = "";
@@ -243,6 +248,7 @@ namespace Numeria.Game
                 }
                 else
                 {
+                    Sfx.Play(SfxCue.SoftMiss, 0.7f);
                     Say("Nice try! The shield holds for now.");
                     result = false;
                 }

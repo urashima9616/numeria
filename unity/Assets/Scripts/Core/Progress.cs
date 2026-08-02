@@ -10,11 +10,16 @@ namespace Numeria.Core
     [Serializable]
     public class Progress
     {
+        public const int CurrentSaveVersion = 2;
+
+        public int SaveVersion = CurrentSaveVersion;
         public int Level = 1;
         public int Xp;
         public int AttackBonus;
         public bool BossBeaten;
         public bool VoiceEnabled = true;
+        public bool SfxEnabled = true;
+        public bool MusicEnabled = true;
         public bool HasEvoStone;
         public bool Evolved;
         public string CurrentMap = "forest";
@@ -23,6 +28,17 @@ namespace Numeria.Core
         public List<string> OpenedChests = new List<string>();
         public List<string> ClearedGates = new List<string>();
         public List<string> Items = new List<string>();
+
+        /// <summary>补齐旧 JSON 中不存在的字段。每次新增持久化字段时在这里按版本迁移。</summary>
+        public void ApplyMigrations()
+        {
+            if (SaveVersion < 2)
+            {
+                SfxEnabled = true;
+                MusicEnabled = true;
+            }
+            SaveVersion = CurrentSaveVersion;
+        }
 
         /// <summary>升到下一级所需经验:等级 × 10,数字小,孩子能心算。</summary>
         public int XpToNext => Level * 10;

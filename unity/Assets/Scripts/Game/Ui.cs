@@ -130,7 +130,7 @@ namespace Numeria.Game
         public static Button Btn(Transform parent, string name, string label, int fontSize)
         {
             var img = Img(parent, name, PlateBg);
-            var btn = img.gameObject.AddComponent<Button>();
+            var btn = Sfx.WireClick(img.gameObject.AddComponent<Button>());
             var colors = btn.colors;
             colors.disabledColor = new Color(1f, 1f, 1f, 0.45f);
             btn.colors = colors;

@@ -42,6 +42,8 @@ namespace Numeria.Game
         {
             _progress = SaveSystem.Load();
             Voice.Enabled = _progress.VoiceEnabled;
+            Sfx.Enabled = _progress.SfxEnabled;
+            Music.Enabled = _progress.MusicEnabled;
             _def = Maps.Get(_progress.CurrentMap);
             _map = GridMap.Parse(_def.Rows);
             _rng = new Rng((uint)System.Environment.TickCount);
@@ -52,6 +54,7 @@ namespace Numeria.Game
             _puzzles = new PuzzleUi(this, _hudCanvasRoot, _rng, lines => _voice.Say(lines));
             SetupCamera();
             UpdateHud();
+            Music.PlayMap(_def.Id);
             _voice.Say(_def.WelcomeLine);
         }
 
@@ -296,6 +299,7 @@ namespace Numeria.Game
         private void StartBattle(CombatantDef enemy, bool isBoss)
         {
             _busy = true;
+            Music.Play(isBoss ? MusicMood.Boss : MusicMood.Battle);
             _mapRoot.SetActive(false);
             _hudRoot.SetActive(false);
 
@@ -311,6 +315,7 @@ namespace Numeria.Game
             _mapRoot.SetActive(true);
             _hudRoot.SetActive(true);
             SetupCamera();
+            Music.PlayMap(_def.Id);
 
             int levelUps = 0;
             switch (end)
@@ -341,6 +346,7 @@ namespace Numeria.Game
 
             if (levelUps > 0)
             {
+                Sfx.Play(SfxCue.LevelUp);
                 _voice.Say($"Level up! {PlayerName} is getting stronger!");
                 yield return new WaitForSeconds(1.5f);
             }
@@ -361,6 +367,7 @@ namespace Numeria.Game
             yield return _puzzles.RunFormula(v => ok = v, _def.Tier);
             if (ok.Value)
             {
+                Sfx.Play(SfxCue.Chest);
                 string id = ChestId(x, y);
                 _progress.OpenChest(id);
                 if (_chestRenderers.TryGetValue((x, y), out var sr))
@@ -408,6 +415,8 @@ namespace Numeria.Game
             }
 
             _voice.Say($"{PlayerName} is evolving!");
+            Music.Play(MusicMood.Evolution);
+            Sfx.Play(SfxCue.Evolution);
             var sr = _avatar.GetComponent<SpriteRenderer>();
             // 蜕变演出:白闪 + 放大
             for (int i = 0; i < 6; i++)
@@ -424,6 +433,7 @@ namespace Numeria.Game
             SaveSystem.Save(_progress);
             UpdateHud();
             yield return new WaitForSeconds(2.5f);
+            Music.PlayMap(_def.Id);
         }
 
         private IEnumerator ComingSoonRoutine()

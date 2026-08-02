@@ -24,6 +24,15 @@ unity/sysinfo.txt
 unity/*.stackdump
 unity/crashlytics-build.properties
 
+# Locally licensed audio packages and synchronized runtime copies.
+# CC0 Numeria SFX selections live separately under Resources/Sfx.
+unity/Assets/Dynamic Music/
+unity/Assets/Dynamic Music.meta
+unity/Assets/Casual Game Sounds U6/
+unity/Assets/Casual Game Sounds U6.meta
+unity/Assets/Resources/Music/LocalStore/*.wav
+unity/Assets/Resources/Music/LocalStore/*.wav.meta
+
 # Builds
 *.apk
 *.aab

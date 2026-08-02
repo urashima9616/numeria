@@ -253,7 +253,7 @@ namespace Numeria.Game
             subText.rectTransform.offsetMax = new Vector2(-18, 0);
             FitText(subText, 23, 34);
 
-            var btn = bg.gameObject.AddComponent<Button>();
+            var btn = Sfx.WireClick(bg.gameObject.AddComponent<Button>());
             btn.targetGraphic = bg;
             btn.transition = Selectable.Transition.SpriteSwap;
             var swap = btn.spriteState;
@@ -344,6 +344,7 @@ namespace Numeria.Game
             SetActionsEnabled(false);
             yield return Lunge(_playerSprite, new Vector2(60, 30));
             var result = _state.UseSkill("tackle");
+            Sfx.Play(SfxCue.Hit);
             PopDamage(_enemySprite, $"-{result.Damage}", Ui.Hex("#ffd24a"));
             yield return Flash(_enemySprite);
             RenderAll();
@@ -360,6 +361,7 @@ namespace Numeria.Game
             yield return Projectile(_playerSprite, _enemySprite,
                 correct.Value ? Ui.Hex("#ff5a2e") : Ui.Hex("#ffd24a"));
             var result = _state.UseSkill("flame-formula", correct.Value);
+            Sfx.Play(SfxCue.Hit, result.Powered ? 1f : 0.72f);
             PopDamage(_enemySprite, $"-{result.Damage}", result.Powered ? Ui.Hex("#ff9d3a") : Ui.Hex("#ffd24a"));
             if (result.Powered) StartCoroutine(Shake());
             yield return Flash(_enemySprite);
@@ -377,6 +379,7 @@ namespace Numeria.Game
             yield return _puzzles.RunMakeTen(v => ok = v, _state.Enemy.Shield ?? 10);
             if (ok.Value)
             {
+                Sfx.Play(SfxCue.ShieldBreak);
                 yield return ShatterShield();
                 _state.BreakShield();
                 RenderAll();
@@ -399,6 +402,7 @@ namespace Numeria.Game
             yield return _puzzles.RunFormula(v => correct = v, _tier);
             if (correct.Value)
             {
+                Sfx.Play(SfxCue.Catch);
                 _voice.Say($"Gotcha! {_state.Enemy.Name} joined your team!");
                 yield return FriendGemBurst(_enemySprite);
                 ShowBanner($"Caught {_state.Enemy.Name}!", "+5 XP", () => _onEnd(BattleEnd.Caught));
@@ -417,6 +421,7 @@ namespace Numeria.Game
             SetLog("Enemy turn", $"{_state.Enemy.Name.ToUpperInvariant()} ATTACKS");
             yield return Lunge(_enemySprite, new Vector2(-60, -30));
             int dmg = _state.EnemyTurn();
+            Sfx.Play(SfxCue.Hit, 0.82f);
             PopDamage(_playerSprite, $"-{dmg}", Ui.Hex("#ff6b6b"));
             yield return Flash(_playerSprite);
             RenderAll();
@@ -432,6 +437,7 @@ namespace Numeria.Game
         private void ShowOutcome()
         {
             bool win = _state.Outcome == BattleOutcome.Win;
+            Sfx.Play(win ? SfxCue.Victory : SfxCue.SoftMiss);
             _voice.Say(win ? $"You win! {_state.Player.Name} got five experience points!" : "Oh no! Let's try again!");
             ShowBanner(win ? "YOU WIN!" : $"{_state.Player.Name} fainted...", win ? "+5 XP" : "",
                 () => _onEnd(win ? BattleEnd.Win : BattleEnd.Lose));

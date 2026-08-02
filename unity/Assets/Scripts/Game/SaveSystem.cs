@@ -16,7 +16,11 @@ namespace Numeria.Game
                 if (File.Exists(SavePath))
                 {
                     var loaded = JsonUtility.FromJson<Progress>(File.ReadAllText(SavePath));
-                    if (loaded != null) return loaded;
+                    if (loaded != null)
+                    {
+                        loaded.ApplyMigrations();
+                        return loaded;
+                    }
                 }
             }
             catch (System.Exception e)

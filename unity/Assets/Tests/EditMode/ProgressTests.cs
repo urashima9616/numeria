@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using Numeria.Core;
+using UnityEngine;
 
 namespace Numeria.Core.Tests
 {
@@ -58,6 +59,22 @@ namespace Numeria.Core.Tests
         {
             Assert.True(GameData.Countipillar().Catchable);
             Assert.False(GameData.Duplirock().Catchable);
+        }
+
+        [Test]
+        public void AudioSettings_DefaultOn_AndRemainOnForLegacySaves()
+        {
+            var fresh = new Progress();
+            Assert.True(fresh.VoiceEnabled);
+            Assert.True(fresh.SfxEnabled);
+            Assert.True(fresh.MusicEnabled);
+
+            // 旧存档没有新增字段；字段初始化值必须保留，避免升级后突然静音。
+            var legacy = JsonUtility.FromJson<Progress>("{\"Level\":3,\"VoiceEnabled\":true}");
+            legacy.ApplyMigrations();
+            Assert.True(legacy.SfxEnabled);
+            Assert.True(legacy.MusicEnabled);
+            Assert.AreEqual(Progress.CurrentSaveVersion, legacy.SaveVersion);
         }
     }
 }

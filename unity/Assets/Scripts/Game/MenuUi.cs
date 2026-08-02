@@ -143,7 +143,7 @@ namespace Numeria.Game
             Ui.AddOutline(closeInset.gameObject);
             var x = Ui.Label(close.transform, "X", "X", 38, TitleGreen);
             Ui.Stretch(x.rectTransform);
-            var btn = close.gameObject.AddComponent<Button>();
+            var btn = Sfx.WireClick(close.gameObject.AddComponent<Button>());
             btn.onClick.AddListener(() =>
             {
                 UnityEngine.Object.Destroy(_overlay.gameObject);
@@ -189,7 +189,7 @@ namespace Numeria.Game
             activeBar.rectTransform.sizeDelta = new Vector2(-8, 8);
             _tabBars[key] = activeBar;
 
-            var btn = tab.gameObject.AddComponent<Button>();
+            var btn = Sfx.WireClick(tab.gameObject.AddComponent<Button>());
             btn.onClick.AddListener(() => onClick());
         }
 
@@ -378,7 +378,7 @@ namespace Numeria.Game
             var hpText = Ui.Label(row, "HpText", $"{def.MaxHp} / {def.MaxHp}", 22, Ui.Ink, TextAnchor.LowerRight);
             Ui.Place(hpText.rectTransform, new Vector2(1, 0), new Vector2(-12, 10), new Vector2(108, 26));
 
-            var btn = row.gameObject.AddComponent<Button>();
+            var btn = Sfx.WireClick(row.gameObject.AddComponent<Button>());
             btn.onClick.AddListener(() =>
             {
                 _selectedId = id;
@@ -607,6 +607,32 @@ namespace Numeria.Game
                     _progress.VoiceEnabled = !_progress.VoiceEnabled;
                     Voice.Enabled = _progress.VoiceEnabled;
                     voiceBtn.GetComponentInChildren<TMP_Text>().text = _progress.VoiceEnabled ? "Voice: ON" : "Voice: OFF";
+                    SaveSystem.Save(_progress);
+                });
+            });
+            ListRow(content, "SfxRow", 66, row =>
+            {
+                FillButtonRow(row);
+                var sfxBtn = Ui.Btn(row, "BtnSfx", _progress.SfxEnabled ? "SFX: ON" : "SFX: OFF", 24);
+                sfxBtn.onClick.AddListener(() =>
+                {
+                    _progress.SfxEnabled = !_progress.SfxEnabled;
+                    Sfx.Enabled = _progress.SfxEnabled;
+                    sfxBtn.GetComponentInChildren<TMP_Text>().text = _progress.SfxEnabled ? "SFX: ON" : "SFX: OFF";
+                    if (_progress.SfxEnabled) Sfx.Play(SfxCue.Click);
+                    SaveSystem.Save(_progress);
+                });
+            });
+            ListRow(content, "MusicRow", 66, row =>
+            {
+                FillButtonRow(row);
+                var musicBtn = Ui.Btn(row, "BtnMusic", _progress.MusicEnabled ? "Music: ON" : "Music: OFF", 24);
+                musicBtn.onClick.AddListener(() =>
+                {
+                    _progress.MusicEnabled = !_progress.MusicEnabled;
+                    Music.Enabled = _progress.MusicEnabled;
+                    musicBtn.GetComponentInChildren<TMP_Text>().text = _progress.MusicEnabled ? "Music: ON" : "Music: OFF";
+                    if (_progress.MusicEnabled) Music.PlayMap(_progress.CurrentMap);
                     SaveSystem.Save(_progress);
                 });
             });
