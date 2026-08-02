@@ -23,6 +23,7 @@ namespace Numeria.Game
         private Image _overlay;
         private RectTransform _contentArea;
         private readonly Dictionary<string, Image> _tabImages = new Dictionary<string, Image>();
+        private readonly Dictionary<string, Image> _tabBars = new Dictionary<string, Image>();
         private string _selectedId;
 
         // 参考图配色
@@ -80,20 +81,20 @@ namespace Numeria.Game
 
         private void Build()
         {
-            _overlay = Ui.Img(_canvasRoot, "MenuOverlay", new Color(0.05f, 0.08f, 0.05f, 0.9f));
+            _overlay = Ui.Img(_canvasRoot, "MenuOverlay", new Color(0.03f, 0.06f, 0.04f, 0.78f));
             Ui.Stretch(_overlay.rectTransform);
 
-            // 外层深绿描边框 → 内层羊皮纸面板(双层边框感)
-            var frame = Ui.Img(_overlay.transform, "Frame", TitleGreen);
-            Ui.Place(frame.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1180, 830));
-            var panel = Ui.Img(frame.transform, "MenuPanel", Cream);
+            // 与战斗 HUD 共用同一套像素角花与羊皮纸纹理。
+            var frame = Ui.SpriteImg(_overlay.transform, "Frame", SpriteLib.Pack("UI/Panels/Generic_Panel"));
+            frame.type = Image.Type.Sliced;
+            Ui.Place(frame.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1260, 860));
+            var panel = Ui.Node(frame.transform, "MenuPanel");
             Ui.Stretch(panel.rectTransform);
-            panel.rectTransform.offsetMin = new Vector2(8, 8);
-            panel.rectTransform.offsetMax = new Vector2(-8, -8);
+            panel.offsetMin = new Vector2(42, 34);
+            panel.offsetMax = new Vector2(-42, -38);
 
             var column = panel.gameObject.AddComponent<VerticalLayoutGroup>();
-            column.padding = new RectOffset(28, 28, 18, 18);
-            column.spacing = 10;
+            column.spacing = 6;
             column.childControlWidth = true;
             column.childControlHeight = true;
             column.childForceExpandWidth = true;
@@ -113,21 +114,21 @@ namespace Numeria.Game
         {
             var row = Ui.Node(parent, "Header");
             var le = row.gameObject.AddComponent<LayoutElement>();
-            le.preferredHeight = 96;
-            le.minHeight = 96;
+            le.preferredHeight = 98;
+            le.minHeight = 98;
             le.flexibleHeight = 0;
 
-            var title = Ui.Label(row, "Title", "NUMERIA", 46, TitleGreen, TextAnchor.UpperLeft);
-            Ui.Place(title.rectTransform, new Vector2(0, 1), new Vector2(4, -2), new Vector2(500, 54));
+            var title = Ui.Label(row, "Title", "NUMERIA", 56, TitleGreen, TextAnchor.UpperLeft);
+            Ui.Place(title.rectTransform, new Vector2(0, 1), new Vector2(4, 0), new Vector2(500, 58));
             var summary = Ui.Label(row, "Summary",
                 $"Lv. {_progress.Level}   XP {_progress.Xp}/{_progress.XpToNext}   ATK +{_progress.AttackBonus}",
-                24, SummaryOrange, TextAnchor.UpperLeft);
-            Ui.Place(summary.rectTransform, new Vector2(0, 1), new Vector2(6, -60), new Vector2(600, 30));
+                28, SummaryOrange, TextAnchor.UpperLeft);
+            Ui.Place(summary.rectTransform, new Vector2(0, 1), new Vector2(6, -61), new Vector2(700, 34));
 
-            var close = Ui.Img(row, "BtnClose", Cream);
-            Ui.Place(close.rectTransform, new Vector2(1, 1), new Vector2(-4, -4), new Vector2(64, 64));
-            Ui.AddOutline(close.gameObject);
-            var x = Ui.Label(close.transform, "X", "X", 32, TitleGreen);
+            var close = Ui.SpriteImg(row, "BtnClose", SpriteLib.Pack("UI/Panels/Generic_Panel"));
+            close.type = Image.Type.Sliced;
+            Ui.Place(close.rectTransform, new Vector2(1, 1), new Vector2(-2, -2), new Vector2(72, 72));
+            var x = Ui.Label(close.transform, "X", "X", 38, TitleGreen);
             Ui.Stretch(x.rectTransform);
             var btn = close.gameObject.AddComponent<Button>();
             btn.onClick.AddListener(() =>
@@ -141,11 +142,11 @@ namespace Numeria.Game
         {
             var row = Ui.Node(parent, "Tabs");
             var le = row.gameObject.AddComponent<LayoutElement>();
-            le.preferredHeight = 70;
-            le.minHeight = 70;
+            le.preferredHeight = 76;
+            le.minHeight = 76;
             le.flexibleHeight = 0; // 内部 LayoutGroup 会对外汇报可伸缩,必须封死
             var h = row.gameObject.AddComponent<HorizontalLayoutGroup>();
-            h.spacing = 10;
+            h.spacing = 8;
             h.childControlWidth = true;
             h.childControlHeight = true;
             h.childForceExpandWidth = true;
@@ -163,9 +164,17 @@ namespace Numeria.Game
             _tabImages[key] = tab;
 
             var icImg = Ui.SpriteImg(tab.transform, "Icon", icon);
-            Ui.Place(icImg.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(-70, 0), new Vector2(40, 40));
-            var text = Ui.Label(tab.transform, "Label", label, 26, TitleGreen);
+            Ui.Place(icImg.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(-72, 2), new Vector2(44, 44));
+            var text = Ui.Label(tab.transform, "Label", label, 30, TitleGreen);
             Ui.Place(text.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(30, 0), new Vector2(220, 40));
+
+            var activeBar = Ui.Img(tab.transform, "ActiveBar", TabActive);
+            activeBar.rectTransform.anchorMin = Vector2.zero;
+            activeBar.rectTransform.anchorMax = new Vector2(1, 0);
+            activeBar.rectTransform.pivot = new Vector2(0.5f, 0);
+            activeBar.rectTransform.anchoredPosition = new Vector2(0, -5);
+            activeBar.rectTransform.sizeDelta = new Vector2(-8, 8);
+            _tabBars[key] = activeBar;
 
             var btn = tab.gameObject.AddComponent<Button>();
             btn.onClick.AddListener(() => onClick());
@@ -175,6 +184,8 @@ namespace Numeria.Game
         {
             foreach (var pair in _tabImages)
                 pair.Value.color = pair.Key == key ? TabActive : Cream;
+            foreach (var pair in _tabBars)
+                pair.Value.gameObject.SetActive(pair.Key == key);
         }
 
         private void ClearContent()
@@ -244,7 +255,7 @@ namespace Numeria.Game
             var wrap = FreshWrap();
 
             var split = wrap.gameObject.AddComponent<HorizontalLayoutGroup>();
-            split.spacing = 22;
+            split.spacing = 14;
             split.childControlWidth = true;
             split.childControlHeight = true;
             split.childForceExpandWidth = false;
@@ -253,8 +264,8 @@ namespace Numeria.Game
             // 左栏:队伍列表
             var left = Ui.Node(wrap, "LeftCol");
             var lle = left.gameObject.AddComponent<LayoutElement>();
-            lle.preferredWidth = 440;
-            lle.minWidth = 440;
+            lle.preferredWidth = 478;
+            lle.minWidth = 478;
             BuildTeamList(left);
 
             // 右栏:详情
@@ -266,14 +277,14 @@ namespace Numeria.Game
         private void BuildTeamList(RectTransform parent)
         {
             var v = parent.gameObject.AddComponent<VerticalLayoutGroup>();
-            v.spacing = 10;
+            v.spacing = 7;
             v.childControlWidth = true;
             v.childControlHeight = true;
             v.childForceExpandWidth = true;
             v.childForceExpandHeight = false;
 
-            ListRow(parent, "TeamHeader", 34, row =>
-                Ui.Stretch(Ui.Label(row, "Text", "- YOUR TEAM -", 24, TitleGreen).rectTransform));
+            ListRow(parent, "TeamHeader", 42, row =>
+                Ui.Stretch(Ui.Label(row, "Text", "✦  YOUR TEAM  ✦", 28, TitleGreen).rectTransform));
 
             var team = TeamIds();
             const int slots = 6;
@@ -282,7 +293,7 @@ namespace Numeria.Game
                 if (i < team.Count)
                 {
                     string id = team[i];
-                    ListRow(parent, $"Mon-{id}", 88, row => BuildTeamCard(row, id));
+                    ListRow(parent, $"Mon-{id}", 106, row => BuildTeamCard(row, id));
                 }
                 else
                 {
@@ -297,8 +308,8 @@ namespace Numeria.Game
                 }
             }
 
-            ListRow(parent, "Hint", 34, row =>
-                Ui.Stretch(Ui.Label(row, "Text", "Tap a teammate to view details", 20, SummaryOrange).rectTransform));
+            ListRow(parent, "Hint", 38, row =>
+                Ui.Stretch(Ui.Label(row, "Text", "Tap a teammate to view details", 23, SummaryOrange).rectTransform));
         }
 
         private void BuildTeamCard(RectTransform row, string id)
@@ -311,24 +322,34 @@ namespace Numeria.Game
             img.color = active ? CardActive : selected ? Ui.Hex("#f6e6c4") : Cream;
             Ui.AddOutline(row.gameObject);
 
-            var sprite = Ui.SpriteImg(row, "Sprite", SpriteLib.One($"Art/Sprites/{DisplaySpriteId(id)}"));
-            Ui.Place(sprite.rectTransform, new Vector2(0, 0.5f), new Vector2(12, 0), new Vector2(64, 64));
+            if (selected)
+            {
+                var accent = Ui.Img(row, "SelectedAccent", TabActive);
+                accent.rectTransform.anchorMin = Vector2.zero;
+                accent.rectTransform.anchorMax = new Vector2(0, 1);
+                accent.rectTransform.pivot = new Vector2(0, 0.5f);
+                accent.rectTransform.anchoredPosition = Vector2.zero;
+                accent.rectTransform.sizeDelta = new Vector2(9, -4);
+            }
 
-            var name = Ui.Label(row, "Name", def.Name, 24, Ui.Ink, TextAnchor.UpperLeft);
-            Ui.Place(name.rectTransform, new Vector2(0, 1), new Vector2(90, -10), new Vector2(240, 28));
-            var lv = Ui.Label(row, "Lv", $"Lv. {_progress.Level}", 20, SummaryOrange, TextAnchor.UpperLeft);
-            Ui.Place(lv.rectTransform, new Vector2(0, 1), new Vector2(90, -38), new Vector2(120, 24));
+            var sprite = Ui.SpriteImg(row, "Sprite", SpriteLib.One($"Art/Sprites/{DisplaySpriteId(id)}"));
+            Ui.Place(sprite.rectTransform, new Vector2(0, 0.5f), new Vector2(18, 0), new Vector2(82, 82));
+
+            var name = Ui.Label(row, "Name", def.Name, 29, Ui.Ink, TextAnchor.UpperLeft);
+            Ui.Place(name.rectTransform, new Vector2(0, 1), new Vector2(118, -9), new Vector2(270, 34));
+            var lv = Ui.Label(row, "Lv", $"Lv. {_progress.Level}", 24, SummaryOrange, TextAnchor.UpperLeft);
+            Ui.Place(lv.rectTransform, new Vector2(0, 1), new Vector2(118, -43), new Vector2(140, 28));
 
             // HP 条(地图上恒满)
             var track = Ui.Img(row, "HpTrack", HpTrack);
-            Ui.Place(track.rectTransform, new Vector2(0, 0), new Vector2(90, 14), new Vector2(200, 14));
+            Ui.Place(track.rectTransform, new Vector2(0, 0), new Vector2(118, 16), new Vector2(236, 15));
             var fill = Ui.Img(track.transform, "HpFill", HpGreen);
             fill.rectTransform.anchorMin = Vector2.zero;
             fill.rectTransform.anchorMax = new Vector2(1f, 1f); // 满血
             fill.rectTransform.offsetMin = Vector2.zero;
             fill.rectTransform.offsetMax = Vector2.zero;
-            var hpText = Ui.Label(row, "HpText", $"{def.MaxHp} / {def.MaxHp}", 18, Ui.Ink, TextAnchor.LowerRight);
-            Ui.Place(hpText.rectTransform, new Vector2(1, 0), new Vector2(-12, 10), new Vector2(100, 22));
+            var hpText = Ui.Label(row, "HpText", $"{def.MaxHp} / {def.MaxHp}", 22, Ui.Ink, TextAnchor.LowerRight);
+            Ui.Place(hpText.rectTransform, new Vector2(1, 0), new Vector2(-12, 10), new Vector2(108, 26));
 
             var btn = row.gameObject.AddComponent<Button>();
             btn.onClick.AddListener(() =>
