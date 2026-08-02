@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Numeria.Core;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,13 +28,13 @@ namespace Numeria.Game
         private RectTransform _enemySprite;
         private Image _playerHpFill;
         private Image _enemyHpFill;
-        private Text _playerHpText;
-        private Text _enemyHpText;
+        private TMP_Text _playerHpText;
+        private TMP_Text _enemyHpText;
         private readonly List<Image> _gemIcons = new List<Image>();
-        private Text _gemLabel;
+        private TMP_Text _gemLabel;
         private GameObject _shieldRow;
-        private Text _logMain;
-        private Text _logSub;
+        private TMP_Text _logMain;
+        private TMP_Text _logSub;
         private Button _btnTackle;
         private Button _btnFormula;
         private Image _formulaBg;
@@ -48,7 +49,7 @@ namespace Numeria.Game
         private static readonly Color Amber = Ui.Hex("#f2b04e");
         private static readonly Color HpGreen = Ui.Hex("#7ac974");
         private static readonly Color HpTrack = Ui.Hex("#e3d9bd");
-        private static readonly Color SubOrange = Ui.Hex("#c77b3a");
+        private static readonly Color SubOrange = Ui.Hex("#9b5729");
 
         private int _tier = 1;
         private string _battleBg = "forest-battle";
@@ -105,15 +106,15 @@ namespace Numeria.Game
             // 敌方立绘落在右上草圈，避开状态牌与回合横幅。
             var enemyImg = Ui.SpriteImg(_shakeRoot, "EnemySprite", SpriteLib.EnemyBattleSprite(_state.Enemy.Id));
             enemyImg.preserveAspect = true;
-            Ui.Place(enemyImg.rectTransform, new Vector2(0.70f, 0.64f), Vector2.zero, new Vector2(350, 350));
+            Ui.PlaceCentered(enemyImg.rectTransform, new Vector2(0.69f, 0.67f), Vector2.zero, new Vector2(360, 360));
             _enemySprite = enemyImg.rectTransform;
 
             // 我方立绘落在左下草圈，但给底部命令坞留出完整空间。
             var playerImg = Ui.SpriteImg(_shakeRoot, "PlayerSprite", SpriteLib.PlayerBattleSprite(_state.Player.Id));
             playerImg.preserveAspect = true;
-            Ui.Place(playerImg.rectTransform, new Vector2(0.25f, 0.39f), Vector2.zero, new Vector2(390, 390));
+            Ui.PlaceCentered(playerImg.rectTransform, new Vector2(0.235f, 0.49f), Vector2.zero, new Vector2(490, 490));
             _playerSprite = playerImg.rectTransform;
-            var playerPlate = BuildStatusPlate("PlayerPlate", new Vector2(1, 0), new Vector2(-28, 292), new Vector2(560, 280),
+            var playerPlate = BuildStatusPlate("PlayerPlate", new Vector2(1, 0), new Vector2(-28, 267), new Vector2(560, 310),
                 _state.Player.Name, $"Lv. {_playerLevel}",
                 out _playerHpFill, out _playerHpText);
             BuildGemRow(playerPlate);
@@ -121,13 +122,15 @@ namespace Numeria.Game
             // 回合横幅只承载短主标题 + 一行结果，避免战斗叙述横穿整个画面。
             var logPlate = Ui.SpriteImg(_shakeRoot, "LogPlate", SpriteLib.Pack("UI/Panels/Turn_Banner"));
             logPlate.type = Image.Type.Sliced;
-            Ui.Place(logPlate.rectTransform, new Vector2(0.5f, 1), new Vector2(0, -30), new Vector2(350, 142));
-            _logMain = Ui.DisplayLabel(logPlate.transform, "LogMain", "", 30, TitleGreen);
-            Ui.Place(_logMain.rectTransform, new Vector2(0.5f, 1), new Vector2(0, -34), new Vector2(300, 42));
-            FitText(_logMain, 20, 30);
-            _logSub = Ui.DisplayLabel(logPlate.transform, "LogSub", "", 18, Ui.Hex("#8a5a1a"));
-            Ui.Place(_logSub.rectTransform, new Vector2(0.5f, 0), new Vector2(0, 34), new Vector2(300, 28));
-            FitText(_logSub, 12, 18);
+            Ui.Place(logPlate.rectTransform, new Vector2(0.5f, 1), new Vector2(0, -30), new Vector2(360, 152));
+            _logMain = Ui.DisplayLabel(logPlate.transform, "LogMain", "", 56, TitleGreen);
+            Ui.Place(_logMain.rectTransform, new Vector2(0.5f, 1), new Vector2(0, -30), new Vector2(306, 58));
+            FitText(_logMain, 38, 56);
+            _logSub = Ui.DisplayLabel(logPlate.transform, "LogSub", "", 34, Ui.Hex("#70491f"));
+            Ui.Place(_logSub.rectTransform, new Vector2(0.5f, 0), new Vector2(0, 30), new Vector2(210, 36));
+            FitText(_logSub, 24, 34);
+            BuildLogSpark(logPlate.transform, "LeftSpark", -124);
+            BuildLogSpark(logPlate.transform, "RightSpark", 124);
 
             // 行动按钮坞(素材包 Command_Dock,底部整条)
             var dock = Ui.SpriteImg(_shakeRoot, "CommandDock", SpriteLib.Pack("UI/Panels/Command_Dock"));
@@ -136,11 +139,11 @@ namespace Numeria.Game
             barRt.anchorMin = new Vector2(0, 0);
             barRt.anchorMax = new Vector2(1, 0);
             barRt.pivot = new Vector2(0.5f, 0);
-            barRt.anchoredPosition = new Vector2(0, 24);
-            barRt.sizeDelta = new Vector2(-96, 246);
+            barRt.anchoredPosition = new Vector2(0, 8);
+            barRt.sizeDelta = new Vector2(-160, 304);
             _dockGroup = dock.gameObject.AddComponent<CanvasGroup>();
             var layout = dock.gameObject.AddComponent<HorizontalLayoutGroup>();
-            layout.padding = new RectOffset(56, 56, 48, 48);
+            layout.padding = new RectOffset(56, 56, 61, 31);
             layout.spacing = 34;
             layout.childAlignment = TextAnchor.MiddleCenter;
             layout.childControlWidth = true;
@@ -165,19 +168,19 @@ namespace Numeria.Game
 
         /// <summary>状态名牌:名字、等级、HP 数字与血条严格纵向分层，不共享基线。</summary>
         private RectTransform BuildStatusPlate(string plateName, Vector2 anchor, Vector2 offset, Vector2 size,
-            string title, string subtitle, out Image hpFill, out Text hpText)
+            string title, string subtitle, out Image hpFill, out TMP_Text hpText)
         {
             var plate = Ui.SpriteImg(_shakeRoot, plateName, SpriteLib.Pack("UI/Panels/Status_Panel"));
             plate.type = Image.Type.Sliced;
             Ui.Place(plate.rectTransform, anchor, offset, size);
 
-            var name = Ui.DisplayLabel(plate.transform, "Name", title.ToUpperInvariant(), 30, TitleGreen, TextAnchor.MiddleLeft);
-            Ui.Place(name.rectTransform, new Vector2(0, 1), new Vector2(48, -28), new Vector2(size.x - 96, 48));
-            FitText(name, 22, 30);
-            var sub = Ui.DisplayLabel(plate.transform, "Sub", subtitle, 22, SubOrange, TextAnchor.MiddleLeft);
-            Ui.Place(sub.rectTransform, new Vector2(0, 1), new Vector2(48, -80), new Vector2(size.x - 96, 32));
-            hpText = Ui.DisplayLabel(plate.transform, "HpText", "", 22, TitleGreen, TextAnchor.MiddleLeft);
-            Ui.Place(hpText.rectTransform, new Vector2(0, 1), new Vector2(48, -116), new Vector2(size.x - 96, 32));
+            var name = Ui.DisplayLabel(plate.transform, "Name", title.ToUpperInvariant(), 60, TitleGreen, TextAnchor.MiddleLeft);
+            Ui.Place(name.rectTransform, new Vector2(0, 1), new Vector2(48, -24), new Vector2(size.x - 96, 58));
+            FitText(name, 42, 60);
+            var sub = Ui.DisplayLabel(plate.transform, "Sub", subtitle, 38, SubOrange, TextAnchor.MiddleLeft);
+            Ui.Place(sub.rectTransform, new Vector2(0, 1), new Vector2(48, -82), new Vector2(size.x - 96, 36));
+            hpText = Ui.DisplayLabel(plate.transform, "HpText", "", 38, TitleGreen, TextAnchor.MiddleLeft);
+            Ui.Place(hpText.rectTransform, new Vector2(0, 1), new Vector2(48, -120), new Vector2(size.x - 96, 36));
 
             // 血条使用顶部锚点，避免面板变高后被错误吸到底边。
             var frame = Ui.SpriteImg(plate.transform, "HpFrame", SpriteLib.Pack("UI/Bars/HP_Bar_Frame"));
@@ -199,7 +202,7 @@ namespace Numeria.Game
             Ui.Place(row, new Vector2(1, 1), new Vector2(-48, -78), new Vector2(100, 34));
             var icon = Ui.SpriteImg(row, "Icon", SpriteLib.One("Art/Sprites/shield"));
             Ui.Place(icon.rectTransform, new Vector2(0, 0.5f), Vector2.zero, new Vector2(32, 32));
-            var text = Ui.DisplayLabel(row, "Value", _state.Enemy.Shield?.ToString() ?? "", 20, Ui.ShieldBlue, TextAnchor.MiddleLeft);
+            var text = Ui.DisplayLabel(row, "Value", _state.Enemy.Shield?.ToString() ?? "", 34, Ui.ShieldBlue, TextAnchor.MiddleLeft);
             Ui.Place(text.rectTransform, new Vector2(0, 0.5f), new Vector2(40, 0), new Vector2(60, 32));
             _shieldRow = row.gameObject;
         }
@@ -217,8 +220,8 @@ namespace Numeria.Game
                 Ui.Place(icon.rectTransform, new Vector2(0, 0.5f), new Vector2(i * 48, 0), new Vector2(40, 40));
                 _gemIcons.Add(icon);
             }
-            _gemLabel = Ui.DisplayLabel(plate, "GemLabel", "", 20, SubOrange, TextAnchor.MiddleLeft);
-            Ui.Place(_gemLabel.rectTransform, new Vector2(0, 1), new Vector2(208, -198), new Vector2(260, 40));
+            _gemLabel = Ui.DisplayLabel(plate, "GemLabel", "", 34, SubOrange, TextAnchor.MiddleLeft);
+            Ui.Place(_gemLabel.rectTransform, new Vector2(0, 1), new Vector2(176, -198), new Vector2(280, 40));
         }
 
         /// <summary>大按钮:素材包按钮底(9-slice)+ 图标 + 标题 + 副标题。</summary>
@@ -237,18 +240,18 @@ namespace Numeria.Game
             iconImg.preserveAspect = true;
             Ui.Place(iconImg.rectTransform, new Vector2(0, 0.5f), new Vector2(34, 0), new Vector2(76, 76));
 
-            var titleText = Ui.DisplayLabel(bg.transform, "Title", title, 28, TitleGreen);
+            var titleText = Ui.DisplayLabel(bg.transform, "Title", title, 50, TitleGreen);
             titleText.rectTransform.anchorMin = new Vector2(0, 0.48f);
             titleText.rectTransform.anchorMax = Vector2.one;
             titleText.rectTransform.offsetMin = new Vector2(112, 0);
             titleText.rectTransform.offsetMax = new Vector2(-18, -22);
-            FitText(titleText, 18, 28);
-            var subText = Ui.DisplayLabel(bg.transform, "SubT", subtitle, 19, subtitleColor);
+            FitText(titleText, 34, 50);
+            var subText = Ui.DisplayLabel(bg.transform, "SubT", subtitle, 34, subtitleColor);
             subText.rectTransform.anchorMin = Vector2.zero;
             subText.rectTransform.anchorMax = new Vector2(1, 0.48f);
             subText.rectTransform.offsetMin = new Vector2(112, 20);
             subText.rectTransform.offsetMax = new Vector2(-18, 0);
-            FitText(subText, 13, 19);
+            FitText(subText, 23, 34);
 
             var btn = bg.gameObject.AddComponent<Button>();
             btn.targetGraphic = bg;
@@ -266,11 +269,19 @@ namespace Numeria.Game
         }
 
         /// <summary>只在文本真的放不下时向下收缩，正常 16:9 布局保持设计字号。</summary>
-        private static void FitText(Text text, int minSize, int maxSize)
+        private static void FitText(TMP_Text text, int minSize, int maxSize)
         {
-            text.resizeTextForBestFit = true;
-            text.resizeTextMinSize = minSize;
-            text.resizeTextMaxSize = maxSize;
+            text.enableAutoSizing = true;
+            text.fontSizeMin = minSize;
+            text.fontSizeMax = maxSize;
+        }
+
+        private void BuildLogSpark(Transform parent, string name, float x)
+        {
+            var spark = Ui.SpriteImg(parent, name, SpriteLib.Pack("UI/Icons/Gem"));
+            spark.preserveAspect = true;
+            spark.color = new Color(0.52f, 0.30f, 0.08f, 0.9f);
+            Ui.PlaceCentered(spark.rectTransform, new Vector2(0.5f, 0), new Vector2(x, 44), new Vector2(28, 28));
         }
 
         // ---------- 渲染 ----------
@@ -297,7 +308,7 @@ namespace Numeria.Game
             _btnCatch.interactable = _state.EnemyHp <= 3;
         }
 
-        private static void SetHpBar(Image fill, Text label, int hp, int maxHp)
+        private static void SetHpBar(Image fill, TMP_Text label, int hp, int maxHp)
         {
             float t = maxHp == 0 ? 0 : (float)hp / maxHp;
             fill.rectTransform.anchorMax = new Vector2(t, 1);

@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +22,7 @@ namespace Numeria.Game
 
         private static Font _pixelFont;
         private static bool _pixelFontLoaded;
+        private static TMP_FontAsset _battleFont;
 
         /// <summary>像素字体(Press Start 2P, OFL),缺失时回退系统字体。</summary>
         public static Font DefaultFont
@@ -33,6 +35,23 @@ namespace Numeria.Game
                     _pixelFontLoaded = true;
                 }
                 return _pixelFont != null ? _pixelFont : Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            }
+        }
+
+        /// <summary>
+        /// 战斗界面使用更窄、更高的 Jersey 10，并在运行时生成动态 SDF atlas。
+        /// 字体文件缺失时自动回退到已有 Press Start 2P，避免 UI 整体失效。
+        /// </summary>
+        public static TMP_FontAsset BattleFont
+        {
+            get
+            {
+                if (_battleFont != null) return _battleFont;
+                var source = Resources.Load<Font>("Fonts/Jersey10-Regular");
+                if (source == null) source = DefaultFont;
+                _battleFont = TMP_FontAsset.CreateFontAsset(source);
+                if (_battleFont != null) _battleFont.name = $"{source.name} Battle SDF";
+                return _battleFont;
             }
         }
 
@@ -87,12 +106,38 @@ namespace Numeria.Game
         /// 大型展示文字使用设计稿中的实际字号，不套用旧界面为紧凑控件准备的 62% 缩放。
         /// 适用于战斗状态牌、回合横幅和大触控按钮；普通菜单文字继续使用 Label。
         /// </summary>
-        public static Text DisplayLabel(Transform parent, string name, string text, int size, Color color,
+        public static TextMeshProUGUI DisplayLabel(Transform parent, string name, string text, int size, Color color,
             TextAnchor anchor = TextAnchor.MiddleCenter, FontStyle style = FontStyle.Bold)
         {
-            var label = Label(parent, name, text, size, color, anchor, style);
+            var rt = Node(parent, name);
+            var label = rt.gameObject.AddComponent<TextMeshProUGUI>();
+            label.font = BattleFont;
+            label.text = text;
             label.fontSize = size;
+            label.fontStyle = FontStyles.Normal;
+            label.color = color;
+            label.alignment = ToTmpAlignment(anchor);
+            label.textWrappingMode = TextWrappingModes.NoWrap;
+            label.overflowMode = TextOverflowModes.Overflow;
+            label.raycastTarget = false;
+            label.extraPadding = true;
             return label;
+        }
+
+        private static TextAlignmentOptions ToTmpAlignment(TextAnchor anchor)
+        {
+            switch (anchor)
+            {
+                case TextAnchor.UpperLeft: return TextAlignmentOptions.TopLeft;
+                case TextAnchor.UpperCenter: return TextAlignmentOptions.Top;
+                case TextAnchor.UpperRight: return TextAlignmentOptions.TopRight;
+                case TextAnchor.MiddleLeft: return TextAlignmentOptions.Left;
+                case TextAnchor.MiddleRight: return TextAlignmentOptions.Right;
+                case TextAnchor.LowerLeft: return TextAlignmentOptions.BottomLeft;
+                case TextAnchor.LowerCenter: return TextAlignmentOptions.Bottom;
+                case TextAnchor.LowerRight: return TextAlignmentOptions.BottomRight;
+                default: return TextAlignmentOptions.Center;
+            }
         }
 
         public static Button Btn(Transform parent, string name, string label, int fontSize)
@@ -130,6 +175,16 @@ namespace Numeria.Game
             rt.anchorMin = anchor;
             rt.anchorMax = anchor;
             rt.pivot = anchor;
+            rt.anchoredPosition = offset;
+            rt.sizeDelta = size;
+        }
+
+        /// <summary>以给定锚点作为视觉中心，适合角色、图标等自由构图元素。</summary>
+        public static void PlaceCentered(RectTransform rt, Vector2 anchor, Vector2 offset, Vector2 size)
+        {
+            rt.anchorMin = anchor;
+            rt.anchorMax = anchor;
+            rt.pivot = new Vector2(0.5f, 0.5f);
             rt.anchoredPosition = offset;
             rt.sizeDelta = size;
         }
