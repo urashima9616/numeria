@@ -76,5 +76,55 @@ namespace Numeria.Core.Tests
             Assert.True(legacy.MusicEnabled);
             Assert.AreEqual(Progress.CurrentSaveVersion, legacy.SaveVersion);
         }
+
+        [Test]
+        public void Growth_IsIndependentForEachCaughtFamily()
+        {
+            var progress = new Progress();
+            progress.Catch("countipillar");
+            progress.ActiveMonId = "countipillar";
+            Assert.AreEqual(1, progress.ActiveGrowth.Level);
+            Assert.AreEqual(1, progress.GainXp(10));
+            Assert.AreEqual(2, progress.EnsureGrowth("countipillar").Level);
+            Assert.AreEqual(1, progress.EnsureGrowth("addmander").Level);
+        }
+
+        [Test]
+        public void EvolutionStones_AreMilestonesForSecondAndThirdForms()
+        {
+            var progress = new Progress();
+            var growth = progress.ActiveGrowth;
+            growth.Level = 5;
+            progress.AddEvolutionStone();
+
+            Assert.True(progress.CanEvolve("addmander"));
+            Assert.True(progress.AdvanceEvolution("addmander"));
+            Assert.AreEqual("sumdrake", progress.CurrentFormId("addmander"));
+            Assert.AreEqual(1, progress.EvolutionStones); // key item 不消耗
+            Assert.False(progress.CanEvolve("addmander"));
+
+            growth.Level = 10;
+            Assert.False(progress.CanEvolve("addmander")); // 三段需要天空城第二颗石头
+            progress.AddEvolutionStone();
+            Assert.True(progress.CanEvolve("addmander"));
+            Assert.True(progress.AdvanceEvolution("addmander"));
+            Assert.AreEqual("equadragon", progress.CurrentFormId("addmander"));
+        }
+
+        [Test]
+        public void LegacyEvolutionFields_MigrateIntoPerFamilyGrowth()
+        {
+            var legacy = JsonUtility.FromJson<Progress>(
+                "{\"SaveVersion\":2,\"Level\":6,\"Xp\":4,\"AttackBonus\":3," +
+                "\"Evolved\":true,\"HasEvoStone\":true,\"ActiveMonId\":\"addmander\"}");
+            legacy.ApplyMigrations();
+
+            var growth = legacy.EnsureGrowth("addmander");
+            Assert.AreEqual(6, growth.Level);
+            Assert.AreEqual(4, growth.Xp);
+            Assert.AreEqual(3, growth.AttackBonus);
+            Assert.AreEqual(1, growth.Stage);
+            Assert.AreEqual(1, legacy.EvolutionStones);
+        }
     }
 }

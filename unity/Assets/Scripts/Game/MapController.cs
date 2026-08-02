@@ -34,9 +34,8 @@ namespace Numeria.Game
         private (int x, int y) _pos;
         private bool _busy;
 
-        private string PlayerId =>
-            _progress.ActiveMonId == "addmander" && _progress.Evolved ? "sumdrake" : _progress.ActiveMonId;
-        private string PlayerName => GameData.PlayerMon(_progress.ActiveMonId, _progress.Evolved).Name;
+        private string PlayerId => _progress.CurrentFormId(_progress.ActiveMonId);
+        private string PlayerName => GameData.ById(PlayerId).Name;
 
         private void Awake()
         {
@@ -146,7 +145,7 @@ namespace Numeria.Game
             var sr = _avatar.GetComponent<SpriteRenderer>();
             sr.sprite = SpriteLib.MapSprite(PlayerId);
             if (sr.sprite == null) return;
-            float targetHeight = PlayerId == "sumdrake" ? 1.15f : 1f;
+            float targetHeight = 1f + 0.14f * _progress.ActiveGrowth.Stage;
             float scale = targetHeight / Mathf.Max(0.01f, sr.sprite.bounds.size.y);
             _avatar.localScale = Vector3.one * scale;
         }
@@ -240,8 +239,9 @@ namespace Numeria.Game
 
         private void UpdateHud()
         {
-            _hudText.text = $"{PlayerName} Lv.{_progress.Level}  XP {_progress.Xp}/{_progress.XpToNext}  " +
-                            $"ATK +{_progress.AttackBonus}  {_def.DisplayName}";
+            var growth = _progress.ActiveGrowth;
+            _hudText.text = $"{PlayerName} Lv.{growth.Level}  XP {growth.Xp}/{growth.XpToNext}  " +
+                            $"ATK +{growth.AttackBonus}  {_def.DisplayName}";
         }
 
         private string ChestId(int x, int y) => $"{_def.Id}-chest-{x}-{y}";
@@ -413,18 +413,20 @@ namespace Numeria.Game
 
                 if (id == _def.EvoChestId)
                 {
-                    _progress.HasEvoStone = true;
+                    _progress.AddEvolutionStone();
                     _voice.Say("You found the Evolution Stone!");
                     yield return new WaitForSeconds(2f);
-                    if (!_progress.Evolved && _progress.Level < 5)
+                    var growth = _progress.ActiveGrowth;
+                    int requiredLevel = GameData.NextEvolutionLevel(growth.BaseId, growth.Stage);
+                    if (requiredLevel > 0 && growth.Level < requiredLevel)
                     {
-                        _voice.Say("Reach level five to evolve!");
+                        _voice.Say($"Reach level {requiredLevel} to evolve!");
                         yield return new WaitForSeconds(1.5f);
                     }
                 }
                 else
                 {
-                    _progress.AttackBonus++;
+                    _progress.ActiveGrowth.AttackBonus++;
                     _voice.Say("Attack goes up by one!");
                 }
                 SaveSystem.Save(_progress);
@@ -435,10 +437,16 @@ namespace Numeria.Game
             _busy = false;
         }
 
-        /// <summary>进化条件满足时触发试炼:三道 tier2 谜题,零惩罚无限重试。</summary>
+        /// <summary>进化条件满足时触发该家族亲和题型的三题试炼，零惩罚无限重试。</summary>
         private IEnumerator MaybeEvolve()
         {
-            if (_progress.Evolved || !_progress.HasEvoStone || _progress.Level < 5) yield break;
+            var growth = _progress.ActiveGrowth;
+            if (!_progress.CanEvolve(growth.BaseId)) yield break;
+            var line = GameData.LineFor(growth.BaseId);
+            string fromId = GameData.FormId(growth.BaseId, growth.Stage);
+            string toId = GameData.FormId(growth.BaseId, growth.Stage + 1);
+            string fromName = GameData.ById(fromId).Name;
+            string toName = GameData.ById(toId).Name;
 
             _voice.Say("Evolution trial! Solve three puzzles!");
             yield return new WaitForSeconds(2f);
@@ -446,11 +454,22 @@ namespace Numeria.Game
             while (solved < 3)
             {
                 bool? ok = null;
-                yield return _puzzles.RunFormula(v => ok = v, 2);
+                switch (line.Affinity)
+                {
+                    case PuzzleAffinity.MakeTen:
+                        yield return _puzzles.RunMakeTen(v => ok = v, growth.Stage == 0 ? 10 : 12);
+                        break;
+                    case PuzzleAffinity.Pattern:
+                        yield return _puzzles.RunPattern(v => ok = v);
+                        break;
+                    default:
+                        yield return _puzzles.RunFormula(v => ok = v, growth.Stage == 0 ? 2 : 3);
+                        break;
+                }
                 if (ok.Value) solved++;
             }
 
-            _voice.Say($"{PlayerName} is evolving!");
+            _voice.Say($"{fromName} is evolving!");
             Music.Play(MusicMood.Evolution);
             Sfx.Play(SfxCue.Evolution);
             var sr = _avatar.GetComponent<SpriteRenderer>();
@@ -461,10 +480,10 @@ namespace Numeria.Game
                 _avatar.localScale = Vector3.one * (1f + 0.12f * i);
                 yield return new WaitForSeconds(0.25f);
             }
-            _progress.Evolved = true;
+            _progress.AdvanceEvolution(growth.BaseId);
             ApplyAvatarSprite();
             sr.color = Color.white;
-            _voice.Say("Amazing! Addmander evolved into Sumdrake!");
+            _voice.Say($"Amazing! {fromName} evolved into {toName}!");
             SaveSystem.Save(_progress);
             UpdateHud();
             yield return new WaitForSeconds(2.5f);

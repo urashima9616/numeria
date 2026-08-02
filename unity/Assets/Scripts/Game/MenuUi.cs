@@ -55,18 +55,19 @@ namespace Numeria.Game
 
         // ---------- 数灵展示数据 ----------
 
-        private string DisplaySpriteId(string id) =>
-            id == "addmander" && _progress.Evolved ? "sumdrake" : id;
+        private string DisplaySpriteId(string id) => _progress.CurrentFormId(id);
 
         private static (string label, Color color) TypeOf(string id)
         {
-            switch (id)
+            string element = GameData.LineFor(id)?.Element ?? "???";
+            switch (element)
             {
-                case "addmander":
-                case "sumdrake": return ("FIRE", Ui.Hex("#e8703a"));
-                case "countipillar": return ("BUG", Ui.Hex("#6a9f3f"));
-                case "doublit": return ("ROCK", Ui.Hex("#7d8894"));
-                case "mirrowl": return ("SKY", Ui.Hex("#49a9d1"));
+                case "FIRE": return (element, Ui.Hex("#e8703a"));
+                case "WATER": return (element, Ui.Hex("#428ac9"));
+                case "GRASS": return (element, Ui.Hex("#5d9d52"));
+                case "BUG": return (element, Ui.Hex("#7b9f3f"));
+                case "ROCK": return (element, Ui.Hex("#7d8894"));
+                case "SKY": return (element, Ui.Hex("#49a9d1"));
                 default: return ("???", Ui.Hex("#7d8894"));
             }
         }
@@ -121,6 +122,7 @@ namespace Numeria.Game
 
         private void BuildHeader(Transform parent)
         {
+            var growth = _progress.ActiveGrowth;
             var row = Ui.Node(parent, "Header");
             var le = row.gameObject.AddComponent<LayoutElement>();
             le.preferredHeight = 98;
@@ -130,7 +132,7 @@ namespace Numeria.Game
             var title = Ui.Label(row, "Title", "NUMERIA", 56, TitleGreen, TextAnchor.UpperLeft);
             Ui.Place(title.rectTransform, new Vector2(0, 1), new Vector2(4, 0), new Vector2(500, 58));
             var summary = Ui.Label(row, "Summary",
-                $"Lv. {_progress.Level}   XP {_progress.Xp}/{_progress.XpToNext}   ATK +{_progress.AttackBonus}",
+                $"Lv. {growth.Level}   XP {growth.Xp}/{growth.XpToNext}   ATK +{growth.AttackBonus}",
                 28, SummaryOrange, TextAnchor.UpperLeft);
             Ui.Place(summary.rectTransform, new Vector2(0, 1), new Vector2(6, -61), new Vector2(700, 34));
 
@@ -342,7 +344,8 @@ namespace Numeria.Game
 
         private void BuildTeamCard(RectTransform row, string id)
         {
-            var def = GameData.PlayerMon(id, _progress.Evolved);
+            var growth = _progress.EnsureGrowth(id);
+            var def = GameData.PlayerMon(id, growth.Stage);
             bool active = id == _progress.ActiveMonId;
             bool selected = id == _selectedId;
 
@@ -366,7 +369,7 @@ namespace Numeria.Game
 
             var name = Ui.Label(row, "Name", def.Name, 29, Ui.Ink, TextAnchor.UpperLeft);
             Ui.Place(name.rectTransform, new Vector2(0, 1), new Vector2(118, -9), new Vector2(270, 34));
-            var lv = Ui.Label(row, "Lv", $"Lv. {_progress.Level}", 24, SummaryOrange, TextAnchor.UpperLeft);
+            var lv = Ui.Label(row, "Lv", $"Lv. {growth.Level}", 24, SummaryOrange, TextAnchor.UpperLeft);
             Ui.Place(lv.rectTransform, new Vector2(0, 1), new Vector2(118, -43), new Vector2(140, 28));
 
             // HP 条(地图上恒满)
@@ -390,7 +393,8 @@ namespace Numeria.Game
 
         private void BuildMonDetail(RectTransform parent, string id)
         {
-            var def = GameData.PlayerMon(id, _progress.Evolved);
+            var growth = _progress.EnsureGrowth(id);
+            var def = GameData.PlayerMon(id, growth.Stage);
             bool active = id == _progress.ActiveMonId;
             var (typeLabel, typeColor) = TypeOf(DisplaySpriteId(id));
 
@@ -441,7 +445,7 @@ namespace Numeria.Game
                 });
             }
 
-            int atk = 2 + _progress.AttackBonus;
+            int atk = 2 + growth.AttackBonus;
             var formula = Array.Find(def.Skills, s => s.Id == "flame-formula");
             BuildStatTable(identity.transform, def.MaxHp, atk, formula);
 
@@ -487,67 +491,63 @@ namespace Numeria.Game
 
         private void BuildEvolutionBlock(RectTransform parent, string id)
         {
-            string toId = null, text;
-            Color color = Ui.Ink;
-            switch (id)
-            {
-                case "addmander":
-                    toId = "sumdrake";
-                    if (_progress.Evolved) { text = "Evolved! Learned Blaze Equation!"; color = Ui.Hex("#2e7d32"); }
-                    else
-                    {
-                        string lv = _progress.Level >= 5 ? "YES" : $"now Lv.{_progress.Level}";
-                        string stone = _progress.HasEvoStone ? "YES" : "in Silent Peaks";
-                        text = $"Needs Lv.5 ({lv}) + Evolution Stone ({stone})";
-                    }
-                    break;
-                case "countipillar":
-                    text = "Evolves into Numberfly - coming soon!";
-                    break;
-                case "doublit":
-                    toId = "duplirock";
-                    text = "Evolves into Duplirock - coming soon!";
-                    break;
-                default:
-                    text = "No evolution.";
-                    break;
-            }
+            var line = GameData.LineFor(id);
+            var growth = _progress.EnsureGrowth(id);
 
             var title = Ui.Label(parent, "EvoTitle", "EVOLUTION", 32, TitleGreen);
             Ui.Place(title.rectTransform, new Vector2(0.5f, 1), new Vector2(0, -16), new Vector2(300, 40));
 
-            if (toId != null)
+            if (line == null)
             {
-                // Match the portrait used by the detail/status card, scaled down for the evolution path.
-                EvoIconAt(parent, "addmander", new Vector2(0.34f, 0.58f), new Vector2(84, 84), true);
-                var arrow = Ui.Label(parent, "Arrow", ">", 42, SummaryOrange);
-                Ui.PlaceCentered(arrow.rectTransform, new Vector2(0.5f, 0.60f), Vector2.zero, new Vector2(50, 50));
-                EvoIconAt(parent, toId, new Vector2(0.67f, 0.65f), new Vector2(140, 140), true);
-
-                var levels = Ui.Label(parent, "Levels", $"Lv. {_progress.Level}     >     Lv. 5", 26,
-                    SummaryOrange);
-                Ui.Place(levels.rectTransform, new Vector2(0.5f, 0), new Vector2(0, 104), new Vector2(430, 34));
-
-                RequirementRow(parent, "Stone", SpriteLib.Cainos("TX Props", "TX Props - Stone 01"),
-                    _progress.Evolved ? "Evolution complete" : "Requires Evolution Stone", 68,
-                    _progress.Evolved || _progress.HasEvoStone ? Ui.Hex("#4f7e3d") : Ui.Ink);
-                RequirementRow(parent, "Peaks", SpriteLib.Cainos("TX Props", "TX Props Altar"),
-                    _progress.Evolved ? "Blaze Equation learned" : "Found in Silent Peaks", 34, color);
-            }
-            else
-            {
-                var condition = Ui.Label(parent, "EvoCond", text, 24, color);
+                var condition = Ui.Label(parent, "EvoCond", "No evolution data.", 24, Ui.Ink);
                 Ui.PlaceCentered(condition.rectTransform, new Vector2(0.5f, 0.45f), Vector2.zero,
                     new Vector2(560, 70));
+                return;
             }
+
+            int count = line.StageIds.Length;
+            for (int i = 0; i < count; i++)
+            {
+                float x = count == 2 ? (i == 0 ? 0.33f : 0.67f) : 0.18f + 0.32f * i;
+                EvoIconAt(parent, line.StageIds[i], new Vector2(x, 0.64f), i == growth.Stage);
+
+                var species = GameData.SpeciesById(line.StageIds[i]);
+                string level = i == 0 ? "START" : $"LV. {line.EvolutionLevels[i - 1]}";
+                var label = Ui.Label(parent, $"StageLabel{i}", $"{species.Name.ToUpperInvariant()}  {level}",
+                    17, i == growth.Stage ? SummaryOrange : TitleGreen);
+                Ui.PlaceCentered(label.rectTransform, new Vector2(x, 0.41f), Vector2.zero, new Vector2(190, 28));
+
+                if (i < count - 1)
+                {
+                    float nextX = count == 2 ? 0.67f : 0.18f + 0.32f * (i + 1);
+                    var arrow = Ui.Label(parent, $"Arrow{i}", ">", 38, SummaryOrange);
+                    Ui.PlaceCentered(arrow.rectTransform, new Vector2((x + nextX) * 0.5f, 0.64f),
+                        Vector2.zero, new Vector2(42, 42));
+                }
+            }
+
+            bool complete = growth.Stage >= count - 1;
+            int required = complete ? 0 : line.EvolutionLevels[growth.Stage];
+            int requiredStones = growth.Stage + 1;
+            string stoneText = complete
+                ? "Evolution path complete"
+                : $"Evolution Stones: {_progress.EvolutionStones}/{requiredStones}   Lv. {growth.Level}/{required}";
+            RequirementRow(parent, "Stone", SpriteLib.Cainos("TX Props", "TX Props - Stone 01"),
+                stoneText, 68, complete || _progress.EvolutionStones >= requiredStones
+                    ? Ui.Hex("#4f7e3d") : Ui.Ink);
+            RequirementRow(parent, "Trial", SpriteLib.Cainos("TX Props", "TX Props Altar"),
+                complete ? $"Mastered {line.AffinityLabel}" : $"Trial: 3 {line.AffinityLabel} puzzles",
+                36, complete ? Ui.Hex("#4f7e3d") : SummaryOrange);
         }
 
-        private static void EvoIconAt(RectTransform parent, string id, Vector2 anchor, Vector2 size, bool large)
+        private static void EvoIconAt(RectTransform parent, string id, Vector2 anchor, bool current)
         {
-            var sprite = large ? SpriteLib.LargeIcon(id) : SpriteLib.One($"Art/Sprites/{id}");
-            var img = Ui.SpriteImg(parent, $"Evo-{id}", sprite);
+            var frame = Ui.Img(parent, $"EvoFrame-{id}", current ? TabActive : new Color(1, 1, 1, 0.18f));
+            Ui.PlaceCentered(frame.rectTransform, anchor, Vector2.zero, new Vector2(102, 102));
+            if (current) Ui.AddOutline(frame.gameObject);
+            var img = Ui.SpriteImg(frame.transform, $"Evo-{id}", SpriteLib.LargeIcon(id));
             img.preserveAspect = true;
-            Ui.PlaceCentered(img.rectTransform, anchor, Vector2.zero, size);
+            Ui.PlaceCentered(img.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(90, 90));
         }
 
         private static void RequirementRow(RectTransform parent, string name, Sprite sprite, string text,

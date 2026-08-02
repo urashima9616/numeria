@@ -32,6 +32,7 @@ namespace Numeria.Game
 
         public static void Save(Progress progress)
         {
+            progress.ApplyMigrations();
             File.WriteAllText(SavePath, JsonUtility.ToJson(progress));
         }
 

@@ -59,9 +59,10 @@ namespace Numeria.Game
             _onEnd = onEnd;
             _tier = tier;
             _battleBg = battleBg;
-            _playerLevel = progress.Level;
-            _state = new BattleState(GameData.PlayerMon(progress.ActiveMonId, progress.Evolved), enemy);
-            _state.PlayerAttackBonus = progress.AttackBonus;
+            var growth = progress.ActiveGrowth;
+            _playerLevel = growth.Level;
+            _state = new BattleState(GameData.PlayerMon(progress.ActiveMonId, growth.Stage), enemy);
+            _state.PlayerAttackBonus = growth.AttackBonus;
             _rng = new Rng((uint)Environment.TickCount);
             _voice = gameObject.AddComponent<Voice>();
             BuildUi();

@@ -15,6 +15,9 @@ namespace Numeria.Game.Tests
             Assert.AreEqual("sky", sky.Theme);
             Assert.AreEqual("mirrowl", sky.Wild().Id);
             Assert.AreEqual("symmetrix", sky.Boss().Id);
+            Assert.AreEqual("numberfly", Maps.Forest().Boss().Id);
+            Assert.AreEqual("duplirock", Maps.Mountains().Boss().Id);
+            Assert.AreEqual("sky-chest-15-4", sky.EvoChestId);
         }
 
         [Test]

@@ -63,8 +63,8 @@ namespace Numeria.Game
             CameraBg = "#2f4f2f",
             Theme = "forest",
             Wild = GameData.Countipillar,
-            Boss = GameData.Duplirock,
-            BossLine = "Duplirock guards the portal!",
+            Boss = GameData.Numberfly,
+            BossLine = "Numberfly guards the portal!",
             GateClearLine = "The portal is open! A new world awaits!",
             GateCleared = p => p.BossBeaten,
             ClearGate = p => p.BossBeaten = true,
@@ -150,10 +150,10 @@ namespace Numeria.Game
             ClearGate = p => { if (!p.ClearedGates.Contains("sky")) p.ClearedGates.Add("sky"); },
             PortalTargetMap = null,
             NextName = "More Numeria adventures",
-            EvoChestId = null,
+            EvoChestId = "sky-chest-15-4",
             ChestItems = new System.Collections.Generic.Dictionary<string, string>
             {
-                { "sky-chest-15-4", "Pattern Lens" },
+                { "sky-chest-15-4", "Evolution Stone" },
                 { "sky-chest-2-7", "Cloud Charm" },
             },
         };

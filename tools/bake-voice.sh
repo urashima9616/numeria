@@ -15,7 +15,9 @@ bake() {
   local text="$1"
   local key
   key=$(printf '%s' "$text" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//')
-  if [[ -f "$OUT/$key.wav" ]]; then return; fi
+  # macOS 语音服务不可用时，say/afconvert 仍可能留下只有 4096 bytes WAV 头的 0 秒空壳。
+  # 只缓存真正含有音频正文的文件；下次获准访问系统语音服务时会自动修复空壳。
+  if [[ -f "$OUT/$key.wav" ]] && [[ $(stat -f %z "$OUT/$key.wav") -gt 4096 ]]; then return; fi
   say -v "$VOICE" -r "$RATE" -o "$TMP/$key.aiff" "$text"
   afconvert -f WAVE -d LEI16@22050 -c 1 "$TMP/$key.aiff" "$OUT/$key.wav"
   echo "baked: $key.wav"
@@ -99,6 +101,33 @@ bake "Symmetrix guards the sky gate!"
 bake "The sky gate shines! More adventures await!"
 bake "You win! Mirrowl got five experience points!"
 bake "Level up! Mirrowl is getting stronger!"
+
+# ---- 首发 15 只图鉴与通用进化链 ----
+bake "A wild Numberfly appeared! It has a number shield!"
+bake "Numberfly guards the portal!"
+bake "Reach level 10 to evolve!"
+
+bake "Sumdrake is evolving!"
+bake "Amazing! Sumdrake evolved into Equadragon!"
+bake "Tenfin is evolving!"
+bake "Amazing! Tenfin evolved into Decaqua!"
+bake "Decaqua is evolving!"
+bake "Amazing! Decaqua evolved into Tidalten!"
+bake "Shapling is evolving!"
+bake "Amazing! Shapling evolved into Pattervine!"
+bake "Pattervine is evolving!"
+bake "Amazing! Pattervine evolved into Geoflora!"
+bake "Countipillar is evolving!"
+bake "Amazing! Countipillar evolved into Numberfly!"
+bake "Doublit is evolving!"
+bake "Amazing! Doublit evolved into Duplirock!"
+bake "Mirrowl is evolving!"
+bake "Amazing! Mirrowl evolved into Symmetrix!"
+
+for mon in Equadragon Tenfin Decaqua Tidalten Shapling Pattervine Geoflora Numberfly Duplirock Symmetrix; do
+  bake "You win! $mon got five experience points!"
+  bake "Level up! $mon is getting stronger!"
+done
 
 rm -rf "$TMP"
 echo "done: $(ls "$OUT" | wc -l | tr -d ' ') clips in $OUT"
