@@ -36,7 +36,9 @@ namespace Numeria.Editor
             importer.textureCompression = TextureImporterCompression.Uncompressed;
             importer.mipmapEnabled = false;
             importer.alphaIsTransparency = true;
-            importer.spritePixelsPerUnit = 16;
+            // UI 素材必须 100 PPU:UGUI 切片边框按 Canvas 参考 PPU(100)/精灵 PPU 缩放,
+            // 16 PPU 会把 9-slice 边角放大 6.25 倍,面板直接崩坏
+            importer.spritePixelsPerUnit = assetPath.Contains("/UI/") ? 100 : 16;
 
             string name = Path.GetFileNameWithoutExtension(assetPath);
             if (NineSliceBorders.TryGetValue(name, out var border))

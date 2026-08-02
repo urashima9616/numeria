@@ -100,15 +100,17 @@ namespace Numeria.Game
                 _state.Enemy.Name, _state.Enemy.Shield.HasValue ? "BOSS" : "WILD",
                 out _enemyHpFill, out _enemyHpText);
             BuildShieldRow(enemyPlate);
+            // 敌方立绘落在背景右上草圈上
             var enemyImg = Ui.SpriteImg(_shakeRoot, "EnemySprite", SpriteLib.EnemyBattleSprite(_state.Enemy.Id));
             enemyImg.preserveAspect = true;
-            Ui.Place(enemyImg.rectTransform, new Vector2(1, 1), new Vector2(-140, -140), new Vector2(230, 230));
+            Ui.Place(enemyImg.rectTransform, new Vector2(0.72f, 0.62f), Vector2.zero, new Vector2(230, 230));
             _enemySprite = enemyImg.rectTransform;
 
             // 我方:立绘左下,名牌右侧
+            // 我方立绘落在背景左下草圈上
             var playerImg = Ui.SpriteImg(_shakeRoot, "PlayerSprite", SpriteLib.PlayerBattleSprite(_state.Player.Id));
             playerImg.preserveAspect = true;
-            Ui.Place(playerImg.rectTransform, new Vector2(0, 0), new Vector2(190, 330), new Vector2(260, 260));
+            Ui.Place(playerImg.rectTransform, new Vector2(0.25f, 0.36f), Vector2.zero, new Vector2(270, 270));
             _playerSprite = playerImg.rectTransform;
             var playerPlate = BuildStatusPlate("PlayerPlate", new Vector2(1, 0), new Vector2(-26, 210), new Vector2(410, 180),
                 _state.Player.Name, $"Lv. {_playerLevel}",
