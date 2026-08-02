@@ -83,6 +83,18 @@ namespace Numeria.Game
             return t;
         }
 
+        /// <summary>
+        /// 大型展示文字使用设计稿中的实际字号，不套用旧界面为紧凑控件准备的 62% 缩放。
+        /// 适用于战斗状态牌、回合横幅和大触控按钮；普通菜单文字继续使用 Label。
+        /// </summary>
+        public static Text DisplayLabel(Transform parent, string name, string text, int size, Color color,
+            TextAnchor anchor = TextAnchor.MiddleCenter, FontStyle style = FontStyle.Bold)
+        {
+            var label = Label(parent, name, text, size, color, anchor, style);
+            label.fontSize = size;
+            return label;
+        }
+
         public static Button Btn(Transform parent, string name, string label, int fontSize)
         {
             var img = Img(parent, name, PlateBg);
