@@ -20,6 +20,19 @@ namespace Numeria.Core
         public string Prompt;
     }
 
+    public enum ShapeKind { Circle, Triangle, Square, Diamond }
+
+    public enum PatternRule { Alternating, Pairs, CycleThree }
+
+    public class PatternPuzzle
+    {
+        public PatternRule Rule;
+        public List<ShapeKind> Sequence;
+        public ShapeKind Answer;
+        public List<ShapeKind> Candidates;
+        public string Prompt;
+    }
+
     /// <summary>
     /// 谜题生成与校验,移植自 Web 原型 puzzles.js(已验证的逻辑)。
     /// </summary>
@@ -138,5 +151,53 @@ namespace Numeria.Core
 
         public static bool CheckMakeTen(MakeTenPuzzle puzzle, int i, int j) =>
             i != j && puzzle.Hand[i] + puzzle.Hand[j] == puzzle.Target;
+
+        /// <summary>
+        /// 天空城图形规律。三种规则都只要求选择“下一个”，候选形状互不重复且答案唯一。
+        /// </summary>
+        public static PatternPuzzle GeneratePattern(Rng rng)
+        {
+            var shapes = new List<ShapeKind>
+            {
+                ShapeKind.Circle, ShapeKind.Triangle, ShapeKind.Square, ShapeKind.Diamond
+            };
+            Shuffle(rng, shapes);
+            ShapeKind a = shapes[0], b = shapes[1], c = shapes[2];
+            var rule = (PatternRule)rng.Pick(0, 2);
+            var sequence = new List<ShapeKind>();
+            ShapeKind answer;
+
+            switch (rule)
+            {
+                case PatternRule.Pairs:
+                    sequence.AddRange(new[] { a, a, b, b, a, a });
+                    answer = b;
+                    break;
+                case PatternRule.CycleThree:
+                    sequence.AddRange(new[] { a, b, c, a, b });
+                    answer = c;
+                    break;
+                default:
+                    sequence.AddRange(new[] { a, b, a, b, a });
+                    answer = b;
+                    break;
+            }
+
+            var candidates = new List<ShapeKind>
+            {
+                ShapeKind.Circle, ShapeKind.Triangle, ShapeKind.Square, ShapeKind.Diamond
+            };
+            Shuffle(rng, candidates);
+            return new PatternPuzzle
+            {
+                Rule = rule,
+                Sequence = sequence,
+                Answer = answer,
+                Candidates = candidates,
+                Prompt = "What comes next in the pattern?"
+            };
+        }
+
+        public static bool CheckPattern(PatternPuzzle puzzle, ShapeKind answer) => answer == puzzle.Answer;
     }
 }

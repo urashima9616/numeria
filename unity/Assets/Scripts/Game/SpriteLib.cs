@@ -23,6 +23,13 @@ namespace Numeria.Game
             return large != null ? large : One($"Art/Sprites/{id}");
         }
 
+        /// <summary>地图/队伍小图优先 16px 素材，缺失时使用同角色高清图并由调用方归一化尺寸。</summary>
+        public static Sprite MapSprite(string id)
+        {
+            var small = One($"Art/Sprites/{id}");
+            return small != null ? small : LargeIcon(id);
+        }
+
         private const string PackRoot = "generated/NUMERIA_Unity_Battle_Assets/";
 
         /// <summary>NUMERIA 战斗素材包内的资源(相对包根路径)。</summary>

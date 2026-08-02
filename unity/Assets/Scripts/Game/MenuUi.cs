@@ -66,6 +66,7 @@ namespace Numeria.Game
                 case "sumdrake": return ("FIRE", Ui.Hex("#e8703a"));
                 case "countipillar": return ("BUG", Ui.Hex("#6a9f3f"));
                 case "doublit": return ("ROCK", Ui.Hex("#7d8894"));
+                case "mirrowl": return ("SKY", Ui.Hex("#49a9d1"));
                 default: return ("???", Ui.Hex("#7d8894"));
             }
         }
@@ -359,7 +360,8 @@ namespace Numeria.Game
                 accent.rectTransform.sizeDelta = new Vector2(9, -4);
             }
 
-            var sprite = Ui.SpriteImg(row, "Sprite", SpriteLib.One($"Art/Sprites/{DisplaySpriteId(id)}"));
+            var sprite = Ui.SpriteImg(row, "Sprite", SpriteLib.MapSprite(DisplaySpriteId(id)));
+            sprite.preserveAspect = true;
             Ui.Place(sprite.rectTransform, new Vector2(0, 0.5f), new Vector2(18, 0), new Vector2(82, 82));
 
             var name = Ui.Label(row, "Name", def.Name, 29, Ui.Ink, TextAnchor.UpperLeft);
@@ -648,6 +650,10 @@ namespace Numeria.Game
                     _progress.BossBeaten ? "Silent Peaks" : "Silent Peaks (locked)", 22);
                 peaksBtn.interactable = _progress.BossBeaten && _progress.CurrentMap != "mountains";
                 peaksBtn.onClick.AddListener(() => CloseThen(() => _onTravel("mountains")));
+                var skyUnlocked = _progress.ClearedGates.Contains("mountains");
+                var skyBtn = Ui.Btn(row, "BtnSky", skyUnlocked ? "Azure Sky City" : "Sky City (locked)", 22);
+                skyBtn.interactable = skyUnlocked && _progress.CurrentMap != "sky";
+                skyBtn.onClick.AddListener(() => CloseThen(() => _onTravel("sky")));
             });
 
             SectionRow(content, "Danger Zone");

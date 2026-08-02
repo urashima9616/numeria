@@ -89,5 +89,16 @@ bake "You win! Doublit got five experience points!"
 bake "Level up! Doublit is getting stronger!"
 bake "Already best friends! Bonus experience!"
 
+# ---- P3 天空城与图形规律 ----
+bake "What comes next in the pattern?"
+bake "Welcome to Azure Sky City!"
+bake "A wild Mirrowl appeared!"
+bake "Gotcha! Mirrowl joined your team!"
+bake "A wild Symmetrix appeared! It has a pattern shield!"
+bake "Symmetrix guards the sky gate!"
+bake "The sky gate shines! More adventures await!"
+bake "You win! Mirrowl got five experience points!"
+bake "Level up! Mirrowl is getting stronger!"
+
 rm -rf "$TMP"
 echo "done: $(ls "$OUT" | wc -l | tr -d ' ') clips in $OUT"

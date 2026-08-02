@@ -59,6 +59,16 @@ namespace Numeria.Core
                             new SkillDef { Id = "flame-formula", Name = "Double Trouble", Cost = 3, Power = 5, BasePower = 2, Type = SkillType.Formula },
                         },
                     };
+                case "mirrowl":
+                    return new CombatantDef
+                    {
+                        Id = "mirrowl", Name = "Mirrowl", MaxHp = 10, AttackPower = 0,
+                        Skills = new[]
+                        {
+                            new SkillDef { Id = "tackle", Name = "Tackle", Cost = 0, Power = 2, BasePower = 2, Type = SkillType.Basic },
+                            new SkillDef { Id = "flame-formula", Name = "Mirror Pattern", Cost = 3, Power = 5, BasePower = 2, Type = SkillType.Formula },
+                        },
+                    };
                 default:
                     return Player(evolved);
             }
@@ -98,6 +108,8 @@ namespace Numeria.Core
                 case "duplirock": return Duplirock();
                 case "countipillar": return Countipillar();
                 case "doublit": return Doublit();
+                case "mirrowl": return Mirrowl();
+                case "symmetrix": return Symmetrix();
                 default: return null;
             }
         }
@@ -111,6 +123,19 @@ namespace Numeria.Core
             Shield = null,
             Catchable = true,
             Skills = new SkillDef[0],
+        };
+
+        public static CombatantDef Mirrowl() => new CombatantDef
+        {
+            Id = "mirrowl", Name = "Mirrowl", MaxHp = 10, AttackPower = 2,
+            Shield = null, Catchable = true, Skills = new SkillDef[0],
+        };
+
+        /// <summary>天空城守门者:图形规律护盾由 tier3 PatternPuzzle 打破。</summary>
+        public static CombatantDef Symmetrix() => new CombatantDef
+        {
+            Id = "symmetrix", Name = "Symmetrix", MaxHp = 14, AttackPower = 3,
+            Shield = 12, Catchable = false, Skills = new SkillDef[0],
         };
     }
 }

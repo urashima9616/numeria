@@ -68,7 +68,9 @@ namespace Numeria.Game
             _puzzles = new PuzzleUi(this, _canvasRoot, _rng, lines => _voice.Say(lines));
             RenderAll();
             string opening = enemy.Shield.HasValue
-                ? $"A wild {enemy.Name} appeared! It has a number shield!"
+                ? _tier >= 3
+                    ? $"A wild {enemy.Name} appeared! It has a pattern shield!"
+                    : $"A wild {enemy.Name} appeared! It has a number shield!"
                 : $"A wild {enemy.Name} appeared!";
             SetLog("Your turn", "+2 GEMS");
             _voice.Say(opening);
@@ -159,7 +161,8 @@ namespace Numeria.Game
                 formulaSkill.Name.ToUpperInvariant(), $"COST {formulaSkill.Cost}", SubOrange, out _formulaBg);
             _btnFormula.onClick.AddListener(() => StartCoroutine(FormulaRoutine()));
             _btnShield = ActionButton(dock.rectTransform, SpriteLib.One("Art/Sprites/shield"),
-                "BREAK SHIELD", $"MAKE {_state.Enemy.Shield ?? 10}", Ui.ShieldBlue, out _);
+                "BREAK SHIELD", _tier >= 3 ? "FINISH PATTERN" : $"MAKE {_state.Enemy.Shield ?? 10}",
+                Ui.ShieldBlue, out _);
             _btnShield.onClick.AddListener(() => StartCoroutine(BreakShieldRoutine()));
             _btnCatch = ActionButton(dock.rectTransform, SpriteLib.Pack("UI/Icons/Catch"),
                 "CATCH", "FRIEND PUZZLE", SubOrange, out _);
@@ -202,7 +205,8 @@ namespace Numeria.Game
             Ui.Place(row, new Vector2(1, 1), new Vector2(-48, -78), new Vector2(100, 34));
             var icon = Ui.SpriteImg(row, "Icon", SpriteLib.One("Art/Sprites/shield"));
             Ui.Place(icon.rectTransform, new Vector2(0, 0.5f), Vector2.zero, new Vector2(32, 32));
-            var text = Ui.DisplayLabel(row, "Value", _state.Enemy.Shield?.ToString() ?? "", 34, Ui.ShieldBlue, TextAnchor.MiddleLeft);
+            var text = Ui.DisplayLabel(row, "Value", _tier >= 3 ? "?" : _state.Enemy.Shield?.ToString() ?? "",
+                34, Ui.ShieldBlue, TextAnchor.MiddleLeft);
             Ui.Place(text.rectTransform, new Vector2(0, 0.5f), new Vector2(40, 0), new Vector2(60, 32));
             _shieldRow = row.gameObject;
         }
@@ -356,7 +360,7 @@ namespace Numeria.Game
         {
             SetActionsEnabled(false);
             bool? correct = null;
-            yield return _puzzles.RunFormula(v => correct = v, _tier);
+            yield return _puzzles.RunTierPuzzle(v => correct = v, _tier);
             yield return Lunge(_playerSprite, new Vector2(60, 30));
             yield return Projectile(_playerSprite, _enemySprite,
                 correct.Value ? Ui.Hex("#ff5a2e") : Ui.Hex("#ffd24a"));
@@ -376,7 +380,8 @@ namespace Numeria.Game
         {
             SetActionsEnabled(false);
             bool? ok = null;
-            yield return _puzzles.RunMakeTen(v => ok = v, _state.Enemy.Shield ?? 10);
+            if (_tier >= 3) yield return _puzzles.RunPattern(v => ok = v);
+            else yield return _puzzles.RunMakeTen(v => ok = v, _state.Enemy.Shield ?? 10);
             if (ok.Value)
             {
                 Sfx.Play(SfxCue.ShieldBreak);
@@ -399,7 +404,7 @@ namespace Numeria.Game
             SetActionsEnabled(false);
             SetLog("Catch!", "FRIEND PUZZLE");
             bool? correct = null;
-            yield return _puzzles.RunFormula(v => correct = v, _tier);
+            yield return _puzzles.RunTierPuzzle(v => correct = v, _tier);
             if (correct.Value)
             {
                 Sfx.Play(SfxCue.Catch);

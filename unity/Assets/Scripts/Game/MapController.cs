@@ -75,20 +75,46 @@ namespace Numeria.Game
                     var world = TileWorld(x, y);
                     int hash = (x * 73856093) ^ (y * 19349663);
                     int variant = ((hash % 97) + 97) % 97;
-                    string groundName = variant < 6
-                        ? $"TX Tileset Grass Flower {variant}"
-                        : $"TX Tileset Grass {variant % 4}";
-                    AddSprite(SpriteLib.Cainos("TX Tileset Grass", groundName), world, 0, "ground");
+                    if (_def.Theme == "sky")
+                    {
+                        AddSprite(SpriteLib.Cainos("TX Tileset Stone Ground",
+                            $"TX Tileset Stone Ground_{variant % 50}"), world, 0, "sky-stone");
+                    }
+                    else
+                    {
+                        string groundName = variant < 6
+                            ? $"TX Tileset Grass Flower {variant}"
+                            : $"TX Tileset Grass {variant % 4}";
+                        AddSprite(SpriteLib.Cainos("TX Tileset Grass", groundName), world, 0, "ground");
+                    }
 
                     switch (_map.At(x, y))
                     {
                         case Tile.Tree:
-                            int t = (variant % 3) + 1;
-                            AddSprite(SpriteLib.Cainos("TX Plant", $"TX Tree T{t} Lower"), world, SortOrder(world.y), "tree");
-                            AddSprite(SpriteLib.Cainos("TX Plant", $"TX Tree T{t} Upper"), world + Vector3.up, SortOrder(world.y), "tree");
+                            if (_def.Theme == "sky")
+                            {
+                                string pillar = variant % 4 == 0 ? "TX Props Pillar Broken" : "TX Props Pillar";
+                                AddSprite(SpriteLib.Cainos("TX Props", pillar), world, SortOrder(world.y), "sky-pillar");
+                            }
+                            else
+                            {
+                                int t = (variant % 3) + 1;
+                                AddSprite(SpriteLib.Cainos("TX Plant", $"TX Tree T{t} Lower"), world, SortOrder(world.y), "tree");
+                                AddSprite(SpriteLib.Cainos("TX Plant", $"TX Tree T{t} Upper"), world + Vector3.up, SortOrder(world.y), "tree");
+                            }
                             break;
                         case Tile.Bush:
-                            AddSprite(SpriteLib.Cainos("TX Plant", $"TX Bush T{(variant % 6) + 1}"), world, SortOrder(world.y), "bush");
+                            if (_def.Theme == "sky")
+                            {
+                                var rune = AddSprite(SpriteLib.Cainos("TX Props", $"TX Props Altar Rune {(variant % 4) + 1}"),
+                                    world, SortOrder(world.y), "pattern-rune");
+                                rune.color = Ui.Hex("#7fe7ff");
+                            }
+                            else
+                            {
+                                AddSprite(SpriteLib.Cainos("TX Plant", $"TX Bush T{(variant % 6) + 1}"), world,
+                                    SortOrder(world.y), "bush");
+                            }
                             break;
                         case Tile.Chest:
                             bool opened = _progress.OpenedChests.Contains(ChestId(x, y));
@@ -109,10 +135,20 @@ namespace Numeria.Game
             var avatarGo = new GameObject("Avatar");
             avatarGo.transform.SetParent(_mapRoot.transform, false);
             var sr = avatarGo.AddComponent<SpriteRenderer>();
-            sr.sprite = SpriteLib.One($"Art/Sprites/{PlayerId}");
             sr.sortingOrder = SortOrder(TileWorld(_pos.x, _pos.y).y) + 1;
             avatarGo.transform.position = TileWorld(_pos.x, _pos.y);
             _avatar = avatarGo.transform;
+            ApplyAvatarSprite();
+        }
+
+        private void ApplyAvatarSprite()
+        {
+            var sr = _avatar.GetComponent<SpriteRenderer>();
+            sr.sprite = SpriteLib.MapSprite(PlayerId);
+            if (sr.sprite == null) return;
+            float targetHeight = PlayerId == "sumdrake" ? 1.15f : 1f;
+            float scale = targetHeight / Mathf.Max(0.01f, sr.sprite.bounds.size.y);
+            _avatar.localScale = Vector3.one * scale;
         }
 
         private SpriteRenderer AddSprite(Sprite sprite, Vector3 pos, int order, string name)
@@ -177,7 +213,7 @@ namespace Numeria.Game
                 {
                     SaveSystem.Save(_progress);
                     // 出战数灵可能在菜单里换了,刷新头像与 HUD
-                    _avatar.GetComponent<SpriteRenderer>().sprite = SpriteLib.One($"Art/Sprites/{PlayerId}");
+                    ApplyAvatarSprite();
                     UpdateHud();
                     _busy = false;
                 },
@@ -364,7 +400,7 @@ namespace Numeria.Game
             _voice.Say("A math chest! Solve the lock!");
             yield return new WaitForSeconds(1.2f);
             bool? ok = null;
-            yield return _puzzles.RunFormula(v => ok = v, _def.Tier);
+            yield return _puzzles.RunTierPuzzle(v => ok = v, _def.Tier);
             if (ok.Value)
             {
                 Sfx.Play(SfxCue.Chest);
@@ -426,9 +462,8 @@ namespace Numeria.Game
                 yield return new WaitForSeconds(0.25f);
             }
             _progress.Evolved = true;
-            sr.sprite = SpriteLib.One($"Art/Sprites/{PlayerId}");
+            ApplyAvatarSprite();
             sr.color = Color.white;
-            _avatar.localScale = Vector3.one * 1.15f; // 进化体稍大
             _voice.Say("Amazing! Addmander evolved into Sumdrake!");
             SaveSystem.Save(_progress);
             UpdateHud();

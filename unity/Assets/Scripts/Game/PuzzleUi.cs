@@ -18,6 +18,7 @@ namespace Numeria.Game
         private readonly RectTransform _canvasRoot;
         private readonly Rng _rng;
         private readonly Action<string[]> _say;
+        private static readonly Dictionary<ShapeKind, Sprite> ShapeSprites = new Dictionary<ShapeKind, Sprite>();
 
         public PuzzleUi(MonoBehaviour host, RectTransform canvasRoot, Rng rng, Action<string[]> say)
         {
@@ -79,6 +80,162 @@ namespace Numeria.Game
             var label = Ui.Label(parent, name, text, 64, Ui.Hex("#ffe082"));
             Ui.Place(label.rectTransform, new Vector2(0.5f, 0.5f), offset, size);
             return label;
+        }
+
+        // ---------- 天空城图形规律 ----------
+
+        /// <summary>按地图 tier 选择交互形态；天空城不再把几何题伪装成数字水晶。</summary>
+        public IEnumerator RunTierPuzzle(Action<bool> done, int tier)
+        {
+            if (tier >= 3) yield return RunPattern(done);
+            else yield return RunFormula(done, tier);
+        }
+
+        public IEnumerator RunPattern(Action<bool> done)
+        {
+            var p = PuzzleGenerator.GeneratePattern(_rng);
+            var overlay = BuildOverlay(p.Prompt, out var choiceRow);
+
+            var sequenceRow = Ui.Node(overlay, "PatternSequence");
+            Ui.Place(sequenceRow, new Vector2(0.5f, 0.61f), Vector2.zero, new Vector2(820, 96));
+            var layout = sequenceRow.gameObject.AddComponent<HorizontalLayoutGroup>();
+            layout.spacing = 14;
+            layout.childAlignment = TextAnchor.MiddleCenter;
+            layout.childControlWidth = false;
+            layout.childControlHeight = false;
+            layout.childForceExpandWidth = false;
+            layout.childForceExpandHeight = false;
+
+            foreach (ShapeKind shape in p.Sequence) MakeShapeCard(sequenceRow, shape, 82, null);
+
+            var answerSlot = Ui.Img(sequenceRow, "PatternAnswer", new Color(1f, 1f, 1f, 0.12f));
+            answerSlot.rectTransform.sizeDelta = new Vector2(82, 82);
+            Ui.AddOutline(answerSlot.gameObject);
+            var question = Ui.Label(answerSlot.transform, "Question", "?", 54, Ui.Hex("#ffe082"));
+            Ui.Stretch(question.rectTransform);
+
+            int attempts = 0;
+            bool? result = null;
+            void Submit(ShapeKind shape, Button button)
+            {
+                if (result.HasValue) return;
+                attempts++;
+                if (PuzzleGenerator.CheckPattern(p, shape))
+                {
+                    Sfx.Play(SfxCue.Correct);
+                    question.gameObject.SetActive(false);
+                    var answer = Ui.SpriteImg(answerSlot.transform, "Answer", ShapeSprite(shape));
+                    answer.preserveAspect = true;
+                    Ui.Stretch(answer.rectTransform);
+                    answer.rectTransform.offsetMin = new Vector2(12, 12);
+                    answer.rectTransform.offsetMax = new Vector2(-12, -12);
+                    Say("Great job!");
+                    result = true;
+                }
+                else if (attempts == 1)
+                {
+                    Sfx.Play(SfxCue.SoftMiss, 0.7f);
+                    button.interactable = false;
+                    button.targetGraphic.color = new Color(1f, 1f, 1f, 0.28f);
+                    Say("Hmm, not quite.", p.Prompt);
+                }
+                else
+                {
+                    Sfx.Play(SfxCue.SoftMiss, 0.7f);
+                    Say("Nice try! Your move still works!");
+                    result = false;
+                }
+            }
+
+            foreach (ShapeKind shape in p.Candidates)
+            {
+                Button button = null;
+                ShapeKind captured = shape;
+                button = MakeShapeCard(choiceRow, shape, 96, () => Submit(captured, button));
+            }
+
+            Say(p.Prompt);
+            yield return new WaitUntil(() => result.HasValue);
+            yield return new WaitForSeconds(result.Value ? 0.65f : 0.4f);
+            UnityEngine.Object.Destroy(overlay.gameObject);
+            done(result.Value);
+        }
+
+        private static Button MakeShapeCard(Transform parent, ShapeKind shape, float size, Action onClick)
+        {
+            var card = Ui.Img(parent, $"Shape-{shape}", Ui.Hex("#f6efdc"));
+            card.rectTransform.sizeDelta = new Vector2(size, size);
+            var element = card.gameObject.AddComponent<LayoutElement>();
+            element.preferredWidth = size;
+            element.preferredHeight = size;
+            Ui.AddOutline(card.gameObject);
+
+            var icon = Ui.SpriteImg(card.transform, "Icon", ShapeSprite(shape));
+            icon.preserveAspect = true;
+            Ui.Stretch(icon.rectTransform);
+            icon.rectTransform.offsetMin = new Vector2(12, 12);
+            icon.rectTransform.offsetMax = new Vector2(-12, -12);
+
+            if (onClick == null) return null;
+            var button = Sfx.WireClick(card.gameObject.AddComponent<Button>());
+            button.targetGraphic = card;
+            button.onClick.AddListener(() => onClick());
+            return button;
+        }
+
+        private static Sprite ShapeSprite(ShapeKind shape)
+        {
+            if (ShapeSprites.TryGetValue(shape, out var sprite)) return sprite;
+            const int size = 48;
+            const int radius = 18;
+            var texture = new Texture2D(size, size, TextureFormat.RGBA32, false);
+            texture.name = $"Pattern-{shape}";
+            texture.filterMode = FilterMode.Point;
+            texture.wrapMode = TextureWrapMode.Clamp;
+            var pixels = new Color32[size * size];
+            Color32 fill = ShapeColor(shape);
+            Color32 outline = Ui.Hex("#263238");
+
+            for (int y = 0; y < size; y++)
+                for (int x = 0; x < size; x++)
+                {
+                    int dx = x - size / 2;
+                    int dy = y - size / 2;
+                    if (!InsideShape(shape, dx, dy, radius)) continue;
+                    pixels[y * size + x] = InsideShape(shape, dx, dy, radius - 4) ? fill : outline;
+                }
+
+            texture.SetPixels32(pixels);
+            texture.Apply(false, true);
+            sprite = Sprite.Create(texture, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), size);
+            sprite.name = $"Pattern-{shape}";
+            ShapeSprites[shape] = sprite;
+            return sprite;
+        }
+
+        private static Color32 ShapeColor(ShapeKind shape)
+        {
+            switch (shape)
+            {
+                case ShapeKind.Circle: return Ui.Hex("#49b9d1");
+                case ShapeKind.Triangle: return Ui.Hex("#f2b04e");
+                case ShapeKind.Square: return Ui.Hex("#e8705a");
+                default: return Ui.Hex("#8e78c5");
+            }
+        }
+
+        private static bool InsideShape(ShapeKind shape, int x, int y, int radius)
+        {
+            switch (shape)
+            {
+                case ShapeKind.Circle: return x * x + y * y <= radius * radius;
+                case ShapeKind.Square: return Mathf.Abs(x) <= radius && Mathf.Abs(y) <= radius;
+                case ShapeKind.Diamond: return Mathf.Abs(x) + Mathf.Abs(y) <= radius + 5;
+                default:
+                    if (y < -radius || y > radius) return false;
+                    float halfWidth = (radius - y) * 0.58f;
+                    return Mathf.Abs(x) <= halfWidth;
+            }
         }
 
         // ---------- 咒语算式 ----------
