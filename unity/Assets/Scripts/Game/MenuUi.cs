@@ -114,6 +114,7 @@ namespace Numeria.Game
             var le = row.gameObject.AddComponent<LayoutElement>();
             le.preferredHeight = 96;
             le.minHeight = 96;
+            le.flexibleHeight = 0;
 
             var title = Ui.Label(row, "Title", "NUMERIA", 46, TitleGreen, TextAnchor.UpperLeft);
             Ui.Place(title.rectTransform, new Vector2(0, 1), new Vector2(4, -2), new Vector2(500, 54));
@@ -141,6 +142,7 @@ namespace Numeria.Game
             var le = row.gameObject.AddComponent<LayoutElement>();
             le.preferredHeight = 70;
             le.minHeight = 70;
+            le.flexibleHeight = 0; // 内部 LayoutGroup 会对外汇报可伸缩,必须封死
             var h = row.gameObject.AddComponent<HorizontalLayoutGroup>();
             h.spacing = 10;
             h.childControlWidth = true;
@@ -229,6 +231,7 @@ namespace Numeria.Game
             var le = row.gameObject.AddComponent<LayoutElement>();
             le.preferredHeight = height;
             le.minHeight = height;
+            le.flexibleHeight = 0;
             build(row);
         }
 
@@ -340,63 +343,105 @@ namespace Numeria.Game
             bool active = id == _progress.ActiveMonId;
             var (typeLabel, typeColor) = TypeOf(DisplaySpriteId(id));
 
-            // 内框
+            // 内框 + 纵向布局,全部由布局组驱动,不用绝对坐标
             var box = parent.gameObject.AddComponent<Image>();
             box.color = CreamDeep;
             Ui.AddOutline(parent.gameObject);
+            var v = parent.gameObject.AddComponent<VerticalLayoutGroup>();
+            v.padding = new RectOffset(22, 22, 18, 14);
+            v.spacing = 12;
+            v.childControlWidth = true;
+            v.childControlHeight = true;
+            v.childForceExpandWidth = true;
+            v.childForceExpandHeight = false;
 
-            // 左:大立绘
-            var sprite = Ui.SpriteImg(parent, "BigSprite", SpriteLib.One($"Art/Sprites/{DisplaySpriteId(id)}"));
-            Ui.Place(sprite.rectTransform, new Vector2(0, 1), new Vector2(40, -50), new Vector2(190, 190));
-
-            // 右:名字 + 类型 + 状态
-            var name = Ui.Label(parent, "Name", def.Name.ToUpperInvariant(), 40, TitleGreen);
-            Ui.Place(name.rectTransform, new Vector2(0.5f, 1), new Vector2(120, -60), new Vector2(420, 48));
-
-            var chip = Ui.Img(parent, "TypeChip", typeColor);
-            Ui.Place(chip.rectTransform, new Vector2(0.5f, 1), new Vector2(120, -120), new Vector2(170, 46));
-            Ui.AddOutline(chip.gameObject);
-            var chipText = Ui.Label(chip.transform, "Text", typeLabel, 24, Color.white);
-            Ui.Stretch(chipText.rectTransform);
-
-            if (active)
+            // 头部:大立绘 | 名字/类型/状态
+            ListRow(parent, "DetailHeader", 200, row =>
             {
-                var ready = Ui.Label(parent, "Ready", "- BATTLE BUDDY -", 24, Ui.Hex("#5c8a3f"));
-                Ui.Place(ready.rectTransform, new Vector2(0.5f, 1), new Vector2(120, -180), new Vector2(420, 30));
-            }
-            else
-            {
-                var pick = Ui.Btn(parent, "BtnPick", "Make battle buddy!", 22);
-                pick.image.color = TabActive;
-                Ui.Place((RectTransform)pick.transform, new Vector2(0.5f, 1), new Vector2(120, -180), new Vector2(340, 52));
-                pick.onClick.AddListener(() =>
+                var h = row.gameObject.AddComponent<HorizontalLayoutGroup>();
+                h.spacing = 20;
+                h.childAlignment = TextAnchor.MiddleLeft;
+                h.childControlWidth = true;
+                h.childControlHeight = true;
+                h.childForceExpandWidth = false;
+                h.childForceExpandHeight = false;
+
+                var sprite = Ui.SpriteImg(row, "BigSprite", SpriteLib.One($"Art/Sprites/{DisplaySpriteId(id)}"));
+                var sle = sprite.gameObject.AddComponent<LayoutElement>();
+                sle.preferredWidth = 180;
+                sle.preferredHeight = 180;
+
+                var info = Ui.Node(row, "Info");
+                var ile = info.gameObject.AddComponent<LayoutElement>();
+                ile.preferredWidth = 380;
+                ile.preferredHeight = 190;
+                var iv = info.gameObject.AddComponent<VerticalLayoutGroup>();
+                iv.spacing = 12;
+                iv.childAlignment = TextAnchor.UpperLeft;
+                iv.childControlWidth = true;
+                iv.childControlHeight = true;
+                iv.childForceExpandWidth = false;
+                iv.childForceExpandHeight = false;
+
+                var name = Ui.Label(info, "Name", def.Name.ToUpperInvariant(), 36, TitleGreen, TextAnchor.MiddleLeft);
+                var nle = name.gameObject.AddComponent<LayoutElement>();
+                nle.preferredWidth = 380;
+                nle.preferredHeight = 46;
+
+                var chip = Ui.Img(info, "TypeChip", typeColor);
+                Ui.AddOutline(chip.gameObject);
+                var cle = chip.gameObject.AddComponent<LayoutElement>();
+                cle.preferredWidth = 160;
+                cle.preferredHeight = 44;
+                var chipText = Ui.Label(chip.transform, "Text", typeLabel, 22, Color.white);
+                Ui.Stretch(chipText.rectTransform);
+
+                if (active)
                 {
-                    _progress.ActiveMonId = id;
-                    ShowTeam();
-                });
-            }
+                    var ready = Ui.Label(info, "Ready", "- BATTLE BUDDY -", 22, Ui.Hex("#5c8a3f"), TextAnchor.MiddleLeft);
+                    var rle = ready.gameObject.AddComponent<LayoutElement>();
+                    rle.preferredWidth = 380;
+                    rle.preferredHeight = 40;
+                }
+                else
+                {
+                    var pick = Ui.Btn(info, "BtnPick", "Make battle buddy!", 20);
+                    pick.image.color = TabActive;
+                    var ple = pick.gameObject.AddComponent<LayoutElement>();
+                    ple.preferredWidth = 300;
+                    ple.preferredHeight = 50;
+                    pick.onClick.AddListener(() =>
+                    {
+                        _progress.ActiveMonId = id;
+                        ShowTeam();
+                    });
+                }
+            });
 
             // 属性表
             int atk = 2 + _progress.AttackBonus;
             var formula = Array.Find(def.Skills, s => s.Id == "flame-formula");
-            StatRow(parent, 0, "HP", def.MaxHp.ToString());
-            StatRow(parent, 1, "ATK", atk.ToString());
-            StatRow(parent, 2, formula != null ? formula.Name.ToUpperInvariant() : "SKILL",
+            StatRow(parent, "HP", def.MaxHp.ToString());
+            StatRow(parent, "ATK", atk.ToString());
+            StatRow(parent, formula != null ? formula.Name.ToUpperInvariant() : "SKILL",
                 formula != null ? $"power {formula.Power}" : "-");
 
             // 进化路线
             BuildEvolutionBlock(parent, id);
         }
 
-        private void StatRow(RectTransform parent, int index, string label, string value)
+        private void StatRow(RectTransform parent, string label, string value)
         {
-            var row = Ui.Img(parent, $"Stat-{label}", Cream);
-            Ui.Place(row.rectTransform, new Vector2(0.5f, 1), new Vector2(120, -240 - index * 62), new Vector2(430, 54));
-            Ui.AddOutline(row.gameObject);
-            var l = Ui.Label(row.transform, "L", label, 24, Ui.Ink, TextAnchor.MiddleLeft);
-            Ui.Place(l.rectTransform, new Vector2(0, 0.5f), new Vector2(18, 0), new Vector2(280, 40));
-            var v = Ui.Label(row.transform, "V", value, 24, TitleGreen, TextAnchor.MiddleRight);
-            Ui.Place(v.rectTransform, new Vector2(1, 0.5f), new Vector2(-18, 0), new Vector2(180, 40));
+            ListRow(parent, $"Stat-{label}", 52, row =>
+            {
+                var img = row.gameObject.AddComponent<Image>();
+                img.color = Cream;
+                Ui.AddOutline(row.gameObject);
+                var l = Ui.Label(row, "L", label, 23, Ui.Ink, TextAnchor.MiddleLeft);
+                Ui.Place(l.rectTransform, new Vector2(0, 0.5f), new Vector2(18, 0), new Vector2(320, 40));
+                var val = Ui.Label(row, "V", value, 23, TitleGreen, TextAnchor.MiddleRight);
+                Ui.Place(val.rectTransform, new Vector2(1, 0.5f), new Vector2(-18, 0), new Vector2(180, 40));
+            });
         }
 
         private void BuildEvolutionBlock(RectTransform parent, string id)
@@ -427,21 +472,40 @@ namespace Numeria.Game
                     break;
             }
 
-            var label = Ui.Label(parent, "EvoTitle", "- EVOLUTION -", 20, TitleGreen);
-            Ui.Place(label.rectTransform, new Vector2(0.5f, 0), new Vector2(0, 118), new Vector2(500, 26));
+            ListRow(parent, "EvoTitle", 30, row =>
+                Ui.Stretch(Ui.Label(row, "Text", "- EVOLUTION -", 20, TitleGreen).rectTransform));
 
-            float x = toId != null ? -80 : -40;
-            var from = Ui.SpriteImg(parent, "EvoFrom", SpriteLib.One($"Art/Sprites/{fromId}"));
-            Ui.Place(from.rectTransform, new Vector2(0.5f, 0), new Vector2(x, 66), new Vector2(56, 56));
-            if (toId != null)
+            ListRow(parent, "EvoIcons", 64, row =>
             {
-                var arrow = Ui.Label(parent, "EvoArrow", ">", 30, SummaryOrange);
-                Ui.Place(arrow.rectTransform, new Vector2(0.5f, 0), new Vector2(x + 60, 66), new Vector2(36, 40));
-                var to = Ui.SpriteImg(parent, "EvoTo", SpriteLib.One($"Art/Sprites/{toId}"));
-                Ui.Place(to.rectTransform, new Vector2(0.5f, 0), new Vector2(x + 120, 66), new Vector2(56, 56));
-            }
-            var cond = Ui.Label(parent, "EvoCond", text, 19, color);
-            Ui.Place(cond.rectTransform, new Vector2(0.5f, 0), new Vector2(0, 22), new Vector2(560, 26));
+                var h = row.gameObject.AddComponent<HorizontalLayoutGroup>();
+                h.spacing = 12;
+                h.childAlignment = TextAnchor.MiddleCenter;
+                h.childControlWidth = true;
+                h.childControlHeight = true;
+                h.childForceExpandWidth = false;
+                h.childForceExpandHeight = false;
+
+                EvoIcon(row, fromId);
+                if (toId != null)
+                {
+                    var arrow = Ui.Label(row, "Arrow", ">", 30, SummaryOrange);
+                    var ale = arrow.gameObject.AddComponent<LayoutElement>();
+                    ale.preferredWidth = 34;
+                    ale.preferredHeight = 40;
+                    EvoIcon(row, toId);
+                }
+            });
+
+            ListRow(parent, "EvoCond", 34, row =>
+                Ui.Stretch(Ui.Label(row, "Text", text, 19, color).rectTransform));
+        }
+
+        private static void EvoIcon(RectTransform parent, string id)
+        {
+            var img = Ui.SpriteImg(parent, $"Evo-{id}", SpriteLib.One($"Art/Sprites/{id}"));
+            var le = img.gameObject.AddComponent<LayoutElement>();
+            le.preferredWidth = 56;
+            le.preferredHeight = 56;
         }
 
         // ---------- ITEMS ----------
