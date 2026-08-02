@@ -30,5 +30,10 @@ namespace Numeria.Game
         {
             File.WriteAllText(SavePath, JsonUtility.ToJson(progress));
         }
+
+        public static void Delete()
+        {
+            if (File.Exists(SavePath)) File.Delete(SavePath);
+        }
     }
 }

@@ -31,6 +31,18 @@ namespace Numeria.Core
             Skills = new SkillDef[0],
         };
 
+        /// <summary>按 id 取数灵定义(图鉴/菜单用)。未知 id 返回 null。</summary>
+        public static CombatantDef ById(string id)
+        {
+            switch (id)
+            {
+                case "addmander": return Addmander();
+                case "duplirock": return Duplirock();
+                case "countipillar": return Countipillar();
+                default: return null;
+            }
+        }
+
         public static CombatantDef Countipillar() => new CombatantDef
         {
             Id = "countipillar",

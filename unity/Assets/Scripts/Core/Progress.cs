@@ -14,6 +14,7 @@ namespace Numeria.Core
         public int Xp;
         public int AttackBonus;
         public bool BossBeaten;
+        public bool VoiceEnabled = true;
         public List<string> CaughtIds = new List<string>();
         public List<string> OpenedChests = new List<string>();
 

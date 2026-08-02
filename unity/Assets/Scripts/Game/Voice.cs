@@ -6,6 +6,9 @@ namespace Numeria.Game
     /// <summary>预烘焙语音播放:按台词文本查 Resources/Voice 下的 wav 顺序播放。</summary>
     public class Voice : MonoBehaviour
     {
+        /// <summary>全局语音开关(菜单设置,持久化在 Progress.VoiceEnabled)。</summary>
+        public static bool Enabled = true;
+
         private AudioSource _audio;
         private Coroutine _routine;
 
@@ -16,6 +19,7 @@ namespace Numeria.Game
 
         public void Say(params string[] lines)
         {
+            if (!Enabled) return;
             if (_routine != null) StopCoroutine(_routine);
             _routine = StartCoroutine(SayRoutine(lines));
         }

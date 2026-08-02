@@ -53,6 +53,7 @@ namespace Numeria.Game
         {
             _map = GridMap.Parse(ForestRows);
             _progress = SaveSystem.Load();
+            Voice.Enabled = _progress.VoiceEnabled;
             _rng = new Rng((uint)System.Environment.TickCount);
             _voice = gameObject.AddComponent<Voice>();
 
@@ -172,6 +173,30 @@ namespace Numeria.Game
             Ui.AddOutline(plate.gameObject);
             _hudText = Ui.Label(plate.transform, "HudText", "", 22, Ui.Ink);
             Ui.Stretch(_hudText.rectTransform);
+
+            var menuBtn = Ui.Btn(_hudCanvasRoot, "BtnMenu", "MENU", 24);
+            Ui.Place((RectTransform)menuBtn.transform, new Vector2(1, 1), new Vector2(-20, -20), new Vector2(140, 54));
+            menuBtn.onClick.AddListener(OpenMenu);
+        }
+
+        private void OpenMenu()
+        {
+            if (_busy) return;
+            _busy = true;
+            MenuUi.Open(_hudCanvasRoot, _progress,
+                onClose: () =>
+                {
+                    SaveSystem.Save(_progress);
+                    UpdateHud();
+                    _busy = false;
+                },
+                onReset: () =>
+                {
+                    SaveSystem.Delete();
+                    var fresh = new GameObject("ForestMap");
+                    fresh.AddComponent<MapController>();
+                    Destroy(gameObject);
+                });
         }
 
         private void UpdateHud()
