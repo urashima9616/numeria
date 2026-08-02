@@ -124,6 +124,56 @@ export const COUNTIPILLAR = {
   ],
 };
 
+export const DOUBLIT = {
+  palette: {
+    G: '#3d4148', S: '#8f979f', s: '#b8bec6',
+    W: '#ffffff', P: '#2e3338', M: '#7fae5a', R: '#d98a8a',
+  },
+  map: [
+    '................',
+    '..GGG.....GGG...',
+    '.GsssG...GsssG..',
+    'GsssssG.GsssssG.',
+    'GsWPssG.GsWPssG.',
+    'GsWPssGGGsWPssG.',
+    'GssssssGssssssG.',
+    'GsRssssssssRssG.',
+    '.GssMssssssssG..',
+    '.GssssssMssssG..',
+    '..GsssssssssG...',
+    '...GGGGGGGGG....',
+    '..GG.GG.GG.GG...',
+    '.GssG.....GssG..',
+    '..GG.......GG...',
+    '................',
+  ],
+};
+
+export const SUMDRAKE = {
+  palette: {
+    O: '#5d2a12', R: '#d84f2a', r: '#f0764a', C: '#ffe3b3',
+    W: '#ffffff', P: '#3b2b20', F: '#ffd24a', f: '#ff5a2e', w: '#8a3a1c',
+  },
+  map: [
+    '....O......O....',
+    '....OO....OO....',
+    '.....OOOOOO.....',
+    '....ORRRRRRO....',
+    '...ORRRRRRRRO...',
+    '..ORWPRRRRWPO...',
+    '..ORWPRRRRWPO...',
+    '..ORRRRRRRRRRO..',
+    '..ORrRPPPPRrRO..',
+    'w..ORRRRRRRRO..w',
+    'wwOORCCCCCCROOww',
+    'wwORRRCCCCRRROww',
+    '.wORRRCCCCRRROw.',
+    'F..ORRRRRRRRO..F',
+    'fF..OROOOORO..Ff',
+    '.....OO..OO.....',
+  ],
+};
+
 export const TILE_GRASS = {
   palette: { G: '#7cb342', L: '#8fce5a', D: '#66a234' },
   map: [

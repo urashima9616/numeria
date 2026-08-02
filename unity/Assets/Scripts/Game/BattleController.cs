@@ -35,10 +35,15 @@ namespace Numeria.Game
         private Button _btnShield;
         private Button _btnCatch;
 
-        public void Init(CombatantDef enemy, Progress progress, Action<BattleEnd> onEnd)
+        private int _tier = 1;
+        private string _battleBg = "forest-battle";
+
+        public void Init(CombatantDef enemy, Progress progress, int tier, string battleBg, Action<BattleEnd> onEnd)
         {
             _onEnd = onEnd;
-            _state = new BattleState(GameData.Addmander(), enemy);
+            _tier = tier;
+            _battleBg = battleBg;
+            _state = new BattleState(GameData.Player(progress.Evolved), enemy);
             _state.PlayerAttackBonus = progress.AttackBonus;
             _rng = new Rng((uint)Environment.TickCount);
             _voice = gameObject.AddComponent<Voice>();
@@ -71,7 +76,7 @@ namespace Numeria.Game
             _shakeRoot = Ui.Node(_canvasRoot, "ShakeRoot");
             Ui.Stretch(_shakeRoot);
 
-            var bg = Ui.SpriteImg(_shakeRoot, "Background", SpriteLib.One("Art/Backgrounds/forest-battle"));
+            var bg = Ui.SpriteImg(_shakeRoot, "Background", SpriteLib.One($"Art/Backgrounds/{_battleBg}"));
             Ui.Stretch(bg.rectTransform);
 
             // 敌方
@@ -85,7 +90,7 @@ namespace Numeria.Game
             _enemySprite = enemyImg.rectTransform;
 
             // 我方
-            var playerImg = Ui.SpriteImg(_shakeRoot, "PlayerSprite", SpriteLib.One("Art/Sprites/addmander"));
+            var playerImg = Ui.SpriteImg(_shakeRoot, "PlayerSprite", SpriteLib.One($"Art/Sprites/{_state.Player.Id}"));
             Ui.Place(playerImg.rectTransform, new Vector2(0, 0), new Vector2(60, 170), new Vector2(160, 160));
             _playerSprite = playerImg.rectTransform;
             var playerPlate = BuildPlate("PlayerPlate", new Vector2(0, 0), new Vector2(240, 130),
@@ -207,7 +212,7 @@ namespace Numeria.Game
         {
             SetActionsEnabled(false);
             bool? correct = null;
-            yield return _puzzles.RunFormula(v => correct = v);
+            yield return _puzzles.RunFormula(v => correct = v, _tier);
             yield return Lunge(_playerSprite, new Vector2(60, 30));
             yield return Projectile(_playerSprite, _enemySprite,
                 correct.Value ? Ui.Hex("#ff5a2e") : Ui.Hex("#ffd24a"));
@@ -226,7 +231,7 @@ namespace Numeria.Game
         {
             SetActionsEnabled(false);
             bool? ok = null;
-            yield return _puzzles.RunMakeTen(v => ok = v);
+            yield return _puzzles.RunMakeTen(v => ok = v, _state.Enemy.Shield ?? 10);
             if (ok.Value)
             {
                 yield return ShatterShield();
@@ -248,7 +253,7 @@ namespace Numeria.Game
             SetActionsEnabled(false);
             SetLog($"{_state.Enemy.Name} is watching you...");
             bool? correct = null;
-            yield return _puzzles.RunFormula(v => correct = v);
+            yield return _puzzles.RunFormula(v => correct = v, _tier);
             if (correct.Value)
             {
                 _voice.Say($"Gotcha! {_state.Enemy.Name} joined your team!");
@@ -284,7 +289,7 @@ namespace Numeria.Game
         private void ShowOutcome()
         {
             bool win = _state.Outcome == BattleOutcome.Win;
-            _voice.Say(win ? "You win! Addmander got five experience points!" : "Oh no! Let's try again!");
+            _voice.Say(win ? $"You win! {_state.Player.Name} got five experience points!" : "Oh no! Let's try again!");
             ShowBanner(win ? "YOU WIN!" : "Addmander fainted...", win ? "+5 XP" : "",
                 () => _onEnd(win ? BattleEnd.Win : BattleEnd.Lose));
         }

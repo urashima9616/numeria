@@ -15,8 +15,12 @@ namespace Numeria.Core
         public int AttackBonus;
         public bool BossBeaten;
         public bool VoiceEnabled = true;
+        public bool HasEvoStone;
+        public bool Evolved;
+        public string CurrentMap = "forest";
         public List<string> CaughtIds = new List<string>();
         public List<string> OpenedChests = new List<string>();
+        public List<string> ClearedGates = new List<string>();
 
         /// <summary>升到下一级所需经验:等级 × 10,数字小,孩子能心算。</summary>
         public int XpToNext => Level * 10;

@@ -43,14 +43,46 @@ bake "A math chest! Solve the lock!"
 bake "Attack goes up by one!"
 bake "Let's rest and try again!"
 
-# ---- 咒语算式读题:a + ? = sum,sum 3..10,a 1..sum-1(与 PuzzleGenerator 一致) ----
-words=(zero One Two Three Four Five Six Seven Eight Nine Ten)
-lower=(zero one two three four five six seven eight nine ten)
-for sum in {3..10}; do
+# ---- 咒语算式读题(与 PuzzleGenerator 一致) ----
+lower=(zero one two three four five six seven eight nine ten
+  eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty)
+
+# 加法填空:a + ? = sum,sum 3..20
+for sum in {3..20}; do
   for a in {1..$((sum - 1))}; do
-    bake "${words[$((a + 1))]} plus what makes ${lower[$((sum + 1))]}?"
+    bake "${lower[$((a + 1))]} plus what makes ${lower[$((sum + 1))]}?"
   done
 done
+
+# 减法填空:a - ? = c,a 3..20
+for a in {3..20}; do
+  for c in {1..$((a - 1))}; do
+    bake "${lower[$((a + 1))]} take away what leaves ${lower[$((c + 1))]}?"
+  done
+done
+
+# 翻倍:n 2..10
+for n in {2..10}; do
+  bake "What is double ${lower[$((n + 1))]}?"
+done
+
+# 凑十二(山脉 Boss 护盾)
+bake "Pick two crystals that make twelve!"
+
+# ---- P3 山脉与进化台词 ----
+bake "A wild Doublit appeared!"
+bake "Gotcha! Doublit joined your team!"
+bake "A wild Duplirock Elder appeared! It has a number shield!"
+bake "Welcome to Silent Peaks!"
+bake "Welcome to Mystic Forest!"
+bake "You found the Evolution Stone!"
+bake "Reach level five to evolve!"
+bake "Evolution trial! Solve three puzzles!"
+bake "Addmander is evolving!"
+bake "Amazing! Addmander evolved into Sumdrake!"
+bake "The gate is cleared! Azure Sky City awaits!"
+bake "You win! Sumdrake got five experience points!"
+bake "Level up! Sumdrake is getting stronger!"
 
 rm -rf "$TMP"
 echo "done: $(ls "$OUT" | wc -l | tr -d ' ') clips in $OUT"

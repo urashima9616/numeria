@@ -5,8 +5,10 @@ namespace Numeria.Core
     public class FormulaPuzzle
     {
         public int A;
-        public int Missing;
-        public int Sum;
+        public int Missing;   // 正确答案
+        public int Sum;       // 等号右侧的值(SlotIsResult 时 Sum == Missing)
+        public char Op = '+';
+        public bool SlotIsResult; // true: A op A = □(如翻倍);false: A op □ = Sum
         public List<int> Candidates;
         public string Prompt;
     }
@@ -49,26 +51,59 @@ namespace Numeria.Core
             int a = rng.Pick(1, sum - 1);
             int missing = sum - a;
 
-            var candidates = new List<int> { missing };
-            while (candidates.Count < 4)
-            {
-                int offset = rng.Pick(1, 3) * (rng.Next() < 0.5 ? -1 : 1);
-                int c = missing + offset;
-                if (c >= 0 && c <= max && !candidates.Contains(c)) candidates.Add(c);
-            }
-            Shuffle(rng, candidates);
-
             return new FormulaPuzzle
             {
                 A = a,
                 Missing = missing,
                 Sum = sum,
-                Candidates = candidates,
+                Candidates = BuildCandidates(rng, missing, max),
                 Prompt = $"{Cap(NumberWord(a))} plus what makes {NumberWord(sum)}?",
             };
         }
 
         public static bool CheckFormula(FormulaPuzzle puzzle, int answer) => answer == puzzle.Missing;
+
+        /// <summary>减法填空:A − □ = C。"Nine take away what leaves five?"</summary>
+        public static FormulaPuzzle GenerateSubtraction(Rng rng, int max = 10)
+        {
+            int a = rng.Pick(3, max);
+            int missing = rng.Pick(1, a - 1);
+            int c = a - missing;
+            var candidates = BuildCandidates(rng, missing, max);
+            return new FormulaPuzzle
+            {
+                A = a, Missing = missing, Sum = c, Op = '-',
+                Candidates = candidates,
+                Prompt = $"{Cap(NumberWord(a))} take away what leaves {NumberWord(c)}?",
+            };
+        }
+
+        /// <summary>翻倍:N + N = □。"What is double six?"</summary>
+        public static FormulaPuzzle GenerateDouble(Rng rng, int max = 20)
+        {
+            int n = rng.Pick(2, System.Math.Min(10, max / 2));
+            int answer = n * 2;
+            var candidates = BuildCandidates(rng, answer, max);
+            return new FormulaPuzzle
+            {
+                A = n, Missing = answer, Sum = answer, Op = '+', SlotIsResult = true,
+                Candidates = candidates,
+                Prompt = $"What is double {NumberWord(n)}?",
+            };
+        }
+
+        private static List<int> BuildCandidates(Rng rng, int correct, int max)
+        {
+            var candidates = new List<int> { correct };
+            while (candidates.Count < 4)
+            {
+                int offset = rng.Pick(1, 3) * (rng.Next() < 0.5 ? -1 : 1);
+                int c = correct + offset;
+                if (c >= 0 && c <= max && !candidates.Contains(c)) candidates.Add(c);
+            }
+            Shuffle(rng, candidates);
+            return candidates;
+        }
 
         public static (int i, int j)? FindMakeTenPair(IList<int> hand, int target)
         {

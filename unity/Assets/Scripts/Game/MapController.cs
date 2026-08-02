@@ -7,30 +7,14 @@ using UnityEngine.UI;
 namespace Numeria.Game
 {
     /// <summary>
-    /// 神秘森林地图:ASCII 网格 + Cainos 美术,点触寻路、草丛遇敌、
-    /// 数学宝箱、Boss 守门传送门。地面/植被用 Cainos,数灵用自绘像素。
+    /// 地图控制器:按 MapDef 构建世界(ASCII 网格 + Cainos 美术),
+    /// 点触寻路、草丛遇敌、数学宝箱、Boss 守门传送、进化试炼。
     /// </summary>
     public class MapController : MonoBehaviour
     {
-        // '.'草地 'T'树 'b'草丛(遇敌) 'C'宝箱 'P'传送门 'S'出生点
-        private static readonly string[] ForestRows =
-        {
-            "TTTTTTTTTTTTTTTTTTTT",
-            "T....bb....T...bb..T",
-            "T.S..bb........bb..T",
-            "T..........T.......T",
-            "T...T..bbb.....C...T",
-            "T...T..bbb.........T",
-            "T......bbb...TT....T",
-            "T.C.........TTT..P.T",
-            "T....bb............T",
-            "T....bb....bbb.....T",
-            "T..........bbb.....T",
-            "TTTTTTTTTTTTTTTTTTTT",
-        };
-
         private const double EncounterChance = 0.35;
 
+        private MapDef _def;
         private GridMap _map;
         private Progress _progress;
         private Rng _rng;
@@ -49,11 +33,15 @@ namespace Numeria.Game
         private (int x, int y) _pos;
         private bool _busy;
 
+        private string PlayerId => _progress.Evolved ? "sumdrake" : "addmander";
+        private string PlayerName => _progress.Evolved ? "Sumdrake" : "Addmander";
+
         private void Awake()
         {
-            _map = GridMap.Parse(ForestRows);
             _progress = SaveSystem.Load();
             Voice.Enabled = _progress.VoiceEnabled;
+            _def = Maps.Get(_progress.CurrentMap);
+            _map = GridMap.Parse(_def.Rows);
             _rng = new Rng((uint)System.Environment.TickCount);
             _voice = gameObject.AddComponent<Voice>();
 
@@ -62,6 +50,7 @@ namespace Numeria.Game
             _puzzles = new PuzzleUi(this, _hudCanvasRoot, _rng, lines => _voice.Say(lines));
             SetupCamera();
             UpdateHud();
+            _voice.Say(_def.WelcomeLine);
         }
 
         // ---------- 世界构建 ----------
@@ -79,7 +68,6 @@ namespace Numeria.Game
                 for (int x = 0; x < _map.Width; x++)
                 {
                     var world = TileWorld(x, y);
-                    // 地面:每格铺草地变体(确定性伪随机保证画面稳定)
                     int hash = (x * 73856093) ^ (y * 19349663);
                     int variant = ((hash % 97) + 97) % 97;
                     string groundName = variant < 6
@@ -91,36 +79,32 @@ namespace Numeria.Game
                     {
                         case Tile.Tree:
                             int t = (variant % 3) + 1;
-                            var lower = SpriteLib.Cainos("TX Plant", $"TX Tree T{t} Lower");
-                            var upper = SpriteLib.Cainos("TX Plant", $"TX Tree T{t} Upper");
-                            AddSprite(lower, world, SortOrder(world.y), "tree");
-                            AddSprite(upper, world + Vector3.up, SortOrder(world.y), "tree");
+                            AddSprite(SpriteLib.Cainos("TX Plant", $"TX Tree T{t} Lower"), world, SortOrder(world.y), "tree");
+                            AddSprite(SpriteLib.Cainos("TX Plant", $"TX Tree T{t} Upper"), world + Vector3.up, SortOrder(world.y), "tree");
                             break;
                         case Tile.Bush:
-                            var bush = SpriteLib.Cainos("TX Plant", $"TX Bush T{(variant % 6) + 1}");
-                            AddSprite(bush, world, SortOrder(world.y), "bush");
+                            AddSprite(SpriteLib.Cainos("TX Plant", $"TX Bush T{(variant % 6) + 1}"), world, SortOrder(world.y), "bush");
                             break;
                         case Tile.Chest:
                             bool opened = _progress.OpenedChests.Contains(ChestId(x, y));
-                            var chestSprite = SpriteLib.Cainos("TX Props",
-                                opened ? "TX Props Chest Opened" : "TX Props Chest");
-                            _chestRenderers[(x, y)] = AddSprite(chestSprite, world, SortOrder(world.y), "chest");
+                            _chestRenderers[(x, y)] = AddSprite(
+                                SpriteLib.Cainos("TX Props", opened ? "TX Props Chest Opened" : "TX Props Chest"),
+                                world, SortOrder(world.y), "chest");
                             break;
                         case Tile.Portal:
                             AddSprite(SpriteLib.Cainos("TX Props", "TX Props Altar"), world, SortOrder(world.y), "portal");
                             _portalGlow = AddSprite(SpriteLib.Cainos("TX Props", "TX Props Altar Rune 1"),
                                 world, SortOrder(world.y) + 1, "portal-glow");
-                            _portalGlow.gameObject.SetActive(_progress.BossBeaten);
+                            _portalGlow.gameObject.SetActive(_def.GateCleared(_progress));
                             break;
                     }
                 }
 
-            // 玩家头像(自绘 Addmander)
             _pos = _map.Spawn;
             var avatarGo = new GameObject("Avatar");
             avatarGo.transform.SetParent(_mapRoot.transform, false);
             var sr = avatarGo.AddComponent<SpriteRenderer>();
-            sr.sprite = SpriteLib.One("Art/Sprites/addmander");
+            sr.sprite = SpriteLib.One($"Art/Sprites/{PlayerId}");
             sr.sortingOrder = SortOrder(TileWorld(_pos.x, _pos.y).y) + 1;
             avatarGo.transform.position = TileWorld(_pos.x, _pos.y);
             _avatar = avatarGo.transform;
@@ -150,7 +134,7 @@ namespace Numeria.Game
             cam.orthographic = true;
             cam.orthographicSize = _map.Height / 2f + 0.5f;
             cam.transform.position = new Vector3(_map.Width / 2f - 0.5f, _map.Height / 2f - 0.5f, -10);
-            cam.backgroundColor = Ui.Hex("#2f4f2f");
+            cam.backgroundColor = Ui.Hex(_def.CameraBg);
             cam.clearFlags = CameraClearFlags.SolidColor;
         }
 
@@ -169,7 +153,7 @@ namespace Numeria.Game
             _hudCanvasRoot = (RectTransform)_hudRoot.transform;
 
             var plate = Ui.Img(_hudCanvasRoot, "HudPlate", Ui.PlateBg);
-            Ui.Place(plate.rectTransform, new Vector2(0, 1), new Vector2(20, -20), new Vector2(430, 54));
+            Ui.Place(plate.rectTransform, new Vector2(0, 1), new Vector2(20, -20), new Vector2(500, 54));
             Ui.AddOutline(plate.gameObject);
             _hudText = Ui.Label(plate.transform, "HudText", "", 22, Ui.Ink);
             Ui.Stretch(_hudText.rectTransform);
@@ -193,19 +177,31 @@ namespace Numeria.Game
                 onReset: () =>
                 {
                     SaveSystem.Delete();
-                    var fresh = new GameObject("ForestMap");
-                    fresh.AddComponent<MapController>();
-                    Destroy(gameObject);
+                    Respawn();
+                },
+                onTravel: mapId =>
+                {
+                    _progress.CurrentMap = mapId;
+                    SaveSystem.Save(_progress);
+                    Respawn();
                 });
+        }
+
+        /// <summary>销毁并重建地图控制器(切图/重置共用)。</summary>
+        private void Respawn()
+        {
+            var fresh = new GameObject("Map");
+            fresh.AddComponent<MapController>();
+            Destroy(gameObject);
         }
 
         private void UpdateHud()
         {
-            _hudText.text = $"Addmander Lv.{_progress.Level}  XP {_progress.Xp}/{_progress.XpToNext}  " +
-                            $"ATK +{_progress.AttackBonus}  Team {1 + _progress.CaughtIds.Count}";
+            _hudText.text = $"{PlayerName} Lv.{_progress.Level}  XP {_progress.Xp}/{_progress.XpToNext}  " +
+                            $"ATK +{_progress.AttackBonus}  {_def.DisplayName}";
         }
 
-        private static string ChestId(int x, int y) => $"forest-chest-{x}-{y}";
+        private string ChestId(int x, int y) => $"{_def.Id}-chest-{x}-{y}";
 
         // ---------- 输入与移动 ----------
 
@@ -258,7 +254,7 @@ namespace Numeria.Game
                 case Tile.Bush:
                     if (_rng.Next() < EncounterChance)
                     {
-                        StartBattle(GameData.Countipillar(), false);
+                        StartBattle(_def.Wild(), false);
                         return true;
                     }
                     return false;
@@ -270,14 +266,20 @@ namespace Numeria.Game
                     }
                     return false;
                 case Tile.Portal:
-                    if (!_progress.BossBeaten)
+                    if (!_def.GateCleared(_progress))
                     {
-                        _voice.Say("Duplirock guards the portal!");
-                        StartBattle(GameData.Duplirock(), true);
+                        _voice.Say(_def.BossLine);
+                        StartBattle(_def.Boss(), true);
+                    }
+                    else if (_def.PortalTargetMap != null)
+                    {
+                        _progress.CurrentMap = _def.PortalTargetMap;
+                        SaveSystem.Save(_progress);
+                        Respawn();
                     }
                     else
                     {
-                        StartCoroutine(PortalRoutine());
+                        StartCoroutine(ComingSoonRoutine());
                     }
                     return true;
                 default:
@@ -295,7 +297,8 @@ namespace Numeria.Game
 
             var battleGo = new GameObject("Battle");
             var battle = battleGo.AddComponent<BattleController>();
-            battle.Init(enemy, _progress, end => StartCoroutine(AfterBattle(end, enemy, isBoss, battleGo)));
+            battle.Init(enemy, _progress, _def.Tier, _def.BattleBg,
+                end => StartCoroutine(AfterBattle(end, enemy, isBoss, battleGo)));
         }
 
         private IEnumerator AfterBattle(BattleEnd end, CombatantDef enemy, bool isBoss, GameObject battleGo)
@@ -303,18 +306,18 @@ namespace Numeria.Game
             Destroy(battleGo);
             _mapRoot.SetActive(true);
             _hudRoot.SetActive(true);
-            SetupCamera(); // 战斗可能动过相机设置,恢复
+            SetupCamera();
 
             int levelUps = 0;
             switch (end)
             {
                 case BattleEnd.Win:
                     levelUps = _progress.GainXp(5);
-                    if (isBoss && !_progress.BossBeaten)
+                    if (isBoss && !_def.GateCleared(_progress))
                     {
-                        _progress.BossBeaten = true;
+                        _def.ClearGate(_progress);
                         if (_portalGlow != null) _portalGlow.gameObject.SetActive(true);
-                        _voice.Say("The portal is open! A new world awaits!");
+                        _voice.Say(_def.GateClearLine);
                         yield return new WaitForSeconds(2.5f);
                     }
                     break;
@@ -329,12 +332,14 @@ namespace Numeria.Game
 
             if (levelUps > 0)
             {
-                _voice.Say("Level up! Addmander is getting stronger!");
+                _voice.Say($"Level up! {PlayerName} is getting stronger!");
                 yield return new WaitForSeconds(1.5f);
             }
 
             SaveSystem.Save(_progress);
             UpdateHud();
+
+            yield return MaybeEvolve();
             _busy = false;
         }
 
@@ -344,28 +349,78 @@ namespace Numeria.Game
             _voice.Say("A math chest! Solve the lock!");
             yield return new WaitForSeconds(1.2f);
             bool? ok = null;
-            yield return _puzzles.RunFormula(v => ok = v);
+            yield return _puzzles.RunFormula(v => ok = v, _def.Tier);
             if (ok.Value)
             {
-                _progress.OpenChest(ChestId(x, y));
-                _progress.AttackBonus++;
+                string id = ChestId(x, y);
+                _progress.OpenChest(id);
                 if (_chestRenderers.TryGetValue((x, y), out var sr))
                     sr.sprite = SpriteLib.Cainos("TX Props", "TX Props Chest Opened");
-                _voice.Say("Attack goes up by one!");
+
+                if (id == _def.EvoChestId)
+                {
+                    _progress.HasEvoStone = true;
+                    _voice.Say("You found the Evolution Stone!");
+                    yield return new WaitForSeconds(2f);
+                    if (!_progress.Evolved && _progress.Level < 5)
+                    {
+                        _voice.Say("Reach level five to evolve!");
+                        yield return new WaitForSeconds(1.5f);
+                    }
+                }
+                else
+                {
+                    _progress.AttackBonus++;
+                    _voice.Say("Attack goes up by one!");
+                }
                 SaveSystem.Save(_progress);
                 UpdateHud();
             }
             // 没解开:宝箱保持关闭,随时可以再来试——零惩罚
+            yield return MaybeEvolve();
             _busy = false;
         }
 
-        private IEnumerator PortalRoutine()
+        /// <summary>进化条件满足时触发试炼:三道 tier2 谜题,零惩罚无限重试。</summary>
+        private IEnumerator MaybeEvolve()
+        {
+            if (_progress.Evolved || !_progress.HasEvoStone || _progress.Level < 5) yield break;
+
+            _voice.Say("Evolution trial! Solve three puzzles!");
+            yield return new WaitForSeconds(2f);
+            int solved = 0;
+            while (solved < 3)
+            {
+                bool? ok = null;
+                yield return _puzzles.RunFormula(v => ok = v, 2);
+                if (ok.Value) solved++;
+            }
+
+            _voice.Say($"{PlayerName} is evolving!");
+            var sr = _avatar.GetComponent<SpriteRenderer>();
+            // 蜕变演出:白闪 + 放大
+            for (int i = 0; i < 6; i++)
+            {
+                sr.color = i % 2 == 0 ? Color.white * 5f : Color.white;
+                _avatar.localScale = Vector3.one * (1f + 0.12f * i);
+                yield return new WaitForSeconds(0.25f);
+            }
+            _progress.Evolved = true;
+            sr.sprite = SpriteLib.One($"Art/Sprites/{PlayerId}");
+            sr.color = Color.white;
+            _avatar.localScale = Vector3.one * 1.15f; // 进化体稍大
+            _voice.Say("Amazing! Addmander evolved into Sumdrake!");
+            SaveSystem.Save(_progress);
+            UpdateHud();
+            yield return new WaitForSeconds(2.5f);
+        }
+
+        private IEnumerator ComingSoonRoutine()
         {
             _busy = true;
-            _voice.Say("The portal is open! A new world awaits!");
             var banner = Ui.Img(_hudCanvasRoot, "PortalBanner", new Color(0.06f, 0.09f, 0.13f, 0.92f));
             Ui.Stretch(banner.rectTransform);
-            var title = Ui.Label(banner.transform, "Title", "Silent Peaks", 64, Color.white);
+            var title = Ui.Label(banner.transform, "Title", _def.NextName, 64, Color.white);
             Ui.Place(title.rectTransform, new Vector2(0.5f, 0.58f), Vector2.zero, new Vector2(900, 90));
             var sub = Ui.Label(banner.transform, "Sub", "Coming soon!", 32, Ui.Hex("#ffe082"));
             Ui.Place(sub.rectTransform, new Vector2(0.5f, 0.46f), Vector2.zero, new Vector2(800, 50));

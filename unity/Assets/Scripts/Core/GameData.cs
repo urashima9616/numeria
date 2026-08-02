@@ -31,14 +31,43 @@ namespace Numeria.Core
             Skills = new SkillDef[0],
         };
 
+        /// <summary>玩家当前形态(随进化切换)。</summary>
+        public static CombatantDef Player(bool evolved) => evolved ? Sumdrake() : Addmander();
+
+        public static CombatantDef Sumdrake() => new CombatantDef
+        {
+            Id = "sumdrake", Name = "Sumdrake", MaxHp = 10, AttackPower = 0,
+            Shield = null, Catchable = false,
+            Skills = new[]
+            {
+                new SkillDef { Id = "tackle", Name = "Tackle", Cost = 0, Power = 2, BasePower = 2, Type = SkillType.Basic },
+                new SkillDef { Id = "flame-formula", Name = "Blaze Equation", Cost = 3, Power = 6, BasePower = 2, Type = SkillType.Formula },
+            },
+        };
+
+        public static CombatantDef Doublit() => new CombatantDef
+        {
+            Id = "doublit", Name = "Doublit", MaxHp = 9, AttackPower = 2,
+            Shield = null, Catchable = true, Skills = new SkillDef[0],
+        };
+
+        /// <summary>山脉 Boss:凑十二护盾(复用 Duplirock 立绘)。</summary>
+        public static CombatantDef DuplirockElder() => new CombatantDef
+        {
+            Id = "duplirock", Name = "Duplirock Elder", MaxHp = 10, AttackPower = 2,
+            Shield = 12, Catchable = false, Skills = new SkillDef[0],
+        };
+
         /// <summary>按 id 取数灵定义(图鉴/菜单用)。未知 id 返回 null。</summary>
         public static CombatantDef ById(string id)
         {
             switch (id)
             {
                 case "addmander": return Addmander();
+                case "sumdrake": return Sumdrake();
                 case "duplirock": return Duplirock();
                 case "countipillar": return Countipillar();
+                case "doublit": return Doublit();
                 default: return null;
             }
         }

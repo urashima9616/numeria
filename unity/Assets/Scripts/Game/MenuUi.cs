@@ -11,8 +11,9 @@ namespace Numeria.Game
     /// </summary>
     public static class MenuUi
     {
-        /// <summary>打开菜单。onClose 在关闭时回调;onReset 在确认重置存档后回调。</summary>
-        public static void Open(RectTransform canvasRoot, Progress progress, Action onClose, Action onReset)
+        /// <summary>打开菜单。onClose 关闭回调;onReset 确认重置回调;onTravel 切图回调(mapId)。</summary>
+        public static void Open(RectTransform canvasRoot, Progress progress, Action onClose, Action onReset,
+            Action<string> onTravel)
         {
             var overlay = Ui.Img(canvasRoot, "MenuOverlay", new Color(0.06f, 0.09f, 0.13f, 0.94f));
             Ui.Stretch(overlay.rectTransform);
@@ -47,7 +48,9 @@ namespace Numeria.Game
                 layout.childControlHeight = false;
                 layout.childForceExpandWidth = false;
                 layout.childForceExpandHeight = false;
-                TeamCard(row, "addmander", $"Addmander\nLv.{progress.Level}");
+                string starterId = progress.Evolved ? "sumdrake" : "addmander";
+                string starterName = progress.Evolved ? "Sumdrake" : "Addmander";
+                TeamCard(row, starterId, $"{starterName}\nLv.{progress.Level}");
                 foreach (string id in progress.CaughtIds)
                 {
                     var def = GameData.ById(id);
@@ -62,8 +65,31 @@ namespace Numeria.Game
             Row(panel.transform, "Stats", 72, row =>
                 Fill(Ui.Label(row, "Text",
                     $"Level {progress.Level}   XP {progress.Xp}/{progress.XpToNext}   ATK +{progress.AttackBonus}\n" +
-                    $"Chests {progress.OpenedChests.Count}/2   Portal: {portal}   Friends: {progress.CaughtIds.Count}",
+                    $"Chests {progress.OpenedChests.Count}/4   Portal: {portal}   Friends: {progress.CaughtIds.Count}",
                     26, Ui.Ink)));
+
+            // ---- Travel ----
+            Row(panel.transform, "SectionTravel", 26, row =>
+                Fill(Ui.Label(row, "Text", "Travel", 22, Ui.GemOrange, TextAnchor.MiddleLeft)));
+            Row(panel.transform, "TravelRow", 72, row =>
+            {
+                ButtonRowLayout(row);
+                var forestBtn = Ui.Btn(row, "BtnForest", "Mystic Forest", 24);
+                forestBtn.interactable = progress.CurrentMap != "forest";
+                forestBtn.onClick.AddListener(() =>
+                {
+                    UnityEngine.Object.Destroy(overlay.gameObject);
+                    onTravel("forest");
+                });
+                var peaksBtn = Ui.Btn(row, "BtnPeaks",
+                    progress.BossBeaten ? "Silent Peaks" : "Silent Peaks (locked)", 24);
+                peaksBtn.interactable = progress.BossBeaten && progress.CurrentMap != "mountains";
+                peaksBtn.onClick.AddListener(() =>
+                {
+                    UnityEngine.Object.Destroy(overlay.gameObject);
+                    onTravel("mountains");
+                });
+            });
 
             // ---- Settings ----
             Row(panel.transform, "SectionSettings", 26, row =>

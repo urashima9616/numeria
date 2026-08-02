@@ -82,20 +82,49 @@ namespace Numeria.Game
 
         // ---------- 咒语算式 ----------
 
-        public IEnumerator RunFormula(Action<bool> done)
+        /// <summary>按难度层选题:tier1 = 10 以内加/减;tier2 = 20 以内加/减 + 翻倍。</summary>
+        public FormulaPuzzle PickPuzzle(int tier)
         {
-            var p = PuzzleGenerator.GenerateFormula(_rng, 10);
+            double roll = _rng.Next();
+            if (tier >= 2)
+            {
+                if (roll < 0.4) return PuzzleGenerator.GenerateFormula(_rng, 20);
+                if (roll < 0.75) return PuzzleGenerator.GenerateSubtraction(_rng, 20);
+                return PuzzleGenerator.GenerateDouble(_rng, 20);
+            }
+            return roll < 0.65
+                ? PuzzleGenerator.GenerateFormula(_rng, 10)
+                : PuzzleGenerator.GenerateSubtraction(_rng, 10);
+        }
+
+        public IEnumerator RunFormula(Action<bool> done, int tier = 1)
+        {
+            var p = PickPuzzle(tier);
             var overlay = BuildOverlay(p.Prompt, out var crystalRow);
 
             var eq = Ui.Node(overlay, "Equation");
             Ui.Place(eq, new Vector2(0.5f, 0.58f), Vector2.zero, new Vector2(600, 110));
-            EqLabel(eq, "A", p.A.ToString(), new Vector2(-180, 0), new Vector2(80, 90));
-            EqLabel(eq, "Plus", "+", new Vector2(-100, 0), new Vector2(60, 90));
-            var slot = MakeSlot(eq, Vector2.zero);
+            RectTransform slot;
+            if (p.SlotIsResult)
+            {
+                // A + A = □(翻倍)
+                EqLabel(eq, "A", p.A.ToString(), new Vector2(-190, 0), new Vector2(90, 90));
+                EqLabel(eq, "Op", p.Op.ToString(), new Vector2(-105, 0), new Vector2(60, 90));
+                EqLabel(eq, "A2", p.A.ToString(), new Vector2(-20, 0), new Vector2(90, 90));
+                EqLabel(eq, "Equals", "=", new Vector2(70, 0), new Vector2(60, 90));
+                slot = MakeSlot(eq, new Vector2(165, 0));
+            }
+            else
+            {
+                // A op □ = Sum
+                EqLabel(eq, "A", p.A.ToString(), new Vector2(-190, 0), new Vector2(90, 90));
+                EqLabel(eq, "Op", p.Op.ToString(), new Vector2(-105, 0), new Vector2(60, 90));
+                slot = MakeSlot(eq, Vector2.zero);
+                EqLabel(eq, "Equals", "=", new Vector2(105, 0), new Vector2(60, 90));
+                EqLabel(eq, "Sum", p.Sum.ToString(), new Vector2(190, 0), new Vector2(90, 90));
+            }
             var slotText = Ui.Label(slot, "SlotValue", "", 56, Ui.Hex("#ffe082"));
             Ui.Stretch(slotText.rectTransform);
-            EqLabel(eq, "Equals", "=", new Vector2(100, 0), new Vector2(60, 90));
-            EqLabel(eq, "Sum", p.Sum.ToString(), new Vector2(180, 0), new Vector2(80, 90));
 
             var hint = Ui.Node(overlay, "Hint");
             Ui.Place(hint, new Vector2(0.5f, 0.2f), Vector2.zero, new Vector2(400, 90));
@@ -117,7 +146,10 @@ namespace Numeria.Game
                 {
                     slotText.text = "";
                     UnityEngine.Object.Destroy(crystal.gameObject);
-                    BuildHintTenFrame(hint, p.A, p.Sum);
+                    // 数块提示:加法/翻倍 = 已有(橙)补到结果(绿);减法 = 总数里剩下(橙)拿走(绿)
+                    if (p.Op == '-') BuildHintFrame(hint, p.Sum, p.A);
+                    else if (p.SlotIsResult) BuildHintFrame(hint, p.A, p.A * 2);
+                    else BuildHintFrame(hint, p.A, p.Sum);
                     Say("Hmm, not quite.", p.Prompt);
                 }
                 else
@@ -141,22 +173,24 @@ namespace Numeria.Game
             done(result.Value);
         }
 
-        private void BuildHintTenFrame(RectTransform parent, int a, int sum)
+        /// <summary>数块提示:前 orange 格橙色、到 total 为绿色。20 以内自动排成两行十格阵。</summary>
+        private void BuildHintFrame(RectTransform parent, int orange, int total)
         {
             foreach (Transform child in parent) UnityEngine.Object.Destroy(child.gameObject);
             var label = Ui.Label(parent, "HintLabel", "Let's count together!", 24, Color.white);
             Ui.Place(label.rectTransform, new Vector2(0.5f, 1f), Vector2.zero, new Vector2(400, 30));
+            int cellCount = total <= 10 ? 10 : 20;
             var frame = Ui.Node(parent, "HintFrame");
-            Ui.Place(frame, new Vector2(0.5f, 0f), Vector2.zero, new Vector2(200, 56));
+            Ui.Place(frame, new Vector2(0.5f, 0f), Vector2.zero, new Vector2(320, cellCount > 10 ? 56 : 30));
             var grid = frame.gameObject.AddComponent<GridLayoutGroup>();
-            grid.cellSize = new Vector2(30, 24);
-            grid.spacing = new Vector2(5, 5);
+            grid.cellSize = new Vector2(26, 22);
+            grid.spacing = new Vector2(4, 4);
             grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
-            grid.constraintCount = 5;
-            for (int i = 0; i < 10; i++)
+            grid.constraintCount = 10;
+            for (int i = 0; i < cellCount; i++)
             {
-                Color c = i < a ? Ui.Hex("#ffb300")
-                    : i < sum ? Ui.Hex("#66bb6a")
+                Color c = i < orange ? Ui.Hex("#ffb300")
+                    : i < total ? Ui.Hex("#66bb6a")
                     : new Color(1f, 1f, 1f, 0.2f);
                 var cell = Ui.Img(frame, $"HintCell{i}", c);
                 Ui.AddOutline(cell.gameObject);
@@ -165,9 +199,9 @@ namespace Numeria.Game
 
         // ---------- 凑十 ----------
 
-        public IEnumerator RunMakeTen(Action<bool> done)
+        public IEnumerator RunMakeTen(Action<bool> done, int target = 10)
         {
-            var p = PuzzleGenerator.GenerateMakeTen(_rng, 10, 4);
+            var p = PuzzleGenerator.GenerateMakeTen(_rng, target, 4);
             var overlay = BuildOverlay(p.Prompt, out var crystalRow);
 
             var eq = Ui.Node(overlay, "Equation");

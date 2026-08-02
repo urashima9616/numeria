@@ -5,7 +5,7 @@ import { deflateSync } from 'node:zlib';
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { ADDMANDER, DUPLIROCK, GEM, SHIELD, COUNTIPILLAR } from '../prototype/js/sprites.js';
+import { ADDMANDER, DUPLIROCK, GEM, SHIELD, COUNTIPILLAR, DOUBLIT, SUMDRAKE } from '../prototype/js/sprites.js';
 
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -134,6 +134,66 @@ function paintBackgroundPng() {
   return encodePng(W, H, rgba);
 }
 
+// ---- 山脉战斗背景:灰蓝色调,巨岩替代树线 ----
+function paintMountainBackgroundPng() {
+  const W = 480, H = 270;
+  const rgba = Buffer.alloc(W * H * 4);
+  const rect = (c, x, y, w, h) => {
+    const [r, g, b] = hexToRgba(c);
+    const x0 = Math.max(0, Math.round(x)), y0 = Math.max(0, Math.round(y));
+    const x1 = Math.min(W, Math.round(x + w)), y1 = Math.min(H, Math.round(y + h));
+    for (let yy = y0; yy < y1; yy++)
+      for (let xx = x0; xx < x1; xx++) {
+        const i = (yy * W + xx) * 4;
+        rgba[i] = r; rgba[i + 1] = g; rgba[i + 2] = b; rgba[i + 3] = 255;
+      }
+  };
+
+  // 天空:灰蓝色带
+  rect('#aebfd2', 0, 0, W, 60);
+  rect('#bccadb', 0, 60, W, 50);
+  rect('#cbd7e4', 0, 110, W, 40);
+  // 苍白的太阳
+  rect('#f2ecd8', 40, 26, 22, 22);
+  rect('#e8e0c4', 44, 30, 14, 14);
+  // 云
+  const cloud = (x, y, s) => {
+    rect('#ffffff', x, y + 4 * s, 30 * s, 6 * s);
+    rect('#ffffff', x + 6 * s, y, 16 * s, 8 * s);
+  };
+  cloud(140, 24, 1); cloud(330, 44, 1.3);
+  // 两层大山(比森林版更高更近)
+  for (let i = 0; i < W; i += 4) {
+    const h = 46 + 34 * Math.abs(Math.sin(i * 0.014)) + 12 * Math.abs(Math.sin(i * 0.047 + 2));
+    rect('#5f7189', i, 150 - h, 4, h);
+  }
+  for (let i = 0; i < W; i += 4) {
+    const h = 28 + 22 * Math.abs(Math.sin(i * 0.024 + 5));
+    rect('#7a8ba3', i, 150 - h, 4, h);
+    if (i % 28 === 0) rect('#e8eef4', i, 150 - h, 4, 3); // 雪顶
+  }
+  // 巨岩尖(替代树线)
+  const crag = (x, base, h, c) => {
+    for (let lvl = 0; lvl < h; lvl += 3) {
+      const w = Math.max(2, 12 - lvl);
+      rect(c, x + (12 - w) / 2, base - lvl - 3, w, 3);
+    }
+  };
+  for (let x = -4; x < W; x += 30) crag(x, 154, 12, '#6b7684');
+  for (let x = 12; x < W; x += 38) crag(x, 158, 9, '#59636f');
+  // 高山草甸(灰绿)
+  rect('#8a9a6a', 0, 152, W, 40);
+  rect('#76885c', 0, 192, W, 44);
+  rect('#647851', 0, 236, W, 34);
+  // 碎石与稀疏草
+  for (let i = 0; i < 22; i++) {
+    const x = (i * 103 + 17) % W, y = 162 + ((i * 47) % 92);
+    if (i % 3 === 0) { rect('#9aa4ae', x, y, 5, 4); rect('#7d8894', x + 1, y + 1, 3, 2); }
+    else { rect('#94a674', x, y, 2, 4); rect('#94a674', x + 3, y - 2, 2, 6); }
+  }
+  return encodePng(W, H, rgba);
+}
+
 // ---- 导出 ----
 const spriteDir = join(root, 'unity/Assets/Resources/Art/Sprites');
 const bgDir = join(root, 'unity/Assets/Resources/Art/Backgrounds');
@@ -142,9 +202,7 @@ mkdirSync(bgDir, { recursive: true });
 
 const sprites = {
   addmander: ADDMANDER, duplirock: DUPLIROCK, gem: GEM, shield: SHIELD,
-  countipillar: COUNTIPILLAR,
-
-
+  countipillar: COUNTIPILLAR, doublit: DOUBLIT, sumdrake: SUMDRAKE,
 };
 for (const [name, sprite] of Object.entries(sprites)) {
   const path = join(spriteDir, `${name}.png`);
@@ -153,3 +211,5 @@ for (const [name, sprite] of Object.entries(sprites)) {
 }
 writeFileSync(join(bgDir, 'forest-battle.png'), paintBackgroundPng());
 console.log(`wrote ${join(bgDir, 'forest-battle.png')} (480x270)`);
+writeFileSync(join(bgDir, 'mountain-battle.png'), paintMountainBackgroundPng());
+console.log(`wrote ${join(bgDir, 'mountain-battle.png')} (480x270)`);
