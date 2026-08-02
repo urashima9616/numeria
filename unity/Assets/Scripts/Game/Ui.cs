@@ -19,7 +19,26 @@ namespace Numeria.Game
         public static readonly Color GemOrange = Hex("#b06e00");
         public static readonly Color ShieldBlue = Hex("#1565c0");
 
-        public static Font DefaultFont => Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        private static Font _pixelFont;
+        private static bool _pixelFontLoaded;
+
+        /// <summary>像素字体(Press Start 2P, OFL),缺失时回退系统字体。</summary>
+        public static Font DefaultFont
+        {
+            get
+            {
+                if (!_pixelFontLoaded)
+                {
+                    _pixelFont = Resources.Load<Font>("Fonts/PressStart2P");
+                    _pixelFontLoaded = true;
+                }
+                return _pixelFont != null ? _pixelFont : Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            }
+        }
+
+        /// <summary>Press Start 2P 同字号远宽于普通字体,全局缩放以适配既有布局。</summary>
+        private static int ScaleFontSize(int size) =>
+            _pixelFont != null || !_pixelFontLoaded ? Mathf.Max(9, Mathf.RoundToInt(size * 0.62f)) : size;
 
         public static RectTransform Node(Transform parent, string name)
         {
@@ -53,10 +72,12 @@ namespace Numeria.Game
             var t = rt.gameObject.AddComponent<Text>();
             t.font = DefaultFont;
             t.text = text;
-            t.fontSize = size;
+            t.fontSize = ScaleFontSize(size);
+            t.lineSpacing = 1.25f; // 像素字体行距偏紧,放宽一点
             t.color = color;
             t.alignment = anchor;
-            t.fontStyle = style;
+            // 像素字体单权重,伪加粗会糊;回退字体时保留原样式
+            t.fontStyle = _pixelFont != null ? FontStyle.Normal : style;
             t.horizontalOverflow = HorizontalWrapMode.Overflow;
             t.verticalOverflow = VerticalWrapMode.Overflow;
             return t;
