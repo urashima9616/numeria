@@ -36,7 +36,7 @@
 - `Progress`:save schema v5;Lv.99 上限、物种成长曲线、动态经验、每家族独立成长、战斗消耗品与冒险记录 —— **新字段必须带默认值和迁移**
 - `GridMap`:ASCII 地图解析('.'草地 'T'树 'b'草丛 'C'宝箱 'P'传送门 'S'出生)+ BFS 寻路
 - `GameData`:30 只数灵、11 条进化线、各物种基础经验与 HP/ATK/DEF 每十级成长量;每家族配置独立数学亲和
-- 测试:`unity/Assets/Tests/EditMode/`,**65 个**;隔离工程副本最后一次完整 headless 为 **65/65**
+- 测试:`unity/Assets/Tests/EditMode/`,**67 个**;最后一次完整 headless 为 **67/67**
 
 ### Game 层(`Numeria.Game`)
 - **全程序化 UGUI,零场景文件**——所有界面代码搭建,SampleScene 只是空壳,`BattleBootstrap` 用 `RuntimeInitializeOnLoadMethod` 拉起 `MapController`
@@ -68,6 +68,7 @@
   - ✅ 音频系统:10 种 SFX + 6 种本地 Dynamic Music mood + 语音 duck/独立开关
   - ✅ 99级平衡:各物种 HP/ATK/DEF 成长、动态等级差经验、普通怪 HP 92%–108% 波动、动态 Boss 倍率、±1 伤害波动
   - ✅ 扩图与系统:带权生态、山脉重绘、全宝箱 Boss 条件、战斗消耗品/掉落、RECORDS 存档
+  - ✅ 血量捕捉曲线:普通野生数灵全血量可尝试,按钮实时显示 10%–95% 成功率,低血量按幂曲线提高
   - ⬜ 未做:JSON 数据驱动落地(现在数值在 GameData/MapDefs 硬编码)、自适应难度引擎(错题变形复现/隐形升降档)、家长面板(PIN + 掌握度热图)
 - ⬜ **P4**:iOS 构建、真机、TestFlight(免费 Apple ID 7 天签名 vs $99/年,已告知用户)
 
@@ -80,7 +81,7 @@
 ## 5. 资产管线(全部约定式,零代码接新资产)
 
 - **手绘像素**:改 `prototype/js/sprites.js` 字符网格 → `node tools/export-sprites.mjs` → PNG 落到 `Resources/Art/Sprites/`
-- **语音**:台词加进 `tools/bake-voice.sh` → 跑脚本(macOS `say`,Samantha,-r 150)→ wav 落到 `Resources/Voice/`;**C# 里说的每句台词必须有对应烘焙**,`VoiceKeys.Sanitize` = 脚本规则;现有 **982 条有效 WAV**,覆盖 0–30 加减全部读法和图形题
+- **语音**:台词加进 `tools/bake-voice.sh` → 跑脚本(macOS `say`,Samantha,-r 150)→ wav 落到 `Resources/Voice/`;**C# 里说的每句台词必须有对应烘焙**,`VoiceKeys.Sanitize` = 脚本规则;现有 **1,105 条有效 WAV**,覆盖 0–30 加减全部读法、图形题与捕捉反馈
 - **AI 生成图**(用户负责生成,放 `Resources/generated/`):
   - `{id}_large_icon.png` → 菜单详情/回退链
   - **NUMERIA_Unity_Battle_Assets/**(结构化素材包):`Characters/{Id}_Battle_Front|Back.png`(战斗立绘)、`UI/`(面板/按钮三态/血条/图标,9-slice)、`Backgrounds/`;包内有 README 和 Unity_Import_Settings.json

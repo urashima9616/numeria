@@ -99,6 +99,7 @@ bake "Level up! Countipillar is getting stronger!"
 bake "You win! Doublit got five experience points!"
 bake "Level up! Doublit is getting stronger!"
 bake "Already best friends! Bonus experience!"
+bake "It broke free! Lower its health and try again!"
 
 # ---- P3 天空城与图形规律 ----
 bake "What comes next in the pattern?"

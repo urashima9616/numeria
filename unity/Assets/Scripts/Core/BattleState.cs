@@ -3,6 +3,28 @@ using System.Linq;
 
 namespace Numeria.Core
 {
+    /// <summary>
+    /// 捕捉概率只由敌方剩余 HP 比例决定，便于孩子建立清晰因果：先削弱，再捕捉。
+    /// 满血仍有 10% 机会；随失去血量按幂曲线加速增长；理论上限为 95%。
+    /// </summary>
+    public static class CatchSystem
+    {
+        public const double MinimumChance = 0.10d;
+        public const double MaximumChance = 0.95d;
+        public const double CurveExponent = 1.45d;
+
+        public static double Probability(int remainingHp, int maxHp)
+        {
+            if (maxHp <= 0) return MinimumChance;
+            double hpRatio = Math.Max(0d, Math.Min(1d, (double)remainingHp / maxHp));
+            double weakened = 1d - hpRatio;
+            return MinimumChance + (MaximumChance - MinimumChance) * Math.Pow(weakened, CurveExponent);
+        }
+
+        public static int Percent(int remainingHp, int maxHp) =>
+            (int)Math.Round(Probability(remainingHp, maxHp) * 100d);
+    }
+
     public enum SkillType { Basic, Formula }
 
     public class SkillDef
@@ -83,6 +105,14 @@ namespace Numeria.Core
             int before = Gems;
             Gems = Math.Min(MaxGems, Gems + Math.Max(0, amount));
             return Gems - before;
+        }
+
+        public double CatchChance => CatchSystem.Probability(EnemyHp, Enemy.MaxHp);
+
+        /// <summary>数学友谊谜题答对后调用；Boss、不可捕捉目标与已倒下目标永远失败。</summary>
+        public bool TryCatch()
+        {
+            return Enemy.Catchable && !Enemy.IsBoss && EnemyHp > 0 && _rng.Next() < CatchChance;
         }
 
         /// <summary>

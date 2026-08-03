@@ -46,6 +46,38 @@ namespace Numeria.Core.Tests
         }
 
         [Test]
+        public void CatchChanceIsAlwaysAvailableAndRisesAsEnemyWeakens()
+        {
+            Assert.AreEqual(10, CatchSystem.Percent(100, 100));
+            Assert.That(CatchSystem.Percent(50, 100), Is.InRange(40, 42));
+            Assert.That(CatchSystem.Percent(20, 100), Is.InRange(71, 73));
+            Assert.That(CatchSystem.Percent(1, 100), Is.InRange(93, 95));
+
+            double previous = CatchSystem.Probability(100, 100);
+            for (int hp = 99; hp >= 1; hp--)
+            {
+                double current = CatchSystem.Probability(hp, 100);
+                Assert.Greater(current, previous);
+                previous = current;
+            }
+        }
+
+        [Test]
+        public void CatchRollUsesHealthCurveAndRejectsBosses()
+        {
+            var fullHp = new BattleState(GameData.Addmander(), GameData.Countipillar(), new Rng(1));
+            Assert.False(fullHp.TryCatch()); // first roll is about 23.6%, above the full-HP 10% chance
+
+            var lowHp = new BattleState(GameData.Addmander(), GameData.Countipillar(), new Rng(1));
+            lowHp.EnemyHp = 1;
+            Assert.True(lowHp.TryCatch());
+
+            var boss = new BattleState(GameData.Addmander(), GameData.Numberfly(), new Rng(1));
+            boss.EnemyHp = 1;
+            Assert.False(boss.TryCatch());
+        }
+
+        [Test]
         public void Shield_HalvesDamage_FloorMin1()
         {
             var s = Fresh();

@@ -42,6 +42,7 @@ namespace Numeria.Game
         private Image _formulaBg;
         private Button _btnShield;
         private Button _btnCatch;
+        private TMP_Text _catchChanceText;
         private Button _btnItem;
         private CanvasGroup _dockGroup;
         private int _playerLevel = 1;
@@ -176,7 +177,8 @@ namespace Numeria.Game
                 Ui.ShieldBlue, out _);
             _btnShield.onClick.AddListener(() => StartCoroutine(BreakShieldRoutine()));
             _btnCatch = ActionButton(dock.rectTransform, SpriteLib.Pack("UI/Icons/Catch"),
-                "CATCH", "FRIEND PUZZLE", SubOrange, out _);
+                "CATCH", "10% CHANCE", SubOrange, out _);
+            _catchChanceText = _btnCatch.transform.Find("SubT").GetComponent<TMP_Text>();
             _btnCatch.onClick.AddListener(() => StartCoroutine(CatchRoutine()));
             _btnItem = ActionButton(dock.rectTransform, SpriteLib.One("Art/Sprites/gem"),
                 "ITEMS", "BATTLE ONLY", Ui.Hex("#5c8a3f"), out _);
@@ -323,7 +325,9 @@ namespace Numeria.Game
             _btnShield.gameObject.SetActive(_state.Enemy.Shield.HasValue);
             _btnShield.interactable = _state.EnemyShielded;
             _btnCatch.gameObject.SetActive(!_state.Enemy.Shield.HasValue && _state.Enemy.Catchable && _state.EnemyHp > 0);
-            _btnCatch.interactable = _state.EnemyHp <= Math.Max(3, _state.Enemy.MaxHp / 5);
+            _btnCatch.interactable = true;
+            if (_catchChanceText != null)
+                _catchChanceText.text = $"{CatchSystem.Percent(_state.EnemyHp, _state.Enemy.MaxHp)}% CHANCE";
             _btnItem.interactable = _progress.HealthPotions > 0 || _progress.GemSnacks > 0;
         }
 
@@ -425,10 +429,21 @@ namespace Numeria.Game
             yield return _puzzles.RunTierPuzzle(v => correct = v, _tier);
             if (correct.Value)
             {
-                Sfx.Play(SfxCue.Catch);
-                _voice.Say($"Gotcha! {_state.Enemy.Name} joined your team!");
-                yield return FriendGemBurst(_enemySprite);
-                ShowBanner($"Caught {_state.Enemy.Name}!", $"+{_xpReward} XP", () => _onEnd(BattleEnd.Caught));
+                int chance = CatchSystem.Percent(_state.EnemyHp, _state.Enemy.MaxHp);
+                if (_state.TryCatch())
+                {
+                    Sfx.Play(SfxCue.Catch);
+                    _voice.Say($"Gotcha! {_state.Enemy.Name} joined your team!");
+                    yield return FriendGemBurst(_enemySprite);
+                    ShowBanner($"Caught {_state.Enemy.Name}!", $"+{_xpReward} XP", () => _onEnd(BattleEnd.Caught));
+                }
+                else
+                {
+                    Sfx.Play(SfxCue.SoftMiss, 0.72f);
+                    _voice.Say("It broke free! Lower its health and try again!");
+                    SetLog("It broke free!", $"{chance}% CHANCE - LOWER HP");
+                    yield return EndPlayerTurn();
+                }
             }
             else
             {
