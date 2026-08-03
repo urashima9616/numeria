@@ -6,17 +6,18 @@ namespace Numeria.Core.Tests
 {
     public class BattleTests
     {
-        private static BattleState Fresh() => new BattleState(GameData.Addmander(), GameData.Duplirock());
+        private static BattleState Fresh() => new BattleState(GameData.Addmander(), GameData.Numberfly());
 
         [Test]
         public void InitialState()
         {
             var s = Fresh();
             Assert.AreEqual(10, s.PlayerHp);
-            Assert.AreEqual(30, s.EnemyHp);
+            Assert.Greater(s.EnemyHp, 20);
             Assert.AreEqual(2, s.Gems);
             Assert.True(s.EnemyShielded);
-            Assert.AreEqual(4, s.Enemy.DefensePower);
+            Assert.AreEqual(5, s.Enemy.Level);
+            Assert.True(s.Enemy.IsBoss);
             Assert.AreEqual(BattleOutcome.None, s.Outcome);
         }
 
@@ -26,6 +27,21 @@ namespace Numeria.Core.Tests
             var s = Fresh();
             s.Gems = 7;
             s.StartPlayerTurn();
+            Assert.AreEqual(8, s.Gems);
+        }
+
+        [Test]
+        public void BattleItemsRestoreHpAndGemsWithoutExceedingCaps()
+        {
+            var s = Fresh();
+            s.PlayerHp = 3;
+            Assert.AreEqual(6, s.HealPlayer(6));
+            Assert.AreEqual(9, s.PlayerHp);
+            Assert.AreEqual(1, s.HealPlayer(99));
+            Assert.AreEqual(s.Player.MaxHp, s.PlayerHp);
+
+            s.Gems = 6;
+            Assert.AreEqual(2, s.RestoreGems(3));
             Assert.AreEqual(8, s.Gems);
         }
 
@@ -44,7 +60,7 @@ namespace Numeria.Core.Tests
             s.BreakShield();
             Assert.False(s.EnemyShielded);
             Assert.AreEqual(2, s.VulnerableTurns);
-            Assert.That(s.DamageToEnemy(8), Is.InRange(8, 12));
+            Assert.That(s.DamageToEnemy(8), Is.InRange(10, 14));
         }
 
         [Test]
@@ -54,9 +70,9 @@ namespace Numeria.Core.Tests
             s1.Gems = 3;
             s1.EnemyShielded = false;
             var r1 = s1.UseSkill("flame-formula", correct: true);
-            Assert.That(r1.Damage, Is.InRange(2, 4));
+            Assert.That(r1.Damage, Is.InRange(3, 5));
             Assert.True(r1.Powered);
-            Assert.AreEqual(30 - r1.Damage, s1.EnemyHp);
+            Assert.AreEqual(s1.Enemy.MaxHp - r1.Damage, s1.EnemyHp);
             Assert.AreEqual(0, s1.Gems);
 
             var s2 = Fresh();
@@ -84,7 +100,7 @@ namespace Numeria.Core.Tests
             var s = Fresh();
             s.BreakShield();
             int dmg = s.EnemyTurn();
-            Assert.That(dmg, Is.InRange(3, 5));
+            Assert.That(dmg, Is.InRange(4, 6));
             Assert.AreEqual(10 - dmg, s.PlayerHp);
             Assert.AreEqual(1, s.VulnerableTurns);
         }
@@ -116,25 +132,29 @@ namespace Numeria.Core.Tests
         }
 
         [Test]
-        public void WildHpRangesAndBossCurve_IncreaseByMap()
+        public void WildStatsScaleWithLevelAndKeepSmallHpVariance()
         {
+            var low = GameData.CreateWild("countipillar", 1, new Rng(7));
+            var high = GameData.CreateWild("countipillar", 30, new Rng(7));
+            Assert.Greater(high.MaxHp, low.MaxHp);
+            Assert.Greater(high.AttackPower, low.AttackPower);
+            Assert.Greater(high.DefensePower, low.DefensePower);
+
+            int expected = GrowthSystem.StatAtLevel(GameData.SpeciesById("countipillar").MaxHp,
+                GameData.SpeciesById("countipillar").HpGrowth, 20);
             for (uint seed = 1; seed <= 80; seed++)
-            {
-                Assert.That(GameData.RollWild(GameData.Countipillar(), 1, new Rng(seed)).MaxHp,
-                    Is.InRange(8, 12));
-                Assert.That(GameData.RollWild(GameData.Doublit(), 2, new Rng(seed)).MaxHp,
-                    Is.InRange(14, 20));
-                Assert.That(GameData.RollWild(GameData.Mirrowl(), 3, new Rng(seed)).MaxHp,
-                    Is.InRange(22, 30));
-            }
-            Assert.Less(GameData.Numberfly().MaxHp, GameData.DuplirockElder().MaxHp);
-            Assert.Less(GameData.DuplirockElder().MaxHp, GameData.Symmetrix().MaxHp);
-            CollectionAssert.AreEqual(new[] { 20, 36, 54 }, new[]
-            {
-                GameData.Numberfly().MaxHp,
-                GameData.DuplirockElder().MaxHp,
-                GameData.Symmetrix().MaxHp,
-            });
+                Assert.That(GameData.CreateWild("countipillar", 20, new Rng(seed)).MaxHp,
+                    Is.InRange((expected * 92) / 100, (expected * 108 + 99) / 100));
+        }
+
+        [Test]
+        public void BossesScaleAboveSameLevelWildMonsters()
+        {
+            var wild = GameData.CreateWild("duplirock", 20, new Rng(5));
+            var boss = GameData.CreateBoss("duplirock", 20, 2, new Rng(5));
+            Assert.Greater(boss.MaxHp, wild.MaxHp * 1.7f);
+            Assert.Greater(boss.AttackPower, wild.AttackPower);
+            Assert.Greater(boss.DefensePower, wild.DefensePower);
         }
     }
 }

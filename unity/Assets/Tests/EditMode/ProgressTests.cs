@@ -10,29 +10,29 @@ namespace Numeria.Core.Tests
         public void GainXp_LevelsUp_AndGrantsAttackBonus()
         {
             var p = new Progress();
-            Assert.AreEqual(10, p.XpToNext); // Lv1 → 10 xp
+            Assert.AreEqual(16, p.XpToNext);
 
-            Assert.AreEqual(0, p.GainXp(5));
-            Assert.AreEqual(5, p.Xp);
+            Assert.AreEqual(0, p.GainXp(8));
+            Assert.AreEqual(8, p.Xp);
             Assert.AreEqual(1, p.Level);
 
-            Assert.AreEqual(1, p.GainXp(5)); // 10/10 → Lv2
+            Assert.AreEqual(1, p.GainXp(8));
             Assert.AreEqual(0, p.Xp);
             Assert.AreEqual(2, p.Level);
-            Assert.AreEqual(1, p.AttackBonus);
-            Assert.AreEqual(1, p.DefenseBonus);
+            Assert.AreEqual(0, p.AttackBonus); // 升级成长由物种曲线计算，不伪装成装备加成
+            Assert.AreEqual(0, p.DefenseBonus);
         }
 
         [Test]
         public void GainXp_MultipleLevelsAtOnce()
         {
             var p = new Progress();
-            int gained = p.GainXp(35); // 10(→2) + 20(→3) = 30,剩 5
+            int gained = p.GainXp(43); // 16(→2) + 22(→3) = 38,剩 5
             Assert.AreEqual(2, gained);
             Assert.AreEqual(3, p.Level);
             Assert.AreEqual(5, p.Xp);
-            Assert.AreEqual(2, p.AttackBonus);
-            Assert.AreEqual(1, p.DefenseBonus);
+            Assert.AreEqual(0, p.AttackBonus);
+            Assert.AreEqual(0, p.DefenseBonus);
         }
 
         [Test]
@@ -86,9 +86,43 @@ namespace Numeria.Core.Tests
             progress.Catch("countipillar");
             progress.ActiveMonId = "countipillar";
             Assert.AreEqual(1, progress.ActiveGrowth.Level);
-            Assert.AreEqual(1, progress.GainXp(10));
+            Assert.AreEqual(1, progress.GainXp(16));
             Assert.AreEqual(2, progress.EnsureGrowth("countipillar").Level);
             Assert.AreEqual(1, progress.EnsureGrowth("addmander").Level);
+        }
+
+        [Test]
+        public void LevelCapIsNinetyNine()
+        {
+            var growth = new MonGrowth { Level = 98 };
+            Assert.AreEqual(1, growth.GainXp(100000));
+            Assert.AreEqual(99, growth.Level);
+            Assert.AreEqual(0, growth.Xp);
+            Assert.AreEqual(0, growth.XpToNext);
+        }
+
+        [Test]
+        public void ConsumablesAreCountedAndUsedIdempotently()
+        {
+            var p = new Progress();
+            p.AddConsumable(ConsumableType.HealthPotion, 2);
+            p.AddConsumable(ConsumableType.GemSnack);
+            Assert.True(p.UseConsumable(ConsumableType.HealthPotion));
+            Assert.AreEqual(1, p.HealthPotions);
+            Assert.AreEqual(1, p.GemSnacks);
+            Assert.AreEqual(1, p.Records.ConsumablesUsed);
+        }
+
+        [Test]
+        public void VictoryXpRewardsSpeciesLevelDifferenceAndBossDifficulty()
+        {
+            int ordinary = GrowthSystem.VictoryXp(7, 10, 10, false);
+            int rarer = GrowthSystem.VictoryXp(12, 10, 10, false);
+            int overLevel = GrowthSystem.VictoryXp(7, 15, 10, false);
+            int boss = GrowthSystem.VictoryXp(7, 10, 10, true);
+            Assert.Greater(rarer, ordinary);
+            Assert.Greater(overLevel, ordinary);
+            Assert.Greater(boss, ordinary * 2);
         }
 
         [Test]

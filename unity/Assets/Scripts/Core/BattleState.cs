@@ -19,9 +19,14 @@ namespace Numeria.Core
     {
         public string Id;
         public string Name;
+        public int Level = 1;
         public int MaxHp;
         public int AttackPower;
         public int DefensePower;
+        public int BaseXp;
+        public bool IsBoss;
+        public double DropChance;
+        public ConsumableType PreferredDrop;
         public int? Shield;
         public bool Catchable;
         public SkillDef[] Skills;
@@ -65,6 +70,20 @@ namespace Numeria.Core
         }
 
         public void StartPlayerTurn() => Gems = Math.Min(MaxGems, Gems + 2);
+
+        public int HealPlayer(int amount)
+        {
+            int before = PlayerHp;
+            PlayerHp = Math.Min(Player.MaxHp, PlayerHp + Math.Max(0, amount));
+            return PlayerHp - before;
+        }
+
+        public int RestoreGems(int amount)
+        {
+            int before = Gems;
+            Gems = Math.Min(MaxGems, Gems + Math.Max(0, amount));
+            return Gems - before;
+        }
 
         /// <summary>
         /// 幼儿可观察的攻防关系:攻击越高、对方防御越低，伤害越大。

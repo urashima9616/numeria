@@ -18,16 +18,25 @@ namespace Numeria.Game
         private readonly RectTransform _canvasRoot;
         private readonly Rng _rng;
         private readonly Action<string[]> _say;
+        private readonly Action<bool> _onCompleted;
         private static readonly Dictionary<ShapeKind, Sprite> ShapeSprites = new Dictionary<ShapeKind, Sprite>();
         private static readonly Dictionary<DirectionKind, Sprite> DirectionSprites =
             new Dictionary<DirectionKind, Sprite>();
 
-        public PuzzleUi(MonoBehaviour host, RectTransform canvasRoot, Rng rng, Action<string[]> say)
+        public PuzzleUi(MonoBehaviour host, RectTransform canvasRoot, Rng rng, Action<string[]> say,
+            Action<bool> onCompleted = null)
         {
             _host = host;
             _canvasRoot = canvasRoot;
             _rng = rng;
             _say = say;
+            _onCompleted = onCompleted;
+        }
+
+        private void Complete(Action<bool> done, bool result)
+        {
+            _onCompleted?.Invoke(result);
+            done(result);
         }
 
         private void Say(params string[] lines) => _say(lines);
@@ -201,7 +210,7 @@ namespace Numeria.Game
             yield return new WaitUntil(() => result.HasValue);
             yield return new WaitForSeconds(result.Value ? 0.65f : 0.4f);
             UnityEngine.Object.Destroy(overlay.gameObject);
-            done(result.Value);
+            Complete(done, result.Value);
         }
 
         public IEnumerator RunSymmetry(Action<bool> done)
@@ -254,7 +263,7 @@ namespace Numeria.Game
             yield return new WaitUntil(() => result.HasValue);
             yield return new WaitForSeconds(result.Value ? 0.65f : 0.4f);
             UnityEngine.Object.Destroy(overlay.gameObject);
-            done(result.Value);
+            Complete(done, result.Value);
         }
 
         public IEnumerator RunRotation(Action<bool> done, int tier = 2)
@@ -307,7 +316,7 @@ namespace Numeria.Game
             yield return new WaitUntil(() => result.HasValue);
             yield return new WaitForSeconds(result.Value ? 0.65f : 0.4f);
             UnityEngine.Object.Destroy(overlay.gameObject);
-            done(result.Value);
+            Complete(done, result.Value);
         }
 
         public IEnumerator RunNumberSequence(Action<bool> done, int tier = 3)
@@ -363,7 +372,7 @@ namespace Numeria.Game
             yield return new WaitUntil(() => result.HasValue);
             yield return new WaitForSeconds(result.Value ? 0.65f : 0.4f);
             UnityEngine.Object.Destroy(overlay.gameObject);
-            done(result.Value);
+            Complete(done, result.Value);
         }
 
         private static Button MakeShapeCard(Transform parent, ShapeKind shape, float size, Action onClick)
@@ -608,7 +617,7 @@ namespace Numeria.Game
             yield return new WaitUntil(() => result.HasValue);
             yield return new WaitForSeconds(result.Value ? 0.6f : 0.4f);
             UnityEngine.Object.Destroy(overlay.gameObject);
-            done(result.Value);
+            Complete(done, result.Value);
         }
 
         // ---------- 森林与山脉补充题型 ----------
@@ -678,7 +687,7 @@ namespace Numeria.Game
             yield return new WaitUntil(() => result.HasValue);
             yield return new WaitForSeconds(result.Value ? 0.65f : 0.4f);
             UnityEngine.Object.Destroy(overlay.gameObject);
-            done(result.Value);
+            Complete(done, result.Value);
         }
 
         public IEnumerator RunChainSum(Action<bool> done, int tier = 2)
@@ -737,7 +746,7 @@ namespace Numeria.Game
             yield return new WaitUntil(() => result.HasValue);
             yield return new WaitForSeconds(result.Value ? 0.65f : 0.4f);
             UnityEngine.Object.Destroy(overlay.gameObject);
-            done(result.Value);
+            Complete(done, result.Value);
         }
 
         private static void BuildCountGrid(RectTransform parent, int count, Sprite iconSprite)
@@ -858,7 +867,7 @@ namespace Numeria.Game
             yield return new WaitUntil(() => result.HasValue);
             yield return new WaitForSeconds(result.Value ? 0.6f : 0.4f);
             UnityEngine.Object.Destroy(overlay.gameObject);
-            done(result.Value);
+            Complete(done, result.Value);
         }
     }
 }

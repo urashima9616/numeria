@@ -68,6 +68,8 @@ namespace Numeria.Game
                 case "BUG": return (element, Ui.Hex("#7b9f3f"));
                 case "ROCK": return (element, Ui.Hex("#7d8894"));
                 case "SKY": return (element, Ui.Hex("#49a9d1"));
+                case "EARTH": return (element, Ui.Hex("#a97745"));
+                case "MIND": return (element, Ui.Hex("#8b68b5"));
                 default: return ("???", Ui.Hex("#7d8894"));
             }
         }
@@ -132,7 +134,7 @@ namespace Numeria.Game
             var title = Ui.Label(row, "Title", "NUMERIA", 56, TitleGreen, TextAnchor.UpperLeft);
             Ui.Place(title.rectTransform, new Vector2(0, 1), new Vector2(4, 0), new Vector2(500, 58));
             var summary = Ui.Label(row, "Summary",
-                $"Lv. {growth.Level}   XP {growth.Xp}/{growth.XpToNext}   " +
+                $"Lv. {growth.Level}   XP {(growth.Level >= GrowthSystem.MaxLevel ? "MAX" : $"{growth.Xp}/{growth.XpToNext}")}   " +
                 $"ATK +{growth.AttackBonus}   DEF +{growth.DefenseBonus}",
                 28, SummaryOrange, TextAnchor.UpperLeft);
             Ui.Place(summary.rectTransform, new Vector2(0, 1), new Vector2(6, -61), new Vector2(700, 34));
@@ -171,6 +173,7 @@ namespace Numeria.Game
 
             TabButton(row, "team", "TEAM", SpriteLib.One($"Art/Sprites/{DisplaySpriteId("addmander")}"), ShowTeam);
             TabButton(row, "items", "ITEMS", SpriteLib.Cainos("TX Props", "TX Props Chest"), ShowItems);
+            TabButton(row, "records", "RECORDS", SpriteLib.One("Art/Sprites/icon-sword"), ShowRecords);
             TabButton(row, "settings", "SETTINGS", SpriteLib.One("Art/Sprites/shield"), ShowSettings);
         }
 
@@ -297,14 +300,11 @@ namespace Numeria.Game
 
         private void BuildTeamList(RectTransform parent)
         {
-            var v = parent.gameObject.AddComponent<VerticalLayoutGroup>();
-            v.spacing = 7;
-            v.childControlWidth = true;
-            v.childControlHeight = true;
-            v.childForceExpandWidth = true;
-            v.childForceExpandHeight = false;
+            // 30 只生态下固定六格会让第七个以后收服的家族无法选择；
+            // 左栏改为完整可滚动图鉴，未满六只时仍保留空位提示。
+            var list = MakeScrollList(parent);
 
-            ListRow(parent, "TeamHeader", 42, row =>
+            ListRow(list, "TeamHeader", 42, row =>
             {
                 Ui.Stretch(Ui.Label(row, "Text", "YOUR TEAM", 28, TitleGreen).rectTransform);
                 var leftGem = Ui.SpriteImg(row, "LeftGem", SpriteLib.Pack("UI/Icons/Gem"));
@@ -318,17 +318,17 @@ namespace Numeria.Game
             });
 
             var team = TeamIds();
-            const int slots = 6;
+            int slots = Math.Max(6, team.Count);
             for (int i = 0; i < slots; i++)
             {
                 if (i < team.Count)
                 {
                     string id = team[i];
-                    ListRow(parent, $"Mon-{id}", 106, row => BuildTeamCard(row, id));
+                    ListRow(list, $"Mon-{id}", 106, row => BuildTeamCard(row, id));
                 }
                 else
                 {
-                    ListRow(parent, $"Empty-{i}", 58, row =>
+                    ListRow(list, $"Empty-{i}", 58, row =>
                     {
                         var img = row.gameObject.AddComponent<Image>();
                         img.color = CreamDeep;
@@ -339,14 +339,14 @@ namespace Numeria.Game
                 }
             }
 
-            ListRow(parent, "Hint", 38, row =>
+            ListRow(list, "Hint", 38, row =>
                 Ui.Stretch(Ui.Label(row, "Text", "Tap a teammate to view details", 23, SummaryOrange).rectTransform));
         }
 
         private void BuildTeamCard(RectTransform row, string id)
         {
             var growth = _progress.EnsureGrowth(id);
-            var def = GameData.PlayerMon(id, growth.Stage);
+            var def = GameData.PlayerMon(id, growth.Stage, growth.Level);
             bool active = id == _progress.ActiveMonId;
             bool selected = id == _selectedId;
 
@@ -395,7 +395,7 @@ namespace Numeria.Game
         private void BuildMonDetail(RectTransform parent, string id)
         {
             var growth = _progress.EnsureGrowth(id);
-            var def = GameData.PlayerMon(id, growth.Stage);
+            var def = GameData.PlayerMon(id, growth.Stage, growth.Level);
             bool active = id == _progress.ActiveMonId;
             var (typeLabel, typeColor) = TypeOf(DisplaySpriteId(id));
 
@@ -576,29 +576,97 @@ namespace Numeria.Game
             SelectTab("items");
             var content = MakeScrollList(FreshWrap());
 
-            if (_progress.Items.Count == 0)
-            {
-                ListRow(content, "NoItems", 60, row =>
-                    Ui.Stretch(Ui.Label(row, "Text", "No items yet - open math chests!", 26, Ui.Ink).rectTransform));
-                return;
-            }
+            SectionRow(content, "Battle-only supplies");
+            ConsumableRow(content, "HP Potion", "Restores 40% HP", _progress.HealthPotions,
+                SpriteLib.One("Art/Sprites/gem"), Ui.Hex("#d94a3d"));
+            ConsumableRow(content, "Gem Snack", "Restores 3 gems", _progress.GemSnacks,
+                SpriteLib.Pack("UI/Icons/Gem"), Ui.Hex("#f2b04e"));
+            ListRow(content, "BattleOnlyHint", 46, row =>
+                Ui.Stretch(Ui.Label(row, "Text", "These supplies can only be used from the battle command dock.",
+                    22, SummaryOrange).rectTransform));
+
+            SectionRow(content, "Key items and charms");
+            if (_progress.EvolutionStones > 0)
+                ItemRow(content, "Evolution Stone", $"Owned: {_progress.EvolutionStones}");
             foreach (string item in _progress.Items)
             {
                 string captured = item;
-                string effect = captured == "Evolution Stone" ? "Evolution material" : "+1 ATK";
-                ListRow(content, $"Item-{item}", 70, row =>
-                {
-                    var img = row.gameObject.AddComponent<Image>();
-                    img.color = Cream;
-                    Ui.AddOutline(row.gameObject);
-                    var icon = Ui.SpriteImg(row, "Icon", SpriteLib.One("Art/Sprites/gem"));
-                    Ui.Place(icon.rectTransform, new Vector2(0, 0.5f), new Vector2(16, 0), new Vector2(38, 38));
-                    var name = Ui.Label(row, "Name", captured, 26, Ui.Ink, TextAnchor.MiddleLeft);
-                    Ui.Place(name.rectTransform, new Vector2(0, 0.5f), new Vector2(70, 0), new Vector2(480, 40));
-                    var eff = Ui.Label(row, "Effect", effect, 24, SummaryOrange, TextAnchor.MiddleRight);
-                    Ui.Place(eff.rectTransform, new Vector2(1, 0.5f), new Vector2(-18, 0), new Vector2(360, 40));
-                });
+                string effect = captured.Contains("Guard") || captured.Contains("Feather") ? "+1 DEF" : "+1 ATK";
+                ItemRow(content, captured, effect);
             }
+            if (_progress.Items.Count == 0 && _progress.EvolutionStones == 0)
+                ListRow(content, "NoKeyItems", 54, row =>
+                    Ui.Stretch(Ui.Label(row, "Text", "No key items yet - open every math chest!", 24, Ui.Ink).rectTransform));
+        }
+
+        private static void ConsumableRow(Transform parent, string nameText, string effectText, int count,
+            Sprite sprite, Color tint)
+        {
+            ListRow(parent, $"Consumable-{nameText}", 76, row =>
+            {
+                var img = row.gameObject.AddComponent<Image>();
+                img.color = Cream;
+                Ui.AddOutline(row.gameObject);
+                var icon = Ui.SpriteImg(row, "Icon", sprite);
+                icon.color = tint;
+                icon.preserveAspect = true;
+                Ui.Place(icon.rectTransform, new Vector2(0, .5f), new Vector2(16, 0), new Vector2(42, 42));
+                var name = Ui.Label(row, "Name", $"{nameText}  x{count}", 27, Ui.Ink, TextAnchor.MiddleLeft);
+                Ui.Place(name.rectTransform, new Vector2(0, .5f), new Vector2(72, 0), new Vector2(460, 42));
+                var effect = Ui.Label(row, "Effect", effectText, 23, SummaryOrange, TextAnchor.MiddleRight);
+                Ui.Place(effect.rectTransform, new Vector2(1, .5f), new Vector2(-18, 0), new Vector2(400, 42));
+            });
+        }
+
+        private static void ItemRow(Transform parent, string nameText, string effectText)
+        {
+            ListRow(parent, $"Item-{nameText}", 70, row =>
+            {
+                var img = row.gameObject.AddComponent<Image>();
+                img.color = Cream;
+                Ui.AddOutline(row.gameObject);
+                var icon = Ui.SpriteImg(row, "Icon", SpriteLib.One("Art/Sprites/gem"));
+                Ui.Place(icon.rectTransform, new Vector2(0, .5f), new Vector2(16, 0), new Vector2(38, 38));
+                var name = Ui.Label(row, "Name", nameText, 26, Ui.Ink, TextAnchor.MiddleLeft);
+                Ui.Place(name.rectTransform, new Vector2(0, .5f), new Vector2(70, 0), new Vector2(480, 40));
+                var effect = Ui.Label(row, "Effect", effectText, 24, SummaryOrange, TextAnchor.MiddleRight);
+                Ui.Place(effect.rectTransform, new Vector2(1, .5f), new Vector2(-18, 0), new Vector2(360, 40));
+            });
+        }
+
+        // ---------- RECORDS ----------
+
+        private void ShowRecords()
+        {
+            SelectTab("records");
+            var content = MakeScrollList(FreshWrap());
+            var r = _progress.Records;
+            SectionRow(content, "Adventure record");
+            RecordRow(content, "Highest level", r.HighestLevel.ToString());
+            RecordRow(content, "Battles", $"{r.BattlesWon} wins / {r.BattlesLost} losses");
+            RecordRow(content, "Bosses defeated", r.BossesDefeated.ToString());
+            RecordRow(content, "Friends caught", r.MonstersCaught.ToString());
+            RecordRow(content, "Treasure chests", r.ChestsOpened.ToString());
+            RecordRow(content, "Total XP earned", r.TotalXpEarned.ToString());
+            RecordRow(content, "Biggest hit", r.HighestDamage.ToString());
+            int accuracy = r.PuzzlesCompleted == 0 ? 0 :
+                (int)Math.Round(r.PuzzlesSolved * 100d / r.PuzzlesCompleted);
+            RecordRow(content, "Math magic", $"{r.PuzzlesSolved}/{r.PuzzlesCompleted} solved ({accuracy}%)");
+            RecordRow(content, "Battle items used", r.ConsumablesUsed.ToString());
+        }
+
+        private static void RecordRow(Transform parent, string labelText, string valueText)
+        {
+            ListRow(parent, $"Record-{labelText}", 66, row =>
+            {
+                var bg = row.gameObject.AddComponent<Image>();
+                bg.color = Cream;
+                Ui.AddOutline(row.gameObject);
+                var label = Ui.Label(row, "Label", labelText, 25, Ui.Ink, TextAnchor.MiddleLeft);
+                Ui.Place(label.rectTransform, new Vector2(0, .5f), new Vector2(22, 0), new Vector2(520, 40));
+                var value = Ui.Label(row, "Value", valueText, 25, TitleGreen, TextAnchor.MiddleRight);
+                Ui.Place(value.rectTransform, new Vector2(1, .5f), new Vector2(-22, 0), new Vector2(480, 40));
+            });
         }
 
         // ---------- SETTINGS ----------

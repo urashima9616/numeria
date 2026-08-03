@@ -33,17 +33,17 @@
 - `Rng`:确定性 LCG(与 Web 原型逐位一致),所有生成函数注入 rng
 - `PuzzleGenerator`:三关 10/20/30 上限;加减填空、凑目标、连加、点数/比较、图形识别、AB/ABC/ABCD 规律、对称、旋转、数列;候选答案唯一
 - `BattleState`:宝石经济、数字护盾、破盾易伤;正式 ATK/DEF 公式 `max(1, ATK − DEF + 1 + [-1,1])`,小幅可控波动、零惩罚不变量
-- `Progress`:save schema v4;等级(XpToNext = Level×10,每级 ATK+1、每偶数级 DEF+1)、每家族独立成长、图鉴/宝箱/道具/进化/地图 —— **新字段必须带默认值和迁移**
+- `Progress`:save schema v5;Lv.99 上限、物种成长曲线、动态经验、每家族独立成长、战斗消耗品与冒险记录 —— **新字段必须带默认值和迁移**
 - `GridMap`:ASCII 地图解析('.'草地 'T'树 'b'草丛 'C'宝箱 'P'传送门 'S'出生)+ BFS 寻路
-- `GameData`:首发 15 只数灵的统一图鉴与六条进化线;三条御三家为三段(Lv.8/Lv.15),三条地图野生线为两段;每家族配置独立数学亲和
-- 测试:`unity/Assets/Tests/EditMode/`,**59 个**;隔离工程副本最后一次完整 headless 为 **59/59**
+- `GameData`:30 只数灵、11 条进化线、各物种基础经验与 HP/ATK/DEF 每十级成长量;每家族配置独立数学亲和
+- 测试:`unity/Assets/Tests/EditMode/`,**65 个**;隔离工程副本最后一次完整 headless 为 **65/65**
 
 ### Game 层(`Numeria.Game`)
 - **全程序化 UGUI,零场景文件**——所有界面代码搭建,SampleScene 只是空壳,`BattleBootstrap` 用 `RuntimeInitializeOnLoadMethod` 拉起 `MapController`
-- `MapController`:三地图(`forest` / `mountains` / `sky`)、点触 BFS 移动、35% 草丛遇敌、宝箱谜题、Boss + 三题综合开门试炼、家族亲和进化试炼、菜单入口
+- `MapController`:三张 480–512 格地图、点触 BFS + 跟随相机、带权多物种生态、宝箱谜题、全宝箱后 Boss 图标与三题开门试炼、掉落与进化试炼
 - `BattleController`:`Init(enemy, progress, tier, battleBg, onEnd)`;双方状态牌显示 ATK/DEF,普通怪 HP 按关卡在 8–12 / 14–20 / 22–30 浮动,Boss HP 20 / 36 / 54
 - `PuzzleUi`:谜题遮罩共用;第一关 10 内加减+图形/对称/规律,第二关 20 内并加入三项连加/转向/ABC,第三关 30 内并加入四项连加/2–5 步数列/ABCD;传送门三题必含算术
-- `MenuUi`:TEAM/ITEMS/SETTINGS 三 tab,TEAM 双栏 master-detail,可滚动
+- `MenuUi`:TEAM/ITEMS/RECORDS/SETTINGS 四 tab,TEAM 双栏 master-detail,战斗消耗品与持久化冒险记录
 - `Voice`:预烘焙语音播放,`VoiceKeys.Sanitize` 文本→文件名(**必须与 bake 脚本规则一致**);`Voice.Enabled` 全局开关(存档持久化)
 - `Sfx` / `Music`:独立短音效通道 + Dynamic Music 双通道交叉淡化;地图/战斗/Boss/进化切换 mood,语音播放时自动 duck,Voice/SFX/Music 分别持久化开关
 - `SpriteLib`:资产加载约定(见 §5);`SaveSystem`:persistentDataPath JSON
@@ -64,9 +64,10 @@
   - ✅ 菜单(tab 化)、出战位切换、道具栏、重复捕捉转经验
   - ✅ 用户 AI 生成美术管线(`generated/` 约定 + NUMERIA Battle Asset Pack 全面接入战斗)
   - ✅ 蔚蓝天空城:独立浮空遗迹路线、Mirrowl/Symmetrix、规律/对称/旋转/数字序列、Sky/Boss 音乐
-  - ✅ 首发 15 只数灵:9 只御三家三段 + 6 只地图野生两段,全部有统一高清图标、技能、成长与进化语音
+  - ✅ 30 只数灵:原15只 + 配对/减法/堆叠/图形/规律五条三段线,全部有统一高清图标、技能、成长与进化语音
   - ✅ 音频系统:10 种 SFX + 6 种本地 Dynamic Music mood + 语音 duck/独立开关
-  - ✅ 攻防平衡:15 物种 DEF、升级防御成长、普通怪 HP 区间、Boss 20/36/54 曲线、±1 伤害波动
+  - ✅ 99级平衡:各物种 HP/ATK/DEF 成长、动态等级差经验、普通怪 HP 92%–108% 波动、动态 Boss 倍率、±1 伤害波动
+  - ✅ 扩图与系统:带权生态、山脉重绘、全宝箱 Boss 条件、战斗消耗品/掉落、RECORDS 存档
   - ⬜ 未做:JSON 数据驱动落地(现在数值在 GameData/MapDefs 硬编码)、自适应难度引擎(错题变形复现/隐形升降档)、家长面板(PIN + 掌握度热图)
 - ⬜ **P4**:iOS 构建、真机、TestFlight(免费 Apple ID 7 天签名 vs $99/年,已告知用户)
 

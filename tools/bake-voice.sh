@@ -34,6 +34,7 @@ bake "Nice try! Your move still works!"
 bake "Nice try! The shield holds for now."
 bake "You win! Addmander got five experience points!"
 bake "Oh no! Let's try again!"
+bake "You win!"
 
 # ---- P2 森林地图台词 ----
 bake "A wild Countipillar appeared!"
@@ -147,6 +148,57 @@ bake "Amazing! Mirrowl evolved into Symmetrix!"
 for mon in Equadragon Tenfin Decaqua Tidalten Shapling Pattervine Geoflora Numberfly Duplirock Symmetrix; do
   bake "You win! $mon got five experience points!"
   bake "Level up! $mon is getting stronger!"
+done
+
+# ---- 30 只图鉴、动态生态与战斗消耗品 ----
+mathmons=(Addmander Sumdrake Equadragon Tenfin Decaqua Tidalten Shapling Pattervine Geoflora
+  Countipillar Numberfly Doublit Duplirock Mirrowl Symmetrix
+  Paircub Matchbear Equilibear Subunny Differhare Minuelope Pebblit Stackstone Tallytitan
+  Prismouse Polygoncat Geometiger Seqkit Patternlynx Ordinalion)
+for mon in $mathmons; do
+  bake "A wild $mon appeared!"
+  bake "Gotcha! $mon joined your team!"
+  bake "$mon is getting stronger!"
+done
+
+bake "Paircub is evolving!"
+bake "Amazing! Paircub evolved into Matchbear!"
+bake "Matchbear is evolving!"
+bake "Amazing! Matchbear evolved into Equilibear!"
+bake "Subunny is evolving!"
+bake "Amazing! Subunny evolved into Differhare!"
+bake "Differhare is evolving!"
+bake "Amazing! Differhare evolved into Minuelope!"
+bake "Pebblit is evolving!"
+bake "Amazing! Pebblit evolved into Stackstone!"
+bake "Stackstone is evolving!"
+bake "Amazing! Stackstone evolved into Tallytitan!"
+bake "Prismouse is evolving!"
+bake "Amazing! Prismouse evolved into Polygoncat!"
+bake "Polygoncat is evolving!"
+bake "Amazing! Polygoncat evolved into Geometiger!"
+bake "Seqkit is evolving!"
+bake "Amazing! Seqkit evolved into Patternlynx!"
+bake "Patternlynx is evolving!"
+bake "Amazing! Patternlynx evolved into Ordinalion!"
+
+bake "Reach level five to evolve!"
+bake "Reach level seven to evolve!"
+bake "Reach level fourteen to evolve!"
+bake "The enemy dropped an HP Potion!"
+bake "The enemy dropped a Gem Snack!"
+bake "Health is already full!"
+bake "Gems are already full!"
+for amount in 1 2 3; do
+  bake "You found $amount HP Potions! Use them only in battle."
+  bake "You found $amount Gem Snacks! Use them only in battle."
+done
+for remaining in 1 2 3 4 5; do
+  if [[ $remaining -eq 1 ]]; then
+    bake "The portal is quiet. Find 1 more treasure chest!"
+  else
+    bake "The portal is quiet. Find $remaining more treasure chests!"
+  fi
 done
 
 rm -rf "$TMP"

@@ -14,11 +14,11 @@ namespace Numeria.Game.Tests
             Assert.AreEqual("Azure Sky City", sky.DisplayName);
             Assert.AreEqual(3, sky.Tier);
             Assert.AreEqual("sky", sky.Theme);
-            Assert.AreEqual("mirrowl", sky.Wild().Id);
-            Assert.AreEqual("symmetrix", sky.Boss().Id);
-            Assert.AreEqual("numberfly", Maps.Forest().Boss().Id);
-            Assert.AreEqual("duplirock", Maps.Mountains().Boss().Id);
-            Assert.AreEqual("sky-chest-15-4", sky.EvoChestId);
+            CollectionAssert.Contains(System.Array.ConvertAll(sky.Encounters, e => e.SpeciesId), "mirrowl");
+            Assert.AreEqual("symmetrix", sky.BossSpeciesId);
+            Assert.AreEqual("numberfly", Maps.Forest().BossSpeciesId);
+            Assert.AreEqual("duplirock", Maps.Mountains().BossSpeciesId);
+            Assert.True(sky.ChestRewards.ContainsKey("sky-chest-15-2"));
         }
 
         [Test]
@@ -51,6 +51,7 @@ namespace Numeria.Game.Tests
             foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky() })
             {
                 var map = GridMap.Parse(def.Rows);
+                Assert.GreaterOrEqual(map.Width * map.Height, 480, $"{def.Id} must be at least twice the old 240 tiles");
                 int portals = 0;
                 int chests = 0;
                 for (int y = 0; y < map.Height; y++)
@@ -64,6 +65,25 @@ namespace Numeria.Game.Tests
                     }
                 Assert.AreEqual(1, portals, $"{def.Id} must have one portal");
                 Assert.That(chests, Is.GreaterThanOrEqualTo(2), $"{def.Id} needs exploration rewards");
+            }
+        }
+
+        [Test]
+        public void EveryMapHasWeightedEnemyEcologyAndBossRequiresAllChests()
+        {
+            foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky() })
+            {
+                Assert.GreaterOrEqual(def.Encounters.Length, 5);
+                var ids = new System.Collections.Generic.HashSet<string>();
+                foreach (var entry in def.Encounters)
+                {
+                    Assert.Greater(entry.Weight, 0);
+                    Assert.True(ids.Add(entry.SpeciesId));
+                }
+                var progress = new Progress();
+                Assert.False(def.AllChestsOpened(progress));
+                foreach (string chest in def.ChestIds()) progress.OpenChest(chest);
+                Assert.True(def.AllChestsOpened(progress));
             }
         }
 

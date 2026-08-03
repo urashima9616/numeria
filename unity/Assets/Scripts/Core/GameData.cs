@@ -5,7 +5,6 @@ namespace Numeria.Core
 {
     public enum PuzzleAffinity { Formula, MakeTen, Pattern, Counting, RepeatedAddition, Symmetry }
 
-    /// <summary>一条进化家族的稳定配置。存档只保存 BaseId + Stage，名称和数值从这里解析。</summary>
     public sealed class EvolutionLineDef
     {
         public string BaseId;
@@ -16,7 +15,10 @@ namespace Numeria.Core
         public int[] EvolutionLevels;
     }
 
-    /// <summary>首发 15 只数灵的单形态配置。</summary>
+    /// <summary>
+    /// 单形态配置。基础属性是 Lv.1 数值，三个 Growth 字段表示每十级的平均成长量。
+    /// BaseXp 同时体现物种稀有度、基础数值与进化阶段差异。
+    /// </summary>
     public sealed class SpeciesDef
     {
         public string Id;
@@ -24,15 +26,18 @@ namespace Numeria.Core
         public int MaxHp;
         public int AttackPower;
         public int DefensePower;
+        public int HpGrowth;
+        public int AttackGrowth;
+        public int DefenseGrowth;
+        public int BaseXp;
         public string SkillName;
         public int SkillPower;
         public bool Catchable;
+        public double DropChance;
+        public ConsumableType PreferredDrop;
     }
 
-    /// <summary>
-    /// Numeria 首发图鉴。三条御三家为三段进化，三条地图特色线为两段进化，共 15 只。
-    /// 进化线和物种数值集中在此，战斗、菜单和存档共享同一份定义。
-    /// </summary>
+    /// <summary>30 只数灵、11 条家族线及所有战斗成长的唯一真理源。</summary>
     public static class GameData
     {
         private static readonly EvolutionLineDef[] EvolutionLines =
@@ -49,28 +54,60 @@ namespace Numeria.Core
                 new[] { "doublit", "duplirock" }, new[] { 5 }),
             Line("mirrowl", "SKY", "symmetry and rotation", PuzzleAffinity.Symmetry,
                 new[] { "mirrowl", "symmetrix" }, new[] { 5 }),
+
+            Line("paircub", "MIND", "matching and equality", PuzzleAffinity.Counting,
+                new[] { "paircub", "matchbear", "equilibear" }, new[] { 7, 14 }),
+            Line("subunny", "EARTH", "subtraction stories", PuzzleAffinity.Formula,
+                new[] { "subunny", "differhare", "minuelope" }, new[] { 7, 14 }),
+            Line("pebblit", "ROCK", "ordering and tallying", PuzzleAffinity.Counting,
+                new[] { "pebblit", "stackstone", "tallytitan" }, new[] { 7, 14 }),
+            Line("prismouse", "SKY", "shapes and rotation", PuzzleAffinity.Symmetry,
+                new[] { "prismouse", "polygoncat", "geometiger" }, new[] { 7, 14 }),
+            Line("seqkit", "GRASS", "sequences and patterns", PuzzleAffinity.Pattern,
+                new[] { "seqkit", "patternlynx", "ordinalion" }, new[] { 7, 14 }),
         };
 
         private static readonly SpeciesDef[] Species =
         {
-            Mon("addmander", "Addmander", 10, 1, 1, "Flame Formula", 5),
-            Mon("sumdrake", "Sumdrake", 12, 2, 2, "Blaze Equation", 6),
-            Mon("equadragon", "Equadragon", 15, 3, 3, "Equalizer Blaze", 7),
+            // id, name, HP/ATK/DEF, HP/ATK/DEF growth per 10 levels, XP, skill, power, catchable, drop
+            Mon("addmander", "Addmander", 10, 1, 1, 8, 2, 2, 7, "Flame Formula", 5),
+            Mon("sumdrake", "Sumdrake", 14, 3, 2, 9, 3, 2, 10, "Blaze Equation", 6),
+            Mon("equadragon", "Equadragon", 19, 5, 4, 10, 3, 3, 14, "Equalizer Blaze", 7),
 
-            Mon("tenfin", "Tenfin", 10, 1, 2, "Splash Ten", 5),
-            Mon("decaqua", "Decaqua", 12, 2, 3, "Decimal Wave", 6),
-            Mon("tidalten", "Tidalten", 15, 3, 4, "Tidal Combo", 7),
+            Mon("tenfin", "Tenfin", 11, 1, 2, 9, 2, 3, 7, "Splash Ten", 5),
+            Mon("decaqua", "Decaqua", 15, 3, 4, 10, 2, 3, 10, "Decimal Wave", 6),
+            Mon("tidalten", "Tidalten", 20, 5, 6, 11, 3, 4, 14, "Tidal Combo", 7),
 
-            Mon("shapling", "Shapling", 10, 1, 2, "Leaf Pattern", 5),
-            Mon("pattervine", "Pattervine", 12, 2, 3, "Vine Sequence", 6),
-            Mon("geoflora", "Geoflora", 15, 3, 4, "Bloom Symmetry", 7),
+            Mon("shapling", "Shapling", 10, 1, 2, 9, 2, 3, 7, "Leaf Pattern", 5),
+            Mon("pattervine", "Pattervine", 15, 3, 4, 10, 2, 4, 10, "Vine Sequence", 6),
+            Mon("geoflora", "Geoflora", 21, 5, 6, 12, 3, 4, 14, "Bloom Symmetry", 7),
 
-            Mon("countipillar", "Countipillar", 8, 1, 1, "Count Crunch", 5, true),
-            Mon("numberfly", "Numberfly", 12, 3, 2, "Number Wing", 6),
-            Mon("doublit", "Doublit", 9, 2, 2, "Double Trouble", 5, true),
-            Mon("duplirock", "Duplirock", 13, 4, 4, "Double Boulder", 6),
-            Mon("mirrowl", "Mirrowl", 10, 3, 2, "Mirror Pattern", 5, true),
-            Mon("symmetrix", "Symmetrix", 14, 5, 5, "Symmetry Beam", 6),
+            Mon("countipillar", "Countipillar", 8, 1, 1, 8, 2, 2, 6, "Count Crunch", 5, true, .20, ConsumableType.HealthPotion),
+            Mon("numberfly", "Numberfly", 12, 3, 2, 9, 3, 2, 10, "Number Wing", 6, false, .30, ConsumableType.GemSnack),
+            Mon("doublit", "Doublit", 9, 2, 2, 9, 3, 3, 7, "Double Trouble", 5, true, .22, ConsumableType.HealthPotion),
+            Mon("duplirock", "Duplirock", 14, 4, 4, 11, 3, 4, 11, "Double Boulder", 6, false, .32, ConsumableType.HealthPotion),
+            Mon("mirrowl", "Mirrowl", 10, 3, 2, 9, 3, 3, 8, "Mirror Pattern", 5, true, .24, ConsumableType.GemSnack),
+            Mon("symmetrix", "Symmetrix", 15, 5, 5, 11, 4, 4, 12, "Symmetry Beam", 6, false, .35, ConsumableType.GemSnack),
+
+            Mon("paircub", "Paircub", 10, 2, 2, 9, 2, 3, 7, "Matching Paws", 5, true, .22, ConsumableType.GemSnack),
+            Mon("matchbear", "Matchbear", 15, 3, 4, 10, 3, 3, 10, "Equal Embrace", 6, false, .28, ConsumableType.HealthPotion),
+            Mon("equilibear", "Equilibear", 21, 5, 6, 12, 3, 4, 14, "Balance Roar", 7, false, .34, ConsumableType.HealthPotion),
+
+            Mon("subunny", "Subunny", 9, 2, 1, 8, 3, 2, 7, "Take Away Hop", 5, true, .20, ConsumableType.HealthPotion),
+            Mon("differhare", "Differhare", 14, 4, 3, 9, 3, 3, 10, "Difference Dash", 6, false, .28, ConsumableType.GemSnack),
+            Mon("minuelope", "Minuelope", 19, 6, 4, 10, 4, 3, 14, "Minus Meteor", 7, false, .34, ConsumableType.GemSnack),
+
+            Mon("pebblit", "Pebblit", 11, 1, 3, 10, 2, 4, 7, "Tally Toss", 5, true, .24, ConsumableType.HealthPotion),
+            Mon("stackstone", "Stackstone", 17, 3, 5, 12, 3, 4, 11, "Order Stack", 6, false, .31, ConsumableType.HealthPotion),
+            Mon("tallytitan", "Tallytitan", 24, 5, 8, 14, 3, 5, 15, "Tally Quake", 7, false, .38, ConsumableType.HealthPotion),
+
+            Mon("prismouse", "Prismouse", 9, 2, 2, 8, 3, 3, 8, "Prism Turn", 5, true, .24, ConsumableType.GemSnack),
+            Mon("polygoncat", "Polygoncat", 14, 4, 4, 9, 4, 3, 11, "Polygon Pounce", 6, false, .31, ConsumableType.GemSnack),
+            Mon("geometiger", "Geometiger", 20, 7, 5, 11, 4, 4, 15, "Geometry Ray", 7, false, .38, ConsumableType.GemSnack),
+
+            Mon("seqkit", "Seqkit", 10, 2, 2, 9, 3, 2, 8, "Sequence Spark", 5, true, .23, ConsumableType.GemSnack),
+            Mon("patternlynx", "Patternlynx", 15, 4, 3, 10, 3, 3, 11, "Pattern Prowl", 6, false, .30, ConsumableType.GemSnack),
+            Mon("ordinalion", "Ordinalion", 22, 6, 6, 12, 4, 4, 15, "Ordinal Crown", 7, false, .37, ConsumableType.HealthPotion),
         };
 
         public static IReadOnlyList<EvolutionLineDef> Lines => EvolutionLines;
@@ -79,26 +116,19 @@ namespace Numeria.Core
         private static EvolutionLineDef Line(string baseId, string element, string affinityLabel,
             PuzzleAffinity affinity, string[] stageIds, int[] levels) => new EvolutionLineDef
         {
-            BaseId = baseId,
-            Element = element,
-            AffinityLabel = affinityLabel,
-            Affinity = affinity,
-            StageIds = stageIds,
-            EvolutionLevels = levels,
+            BaseId = baseId, Element = element, AffinityLabel = affinityLabel, Affinity = affinity,
+            StageIds = stageIds, EvolutionLevels = levels,
         };
 
         private static SpeciesDef Mon(string id, string name, int hp, int attack, int defense,
-            string skill, int power,
-            bool catchable = false) => new SpeciesDef
+            int hpGrowth, int attackGrowth, int defenseGrowth, int baseXp, string skill, int power,
+            bool catchable = false, double dropChance = .18,
+            ConsumableType preferredDrop = ConsumableType.HealthPotion) => new SpeciesDef
         {
-            Id = id,
-            Name = name,
-            MaxHp = hp,
-            AttackPower = attack,
-            DefensePower = defense,
-            SkillName = skill,
-            SkillPower = power,
-            Catchable = catchable,
+            Id = id, Name = name, MaxHp = hp, AttackPower = attack, DefensePower = defense,
+            HpGrowth = hpGrowth, AttackGrowth = attackGrowth, DefenseGrowth = defenseGrowth,
+            BaseXp = baseXp, SkillName = skill, SkillPower = power, Catchable = catchable,
+            DropChance = dropChance, PreferredDrop = preferredDrop,
         };
 
         public static EvolutionLineDef LineFor(string id)
@@ -109,24 +139,18 @@ namespace Numeria.Core
             return null;
         }
 
-        public static string BaseId(string id)
-        {
-            var line = LineFor(id);
-            return line != null ? line.BaseId : id;
-        }
+        public static string BaseId(string id) => LineFor(id)?.BaseId ?? id;
 
         public static int StageIndex(string id)
         {
             var line = LineFor(id);
-            if (line == null) return 0;
-            return Array.IndexOf(line.StageIds, id);
+            return line == null ? 0 : Array.IndexOf(line.StageIds, id);
         }
 
         public static string FormId(string id, int stage)
         {
             var line = LineFor(id);
-            if (line == null) return id;
-            return line.StageIds[Math.Max(0, Math.Min(stage, line.StageIds.Length - 1))];
+            return line == null ? id : line.StageIds[Math.Max(0, Math.Min(stage, line.StageIds.Length - 1))];
         }
 
         public static int NextEvolutionLevel(string id, int stage)
@@ -145,20 +169,19 @@ namespace Numeria.Core
         public static CombatantDef ById(string id)
         {
             var species = SpeciesById(id);
-            return species == null ? null : ToCombatant(species, species.Catchable, null, false);
+            return species == null ? null : ToCombatant(species, 1, species.Catchable, null, false, false);
         }
 
-        /// <summary>玩家出战配置。id 可以是家族基础 id，也可以是任一形态 id。</summary>
-        public static CombatantDef PlayerMon(string id, int stage)
+        public static CombatantDef PlayerMon(string id, int stage) => PlayerMon(id, stage, 1);
+
+        public static CombatantDef PlayerMon(string id, int stage, int level)
         {
-            string formId = FormId(id, stage);
-            var species = SpeciesById(formId) ?? Species[0];
-            return ToCombatant(species, false, null, true);
+            var species = SpeciesById(FormId(id, stage)) ?? Species[0];
+            return ToCombatant(species, level, false, null, true, false);
         }
 
-        /// <summary>旧调用兼容：历史 Evolved=true 表示 Addmander 的第二形态。</summary>
         public static CombatantDef PlayerMon(string id, bool evolved) =>
-            PlayerMon(id, evolved && BaseId(id) == "addmander" ? 1 : StageIndex(id));
+            PlayerMon(id, evolved && BaseId(id) == "addmander" ? 1 : StageIndex(id), 1);
 
         public static CombatantDef Player(bool evolved) => PlayerMon("addmander", evolved);
         public static CombatantDef Addmander() => PlayerMon("addmander", 0);
@@ -170,70 +193,69 @@ namespace Numeria.Core
         public static CombatantDef Shapling() => PlayerMon("shapling", 0);
         public static CombatantDef Pattervine() => PlayerMon("shapling", 1);
         public static CombatantDef Geoflora() => PlayerMon("shapling", 2);
-        public static CombatantDef Countipillar() => ById("countipillar");
-        public static CombatantDef Numberfly() => Boss("numberfly", 10, null, 20, 3, 2);
-        public static CombatantDef Doublit() => ById("doublit");
-        public static CombatantDef Duplirock() => Boss("duplirock", 20, null, 30, 4, 4);
-        public static CombatantDef DuplirockElder() => Boss("duplirock", 20, "Duplirock Elder", 36, 5, 4);
-        public static CombatantDef Mirrowl() => ById("mirrowl");
-        public static CombatantDef Symmetrix() => Boss("symmetrix", 30, null, 54, 7, 5);
+        public static CombatantDef Countipillar() => CreateWild("countipillar", 1, new Rng(1));
+        public static CombatantDef Doublit() => CreateWild("doublit", 1, new Rng(1));
+        public static CombatantDef Mirrowl() => CreateWild("mirrowl", 1, new Rng(1));
+        public static CombatantDef Numberfly() => CreateBoss("numberfly", 5, 1, new Rng(1));
+        public static CombatantDef Duplirock() => CreateBoss("duplirock", 10, 2, new Rng(1));
+        public static CombatantDef DuplirockElder() => CreateBoss("duplirock", 12, 2, new Rng(1), "Duplirock Elder");
+        public static CombatantDef Symmetrix() => CreateBoss("symmetrix", 20, 3, new Rng(1));
 
-        private static CombatantDef Boss(string id, int shield, string displayName = null,
-            int? maxHp = null, int? attack = null, int? defense = null)
+        public static CombatantDef CreateWild(string id, int level, Rng rng)
         {
-            var species = SpeciesById(id);
-            var result = ToCombatant(species, false, shield, false);
-            if (displayName != null) result.Name = displayName;
-            if (maxHp.HasValue) result.MaxHp = maxHp.Value;
-            if (attack.HasValue) result.AttackPower = attack.Value;
-            if (defense.HasValue) result.DefensePower = defense.Value;
+            var species = SpeciesById(id) ?? Species[9];
+            var result = ToCombatant(species, level, true, null, false, false);
+            int variance = rng.Pick(92, 108);
+            result.MaxHp = Math.Max(3, (result.MaxHp * variance + 50) / 100);
             return result;
         }
 
-        /// <summary>普通怪每次遭遇在关卡区间内抽取 HP，Boss 保持可设计的固定曲线。</summary>
-        public static CombatantDef RollWild(CombatantDef template, int tier, Rng rng)
+        public static CombatantDef CreateBoss(string id, int level, int tier, Rng rng, string displayName = null)
         {
-            int min = tier >= 3 ? 22 : tier == 2 ? 14 : 8;
-            int max = tier >= 3 ? 30 : tier == 2 ? 20 : 12;
-            return new CombatantDef
-            {
-                Id = template.Id,
-                Name = template.Name,
-                MaxHp = rng.Pick(min, max),
-                AttackPower = template.AttackPower,
-                DefensePower = template.DefensePower,
-                Shield = template.Shield,
-                Catchable = template.Catchable,
-                Skills = template.Skills,
-            };
+            var species = SpeciesById(id) ?? Species[10];
+            int shield = Math.Max(10, Math.Min(30, tier * 10));
+            var result = ToCombatant(species, level, false, shield, false, true);
+            double hpMultiplier = 1.60d + Math.Max(1, tier) * .25d;
+            result.MaxHp = Math.Max(result.MaxHp + 8, (int)Math.Round(result.MaxHp * hpMultiplier));
+            result.AttackPower += Math.Max(1, tier);
+            result.DefensePower += Math.Max(0, tier - 1);
+            result.DropChance = 1d;
+            if (!string.IsNullOrEmpty(displayName)) result.Name = displayName;
+            return result;
         }
 
-        private static CombatantDef ToCombatant(SpeciesDef species, bool catchable, int? shield,
-            bool includeSkills)
+        /// <summary>旧调用兼容；新地图使用 MapDef.RollWildEncounter。</summary>
+        public static CombatantDef RollWild(CombatantDef template, int tier, Rng rng)
         {
+            int level = tier <= 1 ? 1 : tier == 2 ? 8 : 15;
+            return CreateWild(template.Id, level, rng);
+        }
+
+        private static CombatantDef ToCombatant(SpeciesDef species, int level, bool catchable, int? shield,
+            bool includeSkills, bool boss)
+        {
+            int clamped = GrowthSystem.ClampLevel(level);
             return new CombatantDef
             {
                 Id = species.Id,
                 Name = species.Name,
-                MaxHp = includeSkills ? Math.Max(10, species.MaxHp) : species.MaxHp,
-                AttackPower = species.AttackPower,
-                DefensePower = species.DefensePower,
+                Level = clamped,
+                MaxHp = GrowthSystem.StatAtLevel(species.MaxHp, species.HpGrowth, clamped),
+                AttackPower = GrowthSystem.StatAtLevel(species.AttackPower, species.AttackGrowth, clamped),
+                DefensePower = GrowthSystem.StatAtLevel(species.DefensePower, species.DefenseGrowth, clamped),
+                BaseXp = species.BaseXp,
+                IsBoss = boss,
+                DropChance = species.DropChance,
+                PreferredDrop = species.PreferredDrop,
                 Shield = shield,
                 Catchable = catchable,
                 Skills = includeSkills
                     ? new[]
                     {
-                        new SkillDef
-                        {
-                            Id = "tackle", Name = "Tackle", Cost = 0, Power = 2,
-                            BasePower = 2, Type = SkillType.Basic
-                        },
-                        new SkillDef
-                        {
-                            // BattleController/PuzzleUi 仍以稳定技能 id 路由，显示名来自物种配置。
-                            Id = "flame-formula", Name = species.SkillName, Cost = 3,
-                            Power = species.SkillPower, BasePower = 2, Type = SkillType.Formula
-                        },
+                        new SkillDef { Id = "tackle", Name = "Tackle", Cost = 0, Power = 2,
+                            BasePower = 2, Type = SkillType.Basic },
+                        new SkillDef { Id = "flame-formula", Name = species.SkillName, Cost = 3,
+                            Power = species.SkillPower, BasePower = 2, Type = SkillType.Formula },
                     }
                     : Array.Empty<SkillDef>(),
             };

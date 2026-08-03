@@ -21,6 +21,8 @@ namespace Numeria.Game
         private Voice _voice;
         private PuzzleUi _puzzles;
         private Action<BattleEnd> _onEnd;
+        private Progress _progress;
+        private int _xpReward;
 
         private RectTransform _canvasRoot;
         private RectTransform _shakeRoot;
@@ -40,6 +42,7 @@ namespace Numeria.Game
         private Image _formulaBg;
         private Button _btnShield;
         private Button _btnCatch;
+        private Button _btnItem;
         private CanvasGroup _dockGroup;
         private int _playerLevel = 1;
 
@@ -57,17 +60,20 @@ namespace Numeria.Game
         public void Init(CombatantDef enemy, Progress progress, int tier, string battleBg, Action<BattleEnd> onEnd)
         {
             _onEnd = onEnd;
+            _progress = progress;
             _tier = tier;
             _battleBg = battleBg;
             var growth = progress.ActiveGrowth;
             _playerLevel = growth.Level;
             _rng = new Rng((uint)Environment.TickCount);
-            _state = new BattleState(GameData.PlayerMon(progress.ActiveMonId, growth.Stage), enemy, _rng);
+            _state = new BattleState(GameData.PlayerMon(progress.ActiveMonId, growth.Stage, growth.Level), enemy, _rng);
             _state.PlayerAttackBonus = growth.AttackBonus;
             _state.PlayerDefenseBonus = growth.DefenseBonus;
+            _xpReward = GrowthSystem.VictoryXp(enemy.BaseXp, enemy.Level, growth.Level, enemy.IsBoss);
             _voice = gameObject.AddComponent<Voice>();
             BuildUi();
-            _puzzles = new PuzzleUi(this, _canvasRoot, _rng, lines => _voice.Say(lines));
+            _puzzles = new PuzzleUi(this, _canvasRoot, _rng, lines => _voice.Say(lines),
+                solved => _progress.RecordPuzzle(solved));
             RenderAll();
             string opening = enemy.Shield.HasValue
                 ? _tier >= 3
@@ -105,7 +111,7 @@ namespace Numeria.Game
             // 敌方:左上状态牌。目标稿需要足够的纵向空间让名字、等级、HP 与血条各占一行。
             var enemyPlate = BuildStatusPlate("EnemyPlate", new Vector2(0, 1), new Vector2(28, -28), new Vector2(480, 228),
                 _state.Enemy.Name,
-                $"Lv. {_tier}   ATK {_state.Enemy.AttackPower}   DEF {_state.Enemy.DefensePower}",
+                $"Lv. {_state.Enemy.Level}   ATK {_state.Enemy.AttackPower}   DEF {_state.Enemy.DefensePower}",
                 out _enemyHpFill, out _enemyHpText);
             BuildShieldRow(enemyPlate);
             // 敌方立绘落在右上草圈，避开状态牌与回合横幅。
@@ -172,6 +178,9 @@ namespace Numeria.Game
             _btnCatch = ActionButton(dock.rectTransform, SpriteLib.Pack("UI/Icons/Catch"),
                 "CATCH", "FRIEND PUZZLE", SubOrange, out _);
             _btnCatch.onClick.AddListener(() => StartCoroutine(CatchRoutine()));
+            _btnItem = ActionButton(dock.rectTransform, SpriteLib.One("Art/Sprites/gem"),
+                "ITEMS", "BATTLE ONLY", Ui.Hex("#5c8a3f"), out _);
+            _btnItem.onClick.AddListener(() => StartCoroutine(ItemRoutine()));
         }
 
         /// <summary>状态名牌:名字、等级、HP 数字与血条严格纵向分层，不共享基线。</summary>
@@ -315,6 +324,7 @@ namespace Numeria.Game
             _btnShield.interactable = _state.EnemyShielded;
             _btnCatch.gameObject.SetActive(!_state.Enemy.Shield.HasValue && _state.Enemy.Catchable && _state.EnemyHp > 0);
             _btnCatch.interactable = _state.EnemyHp <= Math.Max(3, _state.Enemy.MaxHp / 5);
+            _btnItem.interactable = _progress.HealthPotions > 0 || _progress.GemSnacks > 0;
         }
 
         private static void SetHpBar(Image fill, TMP_Text label, int hp, int maxHp)
@@ -338,6 +348,7 @@ namespace Numeria.Game
             _btnFormula.interactable = on;
             _btnShield.interactable = on;
             _btnCatch.interactable = on;
+            _btnItem.interactable = on;
             if (_dockGroup != null)
             {
                 _dockGroup.alpha = on ? 1f : 0.6f;
@@ -353,6 +364,7 @@ namespace Numeria.Game
             SetActionsEnabled(false);
             yield return Lunge(_playerSprite, new Vector2(60, 30));
             var result = _state.UseSkill("tackle");
+            RecordDamage(result.Damage);
             Sfx.Play(SfxCue.Hit);
             PopDamage(_enemySprite, $"-{result.Damage}", Ui.Hex("#ffd24a"));
             yield return Flash(_enemySprite);
@@ -370,6 +382,7 @@ namespace Numeria.Game
             yield return Projectile(_playerSprite, _enemySprite,
                 correct.Value ? Ui.Hex("#ff5a2e") : Ui.Hex("#ffd24a"));
             var result = _state.UseSkill("flame-formula", correct.Value);
+            RecordDamage(result.Damage);
             Sfx.Play(SfxCue.Hit, result.Powered ? 1f : 0.72f);
             PopDamage(_enemySprite, $"-{result.Damage}", result.Powered ? Ui.Hex("#ff9d3a") : Ui.Hex("#ffd24a"));
             if (result.Powered) StartCoroutine(Shake());
@@ -415,13 +428,73 @@ namespace Numeria.Game
                 Sfx.Play(SfxCue.Catch);
                 _voice.Say($"Gotcha! {_state.Enemy.Name} joined your team!");
                 yield return FriendGemBurst(_enemySprite);
-                ShowBanner($"Caught {_state.Enemy.Name}!", "+5 XP", () => _onEnd(BattleEnd.Caught));
+                ShowBanner($"Caught {_state.Enemy.Name}!", $"+{_xpReward} XP", () => _onEnd(BattleEnd.Caught));
             }
             else
             {
                 SetLog("So close!", "TRY AGAIN");
                 yield return EndPlayerTurn();
             }
+        }
+
+        private IEnumerator ItemRoutine()
+        {
+            SetActionsEnabled(false);
+            ConsumableType? choice = null;
+            bool cancelled = false;
+
+            var overlay = Ui.Img(_canvasRoot, "ItemOverlay", new Color(0.06f, 0.09f, 0.13f, 0.88f));
+            Ui.Stretch(overlay.rectTransform);
+            var panel = Ui.Img(overlay.transform, "ItemPanel", Cream);
+            Ui.Place(panel.rectTransform, new Vector2(.5f, .5f), Vector2.zero, new Vector2(820, 420));
+            Ui.AddOutline(panel.gameObject);
+            var title = Ui.DisplayLabel(panel.transform, "Title", "BATTLE ITEMS", 48, TitleGreen);
+            Ui.Place(title.rectTransform, new Vector2(.5f, 1), new Vector2(0, -38), new Vector2(650, 64));
+
+            var potion = Ui.Btn(panel.transform, "Potion", $"HP POTION  x{_progress.HealthPotions}\nRESTORE 40% HP", 26);
+            Ui.Place((RectTransform)potion.transform, new Vector2(.5f, .5f), new Vector2(-200, 18), new Vector2(330, 150));
+            potion.interactable = _progress.HealthPotions > 0;
+            potion.onClick.AddListener(() => choice = ConsumableType.HealthPotion);
+
+            var gems = Ui.Btn(panel.transform, "Gems", $"GEM SNACK  x{_progress.GemSnacks}\nRESTORE 3 GEMS", 26);
+            Ui.Place((RectTransform)gems.transform, new Vector2(.5f, .5f), new Vector2(200, 18), new Vector2(330, 150));
+            gems.interactable = _progress.GemSnacks > 0;
+            gems.onClick.AddListener(() => choice = ConsumableType.GemSnack);
+
+            var back = Ui.Btn(panel.transform, "Back", "BACK", 24);
+            Ui.Place((RectTransform)back.transform, new Vector2(.5f, 0), new Vector2(0, 34), new Vector2(260, 64));
+            back.onClick.AddListener(() => cancelled = true);
+            yield return new WaitUntil(() => choice.HasValue || cancelled);
+            Destroy(overlay.gameObject);
+
+            if (cancelled)
+            {
+                SetActionsEnabled(true);
+                yield break;
+            }
+
+            int restored = choice == ConsumableType.HealthPotion
+                ? _state.HealPlayer(Math.Max(5, (int)Math.Ceiling(_state.Player.MaxHp * .4f)))
+                : _state.RestoreGems(3);
+            if (restored <= 0)
+            {
+                _voice.Say(choice == ConsumableType.HealthPotion
+                    ? "Health is already full!" : "Gems are already full!");
+                SetActionsEnabled(true);
+                yield break;
+            }
+
+            _progress.UseConsumable(choice.Value);
+            Sfx.Play(SfxCue.Correct, .8f);
+            RenderAll();
+            SetLog(choice == ConsumableType.HealthPotion ? "HP restored!" : "Gems restored!",
+                choice == ConsumableType.HealthPotion ? $"+{restored} HP" : $"+{restored} GEMS");
+            yield return EndPlayerTurn();
+        }
+
+        private void RecordDamage(int damage)
+        {
+            _progress.Records.HighestDamage = Math.Max(_progress.Records.HighestDamage, damage);
         }
 
         private IEnumerator EndPlayerTurn()
@@ -448,8 +521,9 @@ namespace Numeria.Game
         {
             bool win = _state.Outcome == BattleOutcome.Win;
             Sfx.Play(win ? SfxCue.Victory : SfxCue.SoftMiss);
-            _voice.Say(win ? $"You win! {_state.Player.Name} got five experience points!" : "Oh no! Let's try again!");
-            ShowBanner(win ? "YOU WIN!" : $"{_state.Player.Name} fainted...", win ? "+5 XP" : "",
+            if (win) _voice.Say("You win!", $"{_state.Player.Name} is getting stronger!");
+            else _voice.Say("Oh no! Let's try again!");
+            ShowBanner(win ? "YOU WIN!" : $"{_state.Player.Name} fainted...", win ? $"+{_xpReward} XP" : "",
                 () => _onEnd(win ? BattleEnd.Win : BattleEnd.Lose));
         }
 

@@ -21,7 +21,7 @@ namespace Numeria.Core.Tests
             {
                 var def = GameData.PlayerMon(id, evolved: false);
                 Assert.AreEqual(id, def.Id);
-                Assert.AreEqual(10, def.MaxHp);
+                Assert.GreaterOrEqual(def.MaxHp, 8);
                 Assert.NotNull(System.Array.Find(def.Skills, s => s.Id == "tackle"));
                 var formula = System.Array.Find(def.Skills, s => s.Id == "flame-formula");
                 Assert.NotNull(formula);
@@ -45,10 +45,10 @@ namespace Numeria.Core.Tests
         }
 
         [Test]
-        public void LaunchRoster_HasFifteenUniqueSpeciesAcrossSixLines()
+        public void LaunchRoster_HasThirtyUniqueSpeciesAcrossElevenLines()
         {
-            Assert.AreEqual(15, GameData.Roster.Count);
-            Assert.AreEqual(6, GameData.Lines.Count);
+            Assert.AreEqual(30, GameData.Roster.Count);
+            Assert.AreEqual(11, GameData.Lines.Count);
 
             var ids = new HashSet<string>();
             int stageCount = 0;
@@ -63,7 +63,7 @@ namespace Numeria.Core.Tests
                     Assert.AreEqual(line.BaseId, GameData.BaseId(id));
                 }
             }
-            Assert.AreEqual(15, stageCount);
+            Assert.AreEqual(30, stageCount);
         }
 
         [Test]

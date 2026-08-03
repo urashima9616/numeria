@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Numeria.Core;
 using TMPro;
@@ -28,6 +29,8 @@ namespace Numeria.Game
         private Transform _avatar;
         private TMP_Text _hudText;
         private SpriteRenderer _portalGlow;
+        private SpriteRenderer _bossMarker;
+        private Camera _worldCamera;
         private readonly System.Collections.Generic.Dictionary<(int, int), SpriteRenderer> _chestRenderers =
             new System.Collections.Generic.Dictionary<(int, int), SpriteRenderer>();
 
@@ -50,7 +53,8 @@ namespace Numeria.Game
 
             BuildWorld();
             BuildHud();
-            _puzzles = new PuzzleUi(this, _hudCanvasRoot, _rng, lines => _voice.Say(lines));
+            _puzzles = new PuzzleUi(this, _hudCanvasRoot, _rng, lines => _voice.Say(lines),
+                solved => _progress.RecordPuzzle(solved));
             SetupCamera();
             UpdateHud();
             Music.PlayMap(_def.Id);
@@ -74,10 +78,11 @@ namespace Numeria.Game
                     var world = TileWorld(x, y);
                     int hash = (x * 73856093) ^ (y * 19349663);
                     int variant = ((hash % 97) + 97) % 97;
-                    if (_def.Theme == "sky")
+                    if (_def.Theme == "sky" || _def.Theme == "mountains")
                     {
                         AddSprite(SpriteLib.Cainos("TX Tileset Stone Ground",
-                            $"TX Tileset Stone Ground_{variant % 50}"), world, 0, "sky-stone");
+                            $"TX Tileset Stone Ground_{variant % 50}"), world, 0,
+                            _def.Theme == "sky" ? "sky-stone" : "mountain-stone");
                     }
                     else
                     {
@@ -95,6 +100,14 @@ namespace Numeria.Game
                                 string pillar = variant % 4 == 0 ? "TX Props Pillar Broken" : "TX Props Pillar";
                                 AddSprite(SpriteLib.Cainos("TX Props", pillar), world, SortOrder(world.y), "sky-pillar");
                             }
+                            else if (_def.Theme == "mountains")
+                            {
+                                string rock = variant % 7 == 0 ? "TX Props Pillar Broken" :
+                                    $"TX Props Stone T{(variant % 7) + 1}";
+                                var ridge = AddSprite(SpriteLib.Cainos("TX Props", rock), world,
+                                    SortOrder(world.y), "mountain-ridge");
+                                ridge.transform.localScale = Vector3.one * (variant % 3 == 0 ? 1.15f : 1f);
+                            }
                             else
                             {
                                 int t = (variant % 3) + 1;
@@ -109,6 +122,12 @@ namespace Numeria.Game
                                     world, SortOrder(world.y), "pattern-rune");
                                 rune.color = Ui.Hex("#7fe7ff");
                             }
+                            else if (_def.Theme == "mountains")
+                            {
+                                var scrub = AddSprite(SpriteLib.Cainos("TX Props", $"TX Props Grass {(char)('A' + variant % 10)}"),
+                                    world, SortOrder(world.y), "mountain-scrub");
+                                scrub.color = Ui.Hex("#a5ad78");
+                            }
                             else
                             {
                                 AddSprite(SpriteLib.Cainos("TX Plant", $"TX Bush T{(variant % 6) + 1}"), world,
@@ -122,10 +141,18 @@ namespace Numeria.Game
                                 world, SortOrder(world.y), "chest");
                             break;
                         case Tile.Portal:
-                            AddSprite(SpriteLib.Cainos("TX Props", "TX Props Altar"), world, SortOrder(world.y), "portal");
+                            // 地面祭坛始终在角色下方，修复角色被传送门盖住的问题。
+                            AddSprite(SpriteLib.Cainos("TX Props", "TX Props Altar"), world,
+                                SortOrder(world.y) - 4, "portal");
                             _portalGlow = AddSprite(SpriteLib.Cainos("TX Props", "TX Props Altar Rune 1"),
-                                world, SortOrder(world.y) + 1, "portal-glow");
-                            _portalGlow.gameObject.SetActive(_def.GateCleared(_progress));
+                                world, SortOrder(world.y) - 3, "portal-glow");
+                            _bossMarker = AddSprite(SpriteLib.EnemyBattleSprite(_def.BossSpeciesId),
+                                world + new Vector3(0, .28f, 0), SortOrder(world.y) + 4, "boss-marker");
+                            if (_bossMarker.sprite != null)
+                            {
+                                float markerScale = .9f / Mathf.Max(.01f, _bossMarker.sprite.bounds.size.y);
+                                _bossMarker.transform.localScale = Vector3.one * markerScale;
+                            }
                             break;
                     }
                 }
@@ -134,10 +161,11 @@ namespace Numeria.Game
             var avatarGo = new GameObject("Avatar");
             avatarGo.transform.SetParent(_mapRoot.transform, false);
             var sr = avatarGo.AddComponent<SpriteRenderer>();
-            sr.sortingOrder = SortOrder(TileWorld(_pos.x, _pos.y).y) + 1;
+            sr.sortingOrder = SortOrder(TileWorld(_pos.x, _pos.y).y) + 10;
             avatarGo.transform.position = TileWorld(_pos.x, _pos.y);
             _avatar = avatarGo.transform;
             ApplyAvatarSprite();
+            RefreshPortalState();
         }
 
         private void ApplyAvatarSprite()
@@ -172,10 +200,34 @@ namespace Numeria.Game
                 camGo.AddComponent<AudioListener>();
             }
             cam.orthographic = true;
-            cam.orthographicSize = _map.Height / 2f + 0.5f;
-            cam.transform.position = new Vector3(_map.Width / 2f - 0.5f, _map.Height / 2f - 0.5f, -10);
+            // 扩图后保留可读的探索尺度，不再把整张 30+ 列地图缩成一屏。
+            cam.orthographicSize = 7.2f;
             cam.backgroundColor = Ui.Hex(_def.CameraBg);
             cam.clearFlags = CameraClearFlags.SolidColor;
+            _worldCamera = cam;
+            UpdateCameraPosition();
+        }
+
+        private void UpdateCameraPosition()
+        {
+            if (_worldCamera == null || _avatar == null) return;
+            float halfHeight = _worldCamera.orthographicSize;
+            float halfWidth = halfHeight * Mathf.Max(1f, _worldCamera.aspect);
+            float minX = Math.Min(halfWidth, (_map.Width - 1) * .5f);
+            float maxX = Math.Max(minX, _map.Width - 1 - halfWidth);
+            float minY = Math.Min(halfHeight, (_map.Height - 1) * .5f);
+            float maxY = Math.Max(minY, _map.Height - 1 - halfHeight);
+            _worldCamera.transform.position = new Vector3(
+                Mathf.Clamp(_avatar.position.x, minX, maxX),
+                Mathf.Clamp(_avatar.position.y, minY, maxY), -10);
+        }
+
+        private void RefreshPortalState()
+        {
+            bool cleared = _def.GateCleared(_progress);
+            bool bossReady = !cleared && _def.AllChestsOpened(_progress);
+            if (_portalGlow != null) _portalGlow.gameObject.SetActive(cleared || bossReady);
+            if (_bossMarker != null) _bossMarker.gameObject.SetActive(bossReady);
         }
 
         private void BuildHud()
@@ -240,8 +292,11 @@ namespace Numeria.Game
         private void UpdateHud()
         {
             var growth = _progress.ActiveGrowth;
-            _hudText.text = $"{PlayerName} Lv.{growth.Level}  XP {growth.Xp}/{growth.XpToNext}  " +
-                            $"ATK +{growth.AttackBonus}  DEF +{growth.DefenseBonus}  {_def.DisplayName}";
+            var combatant = GameData.PlayerMon(_progress.ActiveMonId, growth.Stage, growth.Level);
+            string xp = growth.Level >= GrowthSystem.MaxLevel ? "MAX" : $"{growth.Xp}/{growth.XpToNext}";
+            _hudText.text = $"{PlayerName} Lv.{growth.Level}  XP {xp}  " +
+                            $"ATK {combatant.AttackPower + growth.AttackBonus}  " +
+                            $"DEF {combatant.DefensePower + growth.DefenseBonus}  {_def.DisplayName}";
         }
 
         private string ChestId(int x, int y) => $"{_def.Id}-chest-{x}-{y}";
@@ -282,7 +337,8 @@ namespace Numeria.Game
                 }
                 _avatar.position = to;
                 _pos = (step.x, step.y);
-                sr.sortingOrder = SortOrder(to.y) + 1;
+                sr.sortingOrder = SortOrder(to.y) + 10;
+                UpdateCameraPosition();
 
                 bool interrupted = HandleTile(step.x, step.y);
                 if (interrupted) yield break; // 战斗/宝箱协程接管 _busy
@@ -297,7 +353,7 @@ namespace Numeria.Game
                 case Tile.Bush:
                     if (_rng.Next() < EncounterChance)
                     {
-                        StartBattle(GameData.RollWild(_def.Wild(), _def.Tier, _rng), false);
+                        StartBattle(_def.RollWildEncounter(_progress.ActiveGrowth.Level, _rng), false);
                         return true;
                     }
                     return false;
@@ -311,8 +367,13 @@ namespace Numeria.Game
                 case Tile.Portal:
                     if (!_def.GateCleared(_progress))
                     {
+                        if (!_def.AllChestsOpened(_progress))
+                        {
+                            StartCoroutine(BossLockedRoutine());
+                            return true;
+                        }
                         _voice.Say(_def.BossLine);
-                        StartBattle(_def.Boss(), true);
+                        StartBattle(_def.RollBossEncounter(_progress.ActiveGrowth.Level, _rng), true);
                     }
                     else if (_def.PortalTargetMap != null)
                     {
@@ -335,6 +396,8 @@ namespace Numeria.Game
         private void StartBattle(CombatantDef enemy, bool isBoss)
         {
             _busy = true;
+            _progress.Records.BattlesStarted++;
+            if (_bossMarker != null) _bossMarker.gameObject.SetActive(false);
             Music.Play(isBoss ? MusicMood.Boss : MusicMood.Battle);
             _mapRoot.SetActive(false);
             _hudRoot.SetActive(false);
@@ -354,22 +417,31 @@ namespace Numeria.Game
             Music.PlayMap(_def.Id);
 
             int levelUps = 0;
+            int xpReward = GrowthSystem.VictoryXp(enemy.BaseXp, enemy.Level,
+                _progress.ActiveGrowth.Level, isBoss);
             switch (end)
             {
                 case BattleEnd.Win:
-                    levelUps = _progress.GainXp(5);
+                    _progress.Records.BattlesWon++;
+                    levelUps = _progress.GainXp(xpReward);
+                    yield return MaybeDrop(enemy, isBoss);
                     if (isBoss && !_def.GateCleared(_progress))
                     {
+                        _progress.Records.BossesDefeated++;
                         yield return GateTrialRoutine();
                         _def.ClearGate(_progress);
-                        if (_portalGlow != null) _portalGlow.gameObject.SetActive(true);
+                        RefreshPortalState();
                         _voice.Say(_def.GateClearLine);
                         yield return new WaitForSeconds(2.5f);
                     }
                     break;
                 case BattleEnd.Caught:
                     bool isNew = _progress.Catch(enemy.Id);
-                    levelUps = _progress.GainXp(isNew ? 5 : 10); // 重复捕捉转化为双倍经验
+                    _progress.Records.BattlesWon++;
+                    if (isNew) _progress.Records.MonstersCaught++;
+                    int catchXp = isNew ? xpReward : (int)Math.Round(xpReward * 1.25d);
+                    levelUps = _progress.GainXp(catchXp);
+                    yield return MaybeDrop(enemy, false);
                     if (!isNew)
                     {
                         _voice.Say("Already best friends! Bonus experience!");
@@ -377,6 +449,7 @@ namespace Numeria.Game
                     }
                     break;
                 case BattleEnd.Lose:
+                    _progress.Records.BattlesLost++;
                     _voice.Say("Let's rest and try again!");
                     break;
             }
@@ -392,6 +465,31 @@ namespace Numeria.Game
             UpdateHud();
 
             yield return MaybeEvolve();
+            RefreshPortalState();
+            _busy = false;
+        }
+
+        private IEnumerator MaybeDrop(CombatantDef enemy, bool boss)
+        {
+            if (!boss && _rng.Next() >= enemy.DropChance) yield break;
+            ConsumableType drop = _rng.Next() < .25
+                ? (enemy.PreferredDrop == ConsumableType.HealthPotion
+                    ? ConsumableType.GemSnack : ConsumableType.HealthPotion)
+                : enemy.PreferredDrop;
+            _progress.AddConsumable(drop);
+            string name = drop == ConsumableType.HealthPotion ? "HP Potion" : "Gem Snack";
+            _voice.Say(drop == ConsumableType.HealthPotion
+                ? "The enemy dropped an HP Potion!" : "The enemy dropped a Gem Snack!");
+            yield return new WaitForSeconds(1.4f);
+        }
+
+        private IEnumerator BossLockedRoutine()
+        {
+            int remaining = 0;
+            foreach (string id in _def.ChestIds())
+                if (!_progress.OpenedChests.Contains(id)) remaining++;
+            _voice.Say($"The portal is quiet. Find {remaining} more treasure chest{(remaining == 1 ? "" : "s")}!");
+            yield return new WaitForSeconds(1.6f);
             _busy = false;
         }
 
@@ -428,13 +526,12 @@ namespace Numeria.Game
                 Sfx.Play(SfxCue.Chest);
                 string id = ChestId(x, y);
                 _progress.OpenChest(id);
+                _progress.Records.ChestsOpened++;
                 if (_chestRenderers.TryGetValue((x, y), out var sr))
                     sr.sprite = SpriteLib.Cainos("TX Props", "TX Props Chest Opened");
-                string itemName = null;
-                if (_def.ChestItems != null && _def.ChestItems.TryGetValue(id, out itemName))
-                    _progress.Items.Add(itemName);
-
-                if (id == _def.EvoChestId)
+                ChestRewardDef reward = null;
+                _def.ChestRewards?.TryGetValue(id, out reward);
+                if (reward != null && reward.Type == ChestRewardType.EvolutionStone)
                 {
                     _progress.AddEvolutionStone();
                     _voice.Say("You found the Evolution Stone!");
@@ -447,21 +544,31 @@ namespace Numeria.Game
                         yield return new WaitForSeconds(1.5f);
                     }
                 }
-                else
+                else if (reward != null)
                 {
-                    bool defenseReward = !string.IsNullOrEmpty(itemName) &&
-                        (itemName.Contains("Charm") || itemName.Contains("Ring") || itemName.Contains("Shield"));
-                    if (defenseReward)
+                    switch (reward.Type)
                     {
-                        _progress.ActiveGrowth.DefenseBonus++;
-                        _voice.Say("Defense goes up by one!");
-                    }
-                    else
-                    {
-                        _progress.ActiveGrowth.AttackBonus++;
-                        _voice.Say("Attack goes up by one!");
+                        case ChestRewardType.HealthPotion:
+                            _progress.AddConsumable(ConsumableType.HealthPotion, reward.Amount);
+                            _voice.Say($"You found {reward.Amount} HP Potions! Use them only in battle.");
+                            break;
+                        case ChestRewardType.GemSnack:
+                            _progress.AddConsumable(ConsumableType.GemSnack, reward.Amount);
+                            _voice.Say($"You found {reward.Amount} Gem Snacks! Use them only in battle.");
+                            break;
+                        case ChestRewardType.DefenseCharm:
+                            _progress.ActiveGrowth.DefenseBonus++;
+                            _progress.Items.Add(reward.Name);
+                            _voice.Say("Defense goes up by one!");
+                            break;
+                        default:
+                            _progress.ActiveGrowth.AttackBonus++;
+                            _progress.Items.Add(reward.Name);
+                            _voice.Say("Attack goes up by one!");
+                            break;
                     }
                 }
+                RefreshPortalState();
                 SaveSystem.Save(_progress);
                 UpdateHud();
             }

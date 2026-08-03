@@ -3,6 +3,25 @@ using System.Collections.Generic;
 
 namespace Numeria.Core
 {
+    public enum ConsumableType { HealthPotion, GemSnack }
+
+    [Serializable]
+    public class AdventureRecords
+    {
+        public int BattlesStarted;
+        public int BattlesWon;
+        public int BattlesLost;
+        public int MonstersCaught;
+        public int BossesDefeated;
+        public int ChestsOpened;
+        public int PuzzlesCompleted;
+        public int PuzzlesSolved;
+        public int ConsumablesUsed;
+        public int TotalXpEarned;
+        public int HighestDamage;
+        public int HighestLevel = 1;
+    }
+
     [Serializable]
     public class MonGrowth
     {
@@ -13,20 +32,20 @@ namespace Numeria.Core
         public int DefenseBonus;
         public int Stage;
 
-        public int XpToNext => Level * 10;
+        public int XpToNext => GrowthSystem.XpToNext(Level);
 
         public int GainXp(int amount)
         {
-            Xp += amount;
+            if (Level >= GrowthSystem.MaxLevel) { Xp = 0; return 0; }
+            Xp += Math.Max(0, amount);
             int levelsGained = 0;
-            while (Xp >= XpToNext)
+            while (Level < GrowthSystem.MaxLevel && Xp >= XpToNext)
             {
                 Xp -= XpToNext;
                 Level++;
-                AttackBonus++;
-                if (Level % 2 == 0) DefenseBonus++;
                 levelsGained++;
             }
+            if (Level >= GrowthSystem.MaxLevel) Xp = 0;
             return levelsGained;
         }
     }
@@ -38,7 +57,7 @@ namespace Numeria.Core
     [Serializable]
     public class Progress
     {
-        public const int CurrentSaveVersion = 4;
+        public const int CurrentSaveVersion = 5;
 
         public int SaveVersion = CurrentSaveVersion;
         public int Level = 1;
@@ -52,6 +71,8 @@ namespace Numeria.Core
         public bool HasEvoStone;
         public bool Evolved;
         public int EvolutionStones;
+        public int HealthPotions;
+        public int GemSnacks;
         public string CurrentMap = "forest";
         public string ActiveMonId = "addmander";
         public List<string> CaughtIds = new List<string>();
@@ -59,6 +80,7 @@ namespace Numeria.Core
         public List<string> ClearedGates = new List<string>();
         public List<string> Items = new List<string>();
         public List<MonGrowth> MonGrowth = new List<MonGrowth>();
+        public AdventureRecords Records = new AdventureRecords();
 
         /// <summary>补齐旧 JSON 中不存在的字段。每次新增持久化字段时在这里按版本迁移。</summary>
         public void ApplyMigrations()
@@ -73,6 +95,7 @@ namespace Numeria.Core
             if (OpenedChests == null) OpenedChests = new List<string>();
             if (ClearedGates == null) ClearedGates = new List<string>();
             if (Items == null) Items = new List<string>();
+            if (Records == null) Records = new AdventureRecords();
 
             if (SaveVersion < 3)
             {
@@ -96,6 +119,13 @@ namespace Numeria.Core
             {
                 foreach (var growth in MonGrowth)
                     growth.DefenseBonus = Math.Max(growth.DefenseBonus, growth.Level / 2);
+            }
+            if (SaveVersion < 5)
+            {
+                // v4 的等级加成继续保留为训练奖励，避免旧存档升级后突然变弱。
+                foreach (var growth in MonGrowth)
+                    growth.Level = GrowthSystem.ClampLevel(growth.Level);
+                Records.HighestLevel = Math.Max(1, Level);
             }
             SaveVersion = CurrentSaveVersion;
             SyncLegacyFields();
@@ -182,8 +212,35 @@ namespace Numeria.Core
         public int GainXp(int amount)
         {
             int levelsGained = ActiveGrowth.GainXp(amount);
+            Records.TotalXpEarned += Math.Max(0, amount);
+            Records.HighestLevel = Math.Max(Records.HighestLevel, ActiveGrowth.Level);
             SyncLegacyFields();
             return levelsGained;
+        }
+
+        public int ConsumableCount(ConsumableType type) =>
+            type == ConsumableType.HealthPotion ? HealthPotions : GemSnacks;
+
+        public void AddConsumable(ConsumableType type, int amount = 1)
+        {
+            if (amount <= 0) return;
+            if (type == ConsumableType.HealthPotion) HealthPotions += amount;
+            else GemSnacks += amount;
+        }
+
+        public bool UseConsumable(ConsumableType type)
+        {
+            if (ConsumableCount(type) <= 0) return false;
+            if (type == ConsumableType.HealthPotion) HealthPotions--;
+            else GemSnacks--;
+            Records.ConsumablesUsed++;
+            return true;
+        }
+
+        public void RecordPuzzle(bool solved)
+        {
+            Records.PuzzlesCompleted++;
+            if (solved) Records.PuzzlesSolved++;
         }
 
         /// <summary>收服数灵。已收服过返回 false。</summary>
