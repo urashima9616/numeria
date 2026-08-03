@@ -436,9 +436,9 @@ namespace Numeria.Game
                 if (_state.TryCatch())
                 {
                     Sfx.Play(SfxCue.Catch);
-                    _voice.Say($"Gotcha! {_state.Enemy.Name} joined your team!");
+                    _voice.Say($"Gotcha! {_state.Enemy.Name} wants to travel with you!");
                     yield return FriendGemBurst(_enemySprite);
-                    ShowBanner($"Caught {_state.Enemy.Name}!", $"+{_xpReward} XP", () => _onEnd(BattleEnd.Caught));
+                    ShowBanner($"Befriended {_state.Enemy.Name}!", $"+{_xpReward} XP", () => _onEnd(BattleEnd.Caught));
                 }
                 else
                 {

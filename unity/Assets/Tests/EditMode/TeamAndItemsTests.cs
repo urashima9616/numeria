@@ -86,6 +86,43 @@ namespace Numeria.Core.Tests
             var p = new Progress();
             Assert.True(p.Catch("doublit"));
             Assert.False(p.Catch("doublit")); // 调用方据此转化为经验值
+            Assert.False(p.Catch("addmander")); // starter 永远已在队伍中
+        }
+
+        [Test]
+        public void TeamCapacity_IsFifteen_AndFullCatchRequiresAChoice()
+        {
+            var p = new Progress();
+            Assert.AreEqual(1, p.TeamCount);
+            Assert.AreEqual(15, Progress.TeamCapacity);
+
+            for (int i = 0; i < 14; i++)
+                Assert.AreEqual(CatchRosterResult.Added, p.AddCaught($"future-family-{i}"));
+
+            Assert.AreEqual(15, p.TeamCount);
+            Assert.True(p.TeamIsFull);
+            Assert.AreEqual(CatchRosterResult.Full, p.AddCaught("overflow-family"));
+            Assert.AreEqual(CatchRosterResult.Duplicate, p.AddCaught("future-family-4"));
+        }
+
+        [Test]
+        public void FullTeamReplacement_ReleasesGrowthAndUnequipsAccessories()
+        {
+            var p = new Progress();
+            for (int i = 0; i < 14; i++) p.Catch($"future-family-{i}");
+            p.ActiveMonId = "future-family-3";
+            p.AddAccessory("keepsake", "Counting Charm", 1, 0);
+            Assert.True(p.EquipAccessory("keepsake", "future-family-3"));
+
+            Assert.True(p.ReplaceCaught("future-family-3", "new-family"));
+            Assert.AreEqual(15, p.TeamCount);
+            Assert.False(p.CaughtIds.Contains("future-family-3"));
+            Assert.True(p.CaughtIds.Contains("new-family"));
+            Assert.AreEqual("new-family", p.ActiveMonId);
+            Assert.IsNull(p.FindGrowth("future-family-3"));
+            Assert.IsNotNull(p.FindGrowth("new-family"));
+            Assert.AreEqual("", p.Accessories[0].EquippedToBaseId);
+            Assert.False(p.ReplaceCaught("addmander", "another-family"));
         }
 
         [Test]

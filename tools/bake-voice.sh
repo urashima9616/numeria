@@ -162,6 +162,7 @@ mathmons=(Addmander Sumdrake Equadragon Tenfin Decaqua Tidalten Shapling Patterv
 for mon in $mathmons; do
   bake "A wild $mon appeared!"
   bake "Gotcha! $mon joined your team!"
+  bake "Gotcha! $mon wants to travel with you!"
   bake "$mon is getting stronger!"
 done
 
@@ -193,6 +194,9 @@ bake "The enemy dropped an HP Potion!"
 bake "The enemy dropped a Gem Snack!"
 bake "Health is already full!"
 bake "Gems are already full!"
+bake "Your team is full. Choose a friend to release, or let the new friend go."
+bake "Your new friend joined the team!"
+bake "The new friend returned to the wild."
 for amount in 1 2 3; do
   bake "You found $amount HP Potions! Use them only in battle."
   bake "You found $amount Gem Snacks! Use them only in battle."

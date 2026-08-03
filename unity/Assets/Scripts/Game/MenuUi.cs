@@ -314,7 +314,8 @@ namespace Numeria.Game
 
             ListRow(list, "TeamHeader", 42, row =>
             {
-                Ui.Stretch(Ui.Label(row, "Text", "YOUR TEAM", 28, TitleGreen).rectTransform);
+                Ui.Stretch(Ui.Label(row, "Text", $"YOUR TEAM  {_progress.TeamCount}/{Progress.TeamCapacity}",
+                    28, TitleGreen).rectTransform);
                 var leftGem = Ui.SpriteImg(row, "LeftGem", SpriteLib.Pack("UI/Icons/Gem"));
                 leftGem.color = Ui.Hex("#5c8a3f");
                 Ui.PlaceCentered(leftGem.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(-112, 0),

@@ -442,13 +442,42 @@ namespace Numeria.Game
                     }
                     break;
                 case BattleEnd.Caught:
-                    bool isNew = _progress.Catch(enemy.Id);
+                    bool joined = false;
+                    bool duplicate = false;
+                    CatchRosterResult rosterResult = _progress.AddCaught(enemy.Id);
+                    if (rosterResult == CatchRosterResult.Added)
+                    {
+                        joined = true;
+                    }
+                    else if (rosterResult == CatchRosterResult.Duplicate)
+                    {
+                        duplicate = true;
+                    }
+                    else
+                    {
+                        string releasedId = null;
+                        bool decided = false;
+                        yield return ResolveFullTeamCatch(enemy.Id, choice =>
+                        {
+                            releasedId = choice;
+                            decided = true;
+                        });
+                        if (decided && !string.IsNullOrEmpty(releasedId))
+                        {
+                            joined = _progress.ReplaceCaught(releasedId, enemy.Id);
+                            if (joined) _voice.Say("Your new friend joined the team!");
+                        }
+                        else
+                        {
+                            _voice.Say("The new friend returned to the wild.");
+                        }
+                    }
                     _progress.Records.BattlesWon++;
-                    if (isNew) _progress.Records.MonstersCaught++;
-                    int catchXp = isNew ? xpReward : (int)Math.Round(xpReward * 1.25d);
+                    if (joined) _progress.Records.MonstersCaught++;
+                    int catchXp = duplicate ? (int)Math.Round(xpReward * 1.25d) : xpReward;
                     levelUps = _progress.GainXp(catchXp);
                     yield return MaybeDrop(enemy, false);
-                    if (!isNew)
+                    if (duplicate)
                     {
                         _voice.Say("Already best friends! Bonus experience!");
                         yield return new WaitForSeconds(1.8f);
@@ -473,6 +502,71 @@ namespace Numeria.Game
             yield return MaybeEvolve();
             RefreshPortalState();
             _busy = false;
+        }
+
+        /// <summary>
+        /// 15 只满员后暂停地图结算。返回 null 表示放走新伙伴；返回已有家族 id 表示用新伙伴替换它。
+        /// Starter Addmander 不在可释放列表中。
+        /// </summary>
+        private IEnumerator ResolveFullTeamCatch(string newcomerId, Action<string> onResolved)
+        {
+            string choice = null;
+            bool resolved = false;
+            var newcomer = GameData.SpeciesById(newcomerId);
+            string newcomerName = newcomer?.Name ?? newcomerId;
+
+            var shade = Ui.Img(_hudCanvasRoot, "FullTeamOverlay", new Color(.03f, .05f, .04f, .91f));
+            Ui.Stretch(shade.rectTransform);
+            var panel = Ui.Img(shade.transform, "FullTeamPanel", Ui.PlateBg);
+            Ui.Place(panel.rectTransform, new Vector2(.5f, .5f), Vector2.zero, new Vector2(1050, 820));
+            Ui.AddOutline(panel.gameObject);
+
+            var title = Ui.DisplayLabel(panel.transform, "Title", "TEAM FULL  15 / 15", 48, Ui.Ink);
+            Ui.Place(title.rectTransform, new Vector2(.5f, 1), new Vector2(0, -38), new Vector2(850, 62));
+            var prompt = Ui.Label(panel.transform, "Prompt",
+                $"{newcomerName} wants to join! Pick a friend to release, or let {newcomerName} go.",
+                25, Ui.Hex("#8b542f"));
+            Ui.Place(prompt.rectTransform, new Vector2(.5f, 1), new Vector2(0, -105), new Vector2(900, 62));
+            _voice.Say("Your team is full. Choose a friend to release, or let the new friend go.");
+
+            var grid = Ui.Node(panel.transform, "RosterGrid");
+            Ui.PlaceCentered(grid, new Vector2(.5f, .5f), new Vector2(0, 10), new Vector2(920, 500));
+            var layout = grid.gameObject.AddComponent<GridLayoutGroup>();
+            layout.cellSize = new Vector2(215, 108);
+            layout.spacing = new Vector2(16, 14);
+            layout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+            layout.constraintCount = 4;
+            layout.childAlignment = TextAnchor.MiddleCenter;
+
+            foreach (string existingId in _progress.CaughtIds)
+            {
+                string capturedId = existingId;
+                var existingGrowth = _progress.EnsureGrowth(existingId);
+                string formId = _progress.CurrentFormId(existingId);
+                var species = GameData.SpeciesById(formId);
+                string name = species?.Name ?? existingId;
+                var button = Ui.Btn(grid, $"Replace-{existingId}", $"RELEASE\n{name.ToUpperInvariant()}  LV.{existingGrowth.Level}", 17);
+                var icon = Ui.SpriteImg(button.transform, "Icon", SpriteLib.MapSprite(formId));
+                icon.preserveAspect = true;
+                Ui.Place(icon.rectTransform, new Vector2(0, .5f), new Vector2(10, 0), new Vector2(70, 70));
+                var text = button.GetComponentInChildren<TMP_Text>();
+                text.alignment = TextAlignmentOptions.MidlineRight;
+                text.rectTransform.offsetMin = new Vector2(76, 8);
+                text.rectTransform.offsetMax = new Vector2(-8, -8);
+                button.onClick.AddListener(() =>
+                {
+                    choice = capturedId;
+                    resolved = true;
+                });
+            }
+
+            var letGo = Ui.Btn(panel.transform, "LetNewFriendGo", $"LET {newcomerName.ToUpperInvariant()} GO", 24);
+            Ui.Place((RectTransform)letGo.transform, new Vector2(.5f, 0), new Vector2(0, 34), new Vector2(420, 70));
+            letGo.onClick.AddListener(() => resolved = true);
+
+            yield return new WaitUntil(() => resolved);
+            Destroy(shade.gameObject);
+            onResolved(choice);
         }
 
         private IEnumerator MaybeDrop(CombatantDef enemy, bool boss)

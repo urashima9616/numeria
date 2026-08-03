@@ -36,7 +36,7 @@
 - `Progress`:save schema v6;Lv.99 上限、物种成长曲线、动态经验、每家族独立成长、独占饰品装备、战斗消耗品与冒险记录 —— **新字段必须带默认值和迁移**
 - `GridMap`:ASCII 地图解析('.'草地 'T'树 'b'草丛 'C'宝箱 'P'传送门 'S'出生)+ BFS 寻路
 - `GameData`:30 只数灵、11 条进化线、各物种基础经验与 HP/ATK/DEF 每十级成长量;每家族配置独立数学亲和
-- 测试:`unity/Assets/Tests/EditMode/`,**78 个**;最后一次完整 headless 为 **78/78**
+- 测试:`unity/Assets/Tests/EditMode/`,**80 个**;最后一次完整 headless 为 **80/80**
 
 ### Game 层(`Numeria.Game`)
 - **全程序化 UGUI,零场景文件**——所有界面代码搭建,SampleScene 只是空壳,`BattleBootstrap` 用 `RuntimeInitializeOnLoadMethod` 拉起 `MapController`
@@ -62,7 +62,7 @@
 - 🔶 **P3 进行中**:
   - ✅ 三段 Kindergarten 难度:10/20/30 内加减 + 同步递进的图形、对称、规律、旋转、数列
   - ✅ 进化系统全链(御三家 Lv.8/Lv.15、野生线 Lv.5 + 里程碑进化石 + 家族亲和三题试炼 + 蜕变演出)
-  - ✅ 菜单(tab 化)、出战位切换、道具栏、重复捕捉转经验
+  - ✅ 菜单(tab 化)、出战位切换、道具栏、重复捕捉转经验、15 只队伍上限与满员放走/替换流程
   - ✅ 用户 AI 生成美术管线(`generated/` 约定 + NUMERIA Battle Asset Pack 全面接入战斗)
   - ✅ 蔚蓝天空城:独立浮空遗迹路线、Mirrowl/Symmetrix、规律/对称/旋转/数字序列、Sky/Boss 音乐
   - ✅ 30 只数灵:原15只 + 配对/减法/堆叠/图形/规律五条三段线,全部有统一高清图标、技能、成长与进化语音
@@ -84,7 +84,7 @@
 ## 5. 资产管线(全部约定式,零代码接新资产)
 
 - **手绘像素**:改 `prototype/js/sprites.js` 字符网格 → `node tools/export-sprites.mjs` → PNG 落到 `Resources/Art/Sprites/`
-- **语音**:台词加进 `tools/bake-voice.sh` → 跑脚本(macOS `say`,Samantha,-r 150)→ wav 落到 `Resources/Voice/`;**C# 里说的每句台词必须有对应烘焙**,`VoiceKeys.Sanitize` = 脚本规则;现有 **1,108 条有效 WAV**,覆盖 0–30 加减全部读法、图形题、捕捉、饰品与破盾反馈
+- **语音**:台词加进 `tools/bake-voice.sh` → 跑脚本(macOS `say`,Samantha,-r 150)→ wav 落到 `Resources/Voice/`;**C# 里说的每句台词必须有对应烘焙**,`VoiceKeys.Sanitize` = 脚本规则;现有 **1,141 条有效 WAV**,覆盖 0–30 加减全部读法、图形题、捕捉/满员替换、饰品与破盾反馈
 - **音乐**:`tools/install-jukebox-music.sh` 从本地授权的 8-bit Jukebox Lite 同步六首选曲到 ignored `Resources/Music/Jukebox`;`--restore-dynamic` 可将旧曲同步到同一运行槽;原 `LocalStore` 保持不变,完整曲目/署名见 `docs/music-attribution.md`
 - **AI 生成图**(用户负责生成,放 `Resources/generated/`):
   - `{id}_large_icon.png` → 菜单详情/回退链

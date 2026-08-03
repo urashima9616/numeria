@@ -4,6 +4,7 @@ using System.Collections.Generic;
 namespace Numeria.Core
 {
     public enum ConsumableType { HealthPotion, GemSnack }
+    public enum CatchRosterResult { Added, Duplicate, Full }
 
     [Serializable]
     public class AccessoryItem
@@ -68,6 +69,7 @@ namespace Numeria.Core
     public class Progress
     {
         public const int CurrentSaveVersion = 6;
+        public const int TeamCapacity = 15;
 
         public int SaveVersion = CurrentSaveVersion;
         public int Level = 1;
@@ -108,6 +110,15 @@ namespace Numeria.Core
             if (Items == null) Items = new List<string>();
             if (Accessories == null) Accessories = new List<AccessoryItem>();
             if (Records == null) Records = new AdventureRecords();
+
+            // Starter 永远占据第一个伙伴位；旧存档若意外重复写入或出现重复家族，在这里无损去重。
+            var uniqueCaught = new List<string>();
+            foreach (string id in CaughtIds)
+            {
+                string baseId = GameData.BaseId(id);
+                if (baseId != "addmander" && !uniqueCaught.Contains(baseId)) uniqueCaught.Add(baseId);
+            }
+            CaughtIds = uniqueCaught;
 
             if (SaveVersion < 3)
             {
@@ -327,13 +338,46 @@ namespace Numeria.Core
             return true;
         }
 
-        /// <summary>收服数灵。已收服过返回 false。</summary>
-        public bool Catch(string mathmonId)
+        public int TeamCount => 1 + CaughtIds.Count;
+        public bool TeamIsFull => TeamCount >= TeamCapacity;
+
+        public bool Owns(string mathmonId)
         {
             string baseId = GameData.BaseId(mathmonId);
-            if (CaughtIds.Contains(baseId)) return false;
+            return baseId == "addmander" || CaughtIds.Contains(baseId);
+        }
+
+        /// <summary>尝试将新伙伴加入最多 15 只的队伍；满员与重复必须由调用方分别处理。</summary>
+        public CatchRosterResult AddCaught(string mathmonId)
+        {
+            string baseId = GameData.BaseId(mathmonId);
+            if (Owns(baseId)) return CatchRosterResult.Duplicate;
+            if (TeamIsFull) return CatchRosterResult.Full;
             CaughtIds.Add(baseId);
             EnsureGrowth(baseId);
+            return CatchRosterResult.Added;
+        }
+
+        /// <summary>旧调用兼容：只有真正加入队伍才返回 true。</summary>
+        public bool Catch(string mathmonId) => AddCaught(mathmonId) == CatchRosterResult.Added;
+
+        /// <summary>
+        /// 满员时用新伙伴替换一只已捕获伙伴。首只 Addmander 不可释放；被释放伙伴的饰品回到库存。
+        /// </summary>
+        public bool ReplaceCaught(string releasedMathmonId, string newMathmonId)
+        {
+            string released = GameData.BaseId(releasedMathmonId);
+            string newcomer = GameData.BaseId(newMathmonId);
+            int index = CaughtIds.IndexOf(released);
+            if (index < 0 || released == "addmander" || Owns(newcomer)) return false;
+
+            foreach (var accessory in Accessories)
+                if (accessory.EquippedToBaseId == released) accessory.EquippedToBaseId = "";
+            MonGrowth.RemoveAll(growth => growth.BaseId == released);
+            CaughtIds[index] = newcomer;
+            EnsureGrowth(newcomer);
+            if (GameData.BaseId(ActiveMonId) == released) ActiveMonId = newcomer;
+            SyncLegacyFields();
             return true;
         }
 
