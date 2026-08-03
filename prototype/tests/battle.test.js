@@ -27,12 +27,20 @@ test('shield halves damage (floor, min 1)', () => {
   assert.equal(damageToEnemy(s, 1), 1);
 });
 
-test('vulnerability doubles damage and overrides shield state', () => {
+test('shield break skips one turn, doubles first hit, then resets', () => {
   const s = fresh();
   breakShield(s);
   assert.equal(s.enemy.shielded, false);
-  assert.equal(s.enemy.vulnerableTurns, 2);
+  assert.equal(s.enemy.breakBonusReady, true);
+  assert.equal(s.enemy.skipTurns, 1);
   assert.equal(damageToEnemy(s, 5), 10);
+  assert.deepEqual(enemyTurn(s), { dmg: 0, skipped: true });
+  const result = useSkill(s, 'tackle');
+  assert.equal(result.dmg, 4);
+  assert.equal(s.enemy.breakBonusReady, false);
+  assert.equal(s.enemy.shielded, true);
+  breakShield(s);
+  assert.equal(s.enemy.skipTurns, 1);
 });
 
 test('formula skill: correct uses power, wrong uses basePower (zero punishment)', () => {
@@ -59,13 +67,16 @@ test('not enough gems throws', () => {
   assert.throws(() => useSkill(s, 'flame-formula'), /not enough gems/);
 });
 
-test('enemy turn damages player and ticks vulnerability', () => {
+test('enemy turn damages player after shield stun is consumed', () => {
   const s = fresh();
   breakShield(s);
-  const { dmg } = enemyTurn(s);
+  const skipped = enemyTurn(s);
+  assert.equal(skipped.skipped, true);
+  assert.equal(s.player.hp, 10);
+  const { dmg, skipped: skippedAgain } = enemyTurn(s);
+  assert.equal(skippedAgain, false);
   assert.equal(dmg, 2);
   assert.equal(s.player.hp, 8);
-  assert.equal(s.enemy.vulnerableTurns, 1);
 });
 
 test('outcomes: win and lose', () => {

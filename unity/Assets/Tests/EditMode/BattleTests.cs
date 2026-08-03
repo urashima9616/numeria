@@ -86,13 +86,26 @@ namespace Numeria.Core.Tests
         }
 
         [Test]
-        public void Vulnerability_DoublesDamage()
+        public void BrokenShieldStunsThenFirstAttackDoublesAndResetsShield()
         {
             var s = Fresh();
             s.BreakShield();
             Assert.False(s.EnemyShielded);
-            Assert.AreEqual(2, s.VulnerableTurns);
+            Assert.True(s.BreakBonusReady);
+            Assert.AreEqual(1, s.EnemySkipTurns);
+            Assert.True(s.ConsumeEnemySkipTurn());
+            Assert.False(s.ConsumeEnemySkipTurn());
             Assert.That(s.DamageToEnemy(8), Is.InRange(10, 14));
+
+            var result = s.UseSkill("tackle");
+            Assert.GreaterOrEqual(result.Damage, 2);
+            Assert.False(s.BreakBonusReady);
+            Assert.True(s.EnemyShielded);
+
+            s.BreakShield();
+            Assert.False(s.EnemyShielded);
+            Assert.True(s.BreakBonusReady);
+            Assert.AreEqual(1, s.EnemySkipTurns);
         }
 
         [Test]
@@ -127,14 +140,15 @@ namespace Numeria.Core.Tests
         }
 
         [Test]
-        public void EnemyTurn_DamagesPlayer_TicksVulnerability()
+        public void EnemyTurn_DamagesPlayer_AfterShieldStunIsConsumed()
         {
             var s = Fresh();
             s.BreakShield();
+            Assert.True(s.ConsumeEnemySkipTurn());
+            Assert.AreEqual(s.Player.MaxHp, s.PlayerHp);
             int dmg = s.EnemyTurn();
             Assert.That(dmg, Is.InRange(4, 6));
             Assert.AreEqual(10 - dmg, s.PlayerHp);
-            Assert.AreEqual(1, s.VulnerableTurns);
         }
 
         [Test]

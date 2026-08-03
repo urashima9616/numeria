@@ -68,8 +68,8 @@ namespace Numeria.Game
             _playerLevel = growth.Level;
             _rng = new Rng((uint)Environment.TickCount);
             _state = new BattleState(GameData.PlayerMon(progress.ActiveMonId, growth.Stage, growth.Level), enemy, _rng);
-            _state.PlayerAttackBonus = growth.AttackBonus;
-            _state.PlayerDefenseBonus = growth.DefenseBonus;
+            _state.PlayerAttackBonus = progress.TotalAttackBonus(progress.ActiveMonId);
+            _state.PlayerDefenseBonus = progress.TotalDefenseBonus(progress.ActiveMonId);
             _xpReward = GrowthSystem.VictoryXp(enemy.BaseXp, enemy.Level, growth.Level, enemy.IsBoss);
             _voice = gameObject.AddComponent<Voice>();
             BuildUi();
@@ -411,7 +411,7 @@ namespace Numeria.Game
                 _state.BreakShield();
                 RenderAll();
                 StartCoroutine(Shake());
-                SetLog("Shield broken!", "DOUBLE DAMAGE - 2 TURNS");
+                SetLog("Shield broken!", "DOUBLE NEXT HIT - ENEMY STUNNED");
                 yield return Flash(_enemySprite);
             }
             else
@@ -516,6 +516,18 @@ namespace Numeria.Game
         {
             if (_state.Outcome != BattleOutcome.None) { ShowOutcome(); yield break; }
             yield return new WaitForSeconds(0.6f);
+            if (_state.ConsumeEnemySkipTurn())
+            {
+                Sfx.Play(SfxCue.ShieldBreak, 0.7f);
+                _voice.Say("Shield stun! The enemy misses a turn!");
+                SetLog("Shield stun!", "ENEMY MISSES A TURN");
+                yield return new WaitForSeconds(1f);
+                _state.StartPlayerTurn();
+                RenderAll();
+                SetLog("Your turn", "+2 GEMS - DOUBLE HIT READY");
+                SetActionsEnabled(true);
+                yield break;
+            }
             SetLog("Enemy turn", $"{_state.Enemy.Name.ToUpperInvariant()} ATTACKS");
             yield return Lunge(_enemySprite, new Vector2(-60, -30));
             int dmg = _state.EnemyTurn();

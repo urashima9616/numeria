@@ -12,6 +12,48 @@ namespace Numeria.Core.Tests
             var p = new Progress();
             Assert.AreEqual("addmander", p.ActiveMonId);
             Assert.IsEmpty(p.Items);
+            Assert.IsEmpty(p.Accessories);
+        }
+
+        [Test]
+        public void AccessoriesBelongToOneMathmonAndRespectEvolutionSlots()
+        {
+            var p = new Progress();
+            p.Catch("countipillar");
+            Assert.True(p.AddAccessory("a", "Power Acorn", 1, 0));
+            Assert.True(p.AddAccessory("b", "Granite Guard", 0, 1));
+            Assert.True(p.AddAccessory("c", "Mirror Feather", 0, 1));
+            Assert.False(p.AddAccessory("a", "Duplicate", 9, 9));
+
+            Assert.AreEqual(2, p.AccessorySlotCount("addmander"));
+            Assert.True(p.EquipAccessory("a", "addmander"));
+            Assert.True(p.EquipAccessory("b", "addmander"));
+            Assert.False(p.EquipAccessory("c", "addmander"));
+            Assert.AreEqual(1, p.AccessoryAttackBonus("addmander"));
+            Assert.AreEqual(1, p.AccessoryDefenseBonus("addmander"));
+            Assert.AreEqual(0, p.AccessoryAttackBonus("countipillar"));
+            Assert.AreEqual(0, p.AccessoryDefenseBonus("countipillar"));
+
+            p.EnsureGrowth("addmander").Stage = 1;
+            Assert.AreEqual(3, p.AccessorySlotCount("addmander"));
+            Assert.True(p.EquipAccessory("c", "addmander"));
+            Assert.AreEqual(2, p.AccessoryDefenseBonus("addmander"));
+            p.EnsureGrowth("addmander").Stage = 2;
+            Assert.AreEqual(4, p.AccessorySlotCount("addmander"));
+        }
+
+        [Test]
+        public void AccessoryCanMoveOnlyWhenTargetHasCapacity()
+        {
+            var p = new Progress();
+            p.Catch("countipillar");
+            p.AddAccessory("a", "Power Acorn", 1, 0);
+            Assert.True(p.EquipAccessory("a", "addmander"));
+            Assert.True(p.EquipAccessory("a", "countipillar"));
+            Assert.AreEqual(0, p.EquippedAccessories("addmander").Count);
+            Assert.AreEqual(1, p.EquippedAccessories("countipillar").Count);
+            Assert.True(p.UnequipAccessory("a"));
+            Assert.False(p.UnequipAccessory("a"));
         }
 
         [Test]

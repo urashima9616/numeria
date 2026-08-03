@@ -1,7 +1,8 @@
 export function createBattle(playerDef, enemyDef) {
   return {
     player: { ...playerDef, hp: playerDef.maxHp },
-    enemy: { ...enemyDef, hp: enemyDef.maxHp, shielded: enemyDef.shield != null, vulnerableTurns: 0 },
+    enemy: { ...enemyDef, hp: enemyDef.maxHp, shielded: enemyDef.shield != null,
+      breakBonusReady: false, skipTurns: 0 },
     gems: 2, maxGems: 8,
     outcome: null,
   };
@@ -12,8 +13,8 @@ export function startPlayerTurn(state) {
 }
 
 export function damageToEnemy(state, base) {
-  if (state.enemy.vulnerableTurns > 0) return base * 2;
   if (state.enemy.shielded) return Math.max(1, Math.floor(base / 2));
+  if (state.enemy.breakBonusReady) return base * 2;
   return base;
 }
 
@@ -24,19 +25,28 @@ export function useSkill(state, skillId, { correct = true } = {}) {
   const powered = skill.type !== 'formula' || correct;
   const dmg = damageToEnemy(state, powered ? skill.power : skill.basePower);
   state.enemy.hp = Math.max(0, state.enemy.hp - dmg);
+  if (state.enemy.shield != null && state.enemy.breakBonusReady) {
+    state.enemy.breakBonusReady = false;
+    state.enemy.shielded = state.enemy.hp > 0;
+  }
   if (state.enemy.hp === 0) state.outcome = 'win';
   return { dmg, powered };
 }
 
 export function breakShield(state) {
+  if (state.enemy.shield == null || !state.enemy.shielded) return;
   state.enemy.shielded = false;
-  state.enemy.vulnerableTurns = 2;
+  state.enemy.breakBonusReady = true;
+  state.enemy.skipTurns = 1;
 }
 
 export function enemyTurn(state) {
+  if (state.enemy.skipTurns > 0) {
+    state.enemy.skipTurns--;
+    return { dmg: 0, skipped: true };
+  }
   const dmg = state.enemy.attackPower;
   state.player.hp = Math.max(0, state.player.hp - dmg);
-  if (state.enemy.vulnerableTurns > 0) state.enemy.vulnerableTurns--;
   if (state.player.hp === 0) state.outcome = 'lose';
-  return { dmg };
+  return { dmg, skipped: false };
 }

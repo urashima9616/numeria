@@ -18,6 +18,7 @@ namespace Numeria.Game
         private readonly Action _onClose;
         private readonly Action _onReset;
         private readonly Action<string> _onTravel;
+        private readonly Action<Progress> _onLoad;
         private readonly RectTransform _canvasRoot;
 
         private Image _overlay;
@@ -37,19 +38,20 @@ namespace Numeria.Game
         private static readonly Color HpTrack = Ui.Hex("#e3d9bd");
 
         public static void Open(RectTransform canvasRoot, Progress progress, Action onClose, Action onReset,
-            Action<string> onTravel)
+            Action<string> onTravel, Action<Progress> onLoad)
         {
-            new MenuUi(canvasRoot, progress, onClose, onReset, onTravel).Build();
+            new MenuUi(canvasRoot, progress, onClose, onReset, onTravel, onLoad).Build();
         }
 
         private MenuUi(RectTransform canvasRoot, Progress progress, Action onClose, Action onReset,
-            Action<string> onTravel)
+            Action<string> onTravel, Action<Progress> onLoad)
         {
             _canvasRoot = canvasRoot;
             _progress = progress;
             _onClose = onClose;
             _onReset = onReset;
             _onTravel = onTravel;
+            _onLoad = onLoad;
             _selectedId = progress.ActiveMonId;
         }
 
@@ -135,7 +137,8 @@ namespace Numeria.Game
             Ui.Place(title.rectTransform, new Vector2(0, 1), new Vector2(4, 0), new Vector2(500, 58));
             var summary = Ui.Label(row, "Summary",
                 $"Lv. {growth.Level}   XP {(growth.Level >= GrowthSystem.MaxLevel ? "MAX" : $"{growth.Xp}/{growth.XpToNext}")}   " +
-                $"ATK +{growth.AttackBonus}   DEF +{growth.DefenseBonus}",
+                $"GEAR ATK +{_progress.AccessoryAttackBonus(_progress.ActiveMonId)}   " +
+                $"DEF +{_progress.AccessoryDefenseBonus(_progress.ActiveMonId)}",
                 28, SummaryOrange, TextAnchor.UpperLeft);
             Ui.Place(summary.rectTransform, new Vector2(0, 1), new Vector2(6, -61), new Vector2(700, 34));
 
@@ -174,6 +177,7 @@ namespace Numeria.Game
             TabButton(row, "team", "TEAM", SpriteLib.One($"Art/Sprites/{DisplaySpriteId("addmander")}"), ShowTeam);
             TabButton(row, "items", "ITEMS", SpriteLib.Cainos("TX Props", "TX Props Chest"), ShowItems);
             TabButton(row, "records", "RECORDS", SpriteLib.One("Art/Sprites/icon-sword"), ShowRecords);
+            TabButton(row, "saves", "SAVES", SpriteLib.Cainos("TX Props", "TX Props Sign"), ShowSaves);
             TabButton(row, "settings", "SETTINGS", SpriteLib.One("Art/Sprites/shield"), ShowSettings);
         }
 
@@ -184,9 +188,9 @@ namespace Numeria.Game
             _tabImages[key] = tab;
 
             var icImg = Ui.SpriteImg(tab.transform, "Icon", icon);
-            Ui.Place(icImg.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(-72, 2), new Vector2(44, 44));
-            var text = Ui.Label(tab.transform, "Label", label, 30, TitleGreen);
-            Ui.Place(text.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(30, 0), new Vector2(220, 40));
+            Ui.Place(icImg.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(-62, 2), new Vector2(40, 40));
+            var text = Ui.Label(tab.transform, "Label", label, 26, TitleGreen);
+            Ui.Place(text.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(24, 0), new Vector2(180, 40));
 
             var activeBar = Ui.Img(tab.transform, "ActiveBar", TabActive);
             activeBar.rectTransform.anchorMin = Vector2.zero;
@@ -210,7 +214,11 @@ namespace Numeria.Game
 
         private void ClearContent()
         {
-            foreach (Transform child in _contentArea) UnityEngine.Object.Destroy(child.gameObject);
+            foreach (Transform child in _contentArea)
+            {
+                if (Application.isPlaying) UnityEngine.Object.Destroy(child.gameObject);
+                else UnityEngine.Object.DestroyImmediate(child.gameObject);
+            }
         }
 
         /// <summary>清空内容区并返回全新的包装节点——布局/滚动组件都挂在它上面,切 tab 随之销毁。</summary>
@@ -446,10 +454,11 @@ namespace Numeria.Game
                 });
             }
 
-            int atk = def.AttackPower + growth.AttackBonus;
-            int defense = def.DefensePower + growth.DefenseBonus;
+            int atk = def.AttackPower + _progress.TotalAttackBonus(id);
+            int defense = def.DefensePower + _progress.TotalDefenseBonus(id);
             var formula = Array.Find(def.Skills, s => s.Id == "flame-formula");
             BuildStatTable(identity.transform, def.MaxHp, atk, defense, formula);
+            BuildAccessorySlots(identity.transform, id);
 
             var evolution = Ui.SpriteImg(parent, "EvolutionPanel", SpriteLib.Pack("UI/Panels/Generic_Panel"));
             evolution.type = Image.Type.Sliced;
@@ -457,6 +466,77 @@ namespace Numeria.Game
             evoLe.minHeight = 260;
             evoLe.flexibleHeight = 1;
             BuildEvolutionBlock(evolution.rectTransform, id);
+        }
+
+        private void BuildAccessorySlots(Transform parent, string id)
+        {
+            var equipped = _progress.EquippedAccessories(id);
+            int capacity = _progress.AccessorySlotCount(id);
+            var title = Ui.Label(parent, "AccessoryTitle", $"ACCESSORIES  {equipped.Count}/{capacity}", 19,
+                TitleGreen, TextAnchor.MiddleLeft);
+            Ui.Place(title.rectTransform, new Vector2(0, 0), new Vector2(22, 72), new Vector2(270, 28));
+
+            for (int slot = 0; slot < capacity; slot++)
+            {
+                AccessoryItem item = slot < equipped.Count ? equipped[slot] : null;
+                string bonus = item == null ? "+" : item.AttackBonus > 0 ? $"ATK+{item.AttackBonus}" : $"DEF+{item.DefenseBonus}";
+                var button = Ui.Btn(parent, $"AccessorySlot{slot}", bonus, item == null ? 25 : 16);
+                Ui.Place((RectTransform)button.transform, new Vector2(0, 0), new Vector2(22 + slot * 66, 15),
+                    new Vector2(58, 52));
+                if (item == null)
+                    button.onClick.AddListener(() => ShowAccessoryPicker(id));
+                else
+                {
+                    string instanceId = item.InstanceId;
+                    button.onClick.AddListener(() =>
+                    {
+                        _progress.UnequipAccessory(instanceId);
+                        ShowTeam();
+                    });
+                }
+            }
+        }
+
+        private void ShowAccessoryPicker(string id)
+        {
+            var shade = Ui.Img(_overlay.transform, "AccessoryPicker", new Color(0, 0, 0, .72f));
+            Ui.Stretch(shade.rectTransform);
+            var panel = Ui.Img(shade.transform, "Panel", Cream);
+            Ui.Place(panel.rectTransform, new Vector2(.5f, .5f), Vector2.zero, new Vector2(760, 560));
+            Ui.AddOutline(panel.gameObject);
+            var title = Ui.Label(panel.transform, "Title", "CHOOSE AN ACCESSORY", 34, TitleGreen);
+            Ui.Place(title.rectTransform, new Vector2(.5f, 1), new Vector2(0, -28), new Vector2(650, 48));
+
+            var viewport = Ui.Node(panel.transform, "AccessoryList");
+            Ui.Place(viewport, new Vector2(.5f, .5f), new Vector2(0, 8), new Vector2(680, 370));
+            var list = MakeScrollList(viewport);
+            int choices = 0;
+            foreach (var accessory in _progress.Accessories)
+            {
+                if (!string.IsNullOrEmpty(accessory.EquippedToBaseId)) continue;
+                choices++;
+                AccessoryItem captured = accessory;
+                ListRow(list, $"Pick-{captured.InstanceId}", 68, row =>
+                {
+                    var button = Ui.Btn(row, "Button", captured.Name, 23);
+                    Ui.Stretch((RectTransform)button.transform);
+                    var label = button.GetComponentInChildren<TMP_Text>();
+                    label.text = $"{captured.Name}    {(captured.AttackBonus > 0 ? $"ATK +{captured.AttackBonus}" : $"DEF +{captured.DefenseBonus}")}";
+                    button.onClick.AddListener(() =>
+                    {
+                        _progress.EquipAccessory(captured.InstanceId, id);
+                        UnityEngine.Object.Destroy(shade.gameObject);
+                        ShowTeam();
+                    });
+                });
+            }
+            if (choices == 0)
+                ListRow(list, "Empty", 80, row =>
+                    Ui.Stretch(Ui.Label(row, "Text", "No unequipped accessories.", 25, SummaryOrange).rectTransform));
+
+            var back = Ui.Btn(panel.transform, "Back", "BACK", 24);
+            Ui.Place((RectTransform)back.transform, new Vector2(.5f, 0), new Vector2(0, 28), new Vector2(260, 62));
+            back.onClick.AddListener(() => UnityEngine.Object.Destroy(shade.gameObject));
         }
 
         private void BuildStatTable(Transform parent, int hp, int atk, int defense, SkillDef formula)
@@ -585,18 +665,30 @@ namespace Numeria.Game
                 Ui.Stretch(Ui.Label(row, "Text", "These supplies can only be used from the battle command dock.",
                     22, SummaryOrange).rectTransform));
 
-            SectionRow(content, "Key items and charms");
+            SectionRow(content, "Accessories - equip them from the Team tab");
+            foreach (var accessory in _progress.Accessories)
+            {
+                string bonus = accessory.AttackBonus > 0
+                    ? $"ATK +{accessory.AttackBonus}" : $"DEF +{accessory.DefenseBonus}";
+                string owner = "READY TO EQUIP";
+                if (!string.IsNullOrEmpty(accessory.EquippedToBaseId))
+                {
+                    var growth = _progress.EnsureGrowth(accessory.EquippedToBaseId);
+                    var species = GameData.SpeciesById(GameData.FormId(accessory.EquippedToBaseId, growth.Stage));
+                    owner = $"EQUIPPED: {species?.Name.ToUpperInvariant() ?? accessory.EquippedToBaseId.ToUpperInvariant()}";
+                }
+                ItemRow(content, accessory.Name, $"{bonus}   {owner}");
+            }
+            if (_progress.Accessories.Count == 0)
+                ListRow(content, "NoAccessories", 54, row =>
+                    Ui.Stretch(Ui.Label(row, "Text", "No accessories yet - find special math chests!", 24, Ui.Ink).rectTransform));
+
+            SectionRow(content, "Key items");
             if (_progress.EvolutionStones > 0)
                 ItemRow(content, "Evolution Stone", $"Owned: {_progress.EvolutionStones}");
-            foreach (string item in _progress.Items)
-            {
-                string captured = item;
-                string effect = captured.Contains("Guard") || captured.Contains("Feather") ? "+1 DEF" : "+1 ATK";
-                ItemRow(content, captured, effect);
-            }
-            if (_progress.Items.Count == 0 && _progress.EvolutionStones == 0)
+            if (_progress.EvolutionStones == 0)
                 ListRow(content, "NoKeyItems", 54, row =>
-                    Ui.Stretch(Ui.Label(row, "Text", "No key items yet - open every math chest!", 24, Ui.Ink).rectTransform));
+                    Ui.Stretch(Ui.Label(row, "Text", "No Evolution Stones yet.", 24, Ui.Ink).rectTransform));
         }
 
         private static void ConsumableRow(Transform parent, string nameText, string effectText, int count,
@@ -667,6 +759,77 @@ namespace Numeria.Game
                 var value = Ui.Label(row, "Value", valueText, 25, TitleGreen, TextAnchor.MiddleRight);
                 Ui.Place(value.rectTransform, new Vector2(1, .5f), new Vector2(-22, 0), new Vector2(480, 40));
             });
+        }
+
+        // ---------- SAVES ----------
+
+        private void ShowSaves()
+        {
+            SelectTab("saves");
+            var content = MakeScrollList(FreshWrap());
+            SectionRow(content, "10 save slots - the active slot also autosaves");
+            for (int slot = 1; slot <= SaveSystem.SlotCount; slot++)
+            {
+                int capturedSlot = slot;
+                var summary = SaveSystem.GetSlotSummary(slot);
+                ListRow(content, $"SaveSlot{slot}", 86, row =>
+                {
+                    var bg = row.gameObject.AddComponent<Image>();
+                    bg.color = slot == SaveSystem.ActiveSlot ? CardActive : Cream;
+                    Ui.AddOutline(row.gameObject);
+                    string title = $"SLOT {slot}" + (slot == SaveSystem.ActiveSlot ? "  ACTIVE" : "");
+                    var slotLabel = Ui.Label(row, "Slot", title, 25, TitleGreen, TextAnchor.UpperLeft);
+                    Ui.Place(slotLabel.rectTransform, new Vector2(0, 1), new Vector2(20, -9), new Vector2(230, 34));
+                    string details = summary.Exists
+                        ? $"{summary.MathmonName}  Lv.{summary.Level}  {summary.MapName.ToUpperInvariant()}  {summary.UpdatedAt}"
+                        : "EMPTY";
+                    var detail = Ui.Label(row, "Detail", details, 20,
+                        summary.Exists ? SummaryOrange : Ui.Hex("#9a927d"), TextAnchor.LowerLeft);
+                    Ui.Place(detail.rectTransform, new Vector2(0, 0), new Vector2(20, 9), new Vector2(680, 31));
+
+                    var save = Ui.Btn(row, "Save", summary.Exists ? "OVERWRITE" : "SAVE", 20);
+                    Ui.Place((RectTransform)save.transform, new Vector2(1, .5f), new Vector2(-190, 0), new Vector2(150, 54));
+                    save.onClick.AddListener(() => ConfirmSlotAction(capturedSlot, true));
+                    var load = Ui.Btn(row, "Load", "LOAD", 20);
+                    Ui.Place((RectTransform)load.transform, new Vector2(1, .5f), new Vector2(-20, 0), new Vector2(150, 54));
+                    load.interactable = summary.Exists;
+                    load.onClick.AddListener(() => ConfirmSlotAction(capturedSlot, false));
+                });
+            }
+        }
+
+        private void ConfirmSlotAction(int slot, bool saving)
+        {
+            var confirm = Ui.Img(_canvasRoot, "SaveConfirmOverlay", new Color(0, 0, 0, .72f));
+            Ui.Stretch(confirm.rectTransform);
+            var panel = Ui.Img(confirm.transform, "Panel", Cream);
+            Ui.Place(panel.rectTransform, new Vector2(.5f, .5f), Vector2.zero, new Vector2(720, 330));
+            Ui.AddOutline(panel.gameObject);
+            string message = saving
+                ? $"Save the current adventure to Slot {slot}?\nExisting data in this slot will be replaced."
+                : $"Load Slot {slot}?\nUnsaved progress in the current slot will be left behind.";
+            var msg = Ui.Label(panel.transform, "Message", message, 28, Ui.Ink);
+            Ui.Place(msg.rectTransform, new Vector2(.5f, 1), new Vector2(0, -58), new Vector2(650, 110));
+            var yes = Ui.Btn(panel.transform, "Confirm", saving ? "YES, SAVE" : "YES, LOAD", 23);
+            Ui.Place((RectTransform)yes.transform, new Vector2(.5f, 0), new Vector2(-155, 48), new Vector2(270, 68));
+            yes.onClick.AddListener(() =>
+            {
+                if (saving)
+                {
+                    SaveSystem.SaveToSlot(_progress, slot);
+                    UnityEngine.Object.Destroy(confirm.gameObject);
+                    ShowSaves();
+                }
+                else
+                {
+                    var loaded = SaveSystem.LoadFromSlot(slot);
+                    UnityEngine.Object.Destroy(confirm.gameObject);
+                    if (loaded != null) CloseThen(() => _onLoad(loaded));
+                }
+            });
+            var no = Ui.Btn(panel.transform, "Cancel", "CANCEL", 23);
+            Ui.Place((RectTransform)no.transform, new Vector2(.5f, 0), new Vector2(155, 48), new Vector2(270, 68));
+            no.onClick.AddListener(() => UnityEngine.Object.Destroy(confirm.gameObject));
         }
 
         // ---------- SETTINGS ----------

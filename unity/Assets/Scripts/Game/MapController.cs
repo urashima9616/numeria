@@ -278,6 +278,11 @@ namespace Numeria.Game
                     _progress.CurrentMap = mapId;
                     SaveSystem.Save(_progress);
                     Respawn();
+                },
+                onLoad: loaded =>
+                {
+                    _progress = loaded;
+                    Respawn();
                 });
         }
 
@@ -295,8 +300,8 @@ namespace Numeria.Game
             var combatant = GameData.PlayerMon(_progress.ActiveMonId, growth.Stage, growth.Level);
             string xp = growth.Level >= GrowthSystem.MaxLevel ? "MAX" : $"{growth.Xp}/{growth.XpToNext}";
             _hudText.text = $"{PlayerName} Lv.{growth.Level}  XP {xp}  " +
-                            $"ATK {combatant.AttackPower + growth.AttackBonus}  " +
-                            $"DEF {combatant.DefensePower + growth.DefenseBonus}  {_def.DisplayName}";
+                            $"ATK {combatant.AttackPower + _progress.TotalAttackBonus(_progress.ActiveMonId)}  " +
+                            $"DEF {combatant.DefensePower + _progress.TotalDefenseBonus(_progress.ActiveMonId)}  {_def.DisplayName}";
         }
 
         private string ChestId(int x, int y) => $"{_def.Id}-chest-{x}-{y}";
@@ -557,14 +562,12 @@ namespace Numeria.Game
                             _voice.Say($"You found {reward.Amount} Gem Snacks! Use them only in battle.");
                             break;
                         case ChestRewardType.DefenseCharm:
-                            _progress.ActiveGrowth.DefenseBonus++;
-                            _progress.Items.Add(reward.Name);
-                            _voice.Say("Defense goes up by one!");
+                            _progress.AddAccessory(id, reward.Name, 0, reward.Amount);
+                            _voice.Say("You found a defense charm! Equip it to one Mathmon.");
                             break;
                         default:
-                            _progress.ActiveGrowth.AttackBonus++;
-                            _progress.Items.Add(reward.Name);
-                            _voice.Say("Attack goes up by one!");
+                            _progress.AddAccessory(id, reward.Name, reward.Amount, 0);
+                            _voice.Say("You found an attack charm! Equip it to one Mathmon.");
                             break;
                     }
                 }

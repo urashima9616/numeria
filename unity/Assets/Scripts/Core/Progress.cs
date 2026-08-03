@@ -6,6 +6,16 @@ namespace Numeria.Core
     public enum ConsumableType { HealthPotion, GemSnack }
 
     [Serializable]
+    public class AccessoryItem
+    {
+        public string InstanceId;
+        public string Name;
+        public int AttackBonus;
+        public int DefenseBonus;
+        public string EquippedToBaseId = "";
+    }
+
+    [Serializable]
     public class AdventureRecords
     {
         public int BattlesStarted;
@@ -57,7 +67,7 @@ namespace Numeria.Core
     [Serializable]
     public class Progress
     {
-        public const int CurrentSaveVersion = 5;
+        public const int CurrentSaveVersion = 6;
 
         public int SaveVersion = CurrentSaveVersion;
         public int Level = 1;
@@ -79,6 +89,7 @@ namespace Numeria.Core
         public List<string> OpenedChests = new List<string>();
         public List<string> ClearedGates = new List<string>();
         public List<string> Items = new List<string>();
+        public List<AccessoryItem> Accessories = new List<AccessoryItem>();
         public List<MonGrowth> MonGrowth = new List<MonGrowth>();
         public AdventureRecords Records = new AdventureRecords();
 
@@ -95,6 +106,7 @@ namespace Numeria.Core
             if (OpenedChests == null) OpenedChests = new List<string>();
             if (ClearedGates == null) ClearedGates = new List<string>();
             if (Items == null) Items = new List<string>();
+            if (Accessories == null) Accessories = new List<AccessoryItem>();
             if (Records == null) Records = new AdventureRecords();
 
             if (SaveVersion < 3)
@@ -126,6 +138,17 @@ namespace Numeria.Core
                 foreach (var growth in MonGrowth)
                     growth.Level = GrowthSystem.ClampLevel(growth.Level);
                 Records.HighestLevel = Math.Max(1, Level);
+            }
+            if (SaveVersion < 6)
+            {
+                // 旧版 Items 只有名字且加成已直接写入某只数灵，无法可靠反推出归属。
+                // 保留旧数值作为 legacy training bonus，同时把饰品转成未装备库存，避免重复加成。
+                for (int i = 0; i < Items.Count; i++)
+                {
+                    string name = Items[i];
+                    bool defense = name.Contains("Guard") || name.Contains("Feather");
+                    AddAccessory($"legacy-{i}-{name}", name, defense ? 0 : 1, defense ? 1 : 0);
+                }
             }
             SaveVersion = CurrentSaveVersion;
             SyncLegacyFields();
@@ -241,6 +264,67 @@ namespace Numeria.Core
         {
             Records.PuzzlesCompleted++;
             if (solved) Records.PuzzlesSolved++;
+        }
+
+        public int AccessorySlotCount(string mathmonId) => 2 + EnsureGrowth(mathmonId).Stage;
+
+        public List<AccessoryItem> EquippedAccessories(string mathmonId)
+        {
+            string baseId = GameData.BaseId(mathmonId);
+            return Accessories.FindAll(item => item.EquippedToBaseId == baseId);
+        }
+
+        public int AccessoryAttackBonus(string mathmonId)
+        {
+            int result = 0;
+            foreach (var item in EquippedAccessories(mathmonId)) result += item.AttackBonus;
+            return result;
+        }
+
+        public int AccessoryDefenseBonus(string mathmonId)
+        {
+            int result = 0;
+            foreach (var item in EquippedAccessories(mathmonId)) result += item.DefenseBonus;
+            return result;
+        }
+
+        public int TotalAttackBonus(string mathmonId) =>
+            EnsureGrowth(mathmonId).AttackBonus + AccessoryAttackBonus(mathmonId);
+
+        public int TotalDefenseBonus(string mathmonId) =>
+            EnsureGrowth(mathmonId).DefenseBonus + AccessoryDefenseBonus(mathmonId);
+
+        public bool AddAccessory(string instanceId, string name, int attackBonus, int defenseBonus)
+        {
+            if (string.IsNullOrEmpty(instanceId) || Accessories.Exists(item => item.InstanceId == instanceId))
+                return false;
+            Accessories.Add(new AccessoryItem
+            {
+                InstanceId = instanceId,
+                Name = name,
+                AttackBonus = Math.Max(0, attackBonus),
+                DefenseBonus = Math.Max(0, defenseBonus),
+            });
+            return true;
+        }
+
+        public bool EquipAccessory(string instanceId, string mathmonId)
+        {
+            var item = Accessories.Find(candidate => candidate.InstanceId == instanceId);
+            if (item == null) return false;
+            string baseId = GameData.BaseId(mathmonId);
+            if (item.EquippedToBaseId == baseId) return true;
+            if (EquippedAccessories(baseId).Count >= AccessorySlotCount(baseId)) return false;
+            item.EquippedToBaseId = baseId;
+            return true;
+        }
+
+        public bool UnequipAccessory(string instanceId)
+        {
+            var item = Accessories.Find(candidate => candidate.InstanceId == instanceId);
+            if (item == null || string.IsNullOrEmpty(item.EquippedToBaseId)) return false;
+            item.EquippedToBaseId = "";
+            return true;
         }
 
         /// <summary>收服数灵。已收服过返回 false。</summary>

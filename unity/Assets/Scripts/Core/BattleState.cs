@@ -75,7 +75,8 @@ namespace Numeria.Core
         public int Gems = 2;
         public int MaxGems = 8;
         public bool EnemyShielded;
-        public int VulnerableTurns;
+        public bool BreakBonusReady;
+        public int EnemySkipTurns;
         public int PlayerAttackBonus;
         public int PlayerDefenseBonus;
         public BattleOutcome Outcome = BattleOutcome.None;
@@ -128,8 +129,8 @@ namespace Numeria.Core
         public int DamageToEnemy(int attack)
         {
             int damage = RollDamage(attack, Enemy.DefensePower);
-            if (VulnerableTurns > 0) return damage * 2;
             if (EnemyShielded) return Math.Max(1, damage / 2);
+            if (BreakBonusReady) return damage * 2;
             return damage;
         }
 
@@ -144,6 +145,12 @@ namespace Numeria.Core
                          Player.AttackPower + PlayerAttackBonus;
             int dmg = DamageToEnemy(attack);
             EnemyHp = Math.Max(0, EnemyHp - dmg);
+            if (Enemy.Shield.HasValue && BreakBonusReady)
+            {
+                // 破盾奖励只作用于第一次攻击；命中后若敌人仍存活，护盾立即重置。
+                BreakBonusReady = false;
+                EnemyShielded = EnemyHp > 0;
+            }
             if (EnemyHp == 0) Outcome = BattleOutcome.Win;
 
             return new SkillResult { Damage = dmg, Powered = powered };
@@ -151,15 +158,23 @@ namespace Numeria.Core
 
         public void BreakShield()
         {
+            if (!Enemy.Shield.HasValue || !EnemyShielded) return;
             EnemyShielded = false;
-            VulnerableTurns = 2;
+            BreakBonusReady = true;
+            EnemySkipTurns = 1;
+        }
+
+        public bool ConsumeEnemySkipTurn()
+        {
+            if (EnemySkipTurns <= 0) return false;
+            EnemySkipTurns--;
+            return true;
         }
 
         public int EnemyTurn()
         {
             int dmg = RollDamage(Enemy.AttackPower, Player.DefensePower + PlayerDefenseBonus);
             PlayerHp = Math.Max(0, PlayerHp - dmg);
-            if (VulnerableTurns > 0) VulnerableTurns--;
             if (PlayerHp == 0) Outcome = BattleOutcome.Lose;
             return dmg;
         }

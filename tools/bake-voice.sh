@@ -100,6 +100,9 @@ bake "You win! Doublit got five experience points!"
 bake "Level up! Doublit is getting stronger!"
 bake "Already best friends! Bonus experience!"
 bake "It broke free! Lower its health and try again!"
+bake "Shield stun! The enemy misses a turn!"
+bake "You found an attack charm! Equip it to one Mathmon."
+bake "You found a defense charm! Equip it to one Mathmon."
 
 # ---- P3 天空城与图形规律 ----
 bake "What comes next in the pattern?"

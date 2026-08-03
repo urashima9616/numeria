@@ -97,9 +97,20 @@ async function shatterShield() {
 export async function endPlayerTurn() {
   if (state.outcome) return showOutcome();
   await sleep(600);
+  const turn = enemyTurn(state);
+  if (turn.skipped) {
+    speak('Shield stun! The enemy misses a turn!');
+    setLog('💫 Shield stun! Enemy misses a turn!');
+    await sleep(900);
+    startPlayerTurn(state);
+    renderAll();
+    setLog('Your turn! +2 ⚡ — double hit ready!');
+    setActionsEnabled(true);
+    return;
+  }
   setLog(`${state.enemy.name} attacks!`);
   await animate($('enemy-sprite'), 'attack');
-  const { dmg } = enemyTurn(state);
+  const { dmg } = turn;
   popDamage($('player-sprite'), `-${dmg}`, '#ff6b6b');
   await animate($('player-sprite'), 'hit');
   renderAll();
@@ -315,7 +326,7 @@ $('btn-shield').addEventListener('click', async () => {
     breakShield(state);
     renderAll();
     shakeScreen();
-    setLog('💥 Shield shattered! Double damage for 2 turns!');
+    setLog('💥 Shield shattered! Enemy stunned — next hit deals double damage!');
     await animate($('enemy-sprite'), 'hit');
   } else {
     setLog('The shield holds…');
