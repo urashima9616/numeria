@@ -688,9 +688,11 @@ namespace Numeria.Game
                     Ui.Stretch(Ui.Label(row, "Text", "No accessories yet - find special math chests!", 24, Ui.Ink).rectTransform));
 
             SectionRow(content, "Key items");
+            if (_progress.DigitCrystalCount > 0)
+                ItemRow(content, "Digit Crystals", $"Restored: {_progress.DigitCrystalCount} / 3");
             if (_progress.EvolutionStones > 0)
                 ItemRow(content, "Evolution Stone", $"Owned: {_progress.EvolutionStones}");
-            if (_progress.EvolutionStones == 0)
+            if (_progress.EvolutionStones == 0 && _progress.DigitCrystalCount == 0)
                 ListRow(content, "NoKeyItems", 54, row =>
                     Ui.Stretch(Ui.Label(row, "Text", "No Evolution Stones yet.", 24, Ui.Ink).rectTransform));
         }
@@ -743,6 +745,10 @@ namespace Numeria.Game
             RecordRow(content, "Bosses defeated", r.BossesDefeated.ToString());
             RecordRow(content, "Friends caught", r.MonstersCaught.ToString());
             RecordRow(content, "Treasure chests", r.ChestsOpened.ToString());
+            RecordRow(content, "Digit Crystals", $"{_progress.DigitCrystalCount} / 3");
+            RecordRow(content, "Math discoveries", r.DiscoveriesSolved.ToString());
+            RecordRow(content, "Merchants defeated", r.MerchantsDefeated.ToString());
+            RecordRow(content, "Coins", $"{_progress.Coins} held / {r.CoinsEarned} earned");
             RecordRow(content, "Total XP earned", r.TotalXpEarned.ToString());
             RecordRow(content, "Biggest hit", r.HighestDamage.ToString());
             int accuracy = r.PuzzlesCompleted == 0 ? 0 :

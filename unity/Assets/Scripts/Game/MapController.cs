@@ -15,6 +15,7 @@ namespace Numeria.Game
     public class MapController : MonoBehaviour
     {
         private const double EncounterChance = 0.35;
+        private static bool _sessionStarted;
 
         private MapDef _def;
         private GridMap _map;
@@ -33,6 +34,9 @@ namespace Numeria.Game
         private Camera _worldCamera;
         private readonly System.Collections.Generic.Dictionary<(int, int), SpriteRenderer> _chestRenderers =
             new System.Collections.Generic.Dictionary<(int, int), SpriteRenderer>();
+        private readonly System.Collections.Generic.Dictionary<string, SpriteRenderer> _discoveryRenderers =
+            new System.Collections.Generic.Dictionary<string, SpriteRenderer>();
+        private SpriteRenderer _merchantRenderer;
 
         private (int x, int y) _pos;
         private bool _busy;
@@ -58,7 +62,15 @@ namespace Numeria.Game
             SetupCamera();
             UpdateHud();
             Music.PlayMap(_def.Id);
-            _voice.Say(_def.WelcomeLine);
+            if (_sessionStarted)
+            {
+                _voice.Say(_def.WelcomeLine);
+            }
+            else
+            {
+                _busy = true;
+                StartCoroutine(StartScreenRoutine());
+            }
         }
 
         // ---------- 世界构建 ----------
@@ -157,6 +169,24 @@ namespace Numeria.Game
                     }
                 }
 
+            foreach (var discovery in _def.Discoveries ?? Array.Empty<DiscoveryDef>())
+            {
+                if (_progress.CollectedDiscoveries.Contains(discovery.Id)) continue;
+                Vector3 world = TileWorld(discovery.X, discovery.Y);
+                var marker = AddSprite(SpriteLib.One("generated/Economy/numeria_coin"),
+                    world + Vector3.up * .22f, SortOrder(world.y) + 5, $"discovery-{discovery.Id}");
+                ScaleSpriteToHeight(marker, .62f);
+                _discoveryRenderers[discovery.Id] = marker;
+            }
+
+            if (_def.Merchant != null)
+            {
+                Vector3 world = TileWorld(_def.Merchant.X, _def.Merchant.Y);
+                _merchantRenderer = AddSprite(SpriteLib.One(_def.Merchant.SpriteResource),
+                    world + Vector3.up * .32f, SortOrder(world.y) + 7, $"merchant-{_def.Merchant.Id}");
+                ScaleSpriteToHeight(_merchantRenderer, 1.35f);
+            }
+
             _pos = _map.Spawn;
             var avatarGo = new GameObject("Avatar");
             avatarGo.transform.SetParent(_mapRoot.transform, false);
@@ -188,6 +218,13 @@ namespace Numeria.Game
             sr.sprite = sprite;
             sr.sortingOrder = order;
             return sr;
+        }
+
+        private static void ScaleSpriteToHeight(SpriteRenderer renderer, float targetHeight)
+        {
+            if (renderer == null || renderer.sprite == null) return;
+            float scale = targetHeight / Mathf.Max(.01f, renderer.sprite.bounds.size.y);
+            renderer.transform.localScale = Vector3.one * scale;
         }
 
         private void SetupCamera()
@@ -246,10 +283,14 @@ namespace Numeria.Game
             _hudCanvasRoot = (RectTransform)_hudRoot.transform;
 
             var plate = Ui.Img(_hudCanvasRoot, "HudPlate", Ui.PlateBg);
-            Ui.Place(plate.rectTransform, new Vector2(0, 1), new Vector2(20, -20), new Vector2(500, 54));
+            Ui.Place(plate.rectTransform, new Vector2(0, 1), new Vector2(20, -20), new Vector2(850, 54));
             Ui.AddOutline(plate.gameObject);
+            var coin = Ui.SpriteImg(plate.transform, "Coin", SpriteLib.One("generated/Economy/numeria_coin"));
+            coin.preserveAspect = true;
+            Ui.Place(coin.rectTransform, new Vector2(0, .5f), new Vector2(10, 0), new Vector2(40, 40));
             _hudText = Ui.Label(plate.transform, "HudText", "", 22, Ui.Ink);
             Ui.Stretch(_hudText.rectTransform);
+            _hudText.rectTransform.offsetMin = new Vector2(52, 0);
 
             var menuBtn = Ui.Btn(_hudCanvasRoot, "BtnMenu", "MENU", 24);
             Ui.Place((RectTransform)menuBtn.transform, new Vector2(1, 1), new Vector2(-20, -20), new Vector2(140, 54));
@@ -272,6 +313,7 @@ namespace Numeria.Game
                 onReset: () =>
                 {
                     SaveSystem.Delete();
+                    _sessionStarted = false;
                     Respawn();
                 },
                 onTravel: mapId =>
@@ -300,7 +342,8 @@ namespace Numeria.Game
             var growth = _progress.ActiveGrowth;
             var combatant = GameData.PlayerMon(_progress.ActiveMonId, growth.Stage, growth.Level);
             string xp = growth.Level >= GrowthSystem.MaxLevel ? "MAX" : $"{growth.Xp}/{growth.XpToNext}";
-            _hudText.text = $"{PlayerName} Lv.{growth.Level}  XP {xp}  " +
+            _hudText.text = $"{_progress.Coins} COINS   {_progress.DigitCrystalCount}/3 CRYSTALS   " +
+                            $"{PlayerName} Lv.{growth.Level}  XP {xp}  " +
                             $"ATK {combatant.AttackPower + _progress.TotalAttackBonus(_progress.ActiveMonId)}  " +
                             $"DEF {combatant.DefensePower + _progress.TotalDefenseBonus(_progress.ActiveMonId)}  {_def.DisplayName}";
         }
@@ -354,6 +397,18 @@ namespace Numeria.Game
 
         private bool HandleTile(int x, int y)
         {
+            DiscoveryDef discovery = _def.DiscoveryAt(x, y);
+            if (discovery != null && !_progress.CollectedDiscoveries.Contains(discovery.Id))
+            {
+                StartCoroutine(DiscoveryRoutine(discovery));
+                return true;
+            }
+            if (_def.MerchantAt(x, y))
+            {
+                StartCoroutine(MerchantRoutine(_def.Merchant));
+                return true;
+            }
+
             switch (_map.At(x, y))
             {
                 case Tile.Bush:
@@ -378,8 +433,7 @@ namespace Numeria.Game
                             StartCoroutine(BossLockedRoutine());
                             return true;
                         }
-                        _voice.Say(_def.BossLine);
-                        StartBattle(_def.RollBossEncounter(_progress.ActiveGrowth.Level, _rng), true);
+                        StartCoroutine(BossEncounterRoutine());
                     }
                     else if (_def.PortalTargetMap != null)
                     {
@@ -399,7 +453,105 @@ namespace Numeria.Game
 
         // ---------- 事件 ----------
 
-        private void StartBattle(CombatantDef enemy, bool isBoss)
+        private IEnumerator StartScreenRoutine()
+        {
+            var cover = Ui.SpriteImg(_hudCanvasRoot, "TitleScreen", SpriteLib.One(_def.BattleBg));
+            Ui.Stretch(cover.rectTransform);
+            cover.color = new Color(.72f, .76f, .66f, 1f);
+            var veil = Ui.Img(cover.transform, "Veil", new Color(.02f, .06f, .05f, .48f));
+            Ui.Stretch(veil.rectTransform);
+
+            var panel = Ui.Img(cover.transform, "TitlePanel", new Color(.99f, .96f, .84f, .96f));
+            Ui.PlaceCentered(panel.rectTransform, new Vector2(.5f, .5f), new Vector2(220, 0), new Vector2(900, 620));
+            Ui.AddOutline(panel.gameObject);
+            var title = Ui.DisplayLabel(panel.transform, "Title", "NUMERIA", 92, Ui.Border);
+            Ui.Place(title.rectTransform, new Vector2(.5f, 1), new Vector2(0, -48), new Vector2(760, 110));
+            var subtitle = Ui.DisplayLabel(panel.transform, "Subtitle", "LUCAS AND THE DIGIT CRYSTALS", 38,
+                Ui.Hex("#a65b28"));
+            Ui.Place(subtitle.rectTransform, new Vector2(.5f, 1), new Vector2(0, -158), new Vector2(780, 64));
+
+            var crystal = Ui.SpriteImg(panel.transform, "DigitCrystal", SpriteLib.One("generated/Story/digit_crystal"));
+            crystal.preserveAspect = true;
+            Ui.PlaceCentered(crystal.rectTransform, new Vector2(.5f, .5f), new Vector2(0, 28), new Vector2(230, 230));
+            var quest = Ui.Label(panel.transform, "Quest", "BEFRIEND MATHMONS  •  SOLVE MATH MAGIC  •  FIND 3 CRYSTALS",
+                25, Ui.Ink);
+            Ui.Place(quest.rectTransform, new Vector2(.5f, 0), new Vector2(0, 138), new Vector2(820, 50));
+
+            var lucas = Ui.SpriteImg(cover.transform, "Lucas", SpriteLib.LucasExplorer());
+            lucas.preserveAspect = true;
+            Ui.PlaceCentered(lucas.rectTransform, new Vector2(0, .5f), new Vector2(235, -5), new Vector2(430, 720));
+
+            bool begin = false;
+            string label = _progress.StoryIntroSeen ? "CONTINUE ADVENTURE" : "BEGIN ADVENTURE";
+            var button = Ui.Btn(panel.transform, "Begin", label, 34);
+            Ui.Place((RectTransform)button.transform, new Vector2(.5f, 0), new Vector2(0, 42), new Vector2(480, 82));
+            button.onClick.AddListener(() => begin = true);
+            yield return new WaitUntil(() => begin);
+            Destroy(cover.gameObject);
+
+            _sessionStarted = true;
+            if (!_progress.StoryIntroSeen)
+            {
+                yield return DialogueRoutine("NARRATOR",
+                    "Lucas wakes beneath a sky full of glowing numbers.", SpriteLib.LucasExplorer());
+                yield return DialogueRoutine("LUCAS", "Where am I? This isn't home.", SpriteLib.LucasExplorer());
+                yield return DialogueRoutine("VOICE OF NUMERIA",
+                    "Welcome to Numeria, Lucas. The gate home has lost its power.",
+                    SpriteLib.One("generated/Story/digit_crystal"));
+                yield return DialogueRoutine("VOICE OF NUMERIA",
+                    "Three Digit Crystals can wake it. Seek the Crystal Guardians.",
+                    SpriteLib.One("generated/Story/digit_crystal"));
+                yield return DialogueRoutine("ADDMANDER",
+                    "Let's be brave, make Mathmon friends, and solve this together!",
+                    SpriteLib.MapSprite("addmander"));
+                _progress.StoryIntroSeen = true;
+                SaveSystem.Save(_progress);
+            }
+
+            _voice.Say(_def.WelcomeLine);
+            _busy = false;
+        }
+
+        private IEnumerator DialogueRoutine(string speaker, string line, Sprite portrait)
+        {
+            bool next = false;
+            var shade = Ui.Img(_hudCanvasRoot, "StoryDialogue", new Color(.02f, .04f, .04f, .58f));
+            Ui.Stretch(shade.rectTransform);
+            var panel = Ui.Img(shade.transform, "DialoguePanel", Ui.PlateBg);
+            Ui.Place(panel.rectTransform, new Vector2(.5f, 0), new Vector2(0, 42), new Vector2(1420, 300));
+            Ui.AddOutline(panel.gameObject);
+
+            var image = Ui.SpriteImg(panel.transform, "Portrait", portrait);
+            image.preserveAspect = true;
+            Ui.PlaceCentered(image.rectTransform, new Vector2(0, .5f), new Vector2(155, 0), new Vector2(270, 270));
+            var name = Ui.DisplayLabel(panel.transform, "Speaker", speaker.ToUpperInvariant(), 39,
+                Ui.Hex("#a65b28"), TextAnchor.MiddleLeft);
+            Ui.Place(name.rectTransform, new Vector2(0, 1), new Vector2(310, -28), new Vector2(820, 58));
+            var body = Ui.Label(panel.transform, "Line", line, 34, Ui.Ink, TextAnchor.UpperLeft);
+            Ui.Place(body.rectTransform, new Vector2(0, 1), new Vector2(310, -92), new Vector2(840, 160));
+            body.textWrappingMode = TextWrappingModes.Normal;
+            body.overflowMode = TextOverflowModes.Ellipsis;
+
+            var button = Ui.Btn(panel.transform, "Next", "NEXT", 28);
+            Ui.Place((RectTransform)button.transform, new Vector2(1, 0), new Vector2(-36, 30), new Vector2(210, 66));
+            button.onClick.AddListener(() => next = true);
+            _voice.Say(line);
+            yield return new WaitUntil(() => next);
+            Destroy(shade.gameObject);
+        }
+
+        private IEnumerator BossEncounterRoutine()
+        {
+            _busy = true;
+            Sprite guardian = SpriteLib.One(_def.GuardianSpriteResource);
+            foreach (string line in _def.GuardianChallengeLines ?? Array.Empty<string>())
+                yield return DialogueRoutine(_def.GuardianName, line, guardian);
+            _voice.Say(_def.BossLine);
+            yield return new WaitForSeconds(1.5f);
+            StartBattle(_def.RollBossEncounter(_progress.ActiveGrowth.Level, _rng), true);
+        }
+
+        private void StartBattle(CombatantDef enemy, bool isBoss, MerchantDef merchant = null)
         {
             _busy = true;
             _progress.Records.BattlesStarted++;
@@ -411,10 +563,11 @@ namespace Numeria.Game
             var battleGo = new GameObject("Battle");
             var battle = battleGo.AddComponent<BattleController>();
             battle.Init(enemy, _progress, _def.Tier, _def.BattleBg,
-                end => StartCoroutine(AfterBattle(end, enemy, isBoss, battleGo)));
+                end => StartCoroutine(AfterBattle(end, enemy, isBoss, battleGo, merchant)));
         }
 
-        private IEnumerator AfterBattle(BattleEnd end, CombatantDef enemy, bool isBoss, GameObject battleGo)
+        private IEnumerator AfterBattle(BattleEnd end, CombatantDef enemy, bool isBoss, GameObject battleGo,
+            MerchantDef merchant)
         {
             Destroy(battleGo);
             _mapRoot.SetActive(true);
@@ -425,20 +578,43 @@ namespace Numeria.Game
             int levelUps = 0;
             int xpReward = GrowthSystem.VictoryXp(enemy.BaseXp, enemy.Level,
                 _progress.ActiveGrowth.Level, isBoss);
+            bool openMerchantShop = false;
             switch (end)
             {
                 case BattleEnd.Win:
                     _progress.Records.BattlesWon++;
                     levelUps = _progress.GainXp(xpReward);
+                    int coins = EconomySystem.VictoryCoins(_def.Tier, isBoss, merchant != null, _rng);
+                    _progress.AddCoins(coins);
+                    _voice.Say($"You found {coins} Numeria coins!");
                     yield return MaybeDrop(enemy, isBoss);
-                    if (isBoss && !_def.GateCleared(_progress))
+                    if (merchant != null)
+                    {
+                        openMerchantShop = _progress.DefeatMerchant(merchant.Id);
+                    }
+                    else if (isBoss && !_def.GateCleared(_progress))
                     {
                         _progress.Records.BossesDefeated++;
                         yield return GateTrialRoutine();
                         _def.ClearGate(_progress);
+                        bool newCrystal = _progress.CollectDigitCrystal(_def.Id);
                         RefreshPortalState();
                         _voice.Say(_def.GateClearLine);
                         yield return new WaitForSeconds(2.5f);
+                        if (newCrystal)
+                        {
+                            yield return DialogueRoutine(_def.GuardianName, _def.GuardianVictoryLine,
+                                SpriteLib.One(_def.GuardianSpriteResource));
+                            if (_progress.DigitCrystalCount >= 3)
+                            {
+                                yield return DialogueRoutine("DIGIT CRYSTALS",
+                                    "The three Digit Crystals sing together. The gate home is awake!",
+                                    SpriteLib.One("generated/Story/digit_crystal"));
+                                yield return DialogueRoutine("LUCAS",
+                                    "I can go home when I am ready—and Numeria will always be waiting.",
+                                    SpriteLib.LucasExplorer());
+                            }
+                        }
                     }
                     break;
                 case BattleEnd.Caught:
@@ -500,6 +676,12 @@ namespace Numeria.Game
             UpdateHud();
 
             yield return MaybeEvolve();
+            if (openMerchantShop)
+            {
+                _voice.Say("Shop unlocked!");
+                yield return new WaitForSeconds(1.2f);
+                yield return ShopRoutine(merchant);
+            }
             RefreshPortalState();
             _busy = false;
         }
@@ -567,6 +749,172 @@ namespace Numeria.Game
             yield return new WaitUntil(() => resolved);
             Destroy(shade.gameObject);
             onResolved(choice);
+        }
+
+        private static MapPuzzleKind DiscoveryPuzzleKind(DiscoveryDef discovery, int tier)
+        {
+            string name = (discovery?.Name ?? "").ToLowerInvariant();
+            if (name.Contains("count") || name.Contains("number")) return MapPuzzleKind.Counting;
+            if (name.Contains("symmetry") || name.Contains("mirror")) return MapPuzzleKind.Symmetry;
+            if (name.Contains("rotation")) return MapPuzzleKind.Rotation;
+            if (name.Contains("pattern") || name.Contains("order") || name.Contains("sequence"))
+                return tier >= 2 ? MapPuzzleKind.NumberSequence : MapPuzzleKind.Pattern;
+            if (name.Contains("shape") || name.Contains("prism")) return MapPuzzleKind.Shape;
+            if (name.Contains("difference")) return MapPuzzleKind.Formula;
+            if (name.Contains("twin")) return MapPuzzleKind.ChainSum;
+            return tier == 1 ? MapPuzzleKind.MakeTen : MapPuzzleKind.Formula;
+        }
+
+        /// <summary>
+        /// 发光数字符文不是自动拾取：答对和地标主题对应的数学题后，才给予一次性奖励。
+        /// 答错不消失，孩子可以原地重试。
+        /// </summary>
+        private IEnumerator DiscoveryRoutine(DiscoveryDef discovery)
+        {
+            _busy = true;
+            _voice.Say("A number rune is glowing! Solve its math magic!");
+            yield return new WaitForSeconds(1.2f);
+
+            bool? solved = null;
+            MapPuzzleKind kind = DiscoveryPuzzleKind(discovery, _def.Tier);
+            yield return _puzzles.RunPuzzleKind(kind, value => solved = value, _def.Tier);
+            if (solved == true && _progress.CollectDiscovery(discovery.Id))
+            {
+                _progress.AddCoins(discovery.Coins);
+                if (discovery.BonusConsumable.HasValue && discovery.BonusAmount > 0)
+                    _progress.AddConsumable(discovery.BonusConsumable.Value, discovery.BonusAmount);
+
+                if (_discoveryRenderers.TryGetValue(discovery.Id, out var marker))
+                    marker.gameObject.SetActive(false);
+                Sfx.Play(SfxCue.Chest, .8f);
+                _voice.Say($"You found {discovery.Coins} Numeria coins!");
+                yield return new WaitForSeconds(1.2f);
+
+                if (discovery.BonusConsumable == ConsumableType.HealthPotion)
+                    _voice.Say($"You found {discovery.BonusAmount} HP Potions! Use them only in battle.");
+                else if (discovery.BonusConsumable == ConsumableType.GemSnack)
+                    _voice.Say($"You found {discovery.BonusAmount} Gem Snacks! Use them only in battle.");
+
+                SaveSystem.Save(_progress);
+                UpdateHud();
+            }
+            _busy = false;
+        }
+
+        private IEnumerator MerchantRoutine(MerchantDef merchant)
+        {
+            _busy = true;
+            if (_progress.DefeatedMerchants.Contains(merchant.Id))
+            {
+                yield return ShopRoutine(merchant);
+                _busy = false;
+                yield break;
+            }
+
+            _voice.Say(merchant.ChallengeLine);
+            yield return new WaitForSeconds(2.2f);
+            StartBattle(merchant.Opponent(_progress.ActiveGrowth.Level, _def.Tier, _rng), false, merchant);
+        }
+
+        /// <summary>每位商人的库存属于该存档且不可刷新，避免重复刷取强力饰品和进化石。</summary>
+        private IEnumerator ShopRoutine(MerchantDef merchant)
+        {
+            ShopItemDef selected = null;
+            bool close = false;
+            var shade = Ui.Img(_hudCanvasRoot, "ShopOverlay", new Color(.03f, .05f, .04f, .90f));
+            Ui.Stretch(shade.rectTransform);
+            var panel = Ui.Img(shade.transform, "ShopPanel", Ui.PlateBg);
+            Ui.Place(panel.rectTransform, new Vector2(.5f, .5f), Vector2.zero, new Vector2(1040, 700));
+            Ui.AddOutline(panel.gameObject);
+
+            var title = Ui.DisplayLabel(panel.transform, "Title", $"{merchant.Name.ToUpperInvariant()}'S SHOP", 52, Ui.Ink);
+            Ui.Place(title.rectTransform, new Vector2(.5f, 1), new Vector2(0, -42), new Vector2(760, 70));
+            var coinIcon = Ui.SpriteImg(panel.transform, "Coin", SpriteLib.One("generated/Economy/numeria_coin"));
+            coinIcon.preserveAspect = true;
+            Ui.Place(coinIcon.rectTransform, new Vector2(1, 1), new Vector2(-210, -46), new Vector2(46, 46));
+            var coinText = Ui.DisplayLabel(panel.transform, "CoinText", "", 30, Ui.GemOrange, TextAnchor.MiddleLeft);
+            Ui.Place(coinText.rectTransform, new Vector2(1, 1), new Vector2(-154, -46), new Vector2(170, 46));
+
+            var status = Ui.Label(panel.transform, "Status", "LIMITED STOCK — CHOOSE WISELY", 24,
+                Ui.Hex("#8b542f"));
+            Ui.Place(status.rectTransform, new Vector2(.5f, 1), new Vector2(0, -105), new Vector2(800, 42));
+
+            var rows = Ui.Node(panel.transform, "Stock");
+            Ui.Place(rows, new Vector2(.5f, .5f), new Vector2(0, -22), new Vector2(900, 420));
+            var layout = rows.gameObject.AddComponent<VerticalLayoutGroup>();
+            layout.spacing = 14;
+            layout.childAlignment = TextAnchor.MiddleCenter;
+            layout.childControlHeight = false;
+            layout.childControlWidth = true;
+            layout.childForceExpandWidth = true;
+
+            var buttons = new System.Collections.Generic.List<Button>();
+            var labels = new System.Collections.Generic.List<TMP_Text>();
+            foreach (ShopItemDef stock in merchant.Stock)
+            {
+                ShopItemDef captured = stock;
+                var button = Ui.Btn(rows, $"Buy-{stock.Id}", "", 23);
+                ((RectTransform)button.transform).sizeDelta = new Vector2(900, 88);
+                var label = button.GetComponentInChildren<TMP_Text>();
+                label.alignment = TextAlignmentOptions.MidlineLeft;
+                label.rectTransform.offsetMin = new Vector2(28, 8);
+                label.rectTransform.offsetMax = new Vector2(-24, -8);
+                button.onClick.AddListener(() => selected = captured);
+                buttons.Add(button);
+                labels.Add(label);
+            }
+
+            Action refresh = () =>
+            {
+                coinText.text = $"{_progress.Coins} COINS";
+                for (int i = 0; i < merchant.Stock.Length; i++)
+                {
+                    ShopItemDef stock = merchant.Stock[i];
+                    int remaining = Math.Max(0, stock.StockLimit - _progress.PurchaseCount(stock.Id));
+                    labels[i].text = remaining == 0
+                        ? $"{stock.Name.ToUpperInvariant()}  —  SOLD OUT\n{stock.Description}"
+                        : $"{stock.Name.ToUpperInvariant()}  —  {stock.Price} COINS  —  {remaining} LEFT\n{stock.Description}";
+                    buttons[i].interactable = remaining > 0;
+                }
+            };
+            refresh();
+
+            var done = Ui.Btn(panel.transform, "Close", "DONE", 26);
+            Ui.Place((RectTransform)done.transform, new Vector2(.5f, 0), new Vector2(0, 28), new Vector2(320, 68));
+            done.onClick.AddListener(() => close = true);
+
+            while (!close)
+            {
+                yield return new WaitUntil(() => close || selected != null);
+                if (close) break;
+
+                PurchaseResult result = EconomySystem.Buy(_progress, selected);
+                selected = null;
+                if (result == PurchaseResult.Purchased)
+                {
+                    status.text = "PURCHASED!";
+                    status.color = Ui.CellOn;
+                    Sfx.Play(SfxCue.Correct, .8f);
+                    _voice.Say("Great choice!");
+                    SaveSystem.Save(_progress);
+                    UpdateHud();
+                }
+                else if (result == PurchaseResult.NotEnoughCoins)
+                {
+                    status.text = "NOT ENOUGH COINS";
+                    status.color = Ui.Hex("#c7472f");
+                    _voice.Say("Not enough coins.");
+                }
+                else
+                {
+                    status.text = "SOLD OUT";
+                    status.color = Ui.Hex("#c7472f");
+                    _voice.Say("That item is sold out.");
+                }
+                refresh();
+            }
+
+            Destroy(shade.gameObject);
         }
 
         private IEnumerator MaybeDrop(CombatantDef enemy, bool boss)

@@ -224,6 +224,20 @@ namespace Numeria.Core
             return result;
         }
 
+        /// <summary>商人伙伴比同级野生数灵更耐打，但没有 Boss 护盾且不可捕捉。</summary>
+        public static CombatantDef CreateTrainerOpponent(string id, int level, int tier, Rng rng, string displayName = null)
+        {
+            var species = SpeciesById(id) ?? Species[9];
+            var result = ToCombatant(species, level, false, null, false, false);
+            int trainedHp = (int)Math.Round(result.MaxHp * (1.20d + tier * .08d));
+            result.MaxHp = Math.Max(result.MaxHp + 4, trainedHp + rng.Pick(-2, 2));
+            result.AttackPower += Math.Max(1, tier - 1);
+            result.DefensePower += Math.Max(0, tier - 2);
+            result.DropChance = 0d;
+            if (!string.IsNullOrEmpty(displayName)) result.Name = displayName;
+            return result;
+        }
+
         /// <summary>旧调用兼容；新地图使用 MapDef.RollWildEncounter。</summary>
         public static CombatantDef RollWild(CombatantDef template, int tier, Rng rng)
         {

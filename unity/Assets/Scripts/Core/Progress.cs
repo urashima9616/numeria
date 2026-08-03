@@ -31,6 +31,18 @@ namespace Numeria.Core
         public int TotalXpEarned;
         public int HighestDamage;
         public int HighestLevel = 1;
+        public int CoinsEarned;
+        public int CoinsSpent;
+        public int DiscoveriesSolved;
+        public int MerchantsDefeated;
+        public int DigitCrystalsRestored;
+    }
+
+    [Serializable]
+    public class ShopPurchaseRecord
+    {
+        public string StockId;
+        public int Count;
     }
 
     [Serializable]
@@ -68,7 +80,7 @@ namespace Numeria.Core
     [Serializable]
     public class Progress
     {
-        public const int CurrentSaveVersion = 6;
+        public const int CurrentSaveVersion = 8;
         public const int TeamCapacity = 15;
 
         public int SaveVersion = CurrentSaveVersion;
@@ -85,6 +97,8 @@ namespace Numeria.Core
         public int EvolutionStones;
         public int HealthPotions;
         public int GemSnacks;
+        public int Coins;
+        public bool StoryIntroSeen;
         public string CurrentMap = "forest";
         public string ActiveMonId = "addmander";
         public List<string> CaughtIds = new List<string>();
@@ -93,6 +107,10 @@ namespace Numeria.Core
         public List<string> Items = new List<string>();
         public List<AccessoryItem> Accessories = new List<AccessoryItem>();
         public List<MonGrowth> MonGrowth = new List<MonGrowth>();
+        public List<string> CollectedDiscoveries = new List<string>();
+        public List<string> DefeatedMerchants = new List<string>();
+        public List<ShopPurchaseRecord> ShopPurchases = new List<ShopPurchaseRecord>();
+        public List<string> DigitCrystals = new List<string>();
         public AdventureRecords Records = new AdventureRecords();
 
         /// <summary>补齐旧 JSON 中不存在的字段。每次新增持久化字段时在这里按版本迁移。</summary>
@@ -109,6 +127,10 @@ namespace Numeria.Core
             if (ClearedGates == null) ClearedGates = new List<string>();
             if (Items == null) Items = new List<string>();
             if (Accessories == null) Accessories = new List<AccessoryItem>();
+            if (CollectedDiscoveries == null) CollectedDiscoveries = new List<string>();
+            if (DefeatedMerchants == null) DefeatedMerchants = new List<string>();
+            if (ShopPurchases == null) ShopPurchases = new List<ShopPurchaseRecord>();
+            if (DigitCrystals == null) DigitCrystals = new List<string>();
             if (Records == null) Records = new AdventureRecords();
 
             // Starter 永远占据第一个伙伴位；旧存档若意外重复写入或出现重复家族，在这里无损去重。
@@ -160,6 +182,20 @@ namespace Numeria.Core
                     bool defense = name.Contains("Guard") || name.Contains("Feather");
                     AddAccessory($"legacy-{i}-{name}", name, defense ? 0 : 1, defense ? 1 : 0);
                 }
+            }
+            if (SaveVersion < 7)
+            {
+                // v7 首次加入金币、发现点和商店限量记录；默认 0/空列表即可无损迁移。
+                Coins = Math.Max(0, Coins);
+            }
+            if (SaveVersion < 8)
+            {
+                // 旧存档按已击败守卫补发对应主线水晶，避免升级后要求玩家重复打 Boss。
+                if (BossBeaten && !DigitCrystals.Contains("forest")) DigitCrystals.Add("forest");
+                if (ClearedGates.Contains("mountains") && !DigitCrystals.Contains("mountains"))
+                    DigitCrystals.Add("mountains");
+                if (ClearedGates.Contains("sky") && !DigitCrystals.Contains("sky")) DigitCrystals.Add("sky");
+                Records.DigitCrystalsRestored = DigitCrystals.Count;
             }
             SaveVersion = CurrentSaveVersion;
             SyncLegacyFields();
@@ -378,6 +414,66 @@ namespace Numeria.Core
             EnsureGrowth(newcomer);
             if (GameData.BaseId(ActiveMonId) == released) ActiveMonId = newcomer;
             SyncLegacyFields();
+            return true;
+        }
+
+        public void AddCoins(int amount)
+        {
+            int safe = Math.Max(0, amount);
+            Coins += safe;
+            Records.CoinsEarned += safe;
+        }
+
+        public bool TrySpendCoins(int amount)
+        {
+            int safe = Math.Max(0, amount);
+            if (Coins < safe) return false;
+            Coins -= safe;
+            Records.CoinsSpent += safe;
+            return true;
+        }
+
+        public bool CollectDiscovery(string id)
+        {
+            if (string.IsNullOrEmpty(id) || CollectedDiscoveries.Contains(id)) return false;
+            CollectedDiscoveries.Add(id);
+            Records.DiscoveriesSolved++;
+            return true;
+        }
+
+        public bool DefeatMerchant(string id)
+        {
+            if (string.IsNullOrEmpty(id) || DefeatedMerchants.Contains(id)) return false;
+            DefeatedMerchants.Add(id);
+            Records.MerchantsDefeated++;
+            return true;
+        }
+
+        public int PurchaseCount(string stockId)
+        {
+            var record = ShopPurchases.Find(item => item.StockId == stockId);
+            return record?.Count ?? 0;
+        }
+
+        public int RecordPurchase(string stockId)
+        {
+            var record = ShopPurchases.Find(item => item.StockId == stockId);
+            if (record == null)
+            {
+                record = new ShopPurchaseRecord { StockId = stockId };
+                ShopPurchases.Add(record);
+            }
+            record.Count++;
+            return record.Count;
+        }
+
+        public int DigitCrystalCount => DigitCrystals.Count;
+
+        public bool CollectDigitCrystal(string mapId)
+        {
+            if (string.IsNullOrEmpty(mapId) || DigitCrystals.Contains(mapId)) return false;
+            DigitCrystals.Add(mapId);
+            Records.DigitCrystalsRestored++;
             return true;
         }
 

@@ -33,10 +33,10 @@
 - `Rng`:确定性 LCG(与 Web 原型逐位一致),所有生成函数注入 rng
 - `PuzzleGenerator`:三关 10/20/30 上限;加减填空、凑目标、连加、点数/比较、图形识别、AB/ABC/ABCD 规律、对称、旋转、数列;候选答案唯一
 - `BattleState`:宝石经济、数字护盾、破盾眩晕一回合 + 首次命中双倍 + 命中后护盾重置;正式 ATK/DEF 公式 `max(1, ATK − DEF + 1 + [-1,1])`,小幅可控波动、零惩罚不变量
-- `Progress`:save schema v6;Lv.99 上限、物种成长曲线、动态经验、每家族独立成长、独占饰品装备、战斗消耗品与冒险记录 —— **新字段必须带默认值和迁移**
+- `Progress`:save schema v8;Lv.99 上限、物种成长曲线、动态经验、每家族独立成长、独占饰品装备、金币/限量库存、Digit Crystal 主线与冒险记录 —— **新字段必须带默认值和迁移**
 - `GridMap`:ASCII 地图解析('.'草地 'T'树 'b'草丛 'C'宝箱 'P'传送门 'S'出生)+ BFS 寻路
 - `GameData`:30 只数灵、11 条进化线、各物种基础经验与 HP/ATK/DEF 每十级成长量;每家族配置独立数学亲和
-- 测试:`unity/Assets/Tests/EditMode/`,**80 个**;最后一次完整 headless 为 **80/80**
+- 测试:`unity/Assets/Tests/EditMode/`,**91 个**;最后一次完整 headless 为 **91/91**
 
 ### Game 层(`Numeria.Game`)
 - **全程序化 UGUI,零场景文件**——所有界面代码搭建,SampleScene 只是空壳,`BattleBootstrap` 用 `RuntimeInitializeOnLoadMethod` 拉起 `MapController`
@@ -72,6 +72,8 @@
   - ✅ 血量捕捉曲线:普通野生数灵全血量可尝试,按钮实时显示 10%–95% 成功率,低血量按幂曲线提高
   - ✅ 饰品与存档:每只数灵 2/3/4 格独占饰品装备、破盾眩晕与一次双倍循环、10 个存取档槽
   - ✅ 第一轮美术演出:11 套家族技能图标与专属 VFX;Lucas 像素主角已接入地图,生成提示词见 `docs/generated-visual-assets.md`
+  - ✅ 探索经济:每图 4 个主题数学符文、战斗金币、三位商人挑战、永久限量库存、消耗品/饰品/进化石平衡,见 `docs/economy-design.md`
+  - ✅ Lucas 主线:标题页与有声开场、三位 Crystal Guardian 的 Boss 前后对白、三枚 Digit Crystal、旧存档 v8 无损补发及结局节点,见 `docs/main-story.md`
   - ⬜ 未做:JSON 数据驱动落地(现在数值在 GameData/MapDefs 硬编码)、自适应难度引擎(错题变形复现/隐形升降档)、家长面板(PIN + 掌握度热图)
 - ⬜ **P4**:iOS 构建、真机、TestFlight(免费 Apple ID 7 天签名 vs $99/年,已告知用户)
 
@@ -84,7 +86,7 @@
 ## 5. 资产管线(全部约定式,零代码接新资产)
 
 - **手绘像素**:改 `prototype/js/sprites.js` 字符网格 → `node tools/export-sprites.mjs` → PNG 落到 `Resources/Art/Sprites/`
-- **语音**:台词加进 `tools/bake-voice.sh` → 跑脚本(macOS `say`,Samantha,-r 150)→ wav 落到 `Resources/Voice/`;**C# 里说的每句台词必须有对应烘焙**,`VoiceKeys.Sanitize` = 脚本规则;现有 **1,141 条有效 WAV**,覆盖 0–30 加减全部读法、图形题、捕捉/满员替换、饰品与破盾反馈
+- **语音**:台词加进 `tools/bake-voice.sh` → 跑脚本(macOS `say`,Samantha,-r 150)→ wav 落到 `Resources/Voice/`;**C# 里说的每句台词必须有对应烘焙**,`VoiceKeys.Sanitize` = 脚本规则;现有 **1,215 条有效 WAV**,覆盖 0–30 加减全部读法、图形题、捕捉/满员替换、饰品、经济与主线对白
 - **音乐**:`tools/install-jukebox-music.sh` 从本地授权的 8-bit Jukebox Lite 同步六首选曲到 ignored `Resources/Music/Jukebox`;`--restore-dynamic` 可将旧曲同步到同一运行槽;原 `LocalStore` 保持不变,完整曲目/署名见 `docs/music-attribution.md`
 - **AI 生成图**(用户负责生成,放 `Resources/generated/`):
   - `{id}_large_icon.png` → 菜单详情/回退链

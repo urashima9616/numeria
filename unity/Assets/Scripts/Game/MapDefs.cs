@@ -22,6 +22,36 @@ namespace Numeria.Game
         public int Amount = 1;
     }
 
+    public sealed class DiscoveryDef
+    {
+        public string Id;
+        public string Name;
+        public int X;
+        public int Y;
+        public int Coins;
+        public ConsumableType? BonusConsumable;
+        public int BonusAmount;
+    }
+
+    public sealed class MerchantDef
+    {
+        public string Id;
+        public string Name;
+        public int X;
+        public int Y;
+        public string SpriteResource;
+        public string PartnerSpeciesId;
+        public int MinimumLevel;
+        public string ChallengeLine;
+        public ShopItemDef[] Stock;
+
+        public CombatantDef Opponent(int playerLevel, int tier, Rng rng)
+        {
+            int level = Math.Max(MinimumLevel, playerLevel + 1);
+            return GameData.CreateTrainerOpponent(PartnerSpeciesId, level, tier, rng);
+        }
+    }
+
     /// <summary>一张地图的布局、带权生态、Boss、宝箱和美术配置。</summary>
     public class MapDef
     {
@@ -39,11 +69,23 @@ namespace Numeria.Game
         public int BossMinLevel;
         public string BossLine;
         public string GateClearLine;
+        public string CrystalName;
+        public string GuardianName;
+        public string GuardianSpriteResource;
+        public string[] GuardianChallengeLines;
+        public string GuardianVictoryLine;
         public Func<Progress, bool> GateCleared;
         public Action<Progress> ClearGate;
         public string PortalTargetMap;
         public string NextName;
         public Dictionary<string, ChestRewardDef> ChestRewards;
+        public DiscoveryDef[] Discoveries;
+        public MerchantDef Merchant;
+
+        public DiscoveryDef DiscoveryAt(int x, int y) =>
+            Array.Find(Discoveries ?? Array.Empty<DiscoveryDef>(), item => item.X == x && item.Y == y);
+
+        public bool MerchantAt(int x, int y) => Merchant != null && Merchant.X == x && Merchant.Y == y;
 
         public CombatantDef RollWildEncounter(int playerLevel, Rng rng)
         {
@@ -98,6 +140,20 @@ namespace Numeria.Game
         private static ChestRewardDef R(ChestRewardType type, string name, int amount = 1) =>
             new ChestRewardDef { Type = type, Name = name, Amount = amount };
 
+        private static DiscoveryDef D(string id, string name, int x, int y, int coins,
+            ConsumableType? bonus = null, int amount = 0) => new DiscoveryDef
+        {
+            Id = id, Name = name, X = x, Y = y, Coins = coins,
+            BonusConsumable = bonus, BonusAmount = amount,
+        };
+
+        private static ShopItemDef S(string id, string name, string description, ShopItemType type,
+            int price, int limit, int amount = 1, int attack = 0, int defense = 0) => new ShopItemDef
+        {
+            Id = id, Name = name, Description = description, Type = type, Price = price,
+            StockLimit = limit, Amount = amount, AttackBonus = attack, DefenseBonus = defense,
+        };
+
         public static MapDef Get(string id)
         {
             switch (id)
@@ -141,6 +197,14 @@ namespace Numeria.Game
             },
             BossSpeciesId = "numberfly", BossMinLevel = 5,
             BossLine = "Numberfly guards the portal!", GateClearLine = "The portal is open! A new world awaits!",
+            CrystalName = "Forest Digit Crystal", GuardianName = "Elder Rowan",
+            GuardianSpriteResource = "generated/Story/guardian_rowan",
+            GuardianChallengeLines = new[]
+            {
+                "Lucas, the Forest Crystal answers only to a kind and clever heart.",
+                "Show Numberfly what you have learned. Mistakes are steps, not failures.",
+            },
+            GuardianVictoryLine = "You have earned the Forest Digit Crystal. Carry its light wisely.",
             GateCleared = p => p.BossBeaten, ClearGate = p => p.BossBeaten = true,
             PortalTargetMap = "mountains", NextName = "Silent Peaks",
             ChestRewards = new Dictionary<string, ChestRewardDef>
@@ -149,6 +213,26 @@ namespace Numeria.Game
                 { "forest-chest-23-5", R(ChestRewardType.GemSnack, "Crystal Cookie", 2) },
                 { "forest-chest-6-6", R(ChestRewardType.AttackCharm, "Power Acorn") },
                 { "forest-chest-17-9", R(ChestRewardType.HealthPotion, "Forest Tonic", 2) },
+            },
+            Discoveries = new[]
+            {
+                D("forest-rune-1", "Firefly Number Rune", 8, 3, 4),
+                D("forest-rune-2", "Mushroom Pattern Rune", 15, 5, 5, ConsumableType.HealthPotion, 1),
+                D("forest-rune-3", "Leaf Symmetry Rune", 25, 8, 5),
+                D("forest-rune-4", "Acorn Counting Rune", 10, 13, 6, ConsumableType.GemSnack, 1),
+            },
+            Merchant = new MerchantDef
+            {
+                Id = "forest-tessa", Name = "Tessa", X = 26, Y = 13,
+                SpriteResource = "generated/Economy/merchant_tessa", PartnerSpeciesId = "paircub", MinimumLevel = 4,
+                ChallengeLine = "Tessa smiles. Beat my Paircub and my shop is yours to browse!",
+                Stock = new[]
+                {
+                    S("forest-potion", "Berry Potion", "Restore 40% HP in battle", ShopItemType.HealthPotion, 6, 3),
+                    S("forest-gem-snack", "Crystal Cookie", "Restore 3 gems in battle", ShopItemType.GemSnack, 8, 2),
+                    S("forest-power-acorn", "Power Acorn", "Accessory: ATK +1", ShopItemType.Accessory, 16, 1, attack: 1),
+                    S("forest-evo-stone", "Evolution Stone", "Used for evolution trials", ShopItemType.EvolutionStone, 32, 1),
+                },
             },
         };
 
@@ -183,6 +267,14 @@ namespace Numeria.Game
             },
             BossSpeciesId = "duplirock", BossDisplayName = "Duplirock Elder", BossMinLevel = 12,
             BossLine = "Duplirock guards the portal!", GateClearLine = "The gate is cleared! Azure Sky City awaits!",
+            CrystalName = "Peaks Digit Crystal", GuardianName = "Keeper Orin",
+            GuardianSpriteResource = "generated/Story/guardian_orin",
+            GuardianChallengeLines = new[]
+            {
+                "The mountain remembers every brave attempt.",
+                "Match your strength with Duplirock Elder, and the Peaks Crystal will shine.",
+            },
+            GuardianVictoryLine = "The Peaks Digit Crystal is yours. Your courage gave it light.",
             GateCleared = p => p.ClearedGates.Contains("mountains"),
             ClearGate = p => { if (!p.ClearedGates.Contains("mountains")) p.ClearedGates.Add("mountains"); },
             PortalTargetMap = "sky", NextName = "Azure Sky City",
@@ -193,6 +285,26 @@ namespace Numeria.Game
                 { "mountains-chest-17-5", R(ChestRewardType.DefenseCharm, "Granite Guard") },
                 { "mountains-chest-15-10", R(ChestRewardType.GemSnack, "Gem Biscuit", 3) },
                 { "mountains-chest-3-13", R(ChestRewardType.HealthPotion, "Warm Cocoa", 3) },
+            },
+            Discoveries = new[]
+            {
+                D("mountains-rune-1", "Echo Addition Rune", 5, 2, 7),
+                D("mountains-rune-2", "Twin Stone Rune", 12, 6, 8, ConsumableType.HealthPotion, 1),
+                D("mountains-rune-3", "Peak Order Rune", 26, 9, 9),
+                D("mountains-rune-4", "Crystal Difference Rune", 7, 14, 10, ConsumableType.GemSnack, 1),
+            },
+            Merchant = new MerchantDef
+            {
+                Id = "mountains-bram", Name = "Bram", X = 26, Y = 14,
+                SpriteResource = "generated/Economy/merchant_bram", PartnerSpeciesId = "stackstone", MinimumLevel = 11,
+                ChallengeLine = "Bram nods. Show my Stackstone your strongest math magic, then we can trade!",
+                Stock = new[]
+                {
+                    S("mountains-potion", "Peak Potion", "Restore 40% HP in battle", ShopItemType.HealthPotion, 9, 4),
+                    S("mountains-gem-snack", "Gem Biscuit", "Restore 3 gems in battle", ShopItemType.GemSnack, 11, 3),
+                    S("mountains-granite-guard", "Granite Guard", "Accessory: DEF +1", ShopItemType.Accessory, 22, 1, defense: 1),
+                    S("mountains-evo-stone", "Evolution Stone", "Used for evolution trials", ShopItemType.EvolutionStone, 45, 1),
+                },
             },
         };
 
@@ -229,6 +341,14 @@ namespace Numeria.Game
             },
             BossSpeciesId = "symmetrix", BossMinLevel = 20,
             BossLine = "Symmetrix guards the sky gate!", GateClearLine = "The sky gate shines! More adventures await!",
+            CrystalName = "Sky Digit Crystal", GuardianName = "Astronomer Lyra",
+            GuardianSpriteResource = "generated/Story/guardian_lyra",
+            GuardianChallengeLines = new[]
+            {
+                "Patterns guide every star in Numeria.",
+                "Read Symmetrix's sky pattern, and the final crystal will be yours.",
+            },
+            GuardianVictoryLine = "The Sky Digit Crystal is yours. All three lights now sing together.",
             GateCleared = p => p.ClearedGates.Contains("sky"),
             ClearGate = p => { if (!p.ClearedGates.Contains("sky")) p.ClearedGates.Add("sky"); },
             PortalTargetMap = null, NextName = "More Numeria adventures",
@@ -238,6 +358,26 @@ namespace Numeria.Game
                 { "sky-chest-13-5", R(ChestRewardType.GemSnack, "Cloud Candy", 3) },
                 { "sky-chest-26-9", R(ChestRewardType.DefenseCharm, "Mirror Feather") },
                 { "sky-chest-5-13", R(ChestRewardType.HealthPotion, "Sky Elixir", 3) },
+            },
+            Discoveries = new[]
+            {
+                D("sky-rune-1", "Cloud Sequence Rune", 6, 3, 10),
+                D("sky-rune-2", "Prism Rotation Rune", 14, 4, 11, ConsumableType.GemSnack, 1),
+                D("sky-rune-3", "Mirror Wing Rune", 25, 11, 12),
+                D("sky-rune-4", "Starlight Pattern Rune", 12, 14, 14, ConsumableType.HealthPotion, 1),
+            },
+            Merchant = new MerchantDef
+            {
+                Id = "sky-ari", Name = "Ari", X = 27, Y = 14,
+                SpriteResource = "generated/Economy/merchant_ari", PartnerSpeciesId = "polygoncat", MinimumLevel = 19,
+                ChallengeLine = "Ari opens a star map. Outsmart my Polygoncat and the sky market opens!",
+                Stock = new[]
+                {
+                    S("sky-potion", "Sky Elixir", "Restore 40% HP in battle", ShopItemType.HealthPotion, 12, 4),
+                    S("sky-gem-snack", "Cloud Candy", "Restore 3 gems in battle", ShopItemType.GemSnack, 15, 3),
+                    S("sky-prism-charm", "Prism Charm", "Accessory: ATK +1, DEF +1", ShopItemType.Accessory, 30, 1, attack: 1, defense: 1),
+                    S("sky-evo-stone", "Evolution Stone", "Used for evolution trials", ShopItemType.EvolutionStone, 65, 1),
+                },
             },
         };
     }
