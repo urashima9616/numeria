@@ -1,52 +1,180 @@
 # Numeria 🔢✨
 
-**A Pokémon-style math RPG for my 5-year-old** — in the land of Numeria, numbers and shapes *are* magic. Solve math puzzles to cast powerful spells, break enemy shields, unlock treasure chests, and evolve your Mathmon companions.
+**A Pokémon-inspired math RPG built for a five-year-old.** In Numeria, numbers, shapes, symmetry, and patterns
+are magic. Players befriend original creatures called **Mathmons**, solve Kindergarten-level puzzles to power
+their skills, and help Lucas restore three Digit Crystals so he can reopen the legendary gate home.
 
-![Battle prototype screenshot](docs/images/battle-screenshot.jpg)
+> Current state: a playable three-region Unity build with story, exploration, battles, catching, evolution,
+> economy, shops, saves, offline narration, and a 30-Mathmon launch roster. iOS/TestFlight work has not started.
 
-## 核心理念
+![Numeria battle prototype](docs/images/battle-screenshot.jpg)
 
-- **数学是魔法,不是测验**:谜题以咒语、封印、符文锁的形式存在于世界观内,没有"跳出游戏做题"的时刻
-- **零惩罚**:答错不掉血不受罚,技能仍以基础威力释放;十格阵数块动画引导重试。数学永远是加成,不是门槛
-- **三层融入**:环境浸泡(十格阵 HP、数金币)→ 决策层(能量宝石心算)→ 高潮层(咒语算式、凑十破盾)
-- **英文语音旁白**:题目全程朗读("Three plus what makes seven?"),不依赖识字量
+## Current development status
 
-## 项目结构
+| Milestone | Status | What is available |
+|---|---|---|
+| P0 — Project foundation | ✅ Complete | Repository, Unity project, asset pipelines |
+| P1 — Battle core | ✅ Complete | Skills, gems, number shields, ATK/DEF combat, VFX, narration |
+| P2 — Forest vertical slice | ✅ Complete | Exploration, encounters, catching, growth, chests, saving |
+| P3 — Full game systems | 🔶 Playable / polishing | Three maps, 30 Mathmons, evolution, economy, merchants, Lucas story |
+| P4 — iOS delivery | ⬜ Not started | Device build, signing, TestFlight and final performance QA |
 
-| 路径 | 内容 |
-|---|---|
-| [`docs/numeria-game-design.md`](docs/numeria-game-design.md) | 游戏设计文档(玩法、题型库、15 只数灵、三地图、自适应难度) |
-| [`docs/unity-roadmap.md`](docs/unity-roadmap.md) | Unity/iOS 开发路线图(P0–P4) |
-| [`prototype/`](prototype/) | 已验证的 Web 战斗原型(像素美术、战斗特效、语音、单元测试) |
-| `unity/` | Unity 工程(建设中) |
+The latest automated baseline is **91/91 Unity EditMode tests** and **14/14 Node prototype tests**.
+The save format is currently **schema v8**, with non-destructive migration for older saves.
 
-## 试玩 Web 原型
+## Design principles
+
+- **Math is magic, not a test.** Problems appear as spells, crystal patterns, treasure locks, and world runes.
+- **Zero punishment for mistakes.** A wrong answer never damages the player. Skills still use their base power,
+  and the game provides another visual explanation or retry.
+- **Understandable without fluent reading.** Questions, story dialogue, catches, evolution, shops, and feedback
+  use pre-baked English narration rather than online text-to-speech.
+- **Small, child-readable numbers.** HP, gems, damage, coin rewards, prices, and puzzle answers stay within
+  intentionally understandable ranges.
+- **Original world and creatures.** Numeria takes structural inspiration from creature-collection RPGs but uses
+  original Mathmons, characters, artwork, skills, progression, and fiction.
+
+## Implemented gameplay
+
+### Battle and Mathmons
+
+- 30 Mathmon forms across 11 evolution families, with independent level, XP, HP, ATK, and DEF growth to Lv. 99.
+- Eleven family-specific skill icons and distinct battle performances instead of a shared flame effect.
+- Number shields, shield-break stun, gems, powered math skills, consumable items, and equippable accessories.
+- Damage uses `max(1, ATK - DEF + 1 + [-1, 1])`; enemy HP also has controlled per-encounter variation.
+- Bosses have higher region-scaled HP and number shields without becoming mandatory difficulty walls.
+
+### Catching and team management
+
+- Catch can be attempted at any remaining HP.
+- Success follows a health-based curve from roughly **10% at full HP to 95% near zero HP**.
+- The traveling team holds at most **15 Mathmons**.
+- If a catch would exceed the limit, the player chooses whether to release the newcomer or replace an existing
+  companion. Addmander remains the protected starter, and released companions return equipped accessories.
+
+### Exploration and economy
+
+- Three large, pathfinding-based maps: Mystic Forest, Silent Peaks, and Azure Sky City.
+- Four visible math-discovery runes per map. Solving their themed puzzle awards one-time coins and occasional
+  battle items; incorrect answers leave the discovery available for another attempt.
+- Ordinary enemies, merchant challenges, and bosses award region-scaled coins.
+- Every region has an original merchant character. Defeat their trained Mathmon to unlock a permanent shop with
+  limited quantities of consumables, balanced accessories, and evolution stones.
+- Treasure chests, weighted regional ecosystems, item drops, evolution trials, and three-part portal trials.
+
+### Story and presentation
+
+- A title screen and narrated introduction starring Lucas and Addmander.
+- Lucas explores Numeria while the selected Mathmon remains the active battle companion.
+- Elder Rowan, Keeper Orin, and Astronomer Lyra guard the three Digit Crystals through powerful Mathmons.
+- Guardian conversations appear before and after each boss, leading to a three-crystal ending while leaving free
+  exploration available.
+- TEAM, ITEMS, RECORDS, SAVES, and SETTINGS menus; ten independent save slots.
+- Unified TextMeshPro/Jersey 10 typography, generated pixel-art characters and icons, ten SFX cues, and six
+  mood-based 8-bit music tracks with crossfading and narration ducking.
+
+## Kindergarten math progression
+
+| Region | Number range | Puzzle progression | Boss |
+|---|---:|---|---|
+| 🌲 Mystic Forest | 0–10 | Addition, subtraction, counting, comparison, shapes, AB patterns, symmetry | Numberfly |
+| ⛰️ Silent Peaks | 0–20 | Harder addition/subtraction, make-ten, three-term sums, doubling, ABC patterns, turns | Duplirock Elder |
+| ☁️ Azure Sky City | 0–30 | Four-term sums, geometry properties, symmetry, rotation, number sequences, ABCD patterns | Symmetrix |
+
+Portal trials always include arithmetic, use three different puzzle families, and allow unlimited zero-penalty
+retries.
+
+## Run the Unity game
+
+Requirements:
+
+- Unity **6000.5.6f1**
+- Unity Input System and TextMeshPro packages restored by the project
+- macOS, Windows, or another Unity Editor-supported development host
+
+Steps:
+
+1. Open the [`unity/`](unity/) directory as a Unity project.
+2. Open `Assets/Scenes/SampleScene.unity`.
+3. Press **Play**. `BattleBootstrap` constructs the map and UI at runtime; the scene intentionally contains no
+   hand-authored gameplay hierarchy.
+
+### Install the licensed 8-bit soundtrack
+
+The licensed **The 8-bit Jukebox Lite** source package and synchronized runtime WAVs are intentionally excluded
+from Git. After importing the package at
+`unity/Assets/Cyberleaf Music - The 8-bit Jukebox Lite`, run:
 
 ```bash
-cd prototype && python3 -m http.server 8765
-# 打开 http://localhost:8765(iPad 同一 Wi-Fi 下访问 http://<Mac的IP>:8765)
+zsh tools/install-jukebox-music.sh
 ```
 
-核心玩法:普攻攒宝石 → 凑十法击碎数字护盾(2 回合双倍伤害)→ 咒语算式 `3 + □ = 7` 拖数字水晶释放大招。
+The installer maps six local tracks to forest, mountain, sky, battle, boss, and evolution moods. Attribution and
+the exact track list are documented in [`docs/music-attribution.md`](docs/music-attribution.md).
 
-## 测试
+## Run the Web battle prototype
+
+The dependency-free Web prototype remains useful for quickly checking the original battle loop:
 
 ```bash
-npm test   # Node ≥ 18,零依赖(node --test)
+cd prototype
+python3 -m http.server 8765
+# Open http://localhost:8765
 ```
 
-## 技术栈
+Its core loop is: use a free attack to gain gems → solve make-target math to break the number shield → solve a
+formula such as `3 + □ = 7` to release a powered skill.
 
-- **原型**:Vanilla JS / Canvas 像素渲染 / Web Speech API,零依赖零构建
-- **正式版**:Unity (2D URP) → iOS,纯 C# 逻辑层 + JSON 数据驱动(DLC 友好)
+## Tests
 
-## 三张地图 = 三档难度
+Web prototype tests require Node.js 18 or newer and no installed packages:
 
-| 地图 | 数学主题 |
+```bash
+npm test
+```
+
+Unity EditMode tests, with the Unity Editor closed:
+
+```bash
+/Applications/Unity/Hub/Editor/6000.5.6f1/Unity.app/Contents/MacOS/Unity \
+  -batchmode \
+  -projectPath "$(pwd)/unity" \
+  -runTests \
+  -testPlatform EditMode \
+  -testResults /tmp/numeria-tests.xml \
+  -logFile /tmp/numeria-tests.log
+```
+
+## Repository layout
+
+| Path | Purpose |
 |---|---|
-| 🌲 神秘森林 | 10 以内加减、点数、数量比较 |
-| ⛰️ 静寂山脉 | 20 以内加减、凑十法、连加、翻倍 |
-| ☁️ 蔚蓝天空城 | 图形规律、对称、旋转、序列 |
+| [`unity/`](unity/) | Main Unity game, runtime resources, and EditMode tests |
+| [`prototype/`](prototype/) | Dependency-free Web battle prototype and Node tests |
+| [`tools/`](tools/) | Voice, music, sprite export, and image-processing pipelines |
+| [`docs/numeria-game-design.md`](docs/numeria-game-design.md) | Core game and curriculum design |
+| [`docs/main-story.md`](docs/main-story.md) | Lucas and the Digit Crystals story structure |
+| [`docs/economy-design.md`](docs/economy-design.md) | Coin rewards, shop stock, pricing, and balance rationale |
+| [`docs/generated-visual-assets.md`](docs/generated-visual-assets.md) | Image-generation prompts and production asset locations |
+| [`docs/music-attribution.md`](docs/music-attribution.md) | 8-bit Jukebox track mapping and credits |
+| [`docs/HANDOFF.md`](docs/HANDOFF.md) | Detailed engineering status and maintenance notes |
+
+## Technical overview
+
+- **Unity 2D / C#** with a pure `Numeria.Core` logic assembly and a programmatic UGUI/TMP presentation layer.
+- Deterministic injected RNG for battles, encounter generation, rewards, and puzzle tests.
+- Breadth-first pathfinding over ASCII-authored maps.
+- Local JSON saves in `Application.persistentDataPath`, ten slots, and explicit schema migration.
+- Convention-based `Resources` loading with generated-art fallbacks and automatic pixel-art import settings.
+- Offline Samantha narration WAVs, independent voice/SFX/music settings, and mood-based music crossfades.
+
+## Remaining roadmap
+
+- Continue visual QA and layout polishing on real 4:3 iPad resolutions.
+- Move hard-coded species/map balance data into validated JSON.
+- Add adaptive difficulty and transformed retries based on puzzle-family mastery.
+- Add a parent-gated progress dashboard.
+- Complete iOS landscape settings, device profiling, signing, and TestFlight distribution.
 
 ---
 
