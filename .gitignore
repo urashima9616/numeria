@@ -28,10 +28,14 @@ unity/crashlytics-build.properties
 # CC0 Numeria SFX selections live separately under Resources/Sfx.
 unity/Assets/Dynamic Music/
 unity/Assets/Dynamic Music.meta
+unity/Assets/Cyberleaf Music - The 8-bit Jukebox Lite/
+unity/Assets/Cyberleaf Music - The 8-bit Jukebox Lite.meta
 unity/Assets/Casual Game Sounds U6/
 unity/Assets/Casual Game Sounds U6.meta
 unity/Assets/Resources/Music/LocalStore/*.wav
 unity/Assets/Resources/Music/LocalStore/*.wav.meta
+unity/Assets/Resources/Music/Jukebox/
+unity/Assets/Resources/Music/Jukebox.meta
 
 # Builds
 *.apk

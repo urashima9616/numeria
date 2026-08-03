@@ -20,12 +20,12 @@ namespace Numeria.Game
     {
         private static readonly Dictionary<MusicMood, string> Paths = new Dictionary<MusicMood, string>
         {
-            { MusicMood.Forest, "Music/LocalStore/forest" },
-            { MusicMood.Mountains, "Music/LocalStore/mountains" },
-            { MusicMood.Sky, "Music/LocalStore/sky" },
-            { MusicMood.Battle, "Music/LocalStore/battle" },
-            { MusicMood.Boss, "Music/LocalStore/boss" },
-            { MusicMood.Evolution, "Music/LocalStore/evolution" }
+            { MusicMood.Forest, "Music/Jukebox/forest" },
+            { MusicMood.Mountains, "Music/Jukebox/mountains" },
+            { MusicMood.Sky, "Music/Jukebox/sky" },
+            { MusicMood.Battle, "Music/Jukebox/battle" },
+            { MusicMood.Boss, "Music/Jukebox/boss" },
+            { MusicMood.Evolution, "Music/Jukebox/evolution" }
         };
 
         private static MusicPlayer _player;
