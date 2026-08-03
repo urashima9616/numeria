@@ -114,7 +114,7 @@ namespace Numeria.Core.Tests
             var s1 = Fresh();
             s1.Gems = 3;
             s1.EnemyShielded = false;
-            var r1 = s1.UseSkill("flame-formula", correct: true);
+            var r1 = s1.UseSkill("equation-flame", correct: true);
             Assert.That(r1.Damage, Is.InRange(3, 5));
             Assert.True(r1.Powered);
             Assert.AreEqual(s1.Enemy.MaxHp - r1.Damage, s1.EnemyHp);
@@ -124,7 +124,7 @@ namespace Numeria.Core.Tests
             s2.Gems = 3;
             s2.EnemyShielded = false;
             int hpBefore = s2.PlayerHp;
-            var r2 = s2.UseSkill("flame-formula", correct: false);
+            var r2 = s2.UseSkill("equation-flame", correct: false);
             Assert.That(r2.Damage, Is.InRange(1, 2));
             Assert.False(r2.Powered);
             Assert.AreEqual(hpBefore, s2.PlayerHp); // 答错绝不扣玩家血
@@ -135,7 +135,7 @@ namespace Numeria.Core.Tests
         {
             var s = Fresh();
             s.Gems = 1;
-            var ex = Assert.Throws<InvalidOperationException>(() => s.UseSkill("flame-formula"));
+            var ex = Assert.Throws<InvalidOperationException>(() => s.UseSkill("equation-flame"));
             StringAssert.Contains("not enough gems", ex.Message);
         }
 

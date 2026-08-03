@@ -30,6 +30,9 @@ namespace Numeria.Game
             return small != null ? small : LargeIcon(id);
         }
 
+        /// <summary>世界地图主角固定为 Lucas；素材缺失时由调用方回退到出战数灵。</summary>
+        public static Sprite LucasExplorer() => One("generated/Heroes/lucas_explorer");
+
         private const string PackRoot = "generated/NUMERIA_Unity_Battle_Assets/";
 
         /// <summary>NUMERIA 战斗素材包内的资源(相对包根路径)。</summary>

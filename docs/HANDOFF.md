@@ -36,12 +36,13 @@
 - `Progress`:save schema v6;Lv.99 上限、物种成长曲线、动态经验、每家族独立成长、独占饰品装备、战斗消耗品与冒险记录 —— **新字段必须带默认值和迁移**
 - `GridMap`:ASCII 地图解析('.'草地 'T'树 'b'草丛 'C'宝箱 'P'传送门 'S'出生)+ BFS 寻路
 - `GameData`:30 只数灵、11 条进化线、各物种基础经验与 HP/ATK/DEF 每十级成长量;每家族配置独立数学亲和
-- 测试:`unity/Assets/Tests/EditMode/`,**75 个**;最后一次完整 headless 为 **75/75**
+- 测试:`unity/Assets/Tests/EditMode/`,**78 个**;最后一次完整 headless 为 **78/78**
 
 ### Game 层(`Numeria.Game`)
 - **全程序化 UGUI,零场景文件**——所有界面代码搭建,SampleScene 只是空壳,`BattleBootstrap` 用 `RuntimeInitializeOnLoadMethod` 拉起 `MapController`
 - `MapController`:三张 480–512 格地图、点触 BFS + 跟随相机、带权多物种生态、宝箱谜题、全宝箱后 Boss 图标与三题开门试炼、掉落与进化试炼
 - `BattleController`:`Init(enemy, progress, tier, battleBg, onEnd)`;双方状态牌显示 ATK/DEF,普通怪 HP 按关卡在 8–12 / 14–20 / 22–30 浮动,Boss HP 20 / 36 / 54
+- `SkillDef` 保存独立 `IconResource` + `SkillVisualKind`;11 条家族各有专属像素图标与战斗弹道/命中节奏,不要再硬编码 `Flame_Formula`
 - `PuzzleUi`:谜题遮罩共用;第一关 10 内加减+图形/对称/规律,第二关 20 内并加入三项连加/转向/ABC,第三关 30 内并加入四项连加/2–5 步数列/ABCD;传送门三题必含算术
 - `MenuUi`:TEAM/ITEMS/RECORDS/SAVES/SETTINGS 五 tab,TEAM 可为每只数灵装备/卸下饰品,SAVES 提供十槽存取
 - `Voice`:预烘焙语音播放,`VoiceKeys.Sanitize` 文本→文件名(**必须与 bake 脚本规则一致**);`Voice.Enabled` 全局开关(存档持久化)
@@ -70,6 +71,7 @@
   - ✅ 扩图与系统:带权生态、山脉重绘、全宝箱 Boss 条件、战斗消耗品/掉落、RECORDS 存档
   - ✅ 血量捕捉曲线:普通野生数灵全血量可尝试,按钮实时显示 10%–95% 成功率,低血量按幂曲线提高
   - ✅ 饰品与存档:每只数灵 2/3/4 格独占饰品装备、破盾眩晕与一次双倍循环、10 个存取档槽
+  - ✅ 第一轮美术演出:11 套家族技能图标与专属 VFX;Lucas 像素主角已接入地图,生成提示词见 `docs/generated-visual-assets.md`
   - ⬜ 未做:JSON 数据驱动落地(现在数值在 GameData/MapDefs 硬编码)、自适应难度引擎(错题变形复现/隐形升降档)、家长面板(PIN + 掌握度热图)
 - ⬜ **P4**:iOS 构建、真机、TestFlight(免费 Apple ID 7 天签名 vs $99/年,已告知用户)
 

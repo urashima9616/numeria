@@ -171,9 +171,10 @@ namespace Numeria.Game
         private void ApplyAvatarSprite()
         {
             var sr = _avatar.GetComponent<SpriteRenderer>();
-            sr.sprite = SpriteLib.MapSprite(PlayerId);
+            bool hasLucas = SpriteLib.LucasExplorer() != null;
+            sr.sprite = hasLucas ? SpriteLib.LucasExplorer() : SpriteLib.MapSprite(PlayerId);
             if (sr.sprite == null) return;
-            float targetHeight = 1f + 0.14f * _progress.ActiveGrowth.Stage;
+            float targetHeight = hasLucas ? 1.35f : 1f + 0.14f * _progress.ActiveGrowth.Stage;
             float scale = targetHeight / Mathf.Max(0.01f, sr.sprite.bounds.size.y);
             _avatar.localScale = Vector3.one * scale;
         }
@@ -263,7 +264,7 @@ namespace Numeria.Game
                 onClose: () =>
                 {
                     SaveSystem.Save(_progress);
-                    // 出战数灵可能在菜单里换了,刷新头像与 HUD
+                    // 出战数灵可能在菜单里换了；Lucas 头像不变，HUD 属性需要刷新。
                     ApplyAvatarSprite();
                     UpdateHud();
                     _busy = false;

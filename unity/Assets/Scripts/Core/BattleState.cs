@@ -27,6 +27,25 @@ namespace Numeria.Core
 
     public enum SkillType { Basic, Formula }
 
+    /// <summary>
+    /// 主题技能的演出语言。Core 只保存语义，Game 层据此选择弹道、颜色与命中节奏。
+    /// </summary>
+    public enum SkillVisualKind
+    {
+        Physical,
+        EquationFlame,
+        MakeTenWave,
+        PatternLeaf,
+        CountCrunch,
+        DoubleBoulder,
+        SymmetryBeam,
+        MatchingPaws,
+        SubtractionDash,
+        TallyStone,
+        GeometryPrism,
+        SequenceSpark,
+    }
+
     public class SkillDef
     {
         public string Id;
@@ -35,6 +54,8 @@ namespace Numeria.Core
         public int Power;
         public int BasePower;
         public SkillType Type;
+        public string IconResource;
+        public SkillVisualKind Visual;
     }
 
     public class CombatantDef

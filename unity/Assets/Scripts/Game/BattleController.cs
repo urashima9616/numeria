@@ -23,6 +23,7 @@ namespace Numeria.Game
         private Action<BattleEnd> _onEnd;
         private Progress _progress;
         private int _xpReward;
+        private SkillDef _themeSkill;
 
         private RectTransform _canvasRoot;
         private RectTransform _shakeRoot;
@@ -68,6 +69,7 @@ namespace Numeria.Game
             _playerLevel = growth.Level;
             _rng = new Rng((uint)Environment.TickCount);
             _state = new BattleState(GameData.PlayerMon(progress.ActiveMonId, growth.Stage, growth.Level), enemy, _rng);
+            _themeSkill = System.Array.Find(_state.Player.Skills, skill => skill.Type == SkillType.Formula);
             _state.PlayerAttackBonus = progress.TotalAttackBonus(progress.ActiveMonId);
             _state.PlayerDefenseBonus = progress.TotalDefenseBonus(progress.ActiveMonId);
             _xpReward = GrowthSystem.VictoryXp(enemy.BaseXp, enemy.Level, growth.Level, enemy.IsBoss);
@@ -165,12 +167,12 @@ namespace Numeria.Game
             layout.childForceExpandWidth = true;
             layout.childForceExpandHeight = true;
 
-            var formulaSkill = System.Array.Find(_state.Player.Skills, s => s.Id == "flame-formula");
             _btnTackle = ActionButton(dock.rectTransform, SpriteLib.Pack("UI/Icons/Tackle"),
                 "TACKLE", "FREE", Ui.Hex("#5c8a3f"), out _);
             _btnTackle.onClick.AddListener(() => StartCoroutine(TackleRoutine()));
-            _btnFormula = ActionButton(dock.rectTransform, SpriteLib.Pack("UI/Icons/Flame_Formula"),
-                formulaSkill.Name.ToUpperInvariant(), $"COST {formulaSkill.Cost}", SubOrange, out _formulaBg);
+            var themeIcon = SpriteLib.One(_themeSkill.IconResource) ?? SpriteLib.Pack("UI/Icons/Flame_Formula");
+            _btnFormula = ActionButton(dock.rectTransform, themeIcon,
+                _themeSkill.Name.ToUpperInvariant(), $"COST {_themeSkill.Cost}", ThemeColor(_themeSkill.Visual), out _formulaBg);
             _btnFormula.onClick.AddListener(() => StartCoroutine(FormulaRoutine()));
             _btnShield = ActionButton(dock.rectTransform, SpriteLib.One("Art/Sprites/shield"),
                 "BREAK SHIELD", _tier >= 3 ? "FINISH PATTERN" : $"MAKE {_state.Enemy.Shield ?? 10}",
@@ -316,11 +318,11 @@ namespace Numeria.Game
             _gemLabel.text = $"{_state.Gems} GEMS";
 
             _shieldRow.SetActive(_state.EnemyShielded);
-            _btnFormula.interactable = _state.Gems >= 3;
-            _formulaBg.sprite = _state.Gems >= 3
+            _btnFormula.interactable = _state.Gems >= _themeSkill.Cost;
+            _formulaBg.sprite = _state.Gems >= _themeSkill.Cost
                 ? SpriteLib.Pack("UI/Buttons/Button_Selected")
                 : SpriteLib.Pack("UI/Buttons/Button_Normal");
-            _formulaBg.color = _state.Gems >= 3 ? Color.white : new Color(1f, 1f, 1f, 0.85f);
+            _formulaBg.color = _state.Gems >= _themeSkill.Cost ? Color.white : new Color(1f, 1f, 1f, 0.85f);
             // 命令坞保持稳定的三栏结构:普通敌人显示 Catch，护盾敌人显示 Break Shield。
             _btnShield.gameObject.SetActive(_state.Enemy.Shield.HasValue);
             _btnShield.interactable = _state.EnemyShielded;
@@ -383,16 +385,17 @@ namespace Numeria.Game
             bool? correct = null;
             yield return _puzzles.RunTierPuzzle(v => correct = v, _tier);
             yield return Lunge(_playerSprite, new Vector2(60, 30));
-            yield return Projectile(_playerSprite, _enemySprite,
-                correct.Value ? Ui.Hex("#ff5a2e") : Ui.Hex("#ffd24a"));
-            var result = _state.UseSkill("flame-formula", correct.Value);
+            yield return PlayThemeSkill(_themeSkill, correct.Value);
+            var result = _state.UseSkill(_themeSkill.Id, correct.Value);
             RecordDamage(result.Damage);
             Sfx.Play(SfxCue.Hit, result.Powered ? 1f : 0.72f);
-            PopDamage(_enemySprite, $"-{result.Damage}", result.Powered ? Ui.Hex("#ff9d3a") : Ui.Hex("#ffd24a"));
+            PopDamage(_enemySprite, $"-{result.Damage}", result.Powered
+                ? ThemeColor(_themeSkill.Visual)
+                : Ui.Hex("#ffd24a"));
             if (result.Powered) StartCoroutine(Shake());
             yield return Flash(_enemySprite);
             RenderAll();
-            SetLog("Flame Formula!", result.Powered
+            SetLog($"{_themeSkill.Name}!", result.Powered
                 ? $"{result.Damage} DAMAGE"
                 : $"{result.Damage} DAMAGE - NICE TRY");
             yield return EndPlayerTurn();
@@ -571,6 +574,321 @@ namespace Numeria.Game
         }
 
         // ---------- 演出 ----------
+
+        private static Color ThemeColor(SkillVisualKind visual)
+        {
+            switch (visual)
+            {
+                case SkillVisualKind.MakeTenWave: return Ui.Hex("#33c9d7");
+                case SkillVisualKind.PatternLeaf: return Ui.Hex("#7bd64a");
+                case SkillVisualKind.CountCrunch: return Ui.Hex("#f2c84b");
+                case SkillVisualKind.DoubleBoulder: return Ui.Hex("#9f8d72");
+                case SkillVisualKind.SymmetryBeam: return Ui.Hex("#69d9ff");
+                case SkillVisualKind.MatchingPaws: return Ui.Hex("#e2a44e");
+                case SkillVisualKind.SubtractionDash: return Ui.Hex("#f1b33b");
+                case SkillVisualKind.TallyStone: return Ui.Hex("#81796d");
+                case SkillVisualKind.GeometryPrism: return Ui.Hex("#75b8ff");
+                case SkillVisualKind.SequenceSpark: return Ui.Hex("#b6e83f");
+                default: return Ui.Hex("#ff6a32");
+            }
+        }
+
+        /// <summary>
+        /// 主题技能不再共用一颗橙色圆球。每个数学家族有自己的移动节奏、形状与命中语言，
+        /// 同时复用技能图标作为视觉锚点，让按钮与实际演出保持一致。
+        /// </summary>
+        private IEnumerator PlayThemeSkill(SkillDef skill, bool powered)
+        {
+            Color color = powered ? ThemeColor(skill.Visual) : Ui.Hex("#e8c974");
+            Sprite icon = SpriteLib.One(skill.IconResource);
+            switch (skill.Visual)
+            {
+                case SkillVisualKind.MakeTenWave:
+                    yield return WaveVolley(color);
+                    break;
+                case SkillVisualKind.PatternLeaf:
+                    yield return SpiralCast(icon, color);
+                    break;
+                case SkillVisualKind.CountCrunch:
+                    yield return CountVolley(color);
+                    break;
+                case SkillVisualKind.DoubleBoulder:
+                    yield return TwinCrash(icon, color, true);
+                    break;
+                case SkillVisualKind.SymmetryBeam:
+                    yield return MirrorBeam(icon, color);
+                    break;
+                case SkillVisualKind.MatchingPaws:
+                    yield return TwinCrash(icon, color, false);
+                    break;
+                case SkillVisualKind.SubtractionDash:
+                    yield return SubtractionStrike(icon, color);
+                    break;
+                case SkillVisualKind.TallyStone:
+                    yield return TallyRain(color);
+                    break;
+                case SkillVisualKind.GeometryPrism:
+                    yield return GeometryVolley(icon, color);
+                    break;
+                case SkillVisualKind.SequenceSpark:
+                    yield return SequenceVolley(color);
+                    break;
+                default:
+                    yield return MoveSkillIcon(icon, color, 72f, .38f, 220f);
+                    break;
+            }
+            yield return RadialBurst(_enemySprite.position, color, powered ? 10 : 6);
+        }
+
+        private Image EffectImage(string name, Sprite sprite, Color color, Vector2 size)
+        {
+            Image image = sprite != null
+                ? Ui.SpriteImg(_canvasRoot, name, sprite)
+                : Ui.Img(_canvasRoot, name, color);
+            image.preserveAspect = true;
+            image.color = color;
+            image.raycastTarget = false;
+            image.rectTransform.sizeDelta = size;
+            return image;
+        }
+
+        private IEnumerator MoveSkillIcon(Sprite icon, Color tint, float arcHeight, float duration, float spin)
+        {
+            var image = EffectImage("SkillGlyph", icon, icon != null ? Color.white : tint, new Vector2(92, 92));
+            Vector3 start = _playerSprite.position + new Vector3(50, 60, 0);
+            Vector3 end = _enemySprite.position;
+            float t = 0;
+            while (t < duration)
+            {
+                t += Time.deltaTime;
+                float p = Mathf.Clamp01(t / duration);
+                image.rectTransform.position = Vector3.Lerp(start, end, p) + Vector3.up * (Mathf.Sin(p * Mathf.PI) * arcHeight);
+                image.rectTransform.localRotation = Quaternion.Euler(0, 0, spin * p);
+                image.rectTransform.localScale = Vector3.one * Mathf.Lerp(.72f, 1.08f, p);
+                yield return null;
+            }
+            Destroy(image.gameObject);
+        }
+
+        private IEnumerator WaveVolley(Color color)
+        {
+            var drops = new List<Image>();
+            Sprite gem = SpriteLib.Pack("UI/Icons/Gem");
+            for (int i = 0; i < 3; i++)
+                drops.Add(EffectImage($"WaveDrop{i}", gem, color, new Vector2(44 + i * 8, 44 + i * 8)));
+
+            Vector3 start = _playerSprite.position + new Vector3(50, 30, 0);
+            Vector3 end = _enemySprite.position;
+            float t = 0;
+            while (t < .52f)
+            {
+                t += Time.deltaTime;
+                float p = Mathf.Clamp01(t / .52f);
+                for (int i = 0; i < drops.Count; i++)
+                {
+                    float delayed = Mathf.Clamp01(p * 1.3f - i * .14f);
+                    drops[i].rectTransform.position = Vector3.Lerp(start, end, delayed) +
+                        Vector3.up * Mathf.Sin(delayed * Mathf.PI * 2f + i * .8f) * 46f;
+                    drops[i].rectTransform.localRotation = Quaternion.Euler(0, 0, delayed * 180f);
+                }
+                yield return null;
+            }
+            foreach (var drop in drops) Destroy(drop.gameObject);
+        }
+
+        private IEnumerator SpiralCast(Sprite icon, Color color)
+        {
+            var leaves = new List<Image>();
+            for (int i = 0; i < 3; i++)
+                leaves.Add(EffectImage($"PatternLeaf{i}", icon, Color.white, new Vector2(60, 60)));
+            Vector3 start = _playerSprite.position;
+            Vector3 end = _enemySprite.position;
+            float t = 0;
+            while (t < .5f)
+            {
+                t += Time.deltaTime;
+                float p = Mathf.Clamp01(t / .5f);
+                Vector3 center = Vector3.Lerp(start, end, p);
+                for (int i = 0; i < leaves.Count; i++)
+                {
+                    float angle = p * Mathf.PI * 5f + i * Mathf.PI * 2f / leaves.Count;
+                    leaves[i].rectTransform.position = center + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * (52f * (1f - p));
+                    leaves[i].rectTransform.localRotation = Quaternion.Euler(0, 0, angle * Mathf.Rad2Deg);
+                }
+                yield return null;
+            }
+            foreach (var leaf in leaves) Destroy(leaf.gameObject);
+        }
+
+        private IEnumerator CountVolley(Color color)
+        {
+            Sprite gem = SpriteLib.Pack("UI/Icons/Gem");
+            for (int i = 0; i < 3; i++)
+            {
+                var bead = EffectImage($"CountBead{i + 1}", gem, color, new Vector2(38 + i * 12, 38 + i * 12));
+                Vector3 start = _playerSprite.position + new Vector3(i * 24, 40 + i * 18, 0);
+                float t = 0;
+                while (t < .16f)
+                {
+                    t += Time.deltaTime;
+                    bead.rectTransform.position = Vector3.Lerp(start, _enemySprite.position, t / .16f);
+                    yield return null;
+                }
+                Destroy(bead.gameObject);
+            }
+        }
+
+        private IEnumerator TwinCrash(Sprite icon, Color color, bool heavy)
+        {
+            var left = EffectImage("TwinLeft", icon, icon != null ? Color.white : color, new Vector2(82, 82));
+            var right = EffectImage("TwinRight", icon, icon != null ? Color.white : color, new Vector2(82, 82));
+            Vector3 target = _enemySprite.position;
+            Vector3 a = target + new Vector3(-260, heavy ? 180 : 40, 0);
+            Vector3 b = target + new Vector3(260, heavy ? 180 : 40, 0);
+            float t = 0;
+            while (t < .42f)
+            {
+                t += Time.deltaTime;
+                float p = Mathf.SmoothStep(0, 1, t / .42f);
+                left.rectTransform.position = Vector3.Lerp(a, target, p);
+                right.rectTransform.position = Vector3.Lerp(b, target, p);
+                left.rectTransform.localRotation = Quaternion.Euler(0, 0, p * 120f);
+                right.rectTransform.localRotation = Quaternion.Euler(0, 0, -p * 120f);
+                yield return null;
+            }
+            Destroy(left.gameObject);
+            Destroy(right.gameObject);
+            if (heavy) StartCoroutine(Shake());
+        }
+
+        private IEnumerator MirrorBeam(Sprite icon, Color color)
+        {
+            yield return TwinCrash(icon, color, false);
+            var beam = EffectImage("SymmetryBeam", null, color, new Vector2(30, 310));
+            beam.rectTransform.position = _enemySprite.position;
+            float t = 0;
+            while (t < .25f)
+            {
+                t += Time.deltaTime;
+                beam.color = new Color(color.r, color.g, color.b, 1f - t / .25f);
+                beam.rectTransform.localScale = new Vector3(1f + t * 3f, 1f, 1f);
+                yield return null;
+            }
+            Destroy(beam.gameObject);
+        }
+
+        private IEnumerator SubtractionStrike(Sprite icon, Color color)
+        {
+            yield return MoveSkillIcon(icon, color, 0, .22f, 0);
+            var minus = EffectImage("MinusFlash", null, color, new Vector2(180, 24));
+            minus.rectTransform.position = _enemySprite.position;
+            minus.rectTransform.localRotation = Quaternion.Euler(0, 0, -18f);
+            yield return new WaitForSeconds(.12f);
+            Destroy(minus.gameObject);
+        }
+
+        private IEnumerator TallyRain(Color color)
+        {
+            var marks = new List<Image>();
+            Vector3 target = _enemySprite.position;
+            for (int i = 0; i < 5; i++)
+            {
+                var mark = EffectImage($"TallyMark{i}", null, color, new Vector2(15, 90));
+                mark.rectTransform.position = target + new Vector3((i - 2) * 34f, 250 + Mathf.Abs(i - 2) * 28f, 0);
+                marks.Add(mark);
+            }
+            float t = 0;
+            while (t < .38f)
+            {
+                t += Time.deltaTime;
+                float p = Mathf.SmoothStep(0, 1, t / .38f);
+                for (int i = 0; i < marks.Count; i++)
+                    marks[i].rectTransform.position = Vector3.Lerp(
+                        target + new Vector3((i - 2) * 34f, 250 + Mathf.Abs(i - 2) * 28f, 0),
+                        target + new Vector3((i - 2) * 34f, 0, 0), p);
+                yield return null;
+            }
+            foreach (var mark in marks) Destroy(mark.gameObject);
+            StartCoroutine(Shake());
+        }
+
+        private IEnumerator GeometryVolley(Sprite icon, Color color)
+        {
+            var prism = EffectImage("GeometryPrism", icon, Color.white, new Vector2(84, 84));
+            Vector3 start = _playerSprite.position;
+            Vector3 end = _enemySprite.position;
+            var shapes = new List<Image>();
+            for (int i = 0; i < 3; i++)
+                shapes.Add(EffectImage($"GeometryShape{i}", null,
+                    i == 0 ? color : i == 1 ? Ui.Hex("#d88cff") : Ui.Hex("#ffe27a"),
+                    new Vector2(34 + i * 10, 34 + i * 10)));
+            float t = 0;
+            while (t < .46f)
+            {
+                t += Time.deltaTime;
+                float p = Mathf.Clamp01(t / .46f);
+                prism.rectTransform.position = Vector3.Lerp(start, end, p);
+                prism.rectTransform.localRotation = Quaternion.Euler(0, 0, p * 180f);
+                for (int i = 0; i < shapes.Count; i++)
+                {
+                    float q = Mathf.Clamp01(p * 1.25f - i * .12f);
+                    shapes[i].rectTransform.position = Vector3.Lerp(start, end, q) + Vector3.up * ((i - 1) * 42f);
+                    shapes[i].rectTransform.localRotation = Quaternion.Euler(0, 0, q * (90f + i * 45f));
+                }
+                yield return null;
+            }
+            Destroy(prism.gameObject);
+            foreach (var shape in shapes) Destroy(shape.gameObject);
+        }
+
+        private IEnumerator SequenceVolley(Color color)
+        {
+            Sprite gem = SpriteLib.Pack("UI/Icons/Gem");
+            Vector3 start = _playerSprite.position;
+            Vector3 end = _enemySprite.position;
+            for (int i = 0; i < 4; i++)
+            {
+                float p = (i + 1) / 4f;
+                var spark = EffectImage($"SequenceSpark{i}", gem, color, Vector2.one * (30 + i * 16));
+                spark.rectTransform.position = Vector3.Lerp(start, end, p) + Vector3.up * (Mathf.Sin(p * Mathf.PI) * 85f);
+                spark.rectTransform.localScale = Vector3.zero;
+                float t = 0;
+                while (t < .1f)
+                {
+                    t += Time.deltaTime;
+                    spark.rectTransform.localScale = Vector3.one * Mathf.Clamp01(t / .1f);
+                    yield return null;
+                }
+                yield return new WaitForSeconds(.035f);
+                Destroy(spark.gameObject);
+            }
+        }
+
+        private IEnumerator RadialBurst(Vector3 origin, Color color, int count)
+        {
+            var sparks = new List<Image>();
+            Sprite gem = SpriteLib.Pack("UI/Icons/Gem");
+            for (int i = 0; i < count; i++)
+            {
+                var spark = EffectImage($"HitSpark{i}", gem, color, new Vector2(24, 24));
+                spark.rectTransform.position = origin;
+                sparks.Add(spark);
+            }
+            float t = 0;
+            while (t < .28f)
+            {
+                t += Time.deltaTime;
+                float p = Mathf.Clamp01(t / .28f);
+                for (int i = 0; i < sparks.Count; i++)
+                {
+                    float angle = i * Mathf.PI * 2f / sparks.Count;
+                    sparks[i].rectTransform.position = origin + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * (115f * p);
+                    sparks[i].color = new Color(color.r, color.g, color.b, 1f - p);
+                }
+                yield return null;
+            }
+            foreach (var spark in sparks) Destroy(spark.gameObject);
+        }
 
         private IEnumerator Lunge(RectTransform rt, Vector2 dir)
         {

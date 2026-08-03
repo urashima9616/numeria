@@ -57,7 +57,7 @@ namespace Numeria.Core.Tests
         }
 
         [Test]
-        public void PlayerMon_KitsHaveFormulaSkill()
+        public void PlayerMon_KitsHaveFamilyThemeSkill()
         {
             foreach (string id in new[] { "countipillar", "doublit", "mirrowl", "tenfin", "shapling" })
             {
@@ -65,9 +65,11 @@ namespace Numeria.Core.Tests
                 Assert.AreEqual(id, def.Id);
                 Assert.GreaterOrEqual(def.MaxHp, 8);
                 Assert.NotNull(System.Array.Find(def.Skills, s => s.Id == "tackle"));
-                var formula = System.Array.Find(def.Skills, s => s.Id == "flame-formula");
+                var formula = System.Array.Find(def.Skills, s => s.Type == SkillType.Formula);
                 Assert.NotNull(formula);
                 Assert.AreEqual(SkillType.Formula, formula.Type);
+                StringAssert.StartsWith("generated/Skills/", formula.IconResource);
+                Assert.AreNotEqual(SkillVisualKind.Physical, formula.Visual);
             }
         }
 
@@ -134,10 +136,28 @@ namespace Numeria.Core.Tests
                 var player = GameData.PlayerMon(species.Id, GameData.StageIndex(species.Id));
                 Assert.AreEqual(species.Id, player.Id);
                 Assert.NotNull(System.Array.Find(player.Skills, skill => skill.Id == "tackle"));
-                Assert.NotNull(System.Array.Find(player.Skills, skill => skill.Id == "flame-formula"));
+                Assert.NotNull(System.Array.Find(player.Skills, skill => skill.Type == SkillType.Formula));
                 Assert.Greater(player.AttackPower, 0);
                 Assert.Greater(player.DefensePower, 0);
             }
+        }
+
+        [Test]
+        public void ElevenFamilies_HaveElevenDistinctThemeVisualsAndIcons()
+        {
+            var visuals = new HashSet<SkillVisualKind>();
+            var icons = new HashSet<string>();
+            var ids = new HashSet<string>();
+            foreach (var line in GameData.Lines)
+            {
+                var player = GameData.PlayerMon(line.BaseId, 0);
+                var theme = System.Array.Find(player.Skills, skill => skill.Type == SkillType.Formula);
+                Assert.NotNull(theme, line.BaseId);
+                Assert.True(visuals.Add(theme.Visual), $"duplicate visual: {theme.Visual}");
+                Assert.True(icons.Add(theme.IconResource), $"duplicate icon: {theme.IconResource}");
+                Assert.True(ids.Add(theme.Id), $"duplicate skill id: {theme.Id}");
+            }
+            Assert.AreEqual(11, visuals.Count);
         }
     }
 }

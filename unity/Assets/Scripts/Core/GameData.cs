@@ -235,6 +235,7 @@ namespace Numeria.Core
             bool includeSkills, bool boss)
         {
             int clamped = GrowthSystem.ClampLevel(level);
+            SkillDef themeSkill = ThemeSkill(species);
             return new CombatantDef
             {
                 Id = species.Id,
@@ -253,11 +254,60 @@ namespace Numeria.Core
                     ? new[]
                     {
                         new SkillDef { Id = "tackle", Name = "Tackle", Cost = 0, Power = 2,
-                            BasePower = 2, Type = SkillType.Basic },
-                        new SkillDef { Id = "flame-formula", Name = species.SkillName, Cost = 3,
-                            Power = species.SkillPower, BasePower = 2, Type = SkillType.Formula },
+                            BasePower = 2, Type = SkillType.Basic,
+                            IconResource = "generated/NUMERIA_Unity_Battle_Assets/UI/Icons/Tackle",
+                            Visual = SkillVisualKind.Physical },
+                        themeSkill,
                     }
                     : Array.Empty<SkillDef>(),
+            };
+        }
+
+        /// <summary>
+        /// 每条进化家族共享一种数学魔法语义；形态升级只改变名称与威力，不偷换视觉语言。
+        /// </summary>
+        private static SkillDef ThemeSkill(SpeciesDef species)
+        {
+            string baseId = BaseId(species.Id);
+            string skillId;
+            string icon;
+            SkillVisualKind visual;
+            switch (baseId)
+            {
+                case "tenfin":
+                    skillId = "make-ten-wave"; icon = "make_ten_wave"; visual = SkillVisualKind.MakeTenWave; break;
+                case "shapling":
+                    skillId = "pattern-leaf"; icon = "pattern_leaf"; visual = SkillVisualKind.PatternLeaf; break;
+                case "countipillar":
+                    skillId = "count-crunch"; icon = "count_crunch"; visual = SkillVisualKind.CountCrunch; break;
+                case "doublit":
+                    skillId = "double-boulder"; icon = "double_boulder"; visual = SkillVisualKind.DoubleBoulder; break;
+                case "mirrowl":
+                    skillId = "symmetry-beam"; icon = "symmetry_beam"; visual = SkillVisualKind.SymmetryBeam; break;
+                case "paircub":
+                    skillId = "matching-paws"; icon = "matching_paws"; visual = SkillVisualKind.MatchingPaws; break;
+                case "subunny":
+                    skillId = "subtraction-dash"; icon = "subtraction_dash"; visual = SkillVisualKind.SubtractionDash; break;
+                case "pebblit":
+                    skillId = "tally-stone"; icon = "tally_stone"; visual = SkillVisualKind.TallyStone; break;
+                case "prismouse":
+                    skillId = "geometry-prism"; icon = "geometry_prism"; visual = SkillVisualKind.GeometryPrism; break;
+                case "seqkit":
+                    skillId = "sequence-spark"; icon = "sequence_spark"; visual = SkillVisualKind.SequenceSpark; break;
+                default:
+                    skillId = "equation-flame"; icon = "equation_flame"; visual = SkillVisualKind.EquationFlame; break;
+            }
+
+            return new SkillDef
+            {
+                Id = skillId,
+                Name = species.SkillName,
+                Cost = 3,
+                Power = species.SkillPower,
+                BasePower = 2,
+                Type = SkillType.Formula,
+                IconResource = $"generated/Skills/{icon}",
+                Visual = visual,
             };
         }
     }

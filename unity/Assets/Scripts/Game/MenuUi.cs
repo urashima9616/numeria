@@ -456,7 +456,7 @@ namespace Numeria.Game
 
             int atk = def.AttackPower + _progress.TotalAttackBonus(id);
             int defense = def.DefensePower + _progress.TotalDefenseBonus(id);
-            var formula = Array.Find(def.Skills, s => s.Id == "flame-formula");
+            var formula = Array.Find(def.Skills, s => s.Type == SkillType.Formula);
             BuildStatTable(identity.transform, def.MaxHp, atk, defense, formula);
             BuildAccessorySlots(identity.transform, id);
 
@@ -551,14 +551,17 @@ namespace Numeria.Game
                 $"{hp} / {hp}", atk.ToString(), defense.ToString(),
                 formula != null ? $"POWER {formula.Power}" : "-"
             };
-            string[] icons =
+            Sprite[] icons =
             {
-                "Art/Sprites/gem", "Art/Sprites/icon-sword", "Art/Sprites/shield", "Art/Sprites/icon-flame"
+                SpriteLib.One("Art/Sprites/gem"),
+                SpriteLib.One("Art/Sprites/icon-sword"),
+                SpriteLib.One("Art/Sprites/shield"),
+                formula != null ? SpriteLib.One(formula.IconResource) : SpriteLib.One("Art/Sprites/icon-flame")
             };
             for (int i = 0; i < labels.Length; i++)
             {
                 float y = -(i * 46 + 6);
-                var icon = Ui.SpriteImg(table.transform, $"Icon{i}", SpriteLib.One(icons[i]));
+                var icon = Ui.SpriteImg(table.transform, $"Icon{i}", icons[i]);
                 icon.preserveAspect = true;
                 if (i == 0) icon.color = Ui.Hex("#d94a3d");
                 Ui.Place(icon.rectTransform, new Vector2(0, 1), new Vector2(14, y), new Vector2(34, 34));
