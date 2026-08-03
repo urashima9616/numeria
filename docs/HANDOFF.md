@@ -36,7 +36,7 @@
 - `Progress`:save schema v8;Lv.99 上限、物种成长曲线、动态经验、每家族独立成长、独占饰品装备、金币/限量库存、Digit Crystal 主线与冒险记录 —— **新字段必须带默认值和迁移**
 - `GridMap`:ASCII 地图解析('.'草地 'T'树 'b'草丛 'C'宝箱 'P'传送门 'S'出生)+ BFS 寻路
 - `GameData`:30 只数灵、11 条进化线、各物种基础经验与 HP/ATK/DEF 每十级成长量;每家族配置独立数学亲和
-- 测试:`unity/Assets/Tests/EditMode/`,**91 个**;最后一次完整 headless 为 **91/91**
+- 测试:`unity/Assets/Tests/EditMode/`,**93 个**;最后一次完整 headless 为 **93/93**
 
 ### Game 层(`Numeria.Game`)
 - **全程序化 UGUI,零场景文件**——所有界面代码搭建,SampleScene 只是空壳,`BattleBootstrap` 用 `RuntimeInitializeOnLoadMethod` 拉起 `MapController`
@@ -44,10 +44,10 @@
 - `BattleController`:`Init(enemy, progress, tier, battleBg, onEnd)`;双方状态牌显示 ATK/DEF,普通怪 HP 按关卡在 8–12 / 14–20 / 22–30 浮动,Boss HP 20 / 36 / 54
 - `SkillDef` 保存独立 `IconResource` + `SkillVisualKind`;11 条家族各有专属像素图标与战斗弹道/命中节奏,不要再硬编码 `Flame_Formula`
 - `PuzzleUi`:谜题遮罩共用;第一关 10 内加减+图形/对称/规律,第二关 20 内并加入三项连加/转向/ABC,第三关 30 内并加入四项连加/2–5 步数列/ABCD;传送门三题必含算术
-- `MenuUi`:TEAM/ITEMS/RECORDS/SAVES/SETTINGS 五 tab,TEAM 可为每只数灵装备/卸下饰品,SAVES 提供十槽存取
+- `MenuUi`:TEAM/ITEMS/RECORDS/SAVES/SETTINGS 五 tab,TEAM 可为每只数灵装备/卸下饰品,SAVES 提供十槽存取;SETTINGS 返回主菜单前询问保存/不保存/取消
 - `Voice`:预烘焙语音播放,`VoiceKeys.Sanitize` 文本→文件名(**必须与 bake 脚本规则一致**);`Voice.Enabled` 全局开关(存档持久化)
 - `Sfx` / `Music`:独立短音效通道 + 双通道交叉淡化;六个 mood 已改用 8-bit Jukebox Lite 选曲,语音播放时自动 duck,Voice/SFX/Music 分别持久化开关
-- `SpriteLib`:资产加载约定(见 §5);`SaveSystem`:persistentDataPath 十槽 JSON + 旧单文件无损迁移,当前槽自动保存
+- `SpriteLib`:资产加载约定(见 §5);`SaveSystem`:persistentDataPath 十槽 JSON + 旧单文件无损迁移,当前槽自动保存;标题页明确提供新游戏/读取游戏,新游戏直接覆盖选中槽的干净 `Progress`(不要恢复旧版单文件状态)
 - **文字系统近期已被并行会话改为 TextMeshPro + Jersey 10 字体**(`Ui.Label` 返回 TextMeshProUGUI,共享动态 SDF 字体;Jersey10 缺失时回退 PressStart2P → 系统字体)。**不要退回 legacy Text**
 
 ### Editor 层
@@ -74,6 +74,7 @@
   - ✅ 第一轮美术演出:11 套家族技能图标与专属 VFX;Lucas 像素主角已接入地图,生成提示词见 `docs/generated-visual-assets.md`
   - ✅ 探索经济:每图 4 个主题数学符文、战斗金币、三位商人挑战、永久限量库存、消耗品/饰品/进化石平衡,见 `docs/economy-design.md`
   - ✅ Lucas 主线:标题页与有声开场、三位 Crystal Guardian 的 Boss 前后对白、三枚 Digit Crystal、旧存档 v8 无损补发及结局节点,见 `docs/main-story.md`
+  - ✅ 存档入口重构:标题页选择新游戏/读取游戏与十槽存档;新游戏真正清空宝箱等世界状态;设置页以保存提示返回主菜单
   - ⬜ 未做:JSON 数据驱动落地(现在数值在 GameData/MapDefs 硬编码)、自适应难度引擎(错题变形复现/隐形升降档)、家长面板(PIN + 掌握度热图)
 - ⬜ **P4**:iOS 构建、真机、TestFlight(免费 Apple ID 7 天签名 vs $99/年,已告知用户)
 

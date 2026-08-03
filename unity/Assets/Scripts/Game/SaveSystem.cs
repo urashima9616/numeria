@@ -39,6 +39,18 @@ namespace Numeria.Game
 
         public static bool IsValidSlot(int slot) => slot >= 1 && slot <= SlotCount;
 
+        /// <summary>
+        /// 在指定槽创建一份完全干净的新进度。直接覆盖目标槽，而不是先删除再 Load，
+        /// 因此旧版单文件存档不会被迁移回来，已开启宝箱等世界状态也不会残留。
+        /// </summary>
+        public static Progress StartNewGame(int slot)
+        {
+            if (!IsValidSlot(slot)) throw new ArgumentOutOfRangeException(nameof(slot));
+            var progress = new Progress();
+            SaveToSlot(progress, slot);
+            return progress;
+        }
+
         public static Progress Load()
         {
             var loaded = LoadFromSlot(ActiveSlot);

@@ -15,7 +15,25 @@ namespace Numeria.Game
     public class MapController : MonoBehaviour
     {
         private const double EncounterChance = 0.35;
-        private static bool _sessionStarted;
+
+        private enum BootMode
+        {
+            Title,
+            Resume,
+            NewGame
+        }
+
+        // AddComponent 会同步执行 Awake；先设置这两个值即可把明确选择的存档传给新地图。
+        private static BootMode _nextBootMode = BootMode.Title;
+        private static Progress _nextProgress;
+
+        // 项目关闭了 Enter Play Mode 的 domain reload；每次真正启动仍必须回到主菜单。
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetBootState()
+        {
+            _nextBootMode = BootMode.Title;
+            _nextProgress = null;
+        }
 
         private MapDef _def;
         private GridMap _map;
@@ -46,7 +64,10 @@ namespace Numeria.Game
 
         private void Awake()
         {
-            _progress = SaveSystem.Load();
+            BootMode bootMode = _nextBootMode;
+            _nextBootMode = BootMode.Resume;
+            _progress = _nextProgress ?? SaveSystem.Load();
+            _nextProgress = null;
             Voice.Enabled = _progress.VoiceEnabled;
             Sfx.Enabled = _progress.SfxEnabled;
             Music.Enabled = _progress.MusicEnabled;
@@ -62,15 +83,17 @@ namespace Numeria.Game
             SetupCamera();
             UpdateHud();
             Music.PlayMap(_def.Id);
-            if (_sessionStarted)
-            {
-                _voice.Say(_def.WelcomeLine);
-            }
-            else
+            if (bootMode == BootMode.Title)
             {
                 _busy = true;
                 StartCoroutine(StartScreenRoutine());
             }
+            else if (bootMode == BootMode.NewGame)
+            {
+                _busy = true;
+                StartCoroutine(NewGameIntroRoutine());
+            }
+            else _voice.Say(_def.WelcomeLine);
         }
 
         // ---------- 世界构建 ----------
@@ -310,28 +333,30 @@ namespace Numeria.Game
                     UpdateHud();
                     _busy = false;
                 },
-                onReset: () =>
+                onReturnToMenu: saveFirst =>
                 {
-                    SaveSystem.Delete();
-                    _sessionStarted = false;
-                    Respawn();
+                    if (saveFirst) SaveSystem.Save(_progress);
+                    // 不保存时不传递内存中的进度；标题背景从最后一次磁盘存档重新构建。
+                    Respawn(null, BootMode.Title);
                 },
                 onTravel: mapId =>
                 {
                     _progress.CurrentMap = mapId;
                     SaveSystem.Save(_progress);
-                    Respawn();
+                    Respawn(_progress);
                 },
                 onLoad: loaded =>
                 {
                     _progress = loaded;
-                    Respawn();
+                    Respawn(_progress);
                 });
         }
 
-        /// <summary>销毁并重建地图控制器(切图/重置共用)。</summary>
-        private void Respawn()
+        /// <summary>销毁并重建地图控制器；可明确指定下一次启动所使用的进度和入口。</summary>
+        private void Respawn(Progress progress = null, BootMode bootMode = BootMode.Resume)
         {
+            _nextProgress = progress;
+            _nextBootMode = bootMode;
             var fresh = new GameObject("Map");
             fresh.AddComponent<MapController>();
             Destroy(gameObject);
@@ -472,42 +497,141 @@ namespace Numeria.Game
 
             var crystal = Ui.SpriteImg(panel.transform, "DigitCrystal", SpriteLib.One("generated/Story/digit_crystal"));
             crystal.preserveAspect = true;
-            Ui.PlaceCentered(crystal.rectTransform, new Vector2(.5f, .5f), new Vector2(0, 28), new Vector2(230, 230));
+            Ui.PlaceCentered(crystal.rectTransform, new Vector2(.5f, .5f), new Vector2(0, 20), new Vector2(140, 140));
             var quest = Ui.Label(panel.transform, "Quest", "BEFRIEND MATHMONS  •  SOLVE MATH MAGIC  •  FIND 3 CRYSTALS",
                 25, Ui.Ink);
-            Ui.Place(quest.rectTransform, new Vector2(.5f, 0), new Vector2(0, 138), new Vector2(820, 50));
+            Ui.Place(quest.rectTransform, new Vector2(.5f, 0), new Vector2(0, 200), new Vector2(820, 50));
 
             var lucas = Ui.SpriteImg(cover.transform, "Lucas", SpriteLib.LucasExplorer());
             lucas.preserveAspect = true;
             Ui.PlaceCentered(lucas.rectTransform, new Vector2(0, .5f), new Vector2(235, -5), new Vector2(430, 720));
 
-            bool begin = false;
-            string label = _progress.StoryIntroSeen ? "CONTINUE ADVENTURE" : "BEGIN ADVENTURE";
-            var button = Ui.Btn(panel.transform, "Begin", label, 34);
-            Ui.Place((RectTransform)button.transform, new Vector2(.5f, 0), new Vector2(0, 42), new Vector2(480, 82));
-            button.onClick.AddListener(() => begin = true);
-            yield return new WaitUntil(() => begin);
-            Destroy(cover.gameObject);
+            bool hasSave = false;
+            for (int slot = 1; slot <= SaveSystem.SlotCount; slot++)
+                hasSave |= SaveSystem.SlotExists(slot);
 
-            _sessionStarted = true;
-            if (!_progress.StoryIntroSeen)
+            while (true)
             {
-                yield return DialogueRoutine("NARRATOR",
-                    "Lucas wakes beneath a sky full of glowing numbers.", SpriteLib.LucasExplorer());
-                yield return DialogueRoutine("LUCAS", "Where am I? This isn't home.", SpriteLib.LucasExplorer());
-                yield return DialogueRoutine("VOICE OF NUMERIA",
-                    "Welcome to Numeria, Lucas. The gate home has lost its power.",
-                    SpriteLib.One("generated/Story/digit_crystal"));
-                yield return DialogueRoutine("VOICE OF NUMERIA",
-                    "Three Digit Crystals can wake it. Seek the Crystal Guardians.",
-                    SpriteLib.One("generated/Story/digit_crystal"));
-                yield return DialogueRoutine("ADDMANDER",
-                    "Let's be brave, make Mathmon friends, and solve this together!",
-                    SpriteLib.MapSprite("addmander"));
-                _progress.StoryIntroSeen = true;
-                SaveSystem.Save(_progress);
-            }
+                int action = 0;
+                var newGame = Ui.Btn(panel.transform, "BtnNewGame", "START A NEW GAME", 32);
+                Ui.Place((RectTransform)newGame.transform, new Vector2(.5f, 0), new Vector2(0, 112),
+                    new Vector2(520, 76));
+                newGame.onClick.AddListener(() => action = 1);
+                var loadGame = Ui.Btn(panel.transform, "BtnLoadGame", "LOAD GAME", 32);
+                Ui.Place((RectTransform)loadGame.transform, new Vector2(.5f, 0), new Vector2(0, 18),
+                    new Vector2(520, 76));
+                loadGame.interactable = hasSave;
+                loadGame.onClick.AddListener(() => action = 2);
+                yield return new WaitUntil(() => action != 0);
 
+                Destroy(newGame.gameObject);
+                Destroy(loadGame.gameObject);
+                panel.gameObject.SetActive(false);
+                lucas.gameObject.SetActive(false);
+
+                var picker = Ui.Img(cover.transform, "TitleSlotPicker", new Color(.99f, .96f, .84f, .98f));
+                Ui.PlaceCentered(picker.rectTransform, new Vector2(.5f, .5f), Vector2.zero, new Vector2(1080, 730));
+                Ui.AddOutline(picker.gameObject);
+                string heading = action == 1 ? "CHOOSE A SLOT FOR YOUR NEW GAME" : "CHOOSE A GAME TO LOAD";
+                var pickerTitle = Ui.DisplayLabel(picker.transform, "PickerTitle", heading, 40, Ui.Border);
+                Ui.Place(pickerTitle.rectTransform, new Vector2(.5f, 1), new Vector2(0, -28), new Vector2(980, 70));
+
+                int selectedSlot = 0;
+                bool back = false;
+                for (int slot = 1; slot <= SaveSystem.SlotCount; slot++)
+                {
+                    int capturedSlot = slot;
+                    var summary = SaveSystem.GetSlotSummary(slot);
+                    string details = summary.Exists
+                        ? $"{summary.MathmonName.ToUpperInvariant()}  LV.{summary.Level}  {summary.MapName.ToUpperInvariant()}"
+                        : "EMPTY";
+                    string label = $"SLOT {slot}\n{details}";
+                    int column = (slot - 1) / 5;
+                    int row = (slot - 1) % 5;
+                    var slotButton = Ui.Btn(picker.transform, $"TitleSlot{slot}", label, 23);
+                    Ui.PlaceCentered((RectTransform)slotButton.transform, new Vector2(.5f, .5f),
+                        new Vector2(column == 0 ? -250 : 250, 205 - row * 92), new Vector2(460, 78));
+                    slotButton.interactable = action == 1 || summary.Exists;
+                    slotButton.onClick.AddListener(() => selectedSlot = capturedSlot);
+                }
+
+                var backButton = Ui.Btn(picker.transform, "BtnBackToTitle", "BACK", 25);
+                Ui.Place((RectTransform)backButton.transform, new Vector2(.5f, 0), new Vector2(0, 24),
+                    new Vector2(300, 64));
+                backButton.onClick.AddListener(() => back = true);
+                yield return new WaitUntil(() => selectedSlot != 0 || back);
+                if (back)
+                {
+                    Destroy(picker.gameObject);
+                    panel.gameObject.SetActive(true);
+                    lucas.gameObject.SetActive(true);
+                    continue;
+                }
+
+                if (action == 1 && SaveSystem.SlotExists(selectedSlot))
+                {
+                    bool answered = false;
+                    bool overwrite = false;
+                    var confirm = Ui.Img(cover.transform, "NewGameConfirm", new Color(0, 0, 0, .72f));
+                    Ui.Stretch(confirm.rectTransform);
+                    var confirmPanel = Ui.Img(confirm.transform, "Panel", Ui.PlateBg);
+                    Ui.PlaceCentered(confirmPanel.rectTransform, new Vector2(.5f, .5f), Vector2.zero,
+                        new Vector2(760, 340));
+                    Ui.AddOutline(confirmPanel.gameObject);
+                    var warning = Ui.Label(confirmPanel.transform, "Warning",
+                        $"START A NEW GAME IN SLOT {selectedSlot}?\nThe existing game in this slot will be replaced.",
+                        29, Ui.Ink);
+                    Ui.Place(warning.rectTransform, new Vector2(.5f, 1), new Vector2(0, -54),
+                        new Vector2(700, 110));
+                    var yes = Ui.Btn(confirmPanel.transform, "BtnConfirmNewGame", "REPLACE & START", 23);
+                    Ui.Place((RectTransform)yes.transform, new Vector2(.5f, 0), new Vector2(-155, 48),
+                        new Vector2(280, 72));
+                    yes.onClick.AddListener(() => { overwrite = true; answered = true; });
+                    var no = Ui.Btn(confirmPanel.transform, "BtnCancelNewGame", "CANCEL", 23);
+                    Ui.Place((RectTransform)no.transform, new Vector2(.5f, 0), new Vector2(155, 48),
+                        new Vector2(280, 72));
+                    no.onClick.AddListener(() => answered = true);
+                    yield return new WaitUntil(() => answered);
+                    Destroy(confirm.gameObject);
+                    if (!overwrite)
+                    {
+                        Destroy(picker.gameObject);
+                        panel.gameObject.SetActive(true);
+                        lucas.gameObject.SetActive(true);
+                        continue;
+                    }
+                }
+
+                if (action == 1)
+                {
+                    var fresh = SaveSystem.StartNewGame(selectedSlot);
+                    Respawn(fresh, BootMode.NewGame);
+                }
+                else
+                {
+                    var loaded = SaveSystem.LoadFromSlot(selectedSlot);
+                    if (loaded != null) Respawn(loaded);
+                }
+                yield break;
+            }
+        }
+
+        private IEnumerator NewGameIntroRoutine()
+        {
+            yield return DialogueRoutine("NARRATOR",
+                "Lucas wakes beneath a sky full of glowing numbers.", SpriteLib.LucasExplorer());
+            yield return DialogueRoutine("LUCAS", "Where am I? This isn't home.", SpriteLib.LucasExplorer());
+            yield return DialogueRoutine("VOICE OF NUMERIA",
+                "Welcome to Numeria, Lucas. The gate home has lost its power.",
+                SpriteLib.One("generated/Story/digit_crystal"));
+            yield return DialogueRoutine("VOICE OF NUMERIA",
+                "Three Digit Crystals can wake it. Seek the Crystal Guardians.",
+                SpriteLib.One("generated/Story/digit_crystal"));
+            yield return DialogueRoutine("ADDMANDER",
+                "Let's be brave, make Mathmon friends, and solve this together!",
+                SpriteLib.MapSprite("addmander"));
+            _progress.StoryIntroSeen = true;
+            SaveSystem.Save(_progress);
             _voice.Say(_def.WelcomeLine);
             _busy = false;
         }

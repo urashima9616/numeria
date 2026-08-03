@@ -84,6 +84,44 @@ namespace Numeria.Game.Tests
         }
 
         [Test]
+        public void StartNewGameReplacesLegacyWorldStateWithCleanProgress()
+        {
+            string legacy = Path.Combine(_root, "numeria-save.json");
+            File.WriteAllText(legacy,
+                "{\"SaveVersion\":5,\"StoryIntroSeen\":true,\"OpenedChests\":[\"forest-chest-7-3\"]," +
+                "\"BossBeaten\":true,\"ActiveMonId\":\"addmander\"}");
+
+            var migrated = SaveSystem.Load();
+            Assert.True(migrated.StoryIntroSeen);
+            Assert.Contains("forest-chest-7-3", migrated.OpenedChests);
+
+            var fresh = SaveSystem.StartNewGame(1);
+            Assert.False(fresh.StoryIntroSeen);
+            Assert.IsEmpty(fresh.OpenedChests);
+            Assert.False(fresh.BossBeaten);
+
+            var reloaded = SaveSystem.Load();
+            Assert.False(reloaded.StoryIntroSeen);
+            Assert.IsEmpty(reloaded.OpenedChests);
+            Assert.False(reloaded.BossBeaten);
+            Assert.True(File.Exists(legacy), "Starting a new game should not destructively delete the legacy backup.");
+        }
+
+        [Test]
+        public void StartNewGameOnlyOverwritesTheSelectedSlot()
+        {
+            var existing = new Progress();
+            existing.OpenedChests.Add("mountains-chest-4-4");
+            SaveSystem.SaveToSlot(existing, 2);
+
+            var fresh = SaveSystem.StartNewGame(1);
+
+            Assert.AreEqual(1, SaveSystem.ActiveSlot);
+            Assert.IsEmpty(fresh.OpenedChests);
+            Assert.Contains("mountains-chest-4-4", SaveSystem.LoadFromSlot(2).OpenedChests);
+        }
+
+        [Test]
         public void EquippedAccessoriesRoundTripInsideTheirOwnSaveSlot()
         {
             var progress = new Progress();
@@ -107,7 +145,7 @@ namespace Numeria.Game.Tests
             {
                 Sfx.Enabled = false; // EditMode 不允许 Sfx 创建 DontDestroyOnLoad AudioSource。
                 var progress = new Progress();
-                MenuUi.Open((RectTransform)rootObject.transform, progress, () => { }, () => { },
+                MenuUi.Open((RectTransform)rootObject.transform, progress, () => { }, _ => { },
                     _ => { }, _ => { });
                 Assert.NotNull(Find(rootObject, "AccessorySlot0"));
                 Assert.NotNull(Find(rootObject, "AccessorySlot1"));
@@ -117,6 +155,16 @@ namespace Numeria.Game.Tests
                 savesTab.GetComponent<Button>().onClick.Invoke();
                 for (int slot = 1; slot <= SaveSystem.SlotCount; slot++)
                     Assert.NotNull(Find(rootObject, $"SaveSlot{slot}"));
+
+                var settingsTab = Find(rootObject, "Tab-settings");
+                settingsTab.GetComponent<Button>().onClick.Invoke();
+                Assert.NotNull(Find(rootObject, "BtnReturnToMenu"));
+                Assert.IsNull(Find(rootObject, "BtnReset"));
+                Find(rootObject, "BtnReturnToMenu").GetComponent<Button>().onClick.Invoke();
+                Assert.NotNull(Find(rootObject, "ReturnMenuConfirm"));
+                Assert.NotNull(Find(rootObject, "BtnSaveAndReturn"));
+                Assert.NotNull(Find(rootObject, "BtnReturnWithoutSaving"));
+                Assert.NotNull(Find(rootObject, "BtnCancelReturn"));
             }
             finally
             {

@@ -16,7 +16,7 @@ namespace Numeria.Game
     {
         private readonly Progress _progress;
         private readonly Action _onClose;
-        private readonly Action _onReset;
+        private readonly Action<bool> _onReturnToMenu;
         private readonly Action<string> _onTravel;
         private readonly Action<Progress> _onLoad;
         private readonly RectTransform _canvasRoot;
@@ -37,19 +37,19 @@ namespace Numeria.Game
         private static readonly Color HpGreen = Ui.Hex("#7ac974");
         private static readonly Color HpTrack = Ui.Hex("#e3d9bd");
 
-        public static void Open(RectTransform canvasRoot, Progress progress, Action onClose, Action onReset,
+        public static void Open(RectTransform canvasRoot, Progress progress, Action onClose, Action<bool> onReturnToMenu,
             Action<string> onTravel, Action<Progress> onLoad)
         {
-            new MenuUi(canvasRoot, progress, onClose, onReset, onTravel, onLoad).Build();
+            new MenuUi(canvasRoot, progress, onClose, onReturnToMenu, onTravel, onLoad).Build();
         }
 
-        private MenuUi(RectTransform canvasRoot, Progress progress, Action onClose, Action onReset,
+        private MenuUi(RectTransform canvasRoot, Progress progress, Action onClose, Action<bool> onReturnToMenu,
             Action<string> onTravel, Action<Progress> onLoad)
         {
             _canvasRoot = canvasRoot;
             _progress = progress;
             _onClose = onClose;
-            _onReset = onReset;
+            _onReturnToMenu = onReturnToMenu;
             _onTravel = onTravel;
             _onLoad = onLoad;
             _selectedId = progress.ActiveMonId;
@@ -906,12 +906,12 @@ namespace Numeria.Game
                 skyBtn.onClick.AddListener(() => CloseThen(() => _onTravel("sky")));
             });
 
-            SectionRow(content, "Danger Zone");
-            ListRow(content, "DangerRow", 66, row =>
+            SectionRow(content, "Game");
+            ListRow(content, "GameRow", 66, row =>
             {
                 FillButtonRow(row);
-                var resetBtn = Ui.Btn(row, "BtnReset", "Reset Adventure", 22);
-                resetBtn.onClick.AddListener(ConfirmReset);
+                var menuBtn = Ui.Btn(row, "BtnReturnToMenu", "Return to Menu", 22);
+                menuBtn.onClick.AddListener(ConfirmReturnToMenu);
                 var quitBtn = Ui.Btn(row, "BtnQuit", "Quit Game", 22);
                 quitBtn.onClick.AddListener(() =>
                 {
@@ -946,27 +946,36 @@ namespace Numeria.Game
             action();
         }
 
-        private void ConfirmReset()
+        private void ConfirmReturnToMenu()
         {
-            var confirm = Ui.Img(_canvasRoot, "ConfirmOverlay", new Color(0, 0, 0, 0.7f));
+            var confirm = Ui.Img(_canvasRoot, "ReturnMenuConfirm", new Color(0, 0, 0, 0.7f));
             Ui.Stretch(confirm.rectTransform);
             var panel = Ui.Img(confirm.transform, "ConfirmPanel", Cream);
-            Ui.Place(panel.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(700, 320));
+            Ui.Place(panel.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(940, 390));
             Ui.AddOutline(panel.gameObject);
-            var msg = Ui.Label(panel.transform, "Msg", "Start a brand new adventure?\nAll progress will be lost!", 28, Ui.Ink);
-            Ui.Place(msg.rectTransform, new Vector2(0.5f, 1f), new Vector2(0, -70), new Vector2(640, 90));
+            var msg = Ui.Label(panel.transform, "Msg",
+                "RETURN TO THE MAIN MENU?\nWould you like to save your current progress first?", 28, Ui.Ink);
+            Ui.Place(msg.rectTransform, new Vector2(0.5f, 1f), new Vector2(0, -58), new Vector2(860, 110));
 
-            var yes = Ui.Btn(panel.transform, "BtnYes", "Yes, restart", 24);
-            Ui.Place((RectTransform)yes.transform, new Vector2(0.5f, 0f), new Vector2(-160, 60), new Vector2(280, 74));
-            yes.onClick.AddListener(() =>
+            var save = Ui.Btn(panel.transform, "BtnSaveAndReturn", "SAVE & RETURN", 23);
+            Ui.Place((RectTransform)save.transform, new Vector2(0.5f, 0f), new Vector2(-290, 64), new Vector2(270, 78));
+            save.onClick.AddListener(() =>
             {
                 UnityEngine.Object.Destroy(confirm.gameObject);
-                CloseThen(_onReset);
+                CloseThen(() => _onReturnToMenu(true));
             });
 
-            var no = Ui.Btn(panel.transform, "BtnNo", "No, keep going", 24);
-            Ui.Place((RectTransform)no.transform, new Vector2(0.5f, 0f), new Vector2(160, 60), new Vector2(280, 74));
-            no.onClick.AddListener(() => UnityEngine.Object.Destroy(confirm.gameObject));
+            var discard = Ui.Btn(panel.transform, "BtnReturnWithoutSaving", "DON'T SAVE", 23);
+            Ui.Place((RectTransform)discard.transform, new Vector2(0.5f, 0f), Vector2.up * 64, new Vector2(270, 78));
+            discard.onClick.AddListener(() =>
+            {
+                UnityEngine.Object.Destroy(confirm.gameObject);
+                CloseThen(() => _onReturnToMenu(false));
+            });
+
+            var cancel = Ui.Btn(panel.transform, "BtnCancelReturn", "CANCEL", 23);
+            Ui.Place((RectTransform)cancel.transform, new Vector2(0.5f, 0f), new Vector2(290, 64), new Vector2(270, 78));
+            cancel.onClick.AddListener(() => UnityEngine.Object.Destroy(confirm.gameObject));
         }
     }
 }

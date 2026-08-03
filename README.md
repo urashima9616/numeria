@@ -19,7 +19,7 @@ their skills, and help Lucas restore three Digit Crystals so he can reopen the l
 | P3 — Full game systems | 🔶 Playable / polishing | Three maps, 30 Mathmons, evolution, economy, merchants, Lucas story |
 | P4 — iOS delivery | ⬜ Not started | Device build, signing, TestFlight and final performance QA |
 
-The latest automated baseline is **91/91 Unity EditMode tests** and **14/14 Node prototype tests**.
+The latest automated baseline is **93/93 Unity EditMode tests** and **14/14 Node prototype tests**.
 The save format is currently **schema v8**, with non-destructive migration for older saves.
 
 ## Design principles
@@ -64,12 +64,13 @@ The save format is currently **schema v8**, with non-destructive migration for o
 
 ### Story and presentation
 
-- A title screen and narrated introduction starring Lucas and Addmander.
+- A title screen with **Start a New Game** and **Load Game**, ten-slot selection, overwrite confirmation, and a
+  narrated introduction starring Lucas and Addmander.
 - Lucas explores Numeria while the selected Mathmon remains the active battle companion.
 - Elder Rowan, Keeper Orin, and Astronomer Lyra guard the three Digit Crystals through powerful Mathmons.
 - Guardian conversations appear before and after each boss, leading to a three-crystal ending while leaving free
   exploration available.
-- TEAM, ITEMS, RECORDS, SAVES, and SETTINGS menus; ten independent save slots.
+- TEAM, ITEMS, RECORDS, SAVES, and SETTINGS menus; ten independent save slots and a save-aware return-to-menu flow.
 - Unified TextMeshPro/Jersey 10 typography, generated pixel-art characters and icons, ten SFX cues, and six
   mood-based 8-bit music tracks with crossfading and narration ducking.
 
