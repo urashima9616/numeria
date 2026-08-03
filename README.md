@@ -7,7 +7,7 @@ their skills, and help Lucas restore three Digit Crystals so he can reopen the l
 > Current state: a playable three-region Unity build with story, exploration, battles, catching, evolution,
 > economy, shops, saves, offline narration, and a 30-Mathmon launch roster. iOS/TestFlight work has not started.
 
-![Numeria battle prototype](docs/images/battle-screenshot.jpg)
+![Numeria battle — Addmander casting math magic against Countipillar](docs/images/numeria-readme-cover.png)
 
 ## Current development status
 
