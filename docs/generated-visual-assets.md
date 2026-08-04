@@ -47,6 +47,37 @@ reference. Existing Addmander artwork was used only as a rendering-style referen
 
 The original photo is intentionally not copied into the repository.
 
+## Four-element roster and Fever Desert expansion
+
+The built-in ImageGen workflow produced 20 original three-stage family sheets (60 production form icons), four
+shared elemental skill icons, the Fever Desert battle background, merchant Nia, and Sage Solara. Production files
+live in `unity/Assets/Resources/generated/`; source generations remain in the local Codex generation cache.
+
+The family-sheet prompt template asked for one left-to-right three-form evolution line on a flat chroma-key
+background, with each form fully separated and centered in an equal cell. It locked the established Numeria
+language: friendly original creature design, crisp hand-authored 16-bit pixels, dark forest-green outline, limited
+elemental palette, readable silhouettes, no text, frame, floor, watermark, logo, trademark, or existing franchise
+character. The 20 subject briefs were:
+
+- **Fairy:** Glimlet, Moonmote, Charmite, Wishwink, and Pixipip families — number lights, moon phases, matching
+  hearts, constellation counting, and prism symmetry.
+- **Dragon:** Addling, Dracount, Loopling, Twinsting, and Shardrake families — addition scales, tally horns,
+  spirals, doubling, and geometric crystal armor.
+- **Electric:** Voltlet, Sparkit, Chargecub, Flickerfin, and Switchick families — sums, sequences, doubling,
+  luminous geometry, and mirror symmetry.
+- **Grass:** Budsum, Clovercub, Sprouturn, Mossbit, and Seedseq families — addition blooms, four-leaf counting,
+  fern symmetry, doubling moss, and ordered seed patterns.
+
+`tools/import-evolution-sheet.sh` runs the imagegen skill's chroma removal helper and
+`tools/split-evolution-sheet.py`, which finds the three separated subjects and exports square 512px nearest-neighbor
+icons. This makes the same production pipeline reusable for future families.
+
+The four elemental skill prompts used the shared icon prompt above with these subjects: a fairy number-star
+glimmer, a coiling dragon arithmetic spiral, a jagged electric equation bolt, and a symmetrical grass bloom.
+The desert prompt requested a wide 16-bit battlefield of glowing dunes, number-shaped sandstone ruins, sparse
+dry grass and distant heat haze, with clear foreground platforms and no characters or UI. Nia and Solara used the
+same one-character overworld/portrait rules as the existing merchants and guardians.
+
 ## Exploration economy assets
 
 The coin and all three merchants were generated as one-character/one-object transparent gameplay sprites,
@@ -71,7 +102,7 @@ skill and Lucas assets.
 
 The built-in ImageGen workflow also produced the main-story portraits under
 `unity/Assets/Resources/generated/Story/`. Lucas and Tessa were supplied only as rendering-language references.
-All four prompts asked for polished hand-authored 16-bit pixel clusters, a dark forest-green outline, readable
+All guardian prompts asked for polished hand-authored 16-bit pixel clusters, a dark forest-green outline, readable
 silhouette, centered subject and a perfectly flat `#FF00FF` removal background with no scenery, shadow, frame,
 watermark, trademark or existing franchise character.
 
@@ -81,8 +112,10 @@ watermark, trademark or existing franchise character.
   geometric stone clasps, an amber number sash and a sapphire-gold crystal.
 - `guardian_lyra.png`: Astronomer Lyra, an adult woman with a dark-blue high braid, pale-cyan geometric coat,
   cloud-white cape, golden compass ornaments and a violet-cyan crystal.
+- `guardian_solara.png`: Sage Solara, a warm desert scholar in amber and sandstone robes with sun-disc number
+  ornaments, holding the fourth gold-orange Digit Crystal.
 - `digit_crystal.png`: one upright faceted story-key crystal with green, blue, violet and gold light bands, a
-  glowing numeral 3 and three arithmetic sparks; explicitly distinct from the coin and orange battle gems.
+  glowing numeral 4 and orbiting arithmetic sparks; explicitly distinct from the coin and orange battle gems.
 
 These images are original fictional characters. The generated chroma-key sources remain in the local Codex
 generation cache; the repository contains only the transparent production PNGs.

@@ -113,11 +113,13 @@ namespace Numeria.Game
                     var world = TileWorld(x, y);
                     int hash = (x * 73856093) ^ (y * 19349663);
                     int variant = ((hash % 97) + 97) % 97;
-                    if (_def.Theme == "sky" || _def.Theme == "mountains")
+                    if (_def.Theme == "sky" || _def.Theme == "mountains" || _def.Theme == "desert")
                     {
-                        AddSprite(SpriteLib.Cainos("TX Tileset Stone Ground",
+                        var ground = AddSprite(SpriteLib.Cainos("TX Tileset Stone Ground",
                             $"TX Tileset Stone Ground_{variant % 50}"), world, 0,
-                            _def.Theme == "sky" ? "sky-stone" : "mountain-stone");
+                            _def.Theme == "sky" ? "sky-stone" :
+                            _def.Theme == "desert" ? "desert-sand" : "mountain-stone");
+                        if (_def.Theme == "desert") ground.color = Ui.Hex("#d9b96e");
                     }
                     else
                     {
@@ -143,6 +145,14 @@ namespace Numeria.Game
                                     SortOrder(world.y), "mountain-ridge");
                                 ridge.transform.localScale = Vector3.one * (variant % 3 == 0 ? 1.15f : 1f);
                             }
+                            else if (_def.Theme == "desert")
+                            {
+                                string ruin = variant % 4 == 0 ? "TX Props Pillar Broken" :
+                                    $"TX Props Stone T{(variant % 7) + 1}";
+                                var desertRock = AddSprite(SpriteLib.Cainos("TX Props", ruin), world,
+                                    SortOrder(world.y), "desert-ruin");
+                                desertRock.color = Ui.Hex("#c98c4a");
+                            }
                             else
                             {
                                 int t = (variant % 3) + 1;
@@ -162,6 +172,13 @@ namespace Numeria.Game
                                 var scrub = AddSprite(SpriteLib.Cainos("TX Props", $"TX Props Grass {(char)('A' + variant % 10)}"),
                                     world, SortOrder(world.y), "mountain-scrub");
                                 scrub.color = Ui.Hex("#a5ad78");
+                            }
+                            else if (_def.Theme == "desert")
+                            {
+                                var dryGrass = AddSprite(SpriteLib.Cainos("TX Props",
+                                    $"TX Props Grass {(char)('A' + variant % 10)}"), world,
+                                    SortOrder(world.y), "desert-scrub");
+                                dryGrass.color = Ui.Hex("#9f8a3e");
                             }
                             else
                             {
@@ -367,7 +384,7 @@ namespace Numeria.Game
             var growth = _progress.ActiveGrowth;
             var combatant = GameData.PlayerMon(_progress.ActiveMonId, growth.Stage, growth.Level);
             string xp = growth.Level >= GrowthSystem.MaxLevel ? "MAX" : $"{growth.Xp}/{growth.XpToNext}";
-            _hudText.text = $"{_progress.Coins} COINS   {_progress.DigitCrystalCount}/3 CRYSTALS   " +
+            _hudText.text = $"{_progress.Coins} COINS   {_progress.DigitCrystalCount}/4 CRYSTALS   " +
                             $"{PlayerName} Lv.{growth.Level}  XP {xp}  " +
                             $"ATK {combatant.AttackPower + _progress.TotalAttackBonus(_progress.ActiveMonId)}  " +
                             $"DEF {combatant.DefensePower + _progress.TotalDefenseBonus(_progress.ActiveMonId)}  {_def.DisplayName}";
@@ -498,7 +515,7 @@ namespace Numeria.Game
             var crystal = Ui.SpriteImg(panel.transform, "DigitCrystal", SpriteLib.One("generated/Story/digit_crystal"));
             crystal.preserveAspect = true;
             Ui.PlaceCentered(crystal.rectTransform, new Vector2(.5f, .5f), new Vector2(0, 20), new Vector2(140, 140));
-            var quest = Ui.Label(panel.transform, "Quest", "BEFRIEND MATHMONS  •  SOLVE MATH MAGIC  •  FIND 3 CRYSTALS",
+            var quest = Ui.Label(panel.transform, "Quest", "BEFRIEND MATHMONS  •  SOLVE MATH MAGIC  •  FIND 4 CRYSTALS",
                 25, Ui.Ink);
             Ui.Place(quest.rectTransform, new Vector2(.5f, 0), new Vector2(0, 200), new Vector2(820, 50));
 
@@ -625,7 +642,7 @@ namespace Numeria.Game
                 "Welcome to Numeria, Lucas. The gate home has lost its power.",
                 SpriteLib.One("generated/Story/digit_crystal"));
             yield return DialogueRoutine("VOICE OF NUMERIA",
-                "Three Digit Crystals can wake it. Seek the Crystal Guardians.",
+                "Four Digit Crystals can wake it. Seek the Crystal Guardians.",
                 SpriteLib.One("generated/Story/digit_crystal"));
             yield return DialogueRoutine("ADDMANDER",
                 "Let's be brave, make Mathmon friends, and solve this together!",
@@ -729,10 +746,10 @@ namespace Numeria.Game
                         {
                             yield return DialogueRoutine(_def.GuardianName, _def.GuardianVictoryLine,
                                 SpriteLib.One(_def.GuardianSpriteResource));
-                            if (_progress.DigitCrystalCount >= 3)
+                            if (_progress.DigitCrystalCount == 4)
                             {
                                 yield return DialogueRoutine("DIGIT CRYSTALS",
-                                    "The three Digit Crystals sing together. The gate home is awake!",
+                                    "The four Digit Crystals sing together. The gate home is awake!",
                                     SpriteLib.One("generated/Story/digit_crystal"));
                                 yield return DialogueRoutine("LUCAS",
                                     "I can go home when I am ready—and Numeria will always be waiting.",
@@ -744,43 +761,66 @@ namespace Numeria.Game
                 case BattleEnd.Caught:
                     bool joined = false;
                     bool duplicate = false;
-                    CatchRosterResult rosterResult = _progress.AddCaught(enemy.Id);
+                    bool upgraded = false;
+                    int catchXp = 0;
+                    CatchRosterResult rosterResult = _progress.AddCaught(enemy.Id, enemy.Level);
                     if (rosterResult == CatchRosterResult.Added)
                     {
                         joined = true;
+                        catchXp = xpReward;
                     }
                     else if (rosterResult == CatchRosterResult.Duplicate)
                     {
                         duplicate = true;
+                        catchXp = CatchSystem.ConversionXp(xpReward);
+                    }
+                    else if (rosterResult == CatchRosterResult.UpgradeAvailable)
+                    {
+                        bool keepStrongerCatch = false;
+                        yield return ResolveStrongerDuplicate(enemy, xpReward, choice => keepStrongerCatch = choice);
+                        if (keepStrongerCatch)
+                        {
+                            upgraded = _progress.AdoptCaptured(enemy.Id, enemy.Level);
+                            if (upgraded) _voice.Say("Your stronger friend is ready for adventure!");
+                        }
+                        else
+                        {
+                            duplicate = true;
+                            catchXp = CatchSystem.ConversionXp(xpReward);
+                        }
                     }
                     else
                     {
                         string releasedId = null;
                         bool decided = false;
-                        yield return ResolveFullTeamCatch(enemy.Id, choice =>
+                        yield return ResolveFullTeamCatch(enemy, choice =>
                         {
                             releasedId = choice;
                             decided = true;
                         });
                         if (decided && !string.IsNullOrEmpty(releasedId))
                         {
-                            joined = _progress.ReplaceCaught(releasedId, enemy.Id);
+                            joined = _progress.ReplaceCaught(releasedId, enemy.Id, enemy.Level);
                             if (joined) _voice.Say("Your new friend joined the team!");
                         }
                         else
                         {
                             _voice.Say("The new friend returned to the wild.");
                         }
+                        catchXp = xpReward;
                     }
                     _progress.Records.BattlesWon++;
-                    if (joined) _progress.Records.MonstersCaught++;
-                    int catchXp = duplicate ? (int)Math.Round(xpReward * 1.25d) : xpReward;
-                    levelUps = _progress.GainXp(catchXp);
+                    _progress.Records.MonstersCaught++;
+                    if (catchXp > 0) levelUps = _progress.GainXp(catchXp);
                     yield return MaybeDrop(enemy, false);
                     if (duplicate)
                     {
                         _voice.Say("Already best friends! Bonus experience!");
                         yield return new WaitForSeconds(1.8f);
+                    }
+                    else if (upgraded)
+                    {
+                        yield return new WaitForSeconds(1.2f);
                     }
                     break;
                 case BattleEnd.Lose:
@@ -814,12 +854,61 @@ namespace Numeria.Game
         /// 15 只满员后暂停地图结算。返回 null 表示放走新伙伴；返回已有家族 id 表示用新伙伴替换它。
         /// Starter Addmander 不在可释放列表中。
         /// </summary>
-        private IEnumerator ResolveFullTeamCatch(string newcomerId, Action<string> onResolved)
+        private IEnumerator ResolveStrongerDuplicate(CombatantDef newcomer, int baseXp, Action<bool> onResolved)
+        {
+            bool resolved = false;
+            bool keepCatch = false;
+            string baseId = GameData.BaseId(newcomer.Id);
+            var ownedGrowth = _progress.EnsureGrowth(baseId);
+            string ownedForm = _progress.CurrentFormId(baseId);
+            var ownedSpecies = GameData.SpeciesById(ownedForm);
+            var caughtSpecies = GameData.SpeciesById(newcomer.Id);
+            int bonusXp = CatchSystem.ConversionXp(baseXp);
+
+            var shade = Ui.Img(_hudCanvasRoot, "StrongerCatchOverlay", new Color(.03f, .05f, .04f, .91f));
+            Ui.Stretch(shade.rectTransform);
+            var panel = Ui.Img(shade.transform, "StrongerCatchPanel", Ui.PlateBg);
+            Ui.Place(panel.rectTransform, new Vector2(.5f, .5f), Vector2.zero, new Vector2(940, 560));
+            Ui.AddOutline(panel.gameObject);
+            var title = Ui.DisplayLabel(panel.transform, "Title", "A STRONGER FRIEND!", 48, Ui.Ink);
+            Ui.Place(title.rectTransform, new Vector2(.5f, 1), new Vector2(0, -36), new Vector2(800, 66));
+            var prompt = Ui.Label(panel.transform, "Prompt",
+                $"You have {ownedSpecies?.Name ?? baseId} Lv.{ownedGrowth.Level}. " +
+                $"The new {caughtSpecies?.Name ?? newcomer.Name} is Lv.{newcomer.Level}.\nWhat should happen?",
+                28, Ui.Hex("#8b542f"));
+            Ui.Place(prompt.rectTransform, new Vector2(.5f, 1), new Vector2(0, -112), new Vector2(850, 105));
+            prompt.textWrappingMode = TextWrappingModes.Normal;
+
+            var currentIcon = Ui.SpriteImg(panel.transform, "CurrentIcon", SpriteLib.MapSprite(ownedForm));
+            currentIcon.preserveAspect = true;
+            Ui.PlaceCentered(currentIcon.rectTransform, new Vector2(.5f, .5f), new Vector2(-205, 24),
+                new Vector2(150, 150));
+            var caughtIcon = Ui.SpriteImg(panel.transform, "CaughtIcon", SpriteLib.MapSprite(newcomer.Id));
+            caughtIcon.preserveAspect = true;
+            Ui.PlaceCentered(caughtIcon.rectTransform, new Vector2(.5f, .5f), new Vector2(205, 24),
+                new Vector2(150, 150));
+
+            var replace = Ui.Btn(panel.transform, "BtnKeepStrongerCatch", "KEEP STRONGER FRIEND", 23);
+            Ui.Place((RectTransform)replace.transform, new Vector2(.5f, 0), new Vector2(-215, 38),
+                new Vector2(390, 80));
+            replace.onClick.AddListener(() => { keepCatch = true; resolved = true; });
+            var convert = Ui.Btn(panel.transform, "BtnConvertCatchToXp", $"TURN INTO +{bonusXp} XP", 23);
+            Ui.Place((RectTransform)convert.transform, new Vector2(.5f, 0), new Vector2(215, 38),
+                new Vector2(390, 80));
+            convert.onClick.AddListener(() => resolved = true);
+
+            _voice.Say("You caught a stronger friend. Keep it, or turn the catch into experience.");
+            yield return new WaitUntil(() => resolved);
+            Destroy(shade.gameObject);
+            onResolved(keepCatch);
+        }
+
+        private IEnumerator ResolveFullTeamCatch(CombatantDef newcomer, Action<string> onResolved)
         {
             string choice = null;
             bool resolved = false;
-            var newcomer = GameData.SpeciesById(newcomerId);
-            string newcomerName = newcomer?.Name ?? newcomerId;
+            var newcomerSpecies = GameData.SpeciesById(newcomer.Id);
+            string newcomerName = newcomerSpecies?.Name ?? newcomer.Id;
 
             var shade = Ui.Img(_hudCanvasRoot, "FullTeamOverlay", new Color(.03f, .05f, .04f, .91f));
             Ui.Stretch(shade.rectTransform);
@@ -830,7 +919,7 @@ namespace Numeria.Game
             var title = Ui.DisplayLabel(panel.transform, "Title", "TEAM FULL  15 / 15", 48, Ui.Ink);
             Ui.Place(title.rectTransform, new Vector2(.5f, 1), new Vector2(0, -38), new Vector2(850, 62));
             var prompt = Ui.Label(panel.transform, "Prompt",
-                $"{newcomerName} wants to join! Pick a friend to release, or let {newcomerName} go.",
+                $"{newcomerName} Lv.{newcomer.Level} wants to join! Pick a friend to release, or let {newcomerName} go.",
                 25, Ui.Hex("#8b542f"));
             Ui.Place(prompt.rectTransform, new Vector2(.5f, 1), new Vector2(0, -105), new Vector2(900, 62));
             _voice.Say("Your team is full. Choose a friend to release, or let the new friend go.");

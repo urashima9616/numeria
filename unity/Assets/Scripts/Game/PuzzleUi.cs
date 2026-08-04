@@ -764,15 +764,16 @@ namespace Numeria.Game
             }
         }
 
-        /// <summary>数块提示:前 orange 格橙色、到 total 为绿色。20 以内自动排成两行十格阵。</summary>
+        /// <summary>数块提示:前 orange 格橙色、到 total 为绿色；按每行十格扩展到第四章的 40。</summary>
         private void BuildHintFrame(RectTransform parent, int orange, int total)
         {
             foreach (Transform child in parent) UnityEngine.Object.Destroy(child.gameObject);
             var label = Ui.Label(parent, "HintLabel", "Let's count together!", 24, Color.white);
             Ui.Place(label.rectTransform, new Vector2(0.5f, 1f), Vector2.zero, new Vector2(400, 30));
-            int cellCount = total <= 10 ? 10 : 20;
+            int cellCount = total <= 10 ? 10 : total <= 20 ? 20 : total <= 30 ? 30 : 40;
             var frame = Ui.Node(parent, "HintFrame");
-            Ui.Place(frame, new Vector2(0.5f, 0f), Vector2.zero, new Vector2(320, cellCount > 10 ? 56 : 30));
+            int rows = cellCount / 10;
+            Ui.Place(frame, new Vector2(0.5f, 0f), Vector2.zero, new Vector2(320, 30 + (rows - 1) * 26));
             var grid = frame.gameObject.AddComponent<GridLayoutGroup>();
             grid.cellSize = new Vector2(26, 22);
             grid.spacing = new Vector2(4, 4);

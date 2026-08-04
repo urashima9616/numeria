@@ -2,10 +2,10 @@
 
 **A Pokémon-inspired math RPG built for a five-year-old.** In Numeria, numbers, shapes, symmetry, and patterns
 are magic. Players befriend original creatures called **Mathmons**, solve Kindergarten-level puzzles to power
-their skills, and help Lucas restore three Digit Crystals so he can reopen the legendary gate home.
+their skills, and help Lucas restore four Digit Crystals so he can reopen the legendary gate home.
 
-> Current state: a playable three-region Unity build with story, exploration, battles, catching, evolution,
-> economy, shops, saves, offline narration, and a 30-Mathmon launch roster. iOS/TestFlight work has not started.
+> Current state: a playable four-region Unity build with story, exploration, battles, catching, evolution,
+> economy, shops, saves, offline narration, and 90 Mathmon forms. iOS/TestFlight work has not started.
 
 ![Numeria battle — Addmander casting math magic against Countipillar](docs/images/numeria-readme-cover.png)
 
@@ -16,10 +16,10 @@ their skills, and help Lucas restore three Digit Crystals so he can reopen the l
 | P0 — Project foundation | ✅ Complete | Repository, Unity project, asset pipelines |
 | P1 — Battle core | ✅ Complete | Skills, gems, number shields, ATK/DEF combat, VFX, narration |
 | P2 — Forest vertical slice | ✅ Complete | Exploration, encounters, catching, growth, chests, saving |
-| P3 — Full game systems | 🔶 Playable / polishing | Three maps, 30 Mathmons, evolution, economy, merchants, Lucas story |
+| P3 — Full game systems | 🔶 Playable / polishing | Four maps, 90 Mathmons, evolution, economy, merchants, Lucas story |
 | P4 — iOS delivery | ⬜ Not started | Device build, signing, TestFlight and final performance QA |
 
-The latest automated baseline is **93/93 Unity EditMode tests** and **14/14 Node prototype tests**.
+The latest automated baseline is **104/104 Unity EditMode tests** and **14/14 Node prototype tests**.
 The save format is currently **schema v8**, with non-destructive migration for older saves.
 
 ## Design principles
@@ -38,8 +38,10 @@ The save format is currently **schema v8**, with non-destructive migration for o
 
 ### Battle and Mathmons
 
-- 30 Mathmon forms across 11 evolution families, with independent level, XP, HP, ATK, and DEF growth to Lv. 99.
-- Eleven family-specific skill icons and distinct battle performances instead of a shared flame effect.
+- 90 Mathmon forms across 31 three-stage evolution families, with independent level, XP, HP, ATK, and DEF
+  growth to Lv. 99. Fairy, Dragon, Electric, and Grass each have five new families.
+- The original eleven families retain distinct skills, while each new elemental group has its own generated icon,
+  palette, and battle performance.
 - Number shields, shield-break stun, gems, powered math skills, consumable items, and equippable accessories.
 - Damage uses `max(1, ATK - DEF + 1 + [-1, 1])`; enemy HP also has controlled per-encounter variation.
 - Bosses have higher region-scaled HP and number shields without becoming mandatory difficulty walls.
@@ -51,10 +53,12 @@ The save format is currently **schema v8**, with non-destructive migration for o
 - The traveling team holds at most **15 Mathmons**.
 - If a catch would exceed the limit, the player chooses whether to release the newcomer or replace an existing
   companion. Addmander remains the protected starter, and released companions return equipped accessories.
+- A caught Mathmon keeps its wild level and evolution form. When a stronger member of an owned family is caught,
+  the player chooses between adopting it or converting the catch into **125% of the normal catch XP**.
 
 ### Exploration and economy
 
-- Three large, pathfinding-based maps: Mystic Forest, Silent Peaks, and Azure Sky City.
+- Four large, pathfinding-based maps: Mystic Forest, Silent Peaks, Azure Sky City, and Fever Desert.
 - Four visible math-discovery runes per map. Solving their themed puzzle awards one-time coins and occasional
   battle items; incorrect answers leave the discovery available for another attempt.
 - Ordinary enemies, merchant challenges, and bosses award region-scaled coins.
@@ -67,11 +71,11 @@ The save format is currently **schema v8**, with non-destructive migration for o
 - A title screen with **Start a New Game** and **Load Game**, ten-slot selection, overwrite confirmation, and a
   narrated introduction starring Lucas and Addmander.
 - Lucas explores Numeria while the selected Mathmon remains the active battle companion.
-- Elder Rowan, Keeper Orin, and Astronomer Lyra guard the three Digit Crystals through powerful Mathmons.
-- Guardian conversations appear before and after each boss, leading to a three-crystal ending while leaving free
+- Elder Rowan, Keeper Orin, Astronomer Lyra, and Sage Solara guard the four Digit Crystals through powerful Mathmons.
+- Guardian conversations appear before and after each boss, leading to a four-crystal ending while leaving free
   exploration available.
 - TEAM, ITEMS, RECORDS, SAVES, and SETTINGS menus; ten independent save slots and a save-aware return-to-menu flow.
-- Unified TextMeshPro/Jersey 10 typography, generated pixel-art characters and icons, ten SFX cues, and six
+- Unified TextMeshPro/Jersey 10 typography, generated pixel-art characters and icons, ten SFX cues, and seven
   mood-based 8-bit music tracks with crossfading and narration ducking.
 
 ## Kindergarten math progression
@@ -81,6 +85,7 @@ The save format is currently **schema v8**, with non-destructive migration for o
 | 🌲 Mystic Forest | 0–10 | Addition, subtraction, counting, comparison, shapes, AB patterns, symmetry | Numberfly |
 | ⛰️ Silent Peaks | 0–20 | Harder addition/subtraction, make-ten, three-term sums, doubling, ABC patterns, turns | Duplirock Elder |
 | ☁️ Azure Sky City | 0–30 | Four-term sums, geometry properties, symmetry, rotation, number sequences, ABCD patterns | Symmetrix |
+| 🏜️ Fever Desert | 0–40 | Larger arithmetic, advanced sequences, geometry, symmetry, rotation, and mixed patterns | Solar Totalisk |
 
 Portal trials always include arithmetic, use three different puzzle families, and allow unlimited zero-penalty
 retries.
@@ -110,7 +115,7 @@ from Git. After importing the package at
 zsh tools/install-jukebox-music.sh
 ```
 
-The installer maps six local tracks to forest, mountain, sky, battle, boss, and evolution moods. Attribution and
+The installer maps seven local tracks to forest, mountain, sky, desert, battle, boss, and evolution moods. Attribution and
 the exact track list are documented in [`docs/music-attribution.md`](docs/music-attribution.md).
 
 ## Run the Web battle prototype
@@ -156,6 +161,7 @@ Unity EditMode tests, with the Unity Editor closed:
 | [`docs/numeria-game-design.md`](docs/numeria-game-design.md) | Core game and curriculum design |
 | [`docs/main-story.md`](docs/main-story.md) | Lucas and the Digit Crystals story structure |
 | [`docs/economy-design.md`](docs/economy-design.md) | Coin rewards, shop stock, pricing, and balance rationale |
+| [`docs/elemental-expansion.md`](docs/elemental-expansion.md) | Capture upgrades, 20 new families, and Fever Desert design |
 | [`docs/generated-visual-assets.md`](docs/generated-visual-assets.md) | Image-generation prompts and production asset locations |
 | [`docs/music-attribution.md`](docs/music-attribution.md) | 8-bit Jukebox track mapping and credits |
 | [`docs/HANDOFF.md`](docs/HANDOFF.md) | Detailed engineering status and maintenance notes |

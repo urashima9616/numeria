@@ -160,6 +160,7 @@ namespace Numeria.Game
             {
                 case "mountains": return Mountains();
                 case "sky": return Sky();
+                case "desert": return Desert();
                 default: return Forest();
             }
         }
@@ -194,6 +195,9 @@ namespace Numeria.Game
                 E("countipillar", 32, 1, -1, 1), E("paircub", 24, 1, -1, 2),
                 E("subunny", 20, 2, 0, 2), E("pebblit", 14, 3, 0, 3),
                 E("numberfly", 10, 5, 1, 3),
+                E("glimlet", 12, 2, 0, 2), E("charmite", 10, 2, 0, 2),
+                E("budsum", 12, 2, 0, 2), E("clovercub", 10, 3, 0, 3),
+                E("mossbit", 8, 3, 0, 3),
             },
             BossSpeciesId = "numberfly", BossMinLevel = 5,
             BossLine = "Numberfly guards the portal!", GateClearLine = "The portal is open! A new world awaits!",
@@ -264,6 +268,9 @@ namespace Numeria.Game
                 E("doublit", 28, 7, -2, 2), E("pebblit", 24, 7, -1, 2),
                 E("subunny", 16, 7, -1, 2), E("stackstone", 13, 10, 0, 3),
                 E("differhare", 11, 10, 0, 3), E("duplirock", 8, 12, 1, 4),
+                E("addling", 12, 8, -1, 2), E("dracount", 10, 9, 0, 3),
+                E("twinsting", 10, 9, 0, 3), E("shardrake", 8, 10, 0, 3),
+                E("sprouturn", 10, 8, -1, 2),
             },
             BossSpeciesId = "duplirock", BossDisplayName = "Duplirock Elder", BossMinLevel = 12,
             BossLine = "Duplirock guards the portal!", GateClearLine = "The gate is cleared! Azure Sky City awaits!",
@@ -338,20 +345,25 @@ namespace Numeria.Game
                 E("mirrowl", 25, 14, -2, 2), E("prismouse", 24, 14, -1, 2),
                 E("seqkit", 24, 14, -1, 2), E("polygoncat", 10, 18, 0, 3),
                 E("patternlynx", 10, 18, 0, 3), E("symmetrix", 7, 20, 1, 4),
+                E("voltlet", 10, 15, -1, 2), E("sparkit", 10, 15, -1, 2),
+                E("chargecub", 9, 16, 0, 3), E("flickerfin", 9, 16, 0, 3),
+                E("switchick", 8, 17, 0, 3), E("moonmote", 8, 15, -1, 2),
+                E("wishwink", 8, 16, 0, 3), E("pixipip", 8, 16, 0, 3),
+                E("seedseq", 8, 15, -1, 2),
             },
             BossSpeciesId = "symmetrix", BossMinLevel = 20,
-            BossLine = "Symmetrix guards the sky gate!", GateClearLine = "The sky gate shines! More adventures await!",
+            BossLine = "Symmetrix guards the sky gate!", GateClearLine = "The sky gate shines! Fever Desert awaits!",
             CrystalName = "Sky Digit Crystal", GuardianName = "Astronomer Lyra",
             GuardianSpriteResource = "generated/Story/guardian_lyra",
             GuardianChallengeLines = new[]
             {
                 "Patterns guide every star in Numeria.",
-                "Read Symmetrix's sky pattern, and the final crystal will be yours.",
+                "Read Symmetrix's sky pattern, and the third crystal will be yours.",
             },
-            GuardianVictoryLine = "The Sky Digit Crystal is yours. All three lights now sing together.",
+            GuardianVictoryLine = "The Sky Digit Crystal is yours. One last light burns beyond the clouds.",
             GateCleared = p => p.ClearedGates.Contains("sky"),
             ClearGate = p => { if (!p.ClearedGates.Contains("sky")) p.ClearedGates.Add("sky"); },
-            PortalTargetMap = null, NextName = "More Numeria adventures",
+            PortalTargetMap = "desert", NextName = "Fever Desert",
             ChestRewards = new Dictionary<string, ChestRewardDef>
             {
                 { "sky-chest-15-2", R(ChestRewardType.EvolutionStone, "Evolution Stone") },
@@ -377,6 +389,90 @@ namespace Numeria.Game
                     S("sky-gem-snack", "Cloud Candy", "Restore 3 gems in battle", ShopItemType.GemSnack, 15, 3),
                     S("sky-prism-charm", "Prism Charm", "Accessory: ATK +1, DEF +1", ShopItemType.Accessory, 30, 1, attack: 1, defense: 1),
                     S("sky-evo-stone", "Evolution Stone", "Used for evolution trials", ShopItemType.EvolutionStone, 65, 1),
+                },
+            },
+        };
+
+        public static MapDef Desert() => new MapDef
+        {
+            Id = "desert", DisplayName = "Fever Desert", WelcomeLine = "Welcome to Fever Desert!",
+            Rows = new[]
+            {
+                "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+                "T.S....TTTT....bbb....TTTT.....T",
+                "T......T..T....bbb....T..T.C...T",
+                "T..C...T..T...........T..T.....T",
+                "T......T..TTTT....TTTTT..T.....T",
+                "TTTT...T.........C......TT.....T",
+                "T......TTTTT..bbb..TTTT........T",
+                "T..bbb.......TbbbT.......bbb...T",
+                "T..bbb..TT...T...T..TT...bbb...T",
+                "T.......TT...T...T..TT.........T",
+                "T..TTTT......T.C.T......TTTT...T",
+                "T.....T..bbb.T...T.bbb..T......T",
+                "T.....T..bbb.....T.bbb..T...P..T",
+                "T..C..TTTT.......TTTT...T......T",
+                "T..............................T",
+                "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",
+            },
+            Tier = 4,
+            BattleBg = "generated/Backgrounds/Fever_Desert_2048x1152",
+            CameraBg = "#d8aa5c", Theme = "desert",
+            Encounters = new[]
+            {
+                E("twinkelle", 8, 24, -2, 2), E("lunafae", 8, 24, -2, 2),
+                E("pairabelle", 8, 24, -2, 2), E("starwhisp", 8, 24, -2, 2),
+                E("prismfae", 8, 24, -2, 2),
+                E("sumscale", 8, 26, -1, 3), E("tallywyrm", 8, 26, -1, 3),
+                E("spirake", 8, 26, -1, 3), E("doublescale", 8, 26, -1, 3),
+                E("prismwyrm", 8, 26, -1, 3),
+                E("sumvolt", 8, 24, -2, 2), E("patternzap", 8, 24, -2, 2),
+                E("doublebolt", 8, 24, -2, 2), E("neonray", 8, 24, -2, 2),
+                E("mirrorvolt", 8, 24, -2, 2),
+                E("vineplus", 8, 24, -2, 2), E("fourleaf", 8, 24, -2, 2),
+                E("spiralfern", 8, 24, -2, 2), E("doublmoss", 8, 24, -2, 2),
+                E("patternpod", 8, 24, -2, 2),
+            },
+            BossSpeciesId = "totalisk", BossDisplayName = "Solar Totalisk", BossMinLevel = 32,
+            BossLine = "Solar Totalisk guards the final crystal!",
+            GateClearLine = "The desert crystal blazes! The gate home is awake!",
+            CrystalName = "Desert Digit Crystal", GuardianName = "Sage Solara",
+            GuardianSpriteResource = "generated/Story/guardian_solara",
+            GuardianChallengeLines = new[]
+            {
+                "The desert sun hides patterns in every dune.",
+                "Join the four kinds of magic, and show Solar Totalisk how brightly you can think.",
+            },
+            GuardianVictoryLine = "The Desert Digit Crystal is yours. All four lights now sing together.",
+            GateCleared = p => p.ClearedGates.Contains("desert"),
+            ClearGate = p => { if (!p.ClearedGates.Contains("desert")) p.ClearedGates.Add("desert"); },
+            PortalTargetMap = null, NextName = "The gate home",
+            ChestRewards = new Dictionary<string, ChestRewardDef>
+            {
+                { "desert-chest-27-2", R(ChestRewardType.EvolutionStone, "Sunstone") },
+                { "desert-chest-3-3", R(ChestRewardType.HealthPotion, "Cactus Tonic", 4) },
+                { "desert-chest-17-5", R(ChestRewardType.AttackCharm, "Solar Fang") },
+                { "desert-chest-15-10", R(ChestRewardType.GemSnack, "Dune Candy", 4) },
+                { "desert-chest-3-13", R(ChestRewardType.DefenseCharm, "Mirage Mantle") },
+            },
+            Discoveries = new[]
+            {
+                D("desert-rune-1", "Dune Addition Rune", 5, 2, 15),
+                D("desert-rune-2", "Sun Rotation Rune", 12, 6, 16, ConsumableType.HealthPotion, 1),
+                D("desert-rune-3", "Cactus Sequence Rune", 26, 9, 18),
+                D("desert-rune-4", "Mirage Symmetry Rune", 7, 14, 20, ConsumableType.GemSnack, 1),
+            },
+            Merchant = new MerchantDef
+            {
+                Id = "desert-nia", Name = "Nia", X = 26, Y = 14,
+                SpriteResource = "generated/Economy/merchant_nia", PartnerSpeciesId = "mirrorvolt", MinimumLevel = 29,
+                ChallengeLine = "Nia raises her sun goggles. Match my Mirrorvolt and the oasis market is yours!",
+                Stock = new[]
+                {
+                    S("desert-potion", "Cactus Tonic", "Restore 40% HP in battle", ShopItemType.HealthPotion, 15, 5),
+                    S("desert-gem-snack", "Dune Candy", "Restore 3 gems in battle", ShopItemType.GemSnack, 18, 4),
+                    S("desert-solar-fang", "Solar Fang", "Accessory: ATK +2", ShopItemType.Accessory, 42, 1, attack: 2),
+                    S("desert-evo-stone", "Sunstone", "Used for evolution trials", ShopItemType.EvolutionStone, 82, 2),
                 },
             },
         };

@@ -55,16 +55,18 @@ lower=(zero one two three four five six seven eight nine ten
   eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty
   twenty-one twenty-two twenty-three twenty-four twenty-five twenty-six twenty-seven
   twenty-eight twenty-nine thirty)
+lower+=(thirty-one thirty-two thirty-three thirty-four thirty-five thirty-six thirty-seven
+  thirty-eight thirty-nine forty)
 
-# 加法填空:a + ? = sum,sum 3..30
-for sum in {3..30}; do
+# 加法填空:a + ? = sum,sum 3..40
+for sum in {3..40}; do
   for a in {1..$((sum - 1))}; do
     bake "${lower[$((a + 1))]} plus what makes ${lower[$((sum + 1))]}?"
   done
 done
 
-# 减法填空:a - ? = c,a 3..30
-for a in {3..30}; do
+# 减法填空:a - ? = c,a 3..40
+for a in {3..40}; do
   for c in {1..$((a - 1))}; do
     bake "${lower[$((a + 1))]} take away what leaves ${lower[$((c + 1))]}?"
   done
@@ -79,6 +81,7 @@ done
 bake "Pick two crystals that make twelve!"
 bake "Pick two crystals that make twenty!"
 bake "Pick two crystals that make thirty!"
+bake "Pick two crystals that make forty!"
 
 # ---- P3 山脉与进化台词 ----
 bake "A wild Doublit appeared!"
@@ -158,7 +161,15 @@ done
 mathmons=(Addmander Sumdrake Equadragon Tenfin Decaqua Tidalten Shapling Pattervine Geoflora
   Countipillar Numberfly Doublit Duplirock Mirrowl Symmetrix
   Paircub Matchbear Equilibear Subunny Differhare Minuelope Pebblit Stackstone Tallytitan
-  Prismouse Polygoncat Geometiger Seqkit Patternlynx Ordinalion)
+  Prismouse Polygoncat Geometiger Seqkit Patternlynx Ordinalion
+  Glimlet Twinkelle Luminara Moonmote Lunafae Selenequin Charmite Pairabelle Harmonique
+  Wishwink Starwhisp Constellara Pixipip Prismfae Radianta
+  Addling Sumscale Totalisk Dracount Tallywyrm Enumeragon Loopling Spirake Rotaragon
+  Twinsting Doublescale Multisaur Shardrake Prismwyrm Geodragon
+  Voltlet Sumvolt Totalstorm Sparkit Patternzap Sequencera Chargecub Doublebolt Thunderbear
+  Flickerfin Neonray Luminamp Switchick Mirrorvolt Voltalance
+  Budsum Vineplus Totalbloom Clovercub Fourleaf Cloverlord Sprouturn Spiralfern Symmetroak
+  Mossbit Doublmoss Grovemult Seedseq Patternpod Orderchid)
 for mon in $mathmons; do
   bake "A wild $mon appeared!"
   bake "Gotcha! $mon joined your team!"
@@ -187,9 +198,27 @@ bake "Amazing! Seqkit evolved into Patternlynx!"
 bake "Patternlynx is evolving!"
 bake "Amazing! Patternlynx evolved into Ordinalion!"
 
+new_evolution_from=(Glimlet Twinkelle Moonmote Lunafae Charmite Pairabelle Wishwink Starwhisp Pixipip Prismfae
+  Addling Sumscale Dracount Tallywyrm Loopling Spirake Twinsting Doublescale Shardrake Prismwyrm
+  Voltlet Sumvolt Sparkit Patternzap Chargecub Doublebolt Flickerfin Neonray Switchick Mirrorvolt
+  Budsum Vineplus Clovercub Fourleaf Sprouturn Spiralfern Mossbit Doublmoss Seedseq Patternpod)
+new_evolution_to=(Twinkelle Luminara Lunafae Selenequin Pairabelle Harmonique Starwhisp Constellara Prismfae Radianta
+  Sumscale Totalisk Tallywyrm Enumeragon Spirake Rotaragon Doublescale Multisaur Prismwyrm Geodragon
+  Sumvolt Totalstorm Patternzap Sequencera Doublebolt Thunderbear Neonray Luminamp Mirrorvolt Voltalance
+  Vineplus Totalbloom Fourleaf Cloverlord Spiralfern Symmetroak Doublmoss Grovemult Patternpod Orderchid)
+for i in {1..40}; do
+  bake "${new_evolution_from[$i]} is evolving!"
+  bake "Amazing! ${new_evolution_from[$i]} evolved into ${new_evolution_to[$i]}!"
+done
+
 bake "Reach level five to evolve!"
 bake "Reach level seven to evolve!"
 bake "Reach level fourteen to evolve!"
+bake "Reach level ten to evolve!"
+bake "Reach level twelve to evolve!"
+bake "Reach level twenty to evolve!"
+bake "Reach level twenty-four to evolve!"
+bake "Reach level twenty-eight to evolve!"
 bake "The enemy dropped an HP Potion!"
 bake "The enemy dropped a Gem Snack!"
 bake "Health is already full!"
@@ -197,10 +226,13 @@ bake "Gems are already full!"
 bake "Your team is full. Choose a friend to release, or let the new friend go."
 bake "Your new friend joined the team!"
 bake "The new friend returned to the wild."
+bake "You caught a stronger friend. Keep it, or turn the catch into experience."
+bake "Your stronger friend is ready for adventure!"
 bake "A number rune is glowing! Solve its math magic!"
 bake "Tessa smiles. Beat my Paircub and my shop is yours to browse!"
 bake "Bram nods. Show my Stackstone your strongest math magic, then we can trade!"
 bake "Ari opens a star map. Outsmart my Polygoncat and the sky market opens!"
+bake "Nia raises her sun goggles. Match my Mirrorvolt and the oasis market is yours!"
 bake "Shop unlocked!"
 bake "Great choice!"
 bake "Not enough coins."
@@ -208,7 +240,7 @@ bake "That item is sold out."
 bake "Lucas wakes beneath a sky full of glowing numbers."
 bake "Where am I? This isn't home."
 bake "Welcome to Numeria, Lucas. The gate home has lost its power."
-bake "Three Digit Crystals can wake it. Seek the Crystal Guardians."
+bake "Four Digit Crystals can wake it. Seek the Crystal Guardians."
 bake "Let's be brave, make Mathmon friends, and solve this together!"
 bake "Lucas, the Forest Crystal answers only to a kind and clever heart."
 bake "Show Numberfly what you have learned. Mistakes are steps, not failures."
@@ -217,14 +249,21 @@ bake "The mountain remembers every brave attempt."
 bake "Match your strength with Duplirock Elder, and the Peaks Crystal will shine."
 bake "The Peaks Digit Crystal is yours. Your courage gave it light."
 bake "Patterns guide every star in Numeria."
-bake "Read Symmetrix's sky pattern, and the final crystal will be yours."
-bake "The Sky Digit Crystal is yours. All three lights now sing together."
-bake "The three Digit Crystals sing together. The gate home is awake!"
+bake "Read Symmetrix's sky pattern, and the third crystal will be yours."
+bake "The Sky Digit Crystal is yours. One last light burns beyond the clouds."
+bake "Welcome to Fever Desert!"
+bake "The desert sun hides patterns in every dune."
+bake "Join the four kinds of magic, and show Solar Totalisk how brightly you can think."
+bake "Solar Totalisk guards the final crystal!"
+bake "The Desert Digit Crystal is yours. All four lights now sing together."
+bake "The desert crystal blazes! The gate home is awake!"
+bake "The four Digit Crystals sing together. The gate home is awake!"
+bake "A wild Solar Totalisk appeared! It has a number shield!"
 bake "I can go home when I am ready—and Numeria will always be waiting."
 for coins in {1..50}; do
   bake "You found $coins Numeria coins!"
 done
-for amount in 1 2 3; do
+for amount in 1 2 3 4; do
   bake "You found $amount HP Potions! Use them only in battle."
   bake "You found $amount Gem Snacks! Use them only in battle."
 done
@@ -237,4 +276,4 @@ for remaining in 1 2 3 4 5; do
 done
 
 rm -rf "$TMP"
-echo "done: $(ls "$OUT" | wc -l | tr -d ' ') clips in $OUT"
+echo "done: $(find "$OUT" -type f -name '*.wav' | wc -l | tr -d ' ') clips in $OUT"

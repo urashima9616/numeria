@@ -689,7 +689,7 @@ namespace Numeria.Game
 
             SectionRow(content, "Key items");
             if (_progress.DigitCrystalCount > 0)
-                ItemRow(content, "Digit Crystals", $"Restored: {_progress.DigitCrystalCount} / 3");
+                ItemRow(content, "Digit Crystals", $"Restored: {_progress.DigitCrystalCount} / 4");
             if (_progress.EvolutionStones > 0)
                 ItemRow(content, "Evolution Stone", $"Owned: {_progress.EvolutionStones}");
             if (_progress.EvolutionStones == 0 && _progress.DigitCrystalCount == 0)
@@ -745,7 +745,7 @@ namespace Numeria.Game
             RecordRow(content, "Bosses defeated", r.BossesDefeated.ToString());
             RecordRow(content, "Friends caught", r.MonstersCaught.ToString());
             RecordRow(content, "Treasure chests", r.ChestsOpened.ToString());
-            RecordRow(content, "Digit Crystals", $"{_progress.DigitCrystalCount} / 3");
+            RecordRow(content, "Digit Crystals", $"{_progress.DigitCrystalCount} / 4");
             RecordRow(content, "Math discoveries", r.DiscoveriesSolved.ToString());
             RecordRow(content, "Merchants defeated", r.MerchantsDefeated.ToString());
             RecordRow(content, "Coins", $"{_progress.Coins} held / {r.CoinsEarned} earned");
@@ -904,6 +904,11 @@ namespace Numeria.Game
                 var skyBtn = Ui.Btn(row, "BtnSky", skyUnlocked ? "Azure Sky City" : "Sky City (locked)", 22);
                 skyBtn.interactable = skyUnlocked && _progress.CurrentMap != "sky";
                 skyBtn.onClick.AddListener(() => CloseThen(() => _onTravel("sky")));
+                var desertUnlocked = _progress.ClearedGates.Contains("sky");
+                var desertBtn = Ui.Btn(row, "BtnDesert",
+                    desertUnlocked ? "Fever Desert" : "Fever Desert (locked)", 22);
+                desertBtn.interactable = desertUnlocked && _progress.CurrentMap != "desert";
+                desertBtn.onClick.AddListener(() => CloseThen(() => _onTravel("desert")));
             });
 
             SectionRow(content, "Game");

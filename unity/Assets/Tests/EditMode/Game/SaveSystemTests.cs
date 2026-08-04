@@ -137,6 +137,19 @@ namespace Numeria.Game.Tests
         }
 
         [Test]
+        public void CapturedLevelAndEvolutionStageRoundTrip()
+        {
+            var progress = new Progress();
+            Assert.AreEqual(CatchRosterResult.Added, progress.AddCaught("stackstone", 13));
+            SaveSystem.SaveToSlot(progress, 4);
+
+            var loaded = SaveSystem.LoadFromSlot(4);
+            Assert.AreEqual("stackstone", loaded.CurrentFormId("pebblit"));
+            Assert.AreEqual(13, loaded.EnsureGrowth("pebblit").Level);
+            Assert.AreEqual(1, loaded.EnsureGrowth("pebblit").Stage);
+        }
+
+        [Test]
         public void MenuBuildsAccessorySlotsAndAllTenSaveRows()
         {
             var rootObject = new GameObject("TestCanvas", typeof(RectTransform));

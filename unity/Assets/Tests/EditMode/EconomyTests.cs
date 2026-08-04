@@ -101,8 +101,9 @@ namespace Numeria.Core.Tests
             Assert.False(progress.CollectDigitCrystal("forest"));
             Assert.True(progress.CollectDigitCrystal("mountains"));
             Assert.True(progress.CollectDigitCrystal("sky"));
-            Assert.AreEqual(3, progress.DigitCrystalCount);
-            Assert.AreEqual(3, progress.Records.DigitCrystalsRestored);
+            Assert.True(progress.CollectDigitCrystal("desert"));
+            Assert.AreEqual(4, progress.DigitCrystalCount);
+            Assert.AreEqual(4, progress.Records.DigitCrystalsRestored);
         }
 
         [Test]

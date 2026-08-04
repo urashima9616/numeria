@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Numeria.Core;
 using UnityEngine;
 
 namespace Numeria.Game.Tests
@@ -42,6 +43,30 @@ namespace Numeria.Game.Tests
                 Assert.Greater(clip.length, 60f, $"Music for {mood} is unexpectedly short");
                 Assert.GreaterOrEqual(clip.channels, 1, mood.ToString());
             }
+        }
+
+        [Test]
+        public void ExpansionRosterAndDesertLinesHaveOfflineNarration()
+        {
+            foreach (SpeciesDef species in GameData.Roster)
+            {
+                AssertVoice($"A wild {species.Name} appeared!");
+                AssertVoice($"Gotcha! {species.Name} wants to travel with you!");
+                AssertVoice($"{species.Name} is getting stronger!");
+            }
+
+            AssertVoice("Thirty-nine plus what makes forty?");
+            AssertVoice("Forty take away what leaves thirty-nine?");
+            AssertVoice("You caught a stronger friend. Keep it, or turn the catch into experience.");
+            AssertVoice("Your stronger friend is ready for adventure!");
+            AssertVoice("Welcome to Fever Desert!");
+            AssertVoice("The four Digit Crystals sing together. The gate home is awake!");
+        }
+
+        private static void AssertVoice(string line)
+        {
+            string path = "Voice/" + VoiceKeys.Sanitize(line);
+            Assert.IsNotNull(Resources.Load<AudioClip>(path), $"Missing narration for '{line}' at {path}");
         }
     }
 }

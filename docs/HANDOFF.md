@@ -1,6 +1,6 @@
 # Numeria 开发交接文档(Handoff Note)
 
-> 日期:2026-08-02。本文档面向接手开发的 agent/工程师,涵盖项目现状、架构约定、踩坑记录与后续路线。
+> 日期:2026-08-03。本文档面向接手开发的 agent/工程师,涵盖项目现状、架构约定、踩坑记录与后续路线。
 > 必读配套:[numeria-game-design.md](numeria-game-design.md)(游戏设计定稿)、[unity-roadmap.md](unity-roadmap.md)(P0–P4 路线图)。
 
 ---
@@ -13,7 +13,7 @@
 - **数学是魔法不是测验**:谜题以咒语/封印/符文形式存在于世界观内
 - **三层数学融入**:环境浸泡(数字元素)→ 决策层(宝石经济心算)→ 高潮层(显式谜题)
 - **听得懂就能玩**:全部台词有预烘焙英文语音,不依赖识字量
-- 孩子水平:5 岁 / Kindergarten;三关严格使用 10/20/30 以内加减,并让图形、对称、规律同步递进
+- 孩子水平:5 岁 / Kindergarten;四关使用 10/20/30/40 以内加减,并让图形、对称、规律同步递进
 
 ## 2. 仓库与环境
 
@@ -31,19 +31,19 @@
 
 ### Core 层(`Numeria.Core`,纯 C#,noEngineReferences,全部 TDD)
 - `Rng`:确定性 LCG(与 Web 原型逐位一致),所有生成函数注入 rng
-- `PuzzleGenerator`:三关 10/20/30 上限;加减填空、凑目标、连加、点数/比较、图形识别、AB/ABC/ABCD 规律、对称、旋转、数列;候选答案唯一
+- `PuzzleGenerator`:四关 10/20/30/40 上限;加减填空、凑目标、连加、点数/比较、图形识别、AB/ABC/ABCD 规律、对称、旋转、数列;候选答案唯一
 - `BattleState`:宝石经济、数字护盾、破盾眩晕一回合 + 首次命中双倍 + 命中后护盾重置;正式 ATK/DEF 公式 `max(1, ATK − DEF + 1 + [-1,1])`,小幅可控波动、零惩罚不变量
 - `Progress`:save schema v8;Lv.99 上限、物种成长曲线、动态经验、每家族独立成长、独占饰品装备、金币/限量库存、Digit Crystal 主线与冒险记录 —— **新字段必须带默认值和迁移**
 - `GridMap`:ASCII 地图解析('.'草地 'T'树 'b'草丛 'C'宝箱 'P'传送门 'S'出生)+ BFS 寻路
-- `GameData`:30 只数灵、11 条进化线、各物种基础经验与 HP/ATK/DEF 每十级成长量;每家族配置独立数学亲和
-- 测试:`unity/Assets/Tests/EditMode/`,**93 个**;最后一次完整 headless 为 **93/93**
+- `GameData`:90 只数灵、31 条三段进化线;新增 Fairy/Dragon/Electric/Grass 各 5 条线;各物种配置基础经验、HP/ATK/DEF 成长与数学亲和
+- 测试:`unity/Assets/Tests/EditMode/`,**104 个**;最后一次完整 headless 为 **104/104**
 
 ### Game 层(`Numeria.Game`)
 - **全程序化 UGUI,零场景文件**——所有界面代码搭建,SampleScene 只是空壳,`BattleBootstrap` 用 `RuntimeInitializeOnLoadMethod` 拉起 `MapController`
-- `MapController`:三张 480–512 格地图、点触 BFS + 跟随相机、带权多物种生态、宝箱谜题、全宝箱后 Boss 图标与三题开门试炼、掉落与进化试炼
-- `BattleController`:`Init(enemy, progress, tier, battleBg, onEnd)`;双方状态牌显示 ATK/DEF,普通怪 HP 按关卡在 8–12 / 14–20 / 22–30 浮动,Boss HP 20 / 36 / 54
+- `MapController`:四张 480–512 格地图、点触 BFS + 跟随相机、带权多物种生态、宝箱谜题、全宝箱后 Boss 图标与三题开门试炼、掉落与进化试炼
+- `BattleController`:`Init(enemy, progress, tier, battleBg, onEnd)`;双方状态牌显示 ATK/DEF,普通怪与 Boss HP 均按关卡和物种成长合理浮动
 - `SkillDef` 保存独立 `IconResource` + `SkillVisualKind`;11 条家族各有专属像素图标与战斗弹道/命中节奏,不要再硬编码 `Flame_Formula`
-- `PuzzleUi`:谜题遮罩共用;第一关 10 内加减+图形/对称/规律,第二关 20 内并加入三项连加/转向/ABC,第三关 30 内并加入四项连加/2–5 步数列/ABCD;传送门三题必含算术
+- `PuzzleUi`:谜题遮罩共用;第一关 10 内加减+图形/对称/规律,第二关 20 内并加入三项连加/转向/ABC,第三关 30 内并加入四项连加/2–5 步数列/ABCD,第四关扩展到 40 并混合高阶题型;传送门三题必含算术
 - `MenuUi`:TEAM/ITEMS/RECORDS/SAVES/SETTINGS 五 tab,TEAM 可为每只数灵装备/卸下饰品,SAVES 提供十槽存取;SETTINGS 返回主菜单前询问保存/不保存/取消
 - `Voice`:预烘焙语音播放,`VoiceKeys.Sanitize` 文本→文件名(**必须与 bake 脚本规则一致**);`Voice.Enabled` 全局开关(存档持久化)
 - `Sfx` / `Music`:独立短音效通道 + 双通道交叉淡化;六个 mood 已改用 8-bit Jukebox Lite 选曲,语音播放时自动 duck,Voice/SFX/Music 分别持久化开关
@@ -60,20 +60,22 @@
 - ✅ **P1** 战斗核心移植(逻辑层 + 全套演出 + 语音)
 - ✅ **P2** 神秘森林垂直切片(探索/遇敌/收服/升级/存档/宝箱)
 - 🔶 **P3 进行中**:
-  - ✅ 三段 Kindergarten 难度:10/20/30 内加减 + 同步递进的图形、对称、规律、旋转、数列
+  - ✅ 四段 Kindergarten 难度:10/20/30/40 内加减 + 同步递进的图形、对称、规律、旋转、数列
   - ✅ 进化系统全链(御三家 Lv.8/Lv.15、野生线 Lv.5 + 里程碑进化石 + 家族亲和三题试炼 + 蜕变演出)
-  - ✅ 菜单(tab 化)、出战位切换、道具栏、重复捕捉转经验、15 只队伍上限与满员放走/替换流程
+  - ✅ 菜单(tab 化)、出战位切换、道具栏、15 只队伍上限与满员放走/替换流程
+  - ✅ 捕捉成长继承:保留野生等级/进化阶段;同家族更强个体可选择收编或转换为 125% 捕捉经验
   - ✅ 用户 AI 生成美术管线(`generated/` 约定 + NUMERIA Battle Asset Pack 全面接入战斗)
   - ✅ 蔚蓝天空城:独立浮空遗迹路线、Mirrowl/Symmetrix、规律/对称/旋转/数字序列、Sky/Boss 音乐
-  - ✅ 30 只数灵:原15只 + 配对/减法/堆叠/图形/规律五条三段线,全部有统一高清图标、技能、成长与进化语音
-  - ✅ 音频系统:10 种 SFX + 6 首 8-bit Jukebox Lite 本地 mood + 语音 duck/独立开关
+  - ✅ 90 只数灵 / 31 条三段线:Fairy、Dragon、Electric、Grass 各新增 5 条线,全部有统一高清图标、技能、成长与进化语音
+  - ✅ 狂热沙漠(Fever Desert):第四章地图、20 家族进化态生态、商人 Nia、守护者 Solara、Solar Totalisk Boss 与第四枚水晶
+  - ✅ 音频系统:10 种 SFX + 7 首 8-bit Jukebox Lite 本地 mood + 语音 duck/独立开关
   - ✅ 99级平衡:各物种 HP/ATK/DEF 成长、动态等级差经验、普通怪 HP 92%–108% 波动、动态 Boss 倍率、±1 伤害波动
   - ✅ 扩图与系统:带权生态、山脉重绘、全宝箱 Boss 条件、战斗消耗品/掉落、RECORDS 存档
   - ✅ 血量捕捉曲线:普通野生数灵全血量可尝试,按钮实时显示 10%–95% 成功率,低血量按幂曲线提高
   - ✅ 饰品与存档:每只数灵 2/3/4 格独占饰品装备、破盾眩晕与一次双倍循环、10 个存取档槽
   - ✅ 第一轮美术演出:11 套家族技能图标与专属 VFX;Lucas 像素主角已接入地图,生成提示词见 `docs/generated-visual-assets.md`
-  - ✅ 探索经济:每图 4 个主题数学符文、战斗金币、三位商人挑战、永久限量库存、消耗品/饰品/进化石平衡,见 `docs/economy-design.md`
-  - ✅ Lucas 主线:标题页与有声开场、三位 Crystal Guardian 的 Boss 前后对白、三枚 Digit Crystal、旧存档 v8 无损补发及结局节点,见 `docs/main-story.md`
+  - ✅ 探索经济:每图 4 个主题数学符文、战斗金币、四位商人挑战、永久限量库存、消耗品/饰品/进化石平衡,见 `docs/economy-design.md`
+  - ✅ Lucas 主线:标题页与有声开场、四位 Crystal Guardian 的 Boss 前后对白、四枚 Digit Crystal、旧存档 v8 无损兼容及结局节点,见 `docs/main-story.md`
   - ✅ 存档入口重构:标题页选择新游戏/读取游戏与十槽存档;新游戏真正清空宝箱等世界状态;设置页以保存提示返回主菜单
   - ⬜ 未做:JSON 数据驱动落地(现在数值在 GameData/MapDefs 硬编码)、自适应难度引擎(错题变形复现/隐形升降档)、家长面板(PIN + 掌握度热图)
 - ⬜ **P4**:iOS 构建、真机、TestFlight(免费 Apple ID 7 天签名 vs $99/年,已告知用户)
@@ -87,10 +89,13 @@
 ## 5. 资产管线(全部约定式,零代码接新资产)
 
 - **手绘像素**:改 `prototype/js/sprites.js` 字符网格 → `node tools/export-sprites.mjs` → PNG 落到 `Resources/Art/Sprites/`
-- **语音**:台词加进 `tools/bake-voice.sh` → 跑脚本(macOS `say`,Samantha,-r 150)→ wav 落到 `Resources/Voice/`;**C# 里说的每句台词必须有对应烘焙**,`VoiceKeys.Sanitize` = 脚本规则;现有 **1,215 条有效 WAV**,覆盖 0–30 加减全部读法、图形题、捕捉/满员替换、饰品、经济与主线对白
-- **音乐**:`tools/install-jukebox-music.sh` 从本地授权的 8-bit Jukebox Lite 同步六首选曲到 ignored `Resources/Music/Jukebox`;`--restore-dynamic` 可将旧曲同步到同一运行槽;原 `LocalStore` 保持不变,完整曲目/署名见 `docs/music-attribution.md`
-- **AI 生成图**(用户负责生成,放 `Resources/generated/`):
+- **语音**:台词加进 `tools/bake-voice.sh` → 跑脚本(macOS `say`,Samantha,-r 150)→ wav 落到 `Resources/Voice/`;**C# 里说的每句台词必须有对应烘焙**,`VoiceKeys.Sanitize` = 脚本规则;覆盖 0–40 加减读法、图形题、捕捉选择、90 个形态、进化、经济与四章主线对白
+- **音乐**:`tools/install-jukebox-music.sh` 从本地授权的 8-bit Jukebox Lite 同步七首选曲到 ignored `Resources/Music/Jukebox`;`--restore-dynamic` 可将旧曲同步到同一运行槽;原 `LocalStore` 保持不变,完整曲目/署名见 `docs/music-attribution.md`
+- **AI 生成图**(使用内置 ImageGen + imagegen skill,放 `Resources/generated/`):
   - `{id}_large_icon.png` → 菜单详情/回退链
+  - `Backgrounds/Fever_Desert_2048x1152.png`、`Story/guardian_solara.png`、`Economy/merchant_nia.png`
+  - `Skills/{fairy_glimmer,dragon_spiral,electric_bolt,grass_bloom}.png`
+  - 新三段进化表可用 `tools/import-evolution-sheet.sh` 抠背景并拆为三个 512px 图标
   - **NUMERIA_Unity_Battle_Assets/**(结构化素材包):`Characters/{Id}_Battle_Front|Back.png`(战斗立绘)、`UI/`(面板/按钮三态/血条/图标,9-slice)、`Backgrounds/`;包内有 README 和 Unity_Import_Settings.json
   - 加载优先级封装在 `SpriteLib`:pack → generated 单图 → 16px 像素图,**永远有回退**
   - 缺的图:Duplirock/Doublit/Sumdrake 的 Battle_Front、Sumdrake Battle_Back、山脉/天空城战斗背景、UI Icons 里的 Shield

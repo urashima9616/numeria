@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Numeria.Core
 {
     public enum ConsumableType { HealthPotion, GemSnack }
-    public enum CatchRosterResult { Added, Duplicate, Full }
+    public enum CatchRosterResult { Added, Duplicate, UpgradeAvailable, Full }
 
     [Serializable]
     public class AccessoryItem
@@ -383,14 +383,24 @@ namespace Numeria.Core
             return baseId == "addmander" || CaughtIds.Contains(baseId);
         }
 
-        /// <summary>尝试将新伙伴加入最多 15 只的队伍；满员与重复必须由调用方分别处理。</summary>
-        public CatchRosterResult AddCaught(string mathmonId)
+        /// <summary>
+        /// 尝试将野生伙伴加入最多 15 只的队伍。首次捕捉会保留野生等级与形态；
+        /// 同家族更高等级或更高形态只报告 UpgradeAvailable，由 UI 让玩家决定替换或转经验。
+        /// </summary>
+        public CatchRosterResult AddCaught(string mathmonId, int capturedLevel = 1)
         {
             string baseId = GameData.BaseId(mathmonId);
-            if (Owns(baseId)) return CatchRosterResult.Duplicate;
+            int capturedStage = Math.Max(0, GameData.StageIndex(mathmonId));
+            if (Owns(baseId))
+            {
+                var owned = EnsureGrowth(baseId);
+                return capturedLevel > owned.Level || capturedStage > owned.Stage
+                    ? CatchRosterResult.UpgradeAvailable
+                    : CatchRosterResult.Duplicate;
+            }
             if (TeamIsFull) return CatchRosterResult.Full;
             CaughtIds.Add(baseId);
-            EnsureGrowth(baseId);
+            ApplyCapturedGrowth(EnsureGrowth(baseId), capturedLevel, capturedStage, false);
             return CatchRosterResult.Added;
         }
 
@@ -398,9 +408,25 @@ namespace Numeria.Core
         public bool Catch(string mathmonId) => AddCaught(mathmonId) == CatchRosterResult.Added;
 
         /// <summary>
+        /// 接纳同家族更强的野生伙伴。等级与进化阶段都只会上升，避免“更高进化但低一级”导致倒退；
+        /// 饰品与永久训练加成按家族保留。
+        /// </summary>
+        public bool AdoptCaptured(string mathmonId, int capturedLevel)
+        {
+            string baseId = GameData.BaseId(mathmonId);
+            if (!Owns(baseId)) return false;
+            int capturedStage = Math.Max(0, GameData.StageIndex(mathmonId));
+            var growth = EnsureGrowth(baseId);
+            if (capturedLevel <= growth.Level && capturedStage <= growth.Stage) return false;
+            ApplyCapturedGrowth(growth, capturedLevel, capturedStage, true);
+            SyncLegacyFields();
+            return true;
+        }
+
+        /// <summary>
         /// 满员时用新伙伴替换一只已捕获伙伴。首只 Addmander 不可释放；被释放伙伴的饰品回到库存。
         /// </summary>
-        public bool ReplaceCaught(string releasedMathmonId, string newMathmonId)
+        public bool ReplaceCaught(string releasedMathmonId, string newMathmonId, int capturedLevel = 1)
         {
             string released = GameData.BaseId(releasedMathmonId);
             string newcomer = GameData.BaseId(newMathmonId);
@@ -411,10 +437,21 @@ namespace Numeria.Core
                 if (accessory.EquippedToBaseId == released) accessory.EquippedToBaseId = "";
             MonGrowth.RemoveAll(growth => growth.BaseId == released);
             CaughtIds[index] = newcomer;
-            EnsureGrowth(newcomer);
+            ApplyCapturedGrowth(EnsureGrowth(newcomer), capturedLevel,
+                Math.Max(0, GameData.StageIndex(newMathmonId)), false);
             if (GameData.BaseId(ActiveMonId) == released) ActiveMonId = newcomer;
             SyncLegacyFields();
             return true;
+        }
+
+        private static void ApplyCapturedGrowth(MonGrowth growth, int capturedLevel, int capturedStage,
+            bool preserveHigherValues)
+        {
+            int level = GrowthSystem.ClampLevel(capturedLevel);
+            int stage = Math.Max(0, capturedStage);
+            growth.Level = preserveHigherValues ? Math.Max(growth.Level, level) : level;
+            growth.Stage = preserveHigherValues ? Math.Max(growth.Stage, stage) : stage;
+            growth.Xp = 0;
         }
 
         public void AddCoins(int amount)

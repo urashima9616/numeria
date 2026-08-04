@@ -33,8 +33,8 @@ namespace Numeria.Core
         {
             int safeTier = Math.Max(1, tier);
             if (merchant) return 10 + safeTier * 6;   // 16 / 22 / 28
-            if (boss) return 20 + safeTier * 10;     // 30 / 40 / 50
-            return rng.Pick(2 + safeTier, 4 + safeTier * 2); // 3–6 / 4–8 / 5–10
+            if (boss) return 20 + safeTier * 10;     // 30 / 40 / 50 / 60
+            return rng.Pick(2 + safeTier, 4 + safeTier * 2); // 3–6 / 4–8 / 5–10 / 6–12
         }
 
         public static PurchaseResult Buy(Progress progress, ShopItemDef item)

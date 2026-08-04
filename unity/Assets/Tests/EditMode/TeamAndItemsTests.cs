@@ -81,12 +81,43 @@ namespace Numeria.Core.Tests
         }
 
         [Test]
-        public void DuplicateCatch_ReturnsFalse_ForXpConversion()
+        public void DuplicateCatch_ReportsUpgradeOnlyForAStrongerWildPartner()
         {
             var p = new Progress();
-            Assert.True(p.Catch("doublit"));
-            Assert.False(p.Catch("doublit")); // 调用方据此转化为经验值
+            Assert.AreEqual(CatchRosterResult.Added, p.AddCaught("doublit", 7));
+            Assert.AreEqual(7, p.EnsureGrowth("doublit").Level);
+            Assert.AreEqual(CatchRosterResult.Duplicate, p.AddCaught("doublit", 6));
+            Assert.AreEqual(CatchRosterResult.UpgradeAvailable, p.AddCaught("doublit", 9));
+            Assert.AreEqual(7, p.EnsureGrowth("doublit").Level, "The choice must not mutate the roster yet.");
             Assert.False(p.Catch("addmander")); // starter 永远已在队伍中
+        }
+
+        [Test]
+        public void CatchPreservesWildLevelAndEvolutionStage()
+        {
+            var p = new Progress();
+
+            Assert.AreEqual(CatchRosterResult.Added, p.AddCaught("stackstone", 13));
+
+            var caught = p.EnsureGrowth("pebblit");
+            Assert.AreEqual(13, caught.Level);
+            Assert.AreEqual(1, caught.Stage);
+            Assert.AreEqual("stackstone", p.CurrentFormId("pebblit"));
+        }
+
+        [Test]
+        public void StrongerDuplicateCanReplaceOwnedGrowthWithoutLosingBonuses()
+        {
+            var p = new Progress();
+            p.AddCaught("pebblit", 8);
+            p.EnsureGrowth("pebblit").AttackBonus = 2;
+
+            Assert.AreEqual(CatchRosterResult.UpgradeAvailable, p.AddCaught("stackstone", 12));
+            Assert.True(p.AdoptCaptured("stackstone", 12));
+            Assert.AreEqual(12, p.EnsureGrowth("pebblit").Level);
+            Assert.AreEqual(1, p.EnsureGrowth("pebblit").Stage);
+            Assert.AreEqual(2, p.EnsureGrowth("pebblit").AttackBonus);
+            Assert.False(p.AdoptCaptured("pebblit", 7));
         }
 
         [Test]
@@ -114,22 +145,23 @@ namespace Numeria.Core.Tests
             p.AddAccessory("keepsake", "Counting Charm", 1, 0);
             Assert.True(p.EquipAccessory("keepsake", "future-family-3"));
 
-            Assert.True(p.ReplaceCaught("future-family-3", "new-family"));
+            Assert.True(p.ReplaceCaught("future-family-3", "stackstone", 14));
             Assert.AreEqual(15, p.TeamCount);
             Assert.False(p.CaughtIds.Contains("future-family-3"));
-            Assert.True(p.CaughtIds.Contains("new-family"));
-            Assert.AreEqual("new-family", p.ActiveMonId);
+            Assert.True(p.CaughtIds.Contains("pebblit"));
+            Assert.AreEqual("pebblit", p.ActiveMonId);
             Assert.IsNull(p.FindGrowth("future-family-3"));
-            Assert.IsNotNull(p.FindGrowth("new-family"));
+            Assert.AreEqual(14, p.FindGrowth("pebblit").Level);
+            Assert.AreEqual(1, p.FindGrowth("pebblit").Stage);
             Assert.AreEqual("", p.Accessories[0].EquippedToBaseId);
             Assert.False(p.ReplaceCaught("addmander", "another-family"));
         }
 
         [Test]
-        public void LaunchRoster_HasThirtyUniqueSpeciesAcrossElevenLines()
+        public void ExpandedRoster_HasNinetyUniqueSpeciesAcrossThirtyOneLines()
         {
-            Assert.AreEqual(30, GameData.Roster.Count);
-            Assert.AreEqual(11, GameData.Lines.Count);
+            Assert.AreEqual(90, GameData.Roster.Count);
+            Assert.AreEqual(31, GameData.Lines.Count);
 
             var ids = new HashSet<string>();
             int stageCount = 0;
@@ -144,7 +176,32 @@ namespace Numeria.Core.Tests
                     Assert.AreEqual(line.BaseId, GameData.BaseId(id));
                 }
             }
-            Assert.AreEqual(30, stageCount);
+            Assert.AreEqual(90, stageCount);
+        }
+
+        [Test]
+        public void FourRequestedElementsEachAddFiveCompleteThreeStageFamilies()
+        {
+            var requested = new Dictionary<string, string[]>
+            {
+                { "FAIRY", new[] { "glimlet", "moonmote", "charmite", "wishwink", "pixipip" } },
+                { "DRAGON", new[] { "addling", "dracount", "loopling", "twinsting", "shardrake" } },
+                { "ELECTRIC", new[] { "voltlet", "sparkit", "chargecub", "flickerfin", "switchick" } },
+                { "GRASS", new[] { "budsum", "clovercub", "sprouturn", "mossbit", "seedseq" } },
+            };
+
+            foreach (var pair in requested)
+            {
+                Assert.AreEqual(5, pair.Value.Length, pair.Key);
+                foreach (string baseId in pair.Value)
+                {
+                    var line = GameData.LineFor(baseId);
+                    Assert.NotNull(line, baseId);
+                    Assert.AreEqual(pair.Key, line.Element, baseId);
+                    Assert.AreEqual(3, line.StageIds.Length, baseId);
+                    Assert.AreEqual(2, line.EvolutionLevels.Length, baseId);
+                }
+            }
         }
 
         [Test]
@@ -180,13 +237,14 @@ namespace Numeria.Core.Tests
         }
 
         [Test]
-        public void ElevenFamilies_HaveElevenDistinctThemeVisualsAndIcons()
+        public void LaunchElevenFamilies_KeepTheirDistinctThemeVisualsAndIcons()
         {
             var visuals = new HashSet<SkillVisualKind>();
             var icons = new HashSet<string>();
             var ids = new HashSet<string>();
-            foreach (var line in GameData.Lines)
+            for (int i = 0; i < 11; i++)
             {
+                var line = GameData.Lines[i];
                 var player = GameData.PlayerMon(line.BaseId, 0);
                 var theme = System.Array.Find(player.Skills, skill => skill.Type == SkillType.Formula);
                 Assert.NotNull(theme, line.BaseId);
@@ -195,6 +253,24 @@ namespace Numeria.Core.Tests
                 Assert.True(ids.Add(theme.Id), $"duplicate skill id: {theme.Id}");
             }
             Assert.AreEqual(11, visuals.Count);
+        }
+
+        [Test]
+        public void RequestedElementsHaveDedicatedVisualLanguages()
+        {
+            var expected = new Dictionary<string, SkillVisualKind>
+            {
+                { "glimlet", SkillVisualKind.FairyGlimmer },
+                { "addling", SkillVisualKind.DragonSpiral },
+                { "voltlet", SkillVisualKind.ElectricBolt },
+                { "budsum", SkillVisualKind.GrassBloom },
+            };
+            foreach (var pair in expected)
+            {
+                var player = GameData.PlayerMon(pair.Key, 0);
+                var theme = System.Array.Find(player.Skills, skill => skill.Type == SkillType.Formula);
+                Assert.AreEqual(pair.Value, theme.Visual, pair.Key);
+            }
         }
     }
 }

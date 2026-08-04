@@ -124,7 +124,7 @@ namespace Numeria.Core
         public static string NumberWord(int n) => Words[n];
 
         /// <summary>幼儿园课程的三段数字边界:10、20、30。</summary>
-        public static int MaxForTier(int tier) => tier >= 3 ? 30 : tier == 2 ? 20 : 10;
+        public static int MaxForTier(int tier) => tier >= 4 ? 40 : tier == 3 ? 30 : tier == 2 ? 20 : 10;
 
         private static string Cap(string s) => char.ToUpperInvariant(s[0]) + s.Substring(1);
 

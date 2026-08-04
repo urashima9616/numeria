@@ -438,7 +438,7 @@ namespace Numeria.Game
                     Sfx.Play(SfxCue.Catch);
                     _voice.Say($"Gotcha! {_state.Enemy.Name} wants to travel with you!");
                     yield return FriendGemBurst(_enemySprite);
-                    ShowBanner($"Befriended {_state.Enemy.Name}!", $"+{_xpReward} XP", () => _onEnd(BattleEnd.Caught));
+                    ShowBanner($"Befriended {_state.Enemy.Name}!", "CATCH COMPLETE", () => _onEnd(BattleEnd.Caught));
                 }
                 else
                 {
@@ -589,6 +589,10 @@ namespace Numeria.Game
                 case SkillVisualKind.TallyStone: return Ui.Hex("#81796d");
                 case SkillVisualKind.GeometryPrism: return Ui.Hex("#75b8ff");
                 case SkillVisualKind.SequenceSpark: return Ui.Hex("#b6e83f");
+                case SkillVisualKind.FairyGlimmer: return Ui.Hex("#f49ee8");
+                case SkillVisualKind.DragonSpiral: return Ui.Hex("#9f79e8");
+                case SkillVisualKind.ElectricBolt: return Ui.Hex("#ffe047");
+                case SkillVisualKind.GrassBloom: return Ui.Hex("#58c957");
                 default: return Ui.Hex("#ff6a32");
             }
         }
@@ -632,6 +636,18 @@ namespace Numeria.Game
                     break;
                 case SkillVisualKind.SequenceSpark:
                     yield return SequenceVolley(color);
+                    break;
+                case SkillVisualKind.FairyGlimmer:
+                    yield return MirrorBeam(icon, color);
+                    break;
+                case SkillVisualKind.DragonSpiral:
+                    yield return MoveSkillIcon(icon, color, 130f, .52f, 540f);
+                    break;
+                case SkillVisualKind.ElectricBolt:
+                    yield return SequenceVolley(color);
+                    break;
+                case SkillVisualKind.GrassBloom:
+                    yield return SpiralCast(icon, color);
                     break;
                 default:
                     yield return MoveSkillIcon(icon, color, 72f, .38f, 220f);

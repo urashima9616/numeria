@@ -16,6 +16,7 @@ namespace Numeria.Game.Tests
             Assert.AreEqual("sky", sky.Theme);
             CollectionAssert.Contains(System.Array.ConvertAll(sky.Encounters, e => e.SpeciesId), "mirrowl");
             Assert.AreEqual("symmetrix", sky.BossSpeciesId);
+            Assert.AreEqual("desert", sky.PortalTargetMap);
             Assert.AreEqual("numberfly", Maps.Forest().BossSpeciesId);
             Assert.AreEqual("duplirock", Maps.Mountains().BossSpeciesId);
             Assert.True(sky.ChestRewards.ContainsKey("sky-chest-15-2"));
@@ -46,9 +47,9 @@ namespace Numeria.Game.Tests
         }
 
         [Test]
-        public void AllThreeLaunchMaps_HaveReachablePortalAndChests()
+        public void AllFourChapterMaps_HaveReachablePortalAndChests()
         {
-            foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky() })
+            foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky(), Maps.Desert() })
             {
                 var map = GridMap.Parse(def.Rows);
                 Assert.GreaterOrEqual(map.Width * map.Height, 480, $"{def.Id} must be at least twice the old 240 tiles");
@@ -71,7 +72,7 @@ namespace Numeria.Game.Tests
         [Test]
         public void EveryMapHasWeightedEnemyEcologyAndBossRequiresAllChests()
         {
-            foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky() })
+            foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky(), Maps.Desert() })
             {
                 Assert.GreaterOrEqual(def.Encounters.Length, 5);
                 var ids = new System.Collections.Generic.HashSet<string>();
@@ -94,7 +95,7 @@ namespace Numeria.Game.Tests
                 Assert.IsNotNull(Resources.Load<Sprite>($"generated/{species.Id}_large_icon"),
                     $"missing large icon for {species.Id}");
 
-            foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky() })
+            foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky(), Maps.Desert() })
                 Assert.IsNotNull(Resources.Load<Sprite>(def.BattleBg),
                     $"missing battle background for {def.Id}: {def.BattleBg}");
 

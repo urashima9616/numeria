@@ -16,11 +16,11 @@ namespace Numeria.Game.Tests
                 var player = GameData.PlayerMon(line.BaseId, 0);
                 var theme = System.Array.Find(player.Skills, skill => skill.Type == SkillType.Formula);
                 Assert.IsNotNull(theme, line.BaseId);
-                Assert.True(paths.Add(theme.IconResource), $"Duplicate theme icon: {theme.IconResource}");
+                paths.Add(theme.IconResource);
                 Assert.IsNotNull(Resources.Load<Sprite>(theme.IconResource),
                     $"Missing imported theme icon: {theme.IconResource}");
             }
-            Assert.AreEqual(11, paths.Count);
+            Assert.AreEqual(15, paths.Count, "Launch families have 11 icons; four new elements add one visual language each.");
         }
 
         [Test]

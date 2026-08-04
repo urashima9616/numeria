@@ -11,6 +11,7 @@ namespace Numeria.Game
         Forest,
         Mountains,
         Sky,
+        Desert,
         Battle,
         Boss,
         Evolution
@@ -23,6 +24,7 @@ namespace Numeria.Game
             { MusicMood.Forest, "Music/Jukebox/forest" },
             { MusicMood.Mountains, "Music/Jukebox/mountains" },
             { MusicMood.Sky, "Music/Jukebox/sky" },
+            { MusicMood.Desert, "Music/Jukebox/desert" },
             { MusicMood.Battle, "Music/Jukebox/battle" },
             { MusicMood.Boss, "Music/Jukebox/boss" },
             { MusicMood.Evolution, "Music/Jukebox/evolution" }
@@ -53,6 +55,7 @@ namespace Numeria.Game
             {
                 case "mountains": Play(MusicMood.Mountains); break;
                 case "sky": Play(MusicMood.Sky); break;
+                case "desert": Play(MusicMood.Desert); break;
                 default: Play(MusicMood.Forest); break;
             }
         }

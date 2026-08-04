@@ -37,7 +37,7 @@ namespace Numeria.Core
         public ConsumableType PreferredDrop;
     }
 
-    /// <summary>30 只数灵、11 条家族线及所有战斗成长的唯一真理源。</summary>
+    /// <summary>90 个数灵形态、31 条家族线及所有战斗成长的唯一真理源。</summary>
     public static class GameData
     {
         private static readonly EvolutionLineDef[] EvolutionLines =
@@ -65,6 +65,54 @@ namespace Numeria.Core
                 new[] { "prismouse", "polygoncat", "geometiger" }, new[] { 7, 14 }),
             Line("seqkit", "GRASS", "sequences and patterns", PuzzleAffinity.Pattern,
                 new[] { "seqkit", "patternlynx", "ordinalion" }, new[] { 7, 14 }),
+
+            // Fairy — five complete three-stage families.
+            Line("glimlet", "FAIRY", "glowing number bonds", PuzzleAffinity.MakeTen,
+                new[] { "glimlet", "twinkelle", "luminara" }, new[] { 10, 20 }),
+            Line("moonmote", "FAIRY", "moon symmetry", PuzzleAffinity.Symmetry,
+                new[] { "moonmote", "lunafae", "selenequin" }, new[] { 10, 20 }),
+            Line("charmite", "FAIRY", "matching pairs", PuzzleAffinity.Counting,
+                new[] { "charmite", "pairabelle", "harmonique" }, new[] { 10, 20 }),
+            Line("wishwink", "FAIRY", "star sequences", PuzzleAffinity.Pattern,
+                new[] { "wishwink", "starwhisp", "constellara" }, new[] { 10, 20 }),
+            Line("pixipip", "FAIRY", "prism shapes", PuzzleAffinity.Symmetry,
+                new[] { "pixipip", "prismfae", "radianta" }, new[] { 10, 20 }),
+
+            // Dragon — five complete three-stage families.
+            Line("addling", "DRAGON", "addition totals", PuzzleAffinity.Formula,
+                new[] { "addling", "sumscale", "totalisk" }, new[] { 14, 28 }),
+            Line("dracount", "DRAGON", "counting treasures", PuzzleAffinity.Counting,
+                new[] { "dracount", "tallywyrm", "enumeragon" }, new[] { 14, 28 }),
+            Line("loopling", "DRAGON", "turns and rotation", PuzzleAffinity.Symmetry,
+                new[] { "loopling", "spirake", "rotaragon" }, new[] { 14, 28 }),
+            Line("twinsting", "DRAGON", "doubling groups", PuzzleAffinity.RepeatedAddition,
+                new[] { "twinsting", "doublescale", "multisaur" }, new[] { 14, 28 }),
+            Line("shardrake", "DRAGON", "shape building", PuzzleAffinity.Pattern,
+                new[] { "shardrake", "prismwyrm", "geodragon" }, new[] { 14, 28 }),
+
+            // Electric — five complete three-stage families.
+            Line("voltlet", "ELECTRIC", "addition sparks", PuzzleAffinity.Formula,
+                new[] { "voltlet", "sumvolt", "totalstorm" }, new[] { 12, 24 }),
+            Line("sparkit", "ELECTRIC", "lightning patterns", PuzzleAffinity.Pattern,
+                new[] { "sparkit", "patternzap", "sequencera" }, new[] { 12, 24 }),
+            Line("chargecub", "ELECTRIC", "doubling charge", PuzzleAffinity.RepeatedAddition,
+                new[] { "chargecub", "doublebolt", "thunderbear" }, new[] { 12, 24 }),
+            Line("flickerfin", "ELECTRIC", "counting lights", PuzzleAffinity.Counting,
+                new[] { "flickerfin", "neonray", "luminamp" }, new[] { 12, 24 }),
+            Line("switchick", "ELECTRIC", "mirror circuits", PuzzleAffinity.Symmetry,
+                new[] { "switchick", "mirrorvolt", "voltalance" }, new[] { 12, 24 }),
+
+            // Grass — five new complete three-stage families in addition to the launch families.
+            Line("budsum", "GRASS", "addition gardens", PuzzleAffinity.Formula,
+                new[] { "budsum", "vineplus", "totalbloom" }, new[] { 10, 20 }),
+            Line("clovercub", "GRASS", "counting leaves", PuzzleAffinity.Counting,
+                new[] { "clovercub", "fourleaf", "cloverlord" }, new[] { 10, 20 }),
+            Line("sprouturn", "GRASS", "spirals and symmetry", PuzzleAffinity.Symmetry,
+                new[] { "sprouturn", "spiralfern", "symmetroak" }, new[] { 10, 20 }),
+            Line("mossbit", "GRASS", "doubling groves", PuzzleAffinity.RepeatedAddition,
+                new[] { "mossbit", "doublmoss", "grovemult" }, new[] { 10, 20 }),
+            Line("seedseq", "GRASS", "growing patterns", PuzzleAffinity.Pattern,
+                new[] { "seedseq", "patternpod", "orderchid" }, new[] { 10, 20 }),
         };
 
         private static readonly SpeciesDef[] Species =
@@ -108,6 +156,74 @@ namespace Numeria.Core
             Mon("seqkit", "Seqkit", 10, 2, 2, 9, 3, 2, 8, "Sequence Spark", 5, true, .23, ConsumableType.GemSnack),
             Mon("patternlynx", "Patternlynx", 15, 4, 3, 10, 3, 3, 11, "Pattern Prowl", 6, false, .30, ConsumableType.GemSnack),
             Mon("ordinalion", "Ordinalion", 22, 6, 6, 12, 4, 4, 15, "Ordinal Crown", 7, false, .37, ConsumableType.HealthPotion),
+
+            // Fairy families.
+            Mon("glimlet", "Glimlet", 10, 2, 3, 9, 3, 3, 8, "Glimmer Bond", 5, true, .24, ConsumableType.GemSnack),
+            Mon("twinkelle", "Twinkelle", 16, 4, 5, 10, 3, 4, 12, "Twin Star Bond", 6, true, .30, ConsumableType.GemSnack),
+            Mon("luminara", "Luminara", 24, 7, 8, 12, 4, 5, 17, "Luminous Ten", 7, true, .38, ConsumableType.GemSnack),
+            Mon("moonmote", "Moonmote", 11, 2, 3, 9, 3, 3, 8, "Moon Mirror", 5, true, .24, ConsumableType.GemSnack),
+            Mon("lunafae", "Lunafae", 17, 4, 5, 10, 3, 4, 12, "Lunar Reflection", 6, true, .30, ConsumableType.GemSnack),
+            Mon("selenequin", "Selenequin", 25, 7, 8, 12, 4, 5, 17, "Perfect Moon", 7, true, .38, ConsumableType.GemSnack),
+            Mon("charmite", "Charmite", 10, 3, 2, 9, 3, 3, 8, "Charm Pair", 5, true, .24, ConsumableType.HealthPotion),
+            Mon("pairabelle", "Pairabelle", 16, 5, 4, 10, 4, 3, 12, "Bell Match", 6, true, .30, ConsumableType.HealthPotion),
+            Mon("harmonique", "Harmonique", 23, 8, 7, 11, 5, 4, 17, "Harmony Chorus", 7, true, .38, ConsumableType.HealthPotion),
+            Mon("wishwink", "Wishwink", 9, 3, 2, 8, 4, 3, 8, "Wish Pattern", 5, true, .24, ConsumableType.GemSnack),
+            Mon("starwhisp", "Starwhisp", 15, 6, 4, 9, 4, 3, 12, "Starlight Sequence", 6, true, .30, ConsumableType.GemSnack),
+            Mon("constellara", "Constellara", 22, 9, 7, 11, 5, 4, 17, "Constellation Path", 7, true, .38, ConsumableType.GemSnack),
+            Mon("pixipip", "Pixipip", 10, 3, 3, 9, 3, 3, 8, "Pixie Prism", 5, true, .24, ConsumableType.HealthPotion),
+            Mon("prismfae", "Prismfae", 16, 5, 5, 10, 4, 4, 12, "Prism Turn", 6, true, .30, ConsumableType.HealthPotion),
+            Mon("radianta", "Radianta", 24, 8, 8, 12, 5, 5, 17, "Radiant Shape", 7, true, .38, ConsumableType.HealthPotion),
+
+            // Dragon families.
+            Mon("addling", "Addling", 12, 4, 2, 10, 4, 3, 9, "Dragon Add", 5, true, .25, ConsumableType.HealthPotion),
+            Mon("sumscale", "Sumscale", 19, 7, 5, 12, 5, 4, 13, "Scale Sum", 6, true, .32, ConsumableType.HealthPotion),
+            Mon("totalisk", "Totalisk", 29, 10, 8, 14, 6, 5, 18, "Total Inferno", 7, true, .40, ConsumableType.HealthPotion),
+            Mon("dracount", "Dracount", 12, 3, 3, 10, 4, 4, 9, "Treasure Count", 5, true, .25, ConsumableType.GemSnack),
+            Mon("tallywyrm", "Tallywyrm", 19, 6, 6, 12, 5, 4, 13, "Tally Claw", 6, true, .32, ConsumableType.GemSnack),
+            Mon("enumeragon", "Enumeragon", 29, 9, 9, 14, 6, 5, 18, "Number Hoard", 7, true, .40, ConsumableType.GemSnack),
+            Mon("loopling", "Loopling", 11, 3, 4, 10, 3, 4, 9, "Loop Turn", 5, true, .25, ConsumableType.GemSnack),
+            Mon("spirake", "Spirake", 18, 6, 6, 11, 4, 5, 13, "Spiral Wing", 6, true, .32, ConsumableType.GemSnack),
+            Mon("rotaragon", "Rotaragon", 28, 9, 10, 13, 5, 6, 18, "Rotation Storm", 7, true, .40, ConsumableType.GemSnack),
+            Mon("twinsting", "Twinsting", 12, 4, 3, 10, 4, 3, 9, "Twin Tail", 5, true, .25, ConsumableType.HealthPotion),
+            Mon("doublescale", "Doublescale", 20, 7, 6, 12, 5, 4, 13, "Double Wing", 6, true, .32, ConsumableType.HealthPotion),
+            Mon("multisaur", "Multisaur", 30, 10, 9, 14, 6, 5, 18, "Manyfold Roar", 7, true, .40, ConsumableType.HealthPotion),
+            Mon("shardrake", "Shardrake", 11, 3, 4, 10, 3, 4, 9, "Shard Shape", 5, true, .25, ConsumableType.GemSnack),
+            Mon("prismwyrm", "Prismwyrm", 18, 6, 7, 11, 4, 5, 13, "Prism Scale", 6, true, .32, ConsumableType.GemSnack),
+            Mon("geodragon", "Geodragon", 28, 9, 10, 13, 5, 6, 18, "Geometry Breath", 7, true, .40, ConsumableType.GemSnack),
+
+            // Electric families.
+            Mon("voltlet", "Voltlet", 10, 4, 2, 9, 4, 3, 8, "Spark Addition", 5, true, .24, ConsumableType.GemSnack),
+            Mon("sumvolt", "Sumvolt", 16, 7, 4, 10, 5, 3, 12, "Voltage Sum", 6, true, .31, ConsumableType.GemSnack),
+            Mon("totalstorm", "Totalstorm", 24, 10, 7, 12, 6, 4, 17, "Total Thunder", 7, true, .39, ConsumableType.GemSnack),
+            Mon("sparkit", "Sparkit", 9, 4, 2, 8, 4, 3, 8, "Spark Pattern", 5, true, .24, ConsumableType.GemSnack),
+            Mon("patternzap", "Patternzap", 15, 7, 4, 9, 5, 3, 12, "Zigzag Sequence", 6, true, .31, ConsumableType.GemSnack),
+            Mon("sequencera", "Sequencera", 23, 10, 7, 11, 6, 4, 17, "Sequence Storm", 7, true, .39, ConsumableType.GemSnack),
+            Mon("chargecub", "Chargecub", 11, 3, 3, 9, 4, 3, 8, "Charge Double", 5, true, .24, ConsumableType.HealthPotion),
+            Mon("doublebolt", "Doublebolt", 18, 6, 5, 11, 5, 4, 12, "Twin Thunder", 6, true, .31, ConsumableType.HealthPotion),
+            Mon("thunderbear", "Thunderbear", 27, 9, 8, 13, 6, 5, 17, "Thunder Groups", 7, true, .39, ConsumableType.HealthPotion),
+            Mon("flickerfin", "Flickerfin", 10, 3, 3, 9, 3, 4, 8, "Flicker Count", 5, true, .24, ConsumableType.GemSnack),
+            Mon("neonray", "Neonray", 17, 6, 5, 10, 4, 4, 12, "Neon Number", 6, true, .31, ConsumableType.GemSnack),
+            Mon("luminamp", "Luminamp", 25, 9, 8, 12, 5, 5, 17, "Luminous Count", 7, true, .39, ConsumableType.GemSnack),
+            Mon("switchick", "Switchick", 10, 3, 3, 9, 3, 4, 8, "Switch Mirror", 5, true, .24, ConsumableType.HealthPotion),
+            Mon("mirrorvolt", "Mirrorvolt", 17, 6, 5, 10, 4, 4, 12, "Voltage Reflection", 6, true, .31, ConsumableType.HealthPotion),
+            Mon("voltalance", "Voltalance", 25, 9, 8, 12, 5, 5, 17, "Balanced Bolt", 7, true, .39, ConsumableType.HealthPotion),
+
+            // Five additional Grass families.
+            Mon("budsum", "Budsum", 11, 2, 3, 10, 3, 4, 8, "Bud Addition", 5, true, .24, ConsumableType.HealthPotion),
+            Mon("vineplus", "Vineplus", 18, 5, 6, 11, 4, 4, 12, "Vine Sum", 6, true, .30, ConsumableType.HealthPotion),
+            Mon("totalbloom", "Totalbloom", 27, 8, 9, 13, 5, 5, 17, "Total Garden", 7, true, .38, ConsumableType.HealthPotion),
+            Mon("clovercub", "Clovercub", 12, 2, 4, 10, 3, 4, 8, "Leaf Count", 5, true, .24, ConsumableType.GemSnack),
+            Mon("fourleaf", "Fourleaf", 19, 5, 7, 12, 4, 5, 12, "Lucky Four", 6, true, .30, ConsumableType.GemSnack),
+            Mon("cloverlord", "Cloverlord", 28, 8, 10, 14, 5, 6, 17, "Clover Crown", 7, true, .38, ConsumableType.GemSnack),
+            Mon("sprouturn", "Sprouturn", 11, 3, 3, 10, 3, 4, 8, "Sprout Spiral", 5, true, .24, ConsumableType.GemSnack),
+            Mon("spiralfern", "Spiralfern", 18, 5, 6, 11, 4, 5, 12, "Fern Rotation", 6, true, .30, ConsumableType.GemSnack),
+            Mon("symmetroak", "Symmetroak", 28, 8, 10, 14, 5, 6, 17, "Oak Symmetry", 7, true, .38, ConsumableType.GemSnack),
+            Mon("mossbit", "Mossbit", 12, 2, 4, 10, 3, 4, 8, "Moss Double", 5, true, .24, ConsumableType.HealthPotion),
+            Mon("doublmoss", "Doublmoss", 20, 5, 7, 12, 4, 5, 12, "Double Grove", 6, true, .30, ConsumableType.HealthPotion),
+            Mon("grovemult", "Grovemult", 30, 8, 10, 14, 5, 6, 17, "Many Tree March", 7, true, .38, ConsumableType.HealthPotion),
+            Mon("seedseq", "Seedseq", 10, 3, 3, 9, 3, 4, 8, "Seed Sequence", 5, true, .24, ConsumableType.GemSnack),
+            Mon("patternpod", "Patternpod", 17, 5, 6, 10, 4, 5, 12, "Pod Pattern", 6, true, .30, ConsumableType.GemSnack),
+            Mon("orderchid", "Orderchid", 26, 8, 9, 12, 5, 6, 17, "Orchid Order", 7, true, .38, ConsumableType.GemSnack),
         };
 
         public static IReadOnlyList<EvolutionLineDef> Lines => EvolutionLines;
@@ -309,7 +425,33 @@ namespace Numeria.Core
                 case "seqkit":
                     skillId = "sequence-spark"; icon = "sequence_spark"; visual = SkillVisualKind.SequenceSpark; break;
                 default:
-                    skillId = "equation-flame"; icon = "equation_flame"; visual = SkillVisualKind.EquationFlame; break;
+                    string element = LineFor(baseId)?.Element;
+                    if (element == "FAIRY")
+                    {
+                        skillId = $"{baseId}-fairy-magic"; icon = "fairy_glimmer";
+                        visual = SkillVisualKind.FairyGlimmer;
+                    }
+                    else if (element == "DRAGON")
+                    {
+                        skillId = $"{baseId}-dragon-magic"; icon = "dragon_spiral";
+                        visual = SkillVisualKind.DragonSpiral;
+                    }
+                    else if (element == "ELECTRIC")
+                    {
+                        skillId = $"{baseId}-electric-magic"; icon = "electric_bolt";
+                        visual = SkillVisualKind.ElectricBolt;
+                    }
+                    else if (element == "GRASS")
+                    {
+                        skillId = $"{baseId}-grass-magic"; icon = "grass_bloom";
+                        visual = SkillVisualKind.GrassBloom;
+                    }
+                    else
+                    {
+                        skillId = "equation-flame"; icon = "equation_flame";
+                        visual = SkillVisualKind.EquationFlame;
+                    }
+                    break;
             }
 
             return new SkillDef

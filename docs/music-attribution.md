@@ -15,6 +15,7 @@ store-page credit:
 | Mystic Forest | Capt Chip Pants | 1:34 | Seamless | Bright, playful exploration at 128 BPM |
 | Silent Peaks | Little Haunted Mansion | 1:52 | Seamless | Mysterious mountain/cave atmosphere at 120 BPM |
 | Azure Sky City | Don't Fall Off The Clouds | 1:31 | Seamless | Airy, calm sky theme at 74 BPM |
+| Fever Desert | Pyramids Pyramids | 1:33 | Seamless | Bright desert-adventure pulse at 105 BPM |
 | Normal battle | Of Gods And Philosophers | 3:16 | Seamless | Energetic but readable combat pulse at 120 BPM |
 | Boss battle | Waking The Demons | 2:45 | Full song | Stronger dramatic escalation at 118 BPM |
 | Evolution | Victory At Last | 1:33 | Full song | Celebratory transformation cue at 136 BPM |
@@ -38,6 +39,6 @@ To copy Numeria's earlier Dynamic Music selections into the same Jukebox runtime
 zsh tools/install-jukebox-music.sh --restore-dynamic
 ```
 
-`Music.cs` loads stable `Music/Jukebox/{forest,mountains,sky,battle,boss,evolution}` resource names, so
+`Music.cs` loads stable `Music/Jukebox/{forest,mountains,sky,desert,battle,boss,evolution}` resource names, so
 crossfades, settings persistence, and voice ducking remain unchanged. The old `LocalStore` files stay intact;
 reverting the feature commit therefore restores the previous soundtrack immediately.

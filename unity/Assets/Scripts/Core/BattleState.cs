@@ -23,6 +23,13 @@ namespace Numeria.Core
 
         public static int Percent(int remainingHp, int maxHp) =>
             (int)Math.Round(Probability(remainingHp, maxHp) * 100d);
+
+        /// <summary>
+        /// Converting a stronger duplicate still rewards the successful catch, while adopting
+        /// the captured creature remains the more valuable long-term roster choice.
+        /// </summary>
+        public static int ConversionXp(int baseCatchXp) =>
+            Math.Max(1, (int)Math.Round(Math.Max(0, baseCatchXp) * 1.25d));
     }
 
     public enum SkillType { Basic, Formula }
@@ -44,6 +51,10 @@ namespace Numeria.Core
         TallyStone,
         GeometryPrism,
         SequenceSpark,
+        FairyGlimmer,
+        DragonSpiral,
+        ElectricBolt,
+        GrassBloom,
     }
 
     public class SkillDef

@@ -72,9 +72,9 @@ namespace Numeria.Core.Tests
         }
 
         [Test]
-        public void FormulaDifficulty_UsesStrictTenTwentyThirtyBounds()
+        public void FormulaDifficulty_UsesStrictTenTwentyThirtyFortyBounds()
         {
-            for (int tier = 1; tier <= 3; tier++)
+            for (int tier = 1; tier <= 4; tier++)
             {
                 int max = PuzzleGenerator.MaxForTier(tier);
                 Assert.AreEqual(tier * 10, max);

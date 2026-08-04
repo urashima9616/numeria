@@ -63,6 +63,13 @@ namespace Numeria.Core.Tests
         }
 
         [Test]
+        public void StrongerDuplicateConversionAwardsCatchXpBonus()
+        {
+            Assert.AreEqual(25, CatchSystem.ConversionXp(20));
+            Assert.AreEqual(1, CatchSystem.ConversionXp(0));
+        }
+
+        [Test]
         public void CatchRollUsesHealthCurveAndRejectsBosses()
         {
             var fullHp = new BattleState(GameData.Addmander(), GameData.Countipillar(), new Rng(1));
