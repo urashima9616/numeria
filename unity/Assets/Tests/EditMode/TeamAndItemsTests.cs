@@ -93,16 +93,33 @@ namespace Numeria.Core.Tests
         }
 
         [Test]
-        public void CatchPreservesWildLevelAndEvolutionStage()
+        public void CatchPreservesWildLevelEvolutionStageAndExactBattleStats()
         {
             var p = new Progress();
+            var wild = GameData.CreateWild("stackstone", 13, new Rng(7));
+            wild.AttackPower += 2;
+            wild.DefensePower += 1;
 
-            Assert.AreEqual(CatchRosterResult.Added, p.AddCaught("stackstone", 13));
+            Assert.AreEqual(CatchRosterResult.Added, p.AddCaught(wild));
 
             var caught = p.EnsureGrowth("pebblit");
             Assert.AreEqual(13, caught.Level);
             Assert.AreEqual(1, caught.Stage);
             Assert.AreEqual("stackstone", p.CurrentFormId("pebblit"));
+            var buddy = p.PlayerCombatant("pebblit");
+            Assert.AreEqual(wild.MaxHp, buddy.MaxHp);
+            Assert.AreEqual(wild.AttackPower, buddy.AttackPower);
+            Assert.AreEqual(wild.DefensePower, buddy.DefensePower);
+
+            int hpOffset = caught.CapturedHpOffset;
+            int attackOffset = caught.CapturedAttackOffset;
+            int defenseOffset = caught.CapturedDefenseOffset;
+            caught.GainXp(caught.XpToNext);
+            var leveled = p.PlayerCombatant("pebblit");
+            var standard = GameData.PlayerMon("pebblit", 1, 14);
+            Assert.AreEqual(standard.MaxHp + hpOffset, leveled.MaxHp);
+            Assert.AreEqual(standard.AttackPower + attackOffset, leveled.AttackPower);
+            Assert.AreEqual(standard.DefensePower + defenseOffset, leveled.DefensePower);
         }
 
         [Test]
@@ -111,12 +128,19 @@ namespace Numeria.Core.Tests
             var p = new Progress();
             p.AddCaught("pebblit", 8);
             p.EnsureGrowth("pebblit").AttackBonus = 2;
+            var stronger = GameData.CreateWild("stackstone", 12, new Rng(11));
+            stronger.AttackPower += 1;
+            stronger.DefensePower += 2;
 
-            Assert.AreEqual(CatchRosterResult.UpgradeAvailable, p.AddCaught("stackstone", 12));
-            Assert.True(p.AdoptCaptured("stackstone", 12));
+            Assert.AreEqual(CatchRosterResult.UpgradeAvailable, p.AddCaught(stronger));
+            Assert.True(p.AdoptCaptured(stronger));
             Assert.AreEqual(12, p.EnsureGrowth("pebblit").Level);
             Assert.AreEqual(1, p.EnsureGrowth("pebblit").Stage);
             Assert.AreEqual(2, p.EnsureGrowth("pebblit").AttackBonus);
+            var adopted = p.PlayerCombatant("pebblit");
+            Assert.AreEqual(stronger.MaxHp, adopted.MaxHp);
+            Assert.AreEqual(stronger.AttackPower, adopted.AttackPower);
+            Assert.AreEqual(stronger.DefensePower, adopted.DefensePower);
             Assert.False(p.AdoptCaptured("pebblit", 7));
         }
 
@@ -145,7 +169,9 @@ namespace Numeria.Core.Tests
             p.AddAccessory("keepsake", "Counting Charm", 1, 0);
             Assert.True(p.EquipAccessory("keepsake", "future-family-3"));
 
-            Assert.True(p.ReplaceCaught("future-family-3", "stackstone", 14));
+            var newcomer = GameData.CreateWild("stackstone", 14, new Rng(13));
+            newcomer.AttackPower += 2;
+            Assert.True(p.ReplaceCaught("future-family-3", newcomer));
             Assert.AreEqual(15, p.TeamCount);
             Assert.False(p.CaughtIds.Contains("future-family-3"));
             Assert.True(p.CaughtIds.Contains("pebblit"));
@@ -153,6 +179,9 @@ namespace Numeria.Core.Tests
             Assert.IsNull(p.FindGrowth("future-family-3"));
             Assert.AreEqual(14, p.FindGrowth("pebblit").Level);
             Assert.AreEqual(1, p.FindGrowth("pebblit").Stage);
+            Assert.AreEqual(newcomer.MaxHp, p.PlayerCombatant("pebblit").MaxHp);
+            Assert.AreEqual(newcomer.AttackPower, p.PlayerCombatant("pebblit").AttackPower);
+            Assert.AreEqual(newcomer.DefensePower, p.PlayerCombatant("pebblit").DefensePower);
             Assert.AreEqual("", p.Accessories[0].EquippedToBaseId);
             Assert.False(p.ReplaceCaught("addmander", "another-family"));
         }

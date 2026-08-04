@@ -68,7 +68,7 @@ namespace Numeria.Game
             var growth = progress.ActiveGrowth;
             _playerLevel = growth.Level;
             _rng = new Rng((uint)Environment.TickCount);
-            _state = new BattleState(GameData.PlayerMon(progress.ActiveMonId, growth.Stage, growth.Level), enemy, _rng);
+            _state = new BattleState(progress.PlayerCombatant(progress.ActiveMonId), enemy, _rng);
             _themeSkill = System.Array.Find(_state.Player.Skills, skill => skill.Type == SkillType.Formula);
             _state.PlayerAttackBonus = progress.TotalAttackBonus(progress.ActiveMonId);
             _state.PlayerDefenseBonus = progress.TotalDefenseBonus(progress.ActiveMonId);

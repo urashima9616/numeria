@@ -54,6 +54,10 @@ namespace Numeria.Core
         public int AttackBonus;
         public int DefenseBonus;
         public int Stage;
+        // 捕捉时个体相对同形态/同等级标准曲线的差值；升级和进化时继续叠加。
+        public int CapturedHpOffset;
+        public int CapturedAttackOffset;
+        public int CapturedDefenseOffset;
 
         public int XpToNext => GrowthSystem.XpToNext(Level);
 
@@ -80,7 +84,7 @@ namespace Numeria.Core
     [Serializable]
     public class Progress
     {
-        public const int CurrentSaveVersion = 8;
+        public const int CurrentSaveVersion = 9;
         public const int TeamCapacity = 15;
 
         public int SaveVersion = CurrentSaveVersion;
@@ -197,6 +201,17 @@ namespace Numeria.Core
                 if (ClearedGates.Contains("sky") && !DigitCrystals.Contains("sky")) DigitCrystals.Add("sky");
                 Records.DigitCrystalsRestored = DigitCrystals.Count;
             }
+            if (SaveVersion < 9)
+            {
+                // v9 开始保存捕捉时的个体属性差值。旧存档没有原始战斗快照，默认 0 可保持
+                // 旧版标准成长数值，同时让之后捕捉的个体完整继承 HP / ATK / DEF。
+                foreach (var growth in MonGrowth)
+                {
+                    growth.CapturedHpOffset = 0;
+                    growth.CapturedAttackOffset = 0;
+                    growth.CapturedDefenseOffset = 0;
+                }
+            }
             SaveVersion = CurrentSaveVersion;
             SyncLegacyFields();
         }
@@ -205,6 +220,20 @@ namespace Numeria.Core
         public int XpToNext => ActiveGrowth.XpToNext;
 
         public MonGrowth ActiveGrowth => EnsureGrowth(ActiveMonId);
+
+        /// <summary>
+        /// 按当前等级与形态创建战斗数值，并叠加捕捉时保存的个体差值。
+        /// 饰品和训练加成仍由 BattleState / UI 单独叠加，避免重复计算。
+        /// </summary>
+        public CombatantDef PlayerCombatant(string id)
+        {
+            var growth = EnsureGrowth(id);
+            var result = GameData.PlayerMon(id, growth.Stage, growth.Level);
+            result.MaxHp = Math.Max(1, result.MaxHp + growth.CapturedHpOffset);
+            result.AttackPower = Math.Max(1, result.AttackPower + growth.CapturedAttackOffset);
+            result.DefensePower = Math.Max(1, result.DefensePower + growth.CapturedDefenseOffset);
+            return result;
+        }
 
         public MonGrowth EnsureGrowth(string id)
         {
@@ -387,7 +416,16 @@ namespace Numeria.Core
         /// 尝试将野生伙伴加入最多 15 只的队伍。首次捕捉会保留野生等级与形态；
         /// 同家族更高等级或更高形态只报告 UpgradeAvailable，由 UI 让玩家决定替换或转经验。
         /// </summary>
-        public CatchRosterResult AddCaught(string mathmonId, int capturedLevel = 1)
+        public CatchRosterResult AddCaught(CombatantDef captured)
+        {
+            if (captured == null) throw new ArgumentNullException(nameof(captured));
+            return AddCaught(captured.Id, captured.Level, captured);
+        }
+
+        public CatchRosterResult AddCaught(string mathmonId, int capturedLevel = 1) =>
+            AddCaught(mathmonId, capturedLevel, null);
+
+        private CatchRosterResult AddCaught(string mathmonId, int capturedLevel, CombatantDef captured)
         {
             string baseId = GameData.BaseId(mathmonId);
             int capturedStage = Math.Max(0, GameData.StageIndex(mathmonId));
@@ -400,7 +438,7 @@ namespace Numeria.Core
             }
             if (TeamIsFull) return CatchRosterResult.Full;
             CaughtIds.Add(baseId);
-            ApplyCapturedGrowth(EnsureGrowth(baseId), capturedLevel, capturedStage, false);
+            ApplyCapturedGrowth(EnsureGrowth(baseId), mathmonId, capturedLevel, capturedStage, captured, false);
             return CatchRosterResult.Added;
         }
 
@@ -411,14 +449,23 @@ namespace Numeria.Core
         /// 接纳同家族更强的野生伙伴。等级与进化阶段都只会上升，避免“更高进化但低一级”导致倒退；
         /// 饰品与永久训练加成按家族保留。
         /// </summary>
-        public bool AdoptCaptured(string mathmonId, int capturedLevel)
+        public bool AdoptCaptured(CombatantDef captured)
+        {
+            if (captured == null) return false;
+            return AdoptCaptured(captured.Id, captured.Level, captured);
+        }
+
+        public bool AdoptCaptured(string mathmonId, int capturedLevel) =>
+            AdoptCaptured(mathmonId, capturedLevel, null);
+
+        private bool AdoptCaptured(string mathmonId, int capturedLevel, CombatantDef captured)
         {
             string baseId = GameData.BaseId(mathmonId);
             if (!Owns(baseId)) return false;
             int capturedStage = Math.Max(0, GameData.StageIndex(mathmonId));
             var growth = EnsureGrowth(baseId);
             if (capturedLevel <= growth.Level && capturedStage <= growth.Stage) return false;
-            ApplyCapturedGrowth(growth, capturedLevel, capturedStage, true);
+            ApplyCapturedGrowth(growth, mathmonId, capturedLevel, capturedStage, captured, true);
             SyncLegacyFields();
             return true;
         }
@@ -426,7 +473,17 @@ namespace Numeria.Core
         /// <summary>
         /// 满员时用新伙伴替换一只已捕获伙伴。首只 Addmander 不可释放；被释放伙伴的饰品回到库存。
         /// </summary>
-        public bool ReplaceCaught(string releasedMathmonId, string newMathmonId, int capturedLevel = 1)
+        public bool ReplaceCaught(string releasedMathmonId, CombatantDef captured)
+        {
+            if (captured == null) return false;
+            return ReplaceCaught(releasedMathmonId, captured.Id, captured.Level, captured);
+        }
+
+        public bool ReplaceCaught(string releasedMathmonId, string newMathmonId, int capturedLevel = 1) =>
+            ReplaceCaught(releasedMathmonId, newMathmonId, capturedLevel, null);
+
+        private bool ReplaceCaught(string releasedMathmonId, string newMathmonId, int capturedLevel,
+            CombatantDef captured)
         {
             string released = GameData.BaseId(releasedMathmonId);
             string newcomer = GameData.BaseId(newMathmonId);
@@ -437,21 +494,37 @@ namespace Numeria.Core
                 if (accessory.EquippedToBaseId == released) accessory.EquippedToBaseId = "";
             MonGrowth.RemoveAll(growth => growth.BaseId == released);
             CaughtIds[index] = newcomer;
-            ApplyCapturedGrowth(EnsureGrowth(newcomer), capturedLevel,
-                Math.Max(0, GameData.StageIndex(newMathmonId)), false);
+            ApplyCapturedGrowth(EnsureGrowth(newcomer), newMathmonId, capturedLevel,
+                Math.Max(0, GameData.StageIndex(newMathmonId)), captured, false);
             if (GameData.BaseId(ActiveMonId) == released) ActiveMonId = newcomer;
             SyncLegacyFields();
             return true;
         }
 
-        private static void ApplyCapturedGrowth(MonGrowth growth, int capturedLevel, int capturedStage,
-            bool preserveHigherValues)
+        private static void ApplyCapturedGrowth(MonGrowth growth, string capturedId, int capturedLevel,
+            int capturedStage, CombatantDef captured, bool preserveHigherValues)
         {
             int level = GrowthSystem.ClampLevel(capturedLevel);
             int stage = Math.Max(0, capturedStage);
             growth.Level = preserveHigherValues ? Math.Max(growth.Level, level) : level;
             growth.Stage = preserveHigherValues ? Math.Max(growth.Stage, stage) : stage;
             growth.Xp = 0;
+
+            if (captured == null)
+            {
+                if (!preserveHigherValues)
+                {
+                    growth.CapturedHpOffset = 0;
+                    growth.CapturedAttackOffset = 0;
+                    growth.CapturedDefenseOffset = 0;
+                }
+                return;
+            }
+
+            var standard = GameData.PlayerMon(capturedId, stage, level);
+            growth.CapturedHpOffset = captured.MaxHp - standard.MaxHp;
+            growth.CapturedAttackOffset = captured.AttackPower - standard.AttackPower;
+            growth.CapturedDefenseOffset = captured.DefensePower - standard.DefensePower;
         }
 
         public void AddCoins(int amount)

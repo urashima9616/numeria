@@ -5,7 +5,9 @@ balance remains authoritative in `GameData.cs`, `Progress.cs`, and `MapDefs.cs`.
 
 ## Catch and duplicate rules
 
-- Every successful catch preserves the wild Mathmon's level and current evolution stage.
+- Every successful catch preserves the wild Mathmon's level, current evolution stage, and exact battle HP/ATK/DEF.
+  The captured individual stores offsets from its species curve, so those traits continue through later levels,
+  evolutions, and save/load rather than freezing the creature at its capture values.
 - Owning any form in a family means later catches are compared against that family's saved growth.
 - A higher level or later evolution stage is a **stronger catch**. The player chooses either:
   - **Keep stronger friend:** adopt its higher level/form, reset progress within that level, and preserve the

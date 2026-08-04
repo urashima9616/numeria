@@ -355,7 +355,7 @@ namespace Numeria.Game
         private void BuildTeamCard(RectTransform row, string id)
         {
             var growth = _progress.EnsureGrowth(id);
-            var def = GameData.PlayerMon(id, growth.Stage, growth.Level);
+            var def = _progress.PlayerCombatant(id);
             bool active = id == _progress.ActiveMonId;
             bool selected = id == _selectedId;
 
@@ -404,7 +404,7 @@ namespace Numeria.Game
         private void BuildMonDetail(RectTransform parent, string id)
         {
             var growth = _progress.EnsureGrowth(id);
-            var def = GameData.PlayerMon(id, growth.Stage, growth.Level);
+            var def = _progress.PlayerCombatant(id);
             bool active = id == _progress.ActiveMonId;
             var (typeLabel, typeColor) = TypeOf(DisplaySpriteId(id));
 

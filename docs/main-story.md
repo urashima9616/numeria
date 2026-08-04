@@ -21,7 +21,7 @@ Mathmons, learn that mathematics is Numeria's magic, and seek the guardians of t
 ## Presentation rules
 
 - The title screen appears once when a play session begins; moving between maps does not replay it.
-- A fresh save receives the narrated introduction. Existing saves receive a non-destructive v8 migration and
+- A fresh save receives the narrated introduction. Existing saves receive a non-destructive v9 migration and
   are credited for crystals matching bosses already defeated.
 - Guardian dialogue appears before each boss and after the local portal trial. Every displayed English line has
   a matching offline Samantha WAV so a five-year-old does not need to read it alone.

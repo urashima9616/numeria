@@ -382,7 +382,7 @@ namespace Numeria.Game
         private void UpdateHud()
         {
             var growth = _progress.ActiveGrowth;
-            var combatant = GameData.PlayerMon(_progress.ActiveMonId, growth.Stage, growth.Level);
+            var combatant = _progress.PlayerCombatant(_progress.ActiveMonId);
             string xp = growth.Level >= GrowthSystem.MaxLevel ? "MAX" : $"{growth.Xp}/{growth.XpToNext}";
             _hudText.text = $"{_progress.Coins} COINS   {_progress.DigitCrystalCount}/4 CRYSTALS   " +
                             $"{PlayerName} Lv.{growth.Level}  XP {xp}  " +
@@ -763,7 +763,7 @@ namespace Numeria.Game
                     bool duplicate = false;
                     bool upgraded = false;
                     int catchXp = 0;
-                    CatchRosterResult rosterResult = _progress.AddCaught(enemy.Id, enemy.Level);
+                    CatchRosterResult rosterResult = _progress.AddCaught(enemy);
                     if (rosterResult == CatchRosterResult.Added)
                     {
                         joined = true;
@@ -780,7 +780,7 @@ namespace Numeria.Game
                         yield return ResolveStrongerDuplicate(enemy, xpReward, choice => keepStrongerCatch = choice);
                         if (keepStrongerCatch)
                         {
-                            upgraded = _progress.AdoptCaptured(enemy.Id, enemy.Level);
+                            upgraded = _progress.AdoptCaptured(enemy);
                             if (upgraded) _voice.Say("Your stronger friend is ready for adventure!");
                         }
                         else
@@ -800,7 +800,7 @@ namespace Numeria.Game
                         });
                         if (decided && !string.IsNullOrEmpty(releasedId))
                         {
-                            joined = _progress.ReplaceCaught(releasedId, enemy.Id, enemy.Level);
+                            joined = _progress.ReplaceCaught(releasedId, enemy);
                             if (joined) _voice.Say("Your new friend joined the team!");
                         }
                         else
@@ -863,6 +863,9 @@ namespace Numeria.Game
             string ownedForm = _progress.CurrentFormId(baseId);
             var ownedSpecies = GameData.SpeciesById(ownedForm);
             var caughtSpecies = GameData.SpeciesById(newcomer.Id);
+            var ownedCombatant = _progress.PlayerCombatant(baseId);
+            int ownedAttack = ownedCombatant.AttackPower + _progress.TotalAttackBonus(baseId);
+            int ownedDefense = ownedCombatant.DefensePower + _progress.TotalDefenseBonus(baseId);
             int bonusXp = CatchSystem.ConversionXp(baseXp);
 
             var shade = Ui.Img(_hudCanvasRoot, "StrongerCatchOverlay", new Color(.03f, .05f, .04f, .91f));
@@ -874,9 +877,12 @@ namespace Numeria.Game
             Ui.Place(title.rectTransform, new Vector2(.5f, 1), new Vector2(0, -36), new Vector2(800, 66));
             var prompt = Ui.Label(panel.transform, "Prompt",
                 $"You have {ownedSpecies?.Name ?? baseId} Lv.{ownedGrowth.Level}. " +
-                $"The new {caughtSpecies?.Name ?? newcomer.Name} is Lv.{newcomer.Level}.\nWhat should happen?",
+                $"HP {ownedCombatant.MaxHp}  ATK {ownedAttack}  DEF {ownedDefense}\n" +
+                $"New {caughtSpecies?.Name ?? newcomer.Name} Lv.{newcomer.Level}: " +
+                $"HP {newcomer.MaxHp}  ATK {newcomer.AttackPower}  DEF {newcomer.DefensePower}\n" +
+                "What should happen?",
                 28, Ui.Hex("#8b542f"));
-            Ui.Place(prompt.rectTransform, new Vector2(.5f, 1), new Vector2(0, -112), new Vector2(850, 105));
+            Ui.Place(prompt.rectTransform, new Vector2(.5f, 1), new Vector2(0, -112), new Vector2(850, 132));
             prompt.textWrappingMode = TextWrappingModes.Normal;
 
             var currentIcon = Ui.SpriteImg(panel.transform, "CurrentIcon", SpriteLib.MapSprite(ownedForm));

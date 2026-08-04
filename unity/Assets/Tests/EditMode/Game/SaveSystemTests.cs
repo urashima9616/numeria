@@ -137,16 +137,23 @@ namespace Numeria.Game.Tests
         }
 
         [Test]
-        public void CapturedLevelAndEvolutionStageRoundTrip()
+        public void CapturedLevelEvolutionStageAndBattleStatsRoundTrip()
         {
             var progress = new Progress();
-            Assert.AreEqual(CatchRosterResult.Added, progress.AddCaught("stackstone", 13));
+            var wild = GameData.CreateWild("stackstone", 13, new Rng(17));
+            wild.AttackPower += 2;
+            wild.DefensePower += 1;
+            Assert.AreEqual(CatchRosterResult.Added, progress.AddCaught(wild));
             SaveSystem.SaveToSlot(progress, 4);
 
             var loaded = SaveSystem.LoadFromSlot(4);
             Assert.AreEqual("stackstone", loaded.CurrentFormId("pebblit"));
             Assert.AreEqual(13, loaded.EnsureGrowth("pebblit").Level);
             Assert.AreEqual(1, loaded.EnsureGrowth("pebblit").Stage);
+            var buddy = loaded.PlayerCombatant("pebblit");
+            Assert.AreEqual(wild.MaxHp, buddy.MaxHp);
+            Assert.AreEqual(wild.AttackPower, buddy.AttackPower);
+            Assert.AreEqual(wild.DefensePower, buddy.DefensePower);
         }
 
         [Test]

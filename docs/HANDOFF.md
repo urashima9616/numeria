@@ -33,7 +33,7 @@
 - `Rng`:确定性 LCG(与 Web 原型逐位一致),所有生成函数注入 rng
 - `PuzzleGenerator`:四关 10/20/30/40 上限;加减填空、凑目标、连加、点数/比较、图形识别、AB/ABC/ABCD 规律、对称、旋转、数列;候选答案唯一
 - `BattleState`:宝石经济、数字护盾、破盾眩晕一回合 + 首次命中双倍 + 命中后护盾重置;正式 ATK/DEF 公式 `max(1, ATK − DEF + 1 + [-1,1])`,小幅可控波动、零惩罚不变量
-- `Progress`:save schema v8;Lv.99 上限、物种成长曲线、动态经验、每家族独立成长、独占饰品装备、金币/限量库存、Digit Crystal 主线与冒险记录 —— **新字段必须带默认值和迁移**
+- `Progress`:save schema v9;Lv.99 上限、物种成长曲线、捕捉个体 HP/ATK/DEF 偏移、动态经验、每家族独立成长、独占饰品装备、金币/限量库存、Digit Crystal 主线与冒险记录 —— **新字段必须带默认值和迁移**
 - `GridMap`:ASCII 地图解析('.'草地 'T'树 'b'草丛 'C'宝箱 'P'传送门 'S'出生)+ BFS 寻路
 - `GameData`:93 只数灵、32 条进化线;Fairy/Dragon/Electric/Grass 各 5 条扩展线,另有 Flying 三段线;各物种配置基础经验、HP/ATK/DEF 成长与数学亲和
 - 测试:`unity/Assets/Tests/EditMode/`,**105 个**;最后一次完整 headless 为 **105/105**
@@ -63,7 +63,7 @@
   - ✅ 四段 Kindergarten 难度:10/20/30/40 内加减 + 同步递进的图形、对称、规律、旋转、数列
   - ✅ 进化系统全链(御三家 Lv.8/Lv.15、野生线 Lv.5 + 里程碑进化石 + 家族亲和三题试炼 + 蜕变演出)
   - ✅ 菜单(tab 化)、出战位切换、道具栏、15 只队伍上限与满员放走/替换流程
-  - ✅ 捕捉成长继承:保留野生等级/进化阶段;同家族更强个体可选择收编或转换为 125% 捕捉经验
+  - ✅ 捕捉成长继承:保留野生等级、进化阶段及战斗时 HP/ATK/DEF;个体偏移随升级/进化和存档延续;同家族更强个体可选择收编或转换为 125% 捕捉经验
   - ✅ 用户 AI 生成美术管线(`generated/` 约定 + NUMERIA Battle Asset Pack 全面接入战斗)
   - ✅ 蔚蓝天空城:独立浮空遗迹路线、Mirrowl/Symmetrix、规律/对称/旋转/数字序列、Sky/Boss 音乐
   - ✅ 93 只数灵 / 32 条线:Fairy、Dragon、Electric、Grass 各新增 5 条线,另有 Flying 的 Numblet → Tallywing → Totalon;全部有统一高清图标、技能、成长与进化语音
@@ -75,7 +75,7 @@
   - ✅ 饰品与存档:每只数灵 2/3/4 格独占饰品装备、破盾眩晕与一次双倍循环、10 个存取档槽
   - ✅ 第一轮美术演出:11 套家族技能图标与专属 VFX;Lucas 像素主角已接入地图,生成提示词见 `docs/generated-visual-assets.md`
   - ✅ 探索经济:每图 4 个主题数学符文、战斗金币、四位商人挑战、永久限量库存、消耗品/饰品/进化石平衡,见 `docs/economy-design.md`
-  - ✅ Lucas 主线:标题页与有声开场、四位 Crystal Guardian 的 Boss 前后对白、四枚 Digit Crystal、旧存档 v8 无损兼容及结局节点,见 `docs/main-story.md`
+  - ✅ Lucas 主线:标题页与有声开场、四位 Crystal Guardian 的 Boss 前后对白、四枚 Digit Crystal、旧存档至 v9 无损兼容及结局节点,见 `docs/main-story.md`
   - ✅ 存档入口重构:标题页选择新游戏/读取游戏与十槽存档;新游戏真正清空宝箱等世界状态;设置页以保存提示返回主菜单
   - ⬜ 未做:JSON 数据驱动落地(现在数值在 GameData/MapDefs 硬编码)、自适应难度引擎(错题变形复现/隐形升降档)、家长面板(PIN + 掌握度热图)
 - ⬜ **P4**:iOS 构建、真机、TestFlight(免费 Apple ID 7 天签名 vs $99/年,已告知用户)

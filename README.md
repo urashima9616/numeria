@@ -20,7 +20,7 @@ their skills, and help Lucas restore four Digit Crystals so he can reopen the le
 | P4 — iOS delivery | ⬜ Not started | Device build, signing, TestFlight and final performance QA |
 
 The latest automated baseline is **105/105 Unity EditMode tests** and **14/14 Node prototype tests**.
-The save format is currently **schema v8**, with non-destructive migration for older saves.
+The save format is currently **schema v9**, with non-destructive migration for older saves.
 
 ## Design principles
 
@@ -53,8 +53,9 @@ The save format is currently **schema v8**, with non-destructive migration for o
 - The traveling team holds at most **15 Mathmons**.
 - If a catch would exceed the limit, the player chooses whether to release the newcomer or replace an existing
   companion. Addmander remains the protected starter, and released companions return equipped accessories.
-- A caught Mathmon keeps its wild level and evolution form. When a stronger member of an owned family is caught,
-  the player chooses between adopting it or converting the catch into **125% of the normal catch XP**.
+- A caught Mathmon keeps its wild level, evolution form, and exact battle HP/ATK/DEF. Individual stat offsets
+  remain attached through later growth and saves. When a stronger member of an owned family is caught, the player
+  chooses between adopting it or converting the catch into **125% of the normal catch XP**.
 
 ### Exploration and economy
 
