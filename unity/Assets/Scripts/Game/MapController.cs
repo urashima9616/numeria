@@ -922,7 +922,8 @@ namespace Numeria.Game
             Ui.Place(panel.rectTransform, new Vector2(.5f, .5f), Vector2.zero, new Vector2(1050, 820));
             Ui.AddOutline(panel.gameObject);
 
-            var title = Ui.DisplayLabel(panel.transform, "Title", "TEAM FULL  15 / 15", 48, Ui.Ink);
+            var title = Ui.DisplayLabel(panel.transform, "Title",
+                $"TEAM FULL  {_progress.TeamCount} / {Progress.TeamCapacity}", 48, Ui.Ink);
             Ui.Place(title.rectTransform, new Vector2(.5f, 1), new Vector2(0, -38), new Vector2(850, 62));
             var prompt = Ui.Label(panel.transform, "Prompt",
                 $"{newcomerName} Lv.{newcomer.Level} wants to join! Pick a friend to release, or let {newcomerName} go.",
@@ -930,14 +931,29 @@ namespace Numeria.Game
             Ui.Place(prompt.rectTransform, new Vector2(.5f, 1), new Vector2(0, -105), new Vector2(900, 62));
             _voice.Say("Your team is full. Choose a friend to release, or let the new friend go.");
 
-            var grid = Ui.Node(panel.transform, "RosterGrid");
-            Ui.PlaceCentered(grid, new Vector2(.5f, .5f), new Vector2(0, 10), new Vector2(920, 500));
+            var viewport = Ui.Node(panel.transform, "RosterViewport");
+            Ui.PlaceCentered(viewport, new Vector2(.5f, .5f), new Vector2(0, 10), new Vector2(920, 500));
+            viewport.gameObject.AddComponent<RectMask2D>();
+            var scroll = viewport.gameObject.AddComponent<ScrollRect>();
+            scroll.viewport = viewport;
+            scroll.horizontal = false;
+            scroll.movementType = ScrollRect.MovementType.Clamped;
+            scroll.scrollSensitivity = 30;
+
+            var grid = Ui.Node(viewport, "RosterGrid");
+            grid.anchorMin = new Vector2(0, 1);
+            grid.anchorMax = new Vector2(1, 1);
+            grid.pivot = new Vector2(.5f, 1);
+            grid.anchoredPosition = Vector2.zero;
+            grid.sizeDelta = Vector2.zero;
             var layout = grid.gameObject.AddComponent<GridLayoutGroup>();
             layout.cellSize = new Vector2(215, 108);
             layout.spacing = new Vector2(16, 14);
             layout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
             layout.constraintCount = 4;
             layout.childAlignment = TextAnchor.MiddleCenter;
+            grid.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            scroll.content = grid;
 
             foreach (string existingId in _progress.CaughtIds)
             {

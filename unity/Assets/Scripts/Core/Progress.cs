@@ -85,7 +85,7 @@ namespace Numeria.Core
     public class Progress
     {
         public const int CurrentSaveVersion = 9;
-        public const int TeamCapacity = 15;
+        public const int TeamCapacity = 99;
 
         public int SaveVersion = CurrentSaveVersion;
         public int Level = 1;
@@ -413,7 +413,7 @@ namespace Numeria.Core
         }
 
         /// <summary>
-        /// 尝试将野生伙伴加入最多 15 只的队伍。首次捕捉会保留野生等级与形态；
+        /// 尝试将野生伙伴加入最多 99 只的队伍。首次捕捉会保留野生等级与形态；
         /// 同家族更高等级或更高形态只报告 UpgradeAvailable，由 UI 让玩家决定替换或转经验。
         /// </summary>
         public CatchRosterResult AddCaught(CombatantDef captured)
@@ -499,6 +499,32 @@ namespace Numeria.Core
             if (GameData.BaseId(ActiveMonId) == released) ActiveMonId = newcomer;
             SyncLegacyFields();
             return true;
+        }
+
+        /// <summary>
+        /// 将非首发伙伴放走并按等级兑换金币或经验。饰品自动卸下；若放走当前出战伙伴，
+        /// Addmander 会先接任，因此经验奖励总有一个明确的接收者。
+        /// 返回 0 表示目标不存在或是不可放走的 Addmander。
+        /// </summary>
+        public int ConvertCaught(string mathmonId, MathmonConversionReward reward)
+        {
+            string baseId = GameData.BaseId(mathmonId);
+            if (baseId == "addmander" || !CaughtIds.Contains(baseId)) return 0;
+
+            var growth = FindGrowth(baseId);
+            int level = growth?.Level ?? 1;
+            int amount = MathmonConversionSystem.RewardForLevel(level, reward);
+
+            if (GameData.BaseId(ActiveMonId) == baseId) ActiveMonId = "addmander";
+            foreach (var accessory in Accessories)
+                if (accessory.EquippedToBaseId == baseId) accessory.EquippedToBaseId = "";
+            CaughtIds.Remove(baseId);
+            MonGrowth.RemoveAll(candidate => candidate.BaseId == baseId);
+
+            if (reward == MathmonConversionReward.Coins) AddCoins(amount);
+            else GainXp(amount);
+            SyncLegacyFields();
+            return amount;
         }
 
         private static void ApplyCapturedGrowth(MonGrowth growth, string capturedId, int capturedLevel,

@@ -11,6 +11,20 @@ namespace Numeria.Core
     }
 
     public enum PurchaseResult { Purchased, SoldOut, NotEnoughCoins }
+    public enum MathmonConversionReward { Coins, Experience }
+
+    /// <summary>
+    /// 放走伙伴时的固定兑换曲线。每升一级都会明确增加奖励，方便孩子比较大小：
+    /// 金币 = 等级 + 2；经验 = 等级 x 2 + 4。
+    /// </summary>
+    public static class MathmonConversionSystem
+    {
+        public static int CoinsForLevel(int level) => GrowthSystem.ClampLevel(level) + 2;
+        public static int XpForLevel(int level) => GrowthSystem.ClampLevel(level) * 2 + 4;
+
+        public static int RewardForLevel(int level, MathmonConversionReward reward) =>
+            reward == MathmonConversionReward.Coins ? CoinsForLevel(level) : XpForLevel(level);
+    }
 
     [Serializable]
     public sealed class ShopItemDef

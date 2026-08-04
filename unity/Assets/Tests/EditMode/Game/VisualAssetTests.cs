@@ -32,5 +32,13 @@ namespace Numeria.Game.Tests
             Assert.Greater(sprite.texture.width, 256);
             Assert.Greater(sprite.texture.height, 256);
         }
+
+        [Test]
+        public void EveryRegisteredElement_HasAReadableTeamMenuLabel()
+        {
+            foreach (var line in GameData.Lines)
+                Assert.AreEqual(line.Element, MenuUi.TypeLabelFor(line.BaseId),
+                    $"Missing TEAM type presentation for {line.BaseId} ({line.Element})");
+        }
     }
 }

@@ -145,16 +145,16 @@ namespace Numeria.Core.Tests
         }
 
         [Test]
-        public void TeamCapacity_IsFifteen_AndFullCatchRequiresAChoice()
+        public void TeamCapacity_IsNinetyNine_AndFullCatchRequiresAChoice()
         {
             var p = new Progress();
             Assert.AreEqual(1, p.TeamCount);
-            Assert.AreEqual(15, Progress.TeamCapacity);
+            Assert.AreEqual(99, Progress.TeamCapacity);
 
-            for (int i = 0; i < 14; i++)
+            for (int i = 0; i < 98; i++)
                 Assert.AreEqual(CatchRosterResult.Added, p.AddCaught($"future-family-{i}"));
 
-            Assert.AreEqual(15, p.TeamCount);
+            Assert.AreEqual(99, p.TeamCount);
             Assert.True(p.TeamIsFull);
             Assert.AreEqual(CatchRosterResult.Full, p.AddCaught("overflow-family"));
             Assert.AreEqual(CatchRosterResult.Duplicate, p.AddCaught("future-family-4"));
@@ -164,7 +164,7 @@ namespace Numeria.Core.Tests
         public void FullTeamReplacement_ReleasesGrowthAndUnequipsAccessories()
         {
             var p = new Progress();
-            for (int i = 0; i < 14; i++) p.Catch($"future-family-{i}");
+            for (int i = 0; i < 98; i++) p.Catch($"future-family-{i}");
             p.ActiveMonId = "future-family-3";
             p.AddAccessory("keepsake", "Counting Charm", 1, 0);
             Assert.True(p.EquipAccessory("keepsake", "future-family-3"));
@@ -172,7 +172,7 @@ namespace Numeria.Core.Tests
             var newcomer = GameData.CreateWild("stackstone", 14, new Rng(13));
             newcomer.AttackPower += 2;
             Assert.True(p.ReplaceCaught("future-family-3", newcomer));
-            Assert.AreEqual(15, p.TeamCount);
+            Assert.AreEqual(99, p.TeamCount);
             Assert.False(p.CaughtIds.Contains("future-family-3"));
             Assert.True(p.CaughtIds.Contains("pebblit"));
             Assert.AreEqual("pebblit", p.ActiveMonId);
@@ -184,6 +184,55 @@ namespace Numeria.Core.Tests
             Assert.AreEqual(newcomer.DefensePower, p.PlayerCombatant("pebblit").DefensePower);
             Assert.AreEqual("", p.Accessories[0].EquippedToBaseId);
             Assert.False(p.ReplaceCaught("addmander", "another-family"));
+        }
+
+        [Test]
+        public void ConversionRewards_IncreaseAtEveryLevel()
+        {
+            int previousCoins = 0;
+            int previousXp = 0;
+            for (int level = 1; level <= GrowthSystem.MaxLevel; level++)
+            {
+                int coins = MathmonConversionSystem.CoinsForLevel(level);
+                int xp = MathmonConversionSystem.XpForLevel(level);
+                Assert.Greater(coins, previousCoins, $"coin reward at Lv.{level}");
+                Assert.Greater(xp, previousXp, $"XP reward at Lv.{level}");
+                previousCoins = coins;
+                previousXp = xp;
+            }
+            Assert.AreEqual(3, MathmonConversionSystem.CoinsForLevel(1));
+            Assert.AreEqual(202, MathmonConversionSystem.XpForLevel(99));
+        }
+
+        [Test]
+        public void ConvertingActiveMathmonForCoins_RemovesGrowthAndReturnsAccessory()
+        {
+            var p = new Progress();
+            Assert.AreEqual(CatchRosterResult.Added, p.AddCaught("countipillar", 12));
+            p.ActiveMonId = "countipillar";
+            p.AddAccessory("keepsake", "Counting Charm", 1, 0);
+            Assert.True(p.EquipAccessory("keepsake", "countipillar"));
+
+            Assert.AreEqual(14, p.ConvertCaught("numberfly", MathmonConversionReward.Coins));
+            Assert.AreEqual(14, p.Coins);
+            Assert.AreEqual(14, p.Records.CoinsEarned);
+            Assert.AreEqual("addmander", p.ActiveMonId);
+            Assert.False(p.Owns("countipillar"));
+            Assert.IsNull(p.FindGrowth("countipillar"));
+            Assert.AreEqual("", p.Accessories[0].EquippedToBaseId);
+        }
+
+        [Test]
+        public void ConvertingMathmonForXp_RewardsBattleBuddyAndProtectsStarter()
+        {
+            var p = new Progress();
+            Assert.AreEqual(CatchRosterResult.Added, p.AddCaught("glimlet", 5));
+
+            Assert.AreEqual(14, p.ConvertCaught("glimlet", MathmonConversionReward.Experience));
+            Assert.AreEqual(14, p.EnsureGrowth("addmander").Xp);
+            Assert.AreEqual(14, p.Records.TotalXpEarned);
+            Assert.AreEqual(0, p.ConvertCaught("addmander", MathmonConversionReward.Coins));
+            Assert.AreEqual(0, p.ConvertCaught("not-owned", MathmonConversionReward.Experience));
         }
 
         [Test]

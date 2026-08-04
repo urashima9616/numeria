@@ -14,7 +14,7 @@ balance remains authoritative in `GameData.cs`, `Progress.cs`, and `MapDefs.cs`.
     family's permanent training bonuses and equipped accessories.
   - **Turn into +XP:** keep the current companion and award 125% of normal catch XP.
 - A weaker or equal duplicate automatically becomes normal catch XP.
-- When the 15-family team is full, replacing a companion also preserves the newcomer's wild level and form.
+- When the 99-Mathmon team is full, replacing a companion also preserves the newcomer's wild level and form.
 - Addmander's family remains protected from release.
 
 ## New three-stage families

@@ -50,9 +50,11 @@ The save format is currently **schema v9**, with non-destructive migration for o
 
 - Catch can be attempted at any remaining HP.
 - Success follows a health-based curve from roughly **10% at full HP to 95% near zero HP**.
-- The traveling team holds at most **15 Mathmons**.
+- The traveling team holds at most **99 Mathmons**.
 - If a catch would exceed the limit, the player chooses whether to release the newcomer or replace an existing
   companion. Addmander remains the protected starter, and released companions return equipped accessories.
+- Any non-starter companion can also be released from TEAM for either coins or Battle Buddy XP. Rewards rise at
+  every level: `coins = level + 2`, `XP = level x 2 + 4`; equipped accessories always return to ITEMS.
 - A caught Mathmon keeps its wild level, evolution form, and exact battle HP/ATK/DEF. Individual stat offsets
   remain attached through later growth and saves. When a stronger member of an owned family is caught, the player
   chooses between adopting it or converting the catch into **125% of the normal catch XP**.

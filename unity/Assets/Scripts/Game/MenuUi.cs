@@ -72,9 +72,16 @@ namespace Numeria.Game
                 case "SKY": return (element, Ui.Hex("#49a9d1"));
                 case "EARTH": return (element, Ui.Hex("#a97745"));
                 case "MIND": return (element, Ui.Hex("#8b68b5"));
+                case "FAIRY": return (element, Ui.Hex("#d96bb5"));
+                case "DRAGON": return (element, Ui.Hex("#7861c9"));
+                case "ELECTRIC": return (element, Ui.Hex("#d39d20"));
+                case "FLYING": return (element, Ui.Hex("#6b9fd0"));
                 default: return ("???", Ui.Hex("#7d8894"));
             }
         }
+
+        /// <summary>供 UI 回归测试验证每个已注册家族都有可读属性标签。</summary>
+        public static string TypeLabelFor(string id) => TypeOf(id).label;
 
         private List<string> TeamIds()
         {
@@ -467,6 +474,72 @@ namespace Numeria.Game
             evoLe.minHeight = 260;
             evoLe.flexibleHeight = 1;
             BuildEvolutionBlock(evolution.rectTransform, id);
+
+            if (GameData.BaseId(id) != "addmander")
+            {
+                var release = Ui.Btn(evolution.transform, "BtnConvertMathmon", "LET GO", 19);
+                release.image.color = Ui.Hex("#e8d3b5");
+                Ui.Place((RectTransform)release.transform, new Vector2(1, 1), new Vector2(-16, -12),
+                    new Vector2(134, 42));
+                release.onClick.AddListener(() => ShowConversionPicker(id));
+            }
+        }
+
+        private void ShowConversionPicker(string id)
+        {
+            string baseId = GameData.BaseId(id);
+            var growth = _progress.FindGrowth(baseId);
+            if (baseId == "addmander" || growth == null) return;
+
+            string formId = _progress.CurrentFormId(baseId);
+            string name = GameData.SpeciesById(formId)?.Name ?? baseId;
+            int coins = MathmonConversionSystem.CoinsForLevel(growth.Level);
+            int xp = MathmonConversionSystem.XpForLevel(growth.Level);
+            bool wasActive = GameData.BaseId(_progress.ActiveMonId) == baseId;
+            string xpReceiver = wasActive
+                ? "Addmander will become your Battle Buddy and receive the XP."
+                : $"Your Battle Buddy will receive the XP.";
+
+            var shade = Ui.Img(_overlay.transform, "ConversionPicker", new Color(0, 0, 0, .78f));
+            Ui.Stretch(shade.rectTransform);
+            var panel = Ui.Img(shade.transform, "Panel", Cream);
+            Ui.Place(panel.rectTransform, new Vector2(.5f, .5f), Vector2.zero, new Vector2(780, 500));
+            Ui.AddOutline(panel.gameObject);
+
+            var title = Ui.Label(panel.transform, "Title", $"LET {name.ToUpperInvariant()} GO?", 38, TitleGreen);
+            Ui.Place(title.rectTransform, new Vector2(.5f, 1), new Vector2(0, -30), new Vector2(680, 52));
+            var icon = Ui.SpriteImg(panel.transform, "Mathmon", SpriteLib.LargeIcon(formId));
+            icon.preserveAspect = true;
+            Ui.PlaceCentered(icon.rectTransform, new Vector2(.5f, 1), new Vector2(0, -150), new Vector2(126, 126));
+
+            var message = Ui.Label(panel.transform, "Message",
+                $"Lv. {growth.Level} rewards grow with every level.\nAccessories return to your Items. This cannot be undone.\n{xpReceiver}",
+                23, SummaryOrange);
+            message.textWrappingMode = TextWrappingModes.Normal;
+            Ui.Place(message.rectTransform, new Vector2(.5f, 1), new Vector2(0, -220), new Vector2(680, 100));
+
+            var coinButton = Ui.Btn(panel.transform, "Coins", $"LET GO FOR {coins} COINS", 22);
+            Ui.Place((RectTransform)coinButton.transform, new Vector2(.5f, 0), new Vector2(-190, 96),
+                new Vector2(340, 68));
+            coinButton.onClick.AddListener(() => CompleteConversion(shade, baseId, MathmonConversionReward.Coins));
+
+            var xpButton = Ui.Btn(panel.transform, "Xp", $"LET GO FOR {xp} XP", 22);
+            Ui.Place((RectTransform)xpButton.transform, new Vector2(.5f, 0), new Vector2(190, 96),
+                new Vector2(340, 68));
+            xpButton.onClick.AddListener(() => CompleteConversion(shade, baseId, MathmonConversionReward.Experience));
+
+            var cancel = Ui.Btn(panel.transform, "Cancel", "KEEP MATHMON", 22);
+            Ui.Place((RectTransform)cancel.transform, new Vector2(.5f, 0), new Vector2(0, 22),
+                new Vector2(320, 54));
+            cancel.onClick.AddListener(() => UnityEngine.Object.Destroy(shade.gameObject));
+        }
+
+        private void CompleteConversion(Image shade, string id, MathmonConversionReward reward)
+        {
+            if (_progress.ConvertCaught(id, reward) <= 0) return;
+            _selectedId = _progress.ActiveMonId;
+            UnityEngine.Object.Destroy(shade.gameObject);
+            ShowTeam();
         }
 
         private void BuildAccessorySlots(Transform parent, string id)

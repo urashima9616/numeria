@@ -20,6 +20,13 @@
 Enemy coins are intentionally small and variable. Discovery and guardian rewards are fixed so important
 milestones remain predictable for a five-year-old.
 
+## Companion conversion
+
+Any captured Mathmon except Addmander can be released from the TEAM menu for one of two rewards. Both curves
+increase at every level and use small formulas that are easy to explain: coins are `level + 2`, while Battle
+Buddy XP is `level x 2 + 4`. Equipped accessories return to ITEMS. If the released Mathmon was active,
+Addmander becomes the Battle Buddy before XP is granted.
+
 ## Limited shops
 
 Each map's merchant must first be defeated in a trainer battle. Their partner is stronger and tougher than a
