@@ -36,6 +36,7 @@ namespace Numeria.Game.Tests
                 "addling", "dracount", "loopling", "twinsting", "shardrake",
                 "voltlet", "sparkit", "chargecub", "flickerfin", "switchick",
                 "budsum", "clovercub", "sprouturn", "mossbit", "seedseq",
+                "numblet",
             };
             CollectionAssert.AreEquivalent(expected, encounteredBases);
         }
@@ -52,7 +53,8 @@ namespace Numeria.Game.Tests
             {
                 if (line.Element == "FAIRY" || line.Element == "DRAGON" ||
                     line.Element == "ELECTRIC" ||
-                    (line.Element == "GRASS" && Array.IndexOf(new[] { "shapling", "seqkit" }, line.BaseId) < 0))
+                    (line.Element == "GRASS" && Array.IndexOf(new[] { "shapling", "seqkit" }, line.BaseId) < 0) ||
+                    line.Element == "FLYING")
                     Assert.True(encounteredBases.Contains(line.BaseId), line.BaseId);
             }
         }

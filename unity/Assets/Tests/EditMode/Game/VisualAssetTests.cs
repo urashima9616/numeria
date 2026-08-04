@@ -20,7 +20,8 @@ namespace Numeria.Game.Tests
                 Assert.IsNotNull(Resources.Load<Sprite>(theme.IconResource),
                     $"Missing imported theme icon: {theme.IconResource}");
             }
-            Assert.AreEqual(15, paths.Count, "Launch families have 11 icons; four new elements add one visual language each.");
+            Assert.AreEqual(16, paths.Count,
+                "Launch families have 11 icons; the five expanded elements each add one visual language.");
         }
 
         [Test]

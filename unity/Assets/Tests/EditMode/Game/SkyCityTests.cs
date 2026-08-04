@@ -15,6 +15,7 @@ namespace Numeria.Game.Tests
             Assert.AreEqual(3, sky.Tier);
             Assert.AreEqual("sky", sky.Theme);
             CollectionAssert.Contains(System.Array.ConvertAll(sky.Encounters, e => e.SpeciesId), "mirrowl");
+            CollectionAssert.Contains(System.Array.ConvertAll(sky.Encounters, e => e.SpeciesId), "numblet");
             Assert.AreEqual("symmetrix", sky.BossSpeciesId);
             Assert.AreEqual("desert", sky.PortalTargetMap);
             Assert.AreEqual("numberfly", Maps.Forest().BossSpeciesId);

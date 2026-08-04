@@ -55,6 +55,7 @@ namespace Numeria.Core
         DragonSpiral,
         ElectricBolt,
         GrassBloom,
+        FlyingGust,
     }
 
     public class SkillDef

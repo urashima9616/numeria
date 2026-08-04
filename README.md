@@ -5,7 +5,7 @@ are magic. Players befriend original creatures called **Mathmons**, solve Kinder
 their skills, and help Lucas restore four Digit Crystals so he can reopen the legendary gate home.
 
 > Current state: a playable four-region Unity build with story, exploration, battles, catching, evolution,
-> economy, shops, saves, offline narration, and 90 Mathmon forms. iOS/TestFlight work has not started.
+> economy, shops, saves, offline narration, and 93 Mathmon forms. iOS/TestFlight work has not started.
 
 ![Numeria battle — Addmander casting math magic against Countipillar](docs/images/numeria-readme-cover.png)
 
@@ -16,10 +16,10 @@ their skills, and help Lucas restore four Digit Crystals so he can reopen the le
 | P0 — Project foundation | ✅ Complete | Repository, Unity project, asset pipelines |
 | P1 — Battle core | ✅ Complete | Skills, gems, number shields, ATK/DEF combat, VFX, narration |
 | P2 — Forest vertical slice | ✅ Complete | Exploration, encounters, catching, growth, chests, saving |
-| P3 — Full game systems | 🔶 Playable / polishing | Four maps, 90 Mathmons, evolution, economy, merchants, Lucas story |
+| P3 — Full game systems | 🔶 Playable / polishing | Four maps, 93 Mathmons, evolution, economy, merchants, Lucas story |
 | P4 — iOS delivery | ⬜ Not started | Device build, signing, TestFlight and final performance QA |
 
-The latest automated baseline is **104/104 Unity EditMode tests** and **14/14 Node prototype tests**.
+The latest automated baseline is **105/105 Unity EditMode tests** and **14/14 Node prototype tests**.
 The save format is currently **schema v8**, with non-destructive migration for older saves.
 
 ## Design principles
@@ -38,8 +38,8 @@ The save format is currently **schema v8**, with non-destructive migration for o
 
 ### Battle and Mathmons
 
-- 90 Mathmon forms across 31 three-stage evolution families, with independent level, XP, HP, ATK, and DEF
-  growth to Lv. 99. Fairy, Dragon, Electric, and Grass each have five new families.
+- 93 Mathmon forms across 32 evolution families, with independent level, XP, HP, ATK, and DEF growth to Lv. 99.
+  Fairy, Dragon, Electric, and Grass each have five new families, plus the Flying family Numblet → Tallywing → Totalon.
 - The original eleven families retain distinct skills, while each new elemental group has its own generated icon,
   palette, and battle performance.
 - Number shields, shield-break stun, gems, powered math skills, consumable items, and equippable accessories.

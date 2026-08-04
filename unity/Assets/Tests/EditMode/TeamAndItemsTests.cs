@@ -158,10 +158,10 @@ namespace Numeria.Core.Tests
         }
 
         [Test]
-        public void ExpandedRoster_HasNinetyUniqueSpeciesAcrossThirtyOneLines()
+        public void ExpandedRoster_HasNinetyThreeUniqueSpeciesAcrossThirtyTwoLines()
         {
-            Assert.AreEqual(90, GameData.Roster.Count);
-            Assert.AreEqual(31, GameData.Lines.Count);
+            Assert.AreEqual(93, GameData.Roster.Count);
+            Assert.AreEqual(32, GameData.Lines.Count);
 
             var ids = new HashSet<string>();
             int stageCount = 0;
@@ -176,7 +176,7 @@ namespace Numeria.Core.Tests
                     Assert.AreEqual(line.BaseId, GameData.BaseId(id));
                 }
             }
-            Assert.AreEqual(90, stageCount);
+            Assert.AreEqual(93, stageCount);
         }
 
         [Test]
@@ -202,6 +202,22 @@ namespace Numeria.Core.Tests
                     Assert.AreEqual(2, line.EvolutionLevels.Length, baseId);
                 }
             }
+        }
+
+        [Test]
+        public void FlyingTypeAddsOneCompleteSkipCountingFamily()
+        {
+            var line = GameData.LineFor("numblet");
+            Assert.NotNull(line);
+            Assert.AreEqual("FLYING", line.Element);
+            Assert.AreEqual(PuzzleAffinity.RepeatedAddition, line.Affinity);
+            CollectionAssert.AreEqual(new[] { "numblet", "tallywing", "totalon" }, line.StageIds);
+            CollectionAssert.AreEqual(new[] { 12, 24 }, line.EvolutionLevels);
+
+            var skill = System.Array.Find(GameData.PlayerMon("numblet", 0).Skills,
+                candidate => candidate.Type == SkillType.Formula);
+            Assert.AreEqual(SkillVisualKind.FlyingGust, skill.Visual);
+            Assert.AreEqual("generated/Skills/flying_gust", skill.IconResource);
         }
 
         [Test]
@@ -264,6 +280,7 @@ namespace Numeria.Core.Tests
                 { "addling", SkillVisualKind.DragonSpiral },
                 { "voltlet", SkillVisualKind.ElectricBolt },
                 { "budsum", SkillVisualKind.GrassBloom },
+                { "numblet", SkillVisualKind.FlyingGust },
             };
             foreach (var pair in expected)
             {

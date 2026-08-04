@@ -37,7 +37,7 @@ namespace Numeria.Core
         public ConsumableType PreferredDrop;
     }
 
-    /// <summary>90 个数灵形态、31 条家族线及所有战斗成长的唯一真理源。</summary>
+    /// <summary>93 个数灵形态、32 条家族线及所有战斗成长的唯一真理源。</summary>
     public static class GameData
     {
         private static readonly EvolutionLineDef[] EvolutionLines =
@@ -113,6 +113,10 @@ namespace Numeria.Core
                 new[] { "mossbit", "doublmoss", "grovemult" }, new[] { 10, 20 }),
             Line("seedseq", "GRASS", "growing patterns", PuzzleAffinity.Pattern,
                 new[] { "seedseq", "patternpod", "orderchid" }, new[] { 10, 20 }),
+
+            // Flying — one complete three-stage family focused on aerial skip-counting.
+            Line("numblet", "FLYING", "skip-counting winds", PuzzleAffinity.RepeatedAddition,
+                new[] { "numblet", "tallywing", "totalon" }, new[] { 12, 24 }),
         };
 
         private static readonly SpeciesDef[] Species =
@@ -224,6 +228,11 @@ namespace Numeria.Core
             Mon("seedseq", "Seedseq", 10, 3, 3, 9, 3, 4, 8, "Seed Sequence", 5, true, .24, ConsumableType.GemSnack),
             Mon("patternpod", "Patternpod", 17, 5, 6, 10, 4, 5, 12, "Pod Pattern", 6, true, .30, ConsumableType.GemSnack),
             Mon("orderchid", "Orderchid", 26, 8, 9, 12, 5, 6, 17, "Orchid Order", 7, true, .38, ConsumableType.GemSnack),
+
+            // Flying family.
+            Mon("numblet", "Numblet", 9, 3, 2, 9, 4, 3, 8, "Counting Gust", 5, true, .24, ConsumableType.GemSnack),
+            Mon("tallywing", "Tallywing", 15, 6, 4, 10, 4, 4, 12, "Tally Tailwind", 6, true, .31, ConsumableType.GemSnack),
+            Mon("totalon", "Totalon", 23, 9, 7, 12, 5, 5, 17, "Total Cyclone", 7, true, .39, ConsumableType.GemSnack),
         };
 
         public static IReadOnlyList<EvolutionLineDef> Lines => EvolutionLines;
@@ -445,6 +454,11 @@ namespace Numeria.Core
                     {
                         skillId = $"{baseId}-grass-magic"; icon = "grass_bloom";
                         visual = SkillVisualKind.GrassBloom;
+                    }
+                    else if (element == "FLYING")
+                    {
+                        skillId = $"{baseId}-flying-magic"; icon = "flying_gust";
+                        visual = SkillVisualKind.FlyingGust;
                     }
                     else
                     {

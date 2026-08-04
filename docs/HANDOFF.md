@@ -35,8 +35,8 @@
 - `BattleState`:宝石经济、数字护盾、破盾眩晕一回合 + 首次命中双倍 + 命中后护盾重置;正式 ATK/DEF 公式 `max(1, ATK − DEF + 1 + [-1,1])`,小幅可控波动、零惩罚不变量
 - `Progress`:save schema v8;Lv.99 上限、物种成长曲线、动态经验、每家族独立成长、独占饰品装备、金币/限量库存、Digit Crystal 主线与冒险记录 —— **新字段必须带默认值和迁移**
 - `GridMap`:ASCII 地图解析('.'草地 'T'树 'b'草丛 'C'宝箱 'P'传送门 'S'出生)+ BFS 寻路
-- `GameData`:90 只数灵、31 条三段进化线;新增 Fairy/Dragon/Electric/Grass 各 5 条线;各物种配置基础经验、HP/ATK/DEF 成长与数学亲和
-- 测试:`unity/Assets/Tests/EditMode/`,**104 个**;最后一次完整 headless 为 **104/104**
+- `GameData`:93 只数灵、32 条进化线;Fairy/Dragon/Electric/Grass 各 5 条扩展线,另有 Flying 三段线;各物种配置基础经验、HP/ATK/DEF 成长与数学亲和
+- 测试:`unity/Assets/Tests/EditMode/`,**105 个**;最后一次完整 headless 为 **105/105**
 
 ### Game 层(`Numeria.Game`)
 - **全程序化 UGUI,零场景文件**——所有界面代码搭建,SampleScene 只是空壳,`BattleBootstrap` 用 `RuntimeInitializeOnLoadMethod` 拉起 `MapController`
@@ -66,7 +66,7 @@
   - ✅ 捕捉成长继承:保留野生等级/进化阶段;同家族更强个体可选择收编或转换为 125% 捕捉经验
   - ✅ 用户 AI 生成美术管线(`generated/` 约定 + NUMERIA Battle Asset Pack 全面接入战斗)
   - ✅ 蔚蓝天空城:独立浮空遗迹路线、Mirrowl/Symmetrix、规律/对称/旋转/数字序列、Sky/Boss 音乐
-  - ✅ 90 只数灵 / 31 条三段线:Fairy、Dragon、Electric、Grass 各新增 5 条线,全部有统一高清图标、技能、成长与进化语音
+  - ✅ 93 只数灵 / 32 条线:Fairy、Dragon、Electric、Grass 各新增 5 条线,另有 Flying 的 Numblet → Tallywing → Totalon;全部有统一高清图标、技能、成长与进化语音
   - ✅ 狂热沙漠(Fever Desert):第四章地图、20 家族进化态生态、商人 Nia、守护者 Solara、Solar Totalisk Boss 与第四枚水晶
   - ✅ 音频系统:10 种 SFX + 7 首 8-bit Jukebox Lite 本地 mood + 语音 duck/独立开关
   - ✅ 99级平衡:各物种 HP/ATK/DEF 成长、动态等级差经验、普通怪 HP 92%–108% 波动、动态 Boss 倍率、±1 伤害波动
@@ -89,7 +89,7 @@
 ## 5. 资产管线(全部约定式,零代码接新资产)
 
 - **手绘像素**:改 `prototype/js/sprites.js` 字符网格 → `node tools/export-sprites.mjs` → PNG 落到 `Resources/Art/Sprites/`
-- **语音**:台词加进 `tools/bake-voice.sh` → 跑脚本(macOS `say`,Samantha,-r 150)→ wav 落到 `Resources/Voice/`;**C# 里说的每句台词必须有对应烘焙**,`VoiceKeys.Sanitize` = 脚本规则;覆盖 0–40 加减读法、图形题、捕捉选择、90 个形态、进化、经济与四章主线对白
+- **语音**:台词加进 `tools/bake-voice.sh` → 跑脚本(macOS `say`,Samantha,-r 150)→ wav 落到 `Resources/Voice/`;**C# 里说的每句台词必须有对应烘焙**,`VoiceKeys.Sanitize` = 脚本规则;覆盖 0–40 加减读法、图形题、捕捉选择、93 个形态、进化、经济与四章主线对白
 - **音乐**:`tools/install-jukebox-music.sh` 从本地授权的 8-bit Jukebox Lite 同步七首选曲到 ignored `Resources/Music/Jukebox`;`--restore-dynamic` 可将旧曲同步到同一运行槽;原 `LocalStore` 保持不变,完整曲目/署名见 `docs/music-attribution.md`
 - **AI 生成图**(使用内置 ImageGen + imagegen skill,放 `Resources/generated/`):
   - `{id}_large_icon.png` → 菜单详情/回退链

@@ -169,7 +169,8 @@ mathmons=(Addmander Sumdrake Equadragon Tenfin Decaqua Tidalten Shapling Patterv
   Voltlet Sumvolt Totalstorm Sparkit Patternzap Sequencera Chargecub Doublebolt Thunderbear
   Flickerfin Neonray Luminamp Switchick Mirrorvolt Voltalance
   Budsum Vineplus Totalbloom Clovercub Fourleaf Cloverlord Sprouturn Spiralfern Symmetroak
-  Mossbit Doublmoss Grovemult Seedseq Patternpod Orderchid)
+  Mossbit Doublmoss Grovemult Seedseq Patternpod Orderchid
+  Numblet Tallywing Totalon)
 for mon in $mathmons; do
   bake "A wild $mon appeared!"
   bake "Gotcha! $mon joined your team!"
@@ -201,12 +202,14 @@ bake "Amazing! Patternlynx evolved into Ordinalion!"
 new_evolution_from=(Glimlet Twinkelle Moonmote Lunafae Charmite Pairabelle Wishwink Starwhisp Pixipip Prismfae
   Addling Sumscale Dracount Tallywyrm Loopling Spirake Twinsting Doublescale Shardrake Prismwyrm
   Voltlet Sumvolt Sparkit Patternzap Chargecub Doublebolt Flickerfin Neonray Switchick Mirrorvolt
-  Budsum Vineplus Clovercub Fourleaf Sprouturn Spiralfern Mossbit Doublmoss Seedseq Patternpod)
+  Budsum Vineplus Clovercub Fourleaf Sprouturn Spiralfern Mossbit Doublmoss Seedseq Patternpod
+  Numblet Tallywing)
 new_evolution_to=(Twinkelle Luminara Lunafae Selenequin Pairabelle Harmonique Starwhisp Constellara Prismfae Radianta
   Sumscale Totalisk Tallywyrm Enumeragon Spirake Rotaragon Doublescale Multisaur Prismwyrm Geodragon
   Sumvolt Totalstorm Patternzap Sequencera Doublebolt Thunderbear Neonray Luminamp Mirrorvolt Voltalance
-  Vineplus Totalbloom Fourleaf Cloverlord Spiralfern Symmetroak Doublmoss Grovemult Patternpod Orderchid)
-for i in {1..40}; do
+  Vineplus Totalbloom Fourleaf Cloverlord Spiralfern Symmetroak Doublmoss Grovemult Patternpod Orderchid
+  Tallywing Totalon)
+for i in {1..42}; do
   bake "${new_evolution_from[$i]} is evolving!"
   bake "Amazing! ${new_evolution_from[$i]} evolved into ${new_evolution_to[$i]}!"
 done

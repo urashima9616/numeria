@@ -47,7 +47,7 @@ reference. Existing Addmander artwork was used only as a rendering-style referen
 
 The original photo is intentionally not copied into the repository.
 
-## Four-element roster and Fever Desert expansion
+## Elemental roster and Fever Desert expansion
 
 The built-in ImageGen workflow produced 20 original three-stage family sheets (60 production form icons), four
 shared elemental skill icons, the Fever Desert battle background, merchant Nia, and Sage Solara. Production files
@@ -72,11 +72,17 @@ character. The 20 subject briefs were:
 `tools/split-evolution-sheet.py`, which finds the three separated subjects and exports square 512px nearest-neighbor
 icons. This makes the same production pipeline reusable for future families.
 
-The four elemental skill prompts used the shared icon prompt above with these subjects: a fairy number-star
+The original four elemental skill prompts used the shared icon prompt above with these subjects: a fairy number-star
 glimmer, a coiling dragon arithmetic spiral, a jagged electric equation bolt, and a symmetrical grass bloom.
 The desert prompt requested a wide 16-bit battlefield of glowing dunes, number-shaped sandstone ruins, sparse
 dry grass and distant heat haze, with clear foreground platforms and no characters or UI. Nia and Solara used the
 same one-character overworld/portrait rules as the existing merchants and guardians.
+
+The Flying expansion used the same built-in ImageGen and chroma-key pipeline. Its family sheet shows Numblet,
+Tallywing, and Totalon as a friendly sky-blue fledgling growing into a broad-winged final form, with gold grouped
+counting marks and symmetric wind motifs. The `flying_gust.png` skill icon uses two blue wings around a cyan spiral
+and three rising gold counting beads. Final resources are `generated/{numblet,tallywing,totalon}_large_icon.png`
+and `generated/Skills/flying_gust.png`; the family evolves at Lv.12 and Lv.24 and practices skip-counting winds.
 
 ## Exploration economy assets
 

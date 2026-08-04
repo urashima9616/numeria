@@ -1,6 +1,6 @@
 # Elemental Roster and Fever Desert Expansion
 
-This document records the production rules for the four-element roster expansion and chapter four. Runtime
+This document records the production rules for the elemental roster expansion and chapter four. Runtime
 balance remains authoritative in `GameData.cs`, `Progress.cs`, and `MapDefs.cs`.
 
 ## Catch and duplicate rules
@@ -39,9 +39,10 @@ balance remains authoritative in `GameData.cs`, `Progress.cs`, and `MapDefs.cs`.
 | Grass | Sprouturn | Spiralfern | Symmetroak | Natural symmetry |
 | Grass | Mossbit | Doublmoss | Grovemult | Doubling |
 | Grass | Seedseq | Patternpod | Orderchid | Ordered patterns |
+| Flying | Numblet | Tallywing | Totalon | Skip-counting winds |
 
 Each elemental group has a dedicated generated skill icon and presentation language: Fairy Glimmer, Dragon
-Spiral, Electric Bolt, and Grass Bloom. The complete project roster is now 90 forms across 31 families.
+Spiral, Electric Bolt, Grass Bloom, and Flying Gust. The complete project roster is now 93 forms across 32 families.
 
 ## Chapter four: Fever Desert
 

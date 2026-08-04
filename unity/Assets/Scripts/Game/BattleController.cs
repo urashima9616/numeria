@@ -593,6 +593,7 @@ namespace Numeria.Game
                 case SkillVisualKind.DragonSpiral: return Ui.Hex("#9f79e8");
                 case SkillVisualKind.ElectricBolt: return Ui.Hex("#ffe047");
                 case SkillVisualKind.GrassBloom: return Ui.Hex("#58c957");
+                case SkillVisualKind.FlyingGust: return Ui.Hex("#79d8f2");
                 default: return Ui.Hex("#ff6a32");
             }
         }
@@ -648,6 +649,9 @@ namespace Numeria.Game
                     break;
                 case SkillVisualKind.GrassBloom:
                     yield return SpiralCast(icon, color);
+                    break;
+                case SkillVisualKind.FlyingGust:
+                    yield return WaveVolley(color);
                     break;
                 default:
                     yield return MoveSkillIcon(icon, color, 72f, .38f, 220f);
