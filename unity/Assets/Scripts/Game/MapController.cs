@@ -153,12 +153,14 @@ namespace Numeria.Game
                             }
                             break;
                         case Tile.Cliff:
-                            if ((_def.Theme == "mountains" || _def.Theme == "desert") && variant % 3 == 0)
+                            if ((_def.Theme == "mountains" || _def.Theme == "desert" ||
+                                _def.Theme == "dark_mines" || _def.Theme == "underground") && variant % 3 == 0)
                             {
                                 var rock = AddSprite(MapArt.Prop(_def.Theme, "obstacle", variant),
                                     world + Vector3.up * .06f, SortOrder(world.y), $"{_def.Theme}-rock");
                                 rock.color = MapArt.Tint(_def.Theme, tile, "obstacle");
-                                ScaleSpriteToHeight(rock, _def.Theme == "mountains" ? .72f : .62f);
+                                ScaleSpriteToHeight(rock,
+                                    _def.Theme == "mountains" || _def.Theme == "dark_mines" ? .72f : .62f);
                             }
                             break;
                         case Tile.Tree:
@@ -385,7 +387,7 @@ namespace Numeria.Game
             var growth = _progress.ActiveGrowth;
             var combatant = _progress.PlayerCombatant(_progress.ActiveMonId);
             string xp = growth.Level >= GrowthSystem.MaxLevel ? "MAX" : $"{growth.Xp}/{growth.XpToNext}";
-            _hudText.text = $"{_progress.Coins} COINS   {_progress.DigitCrystalCount}/4 CRYSTALS   " +
+            _hudText.text = $"{_progress.Coins} COINS   {_progress.DigitCrystalCount}/6 CRYSTALS   " +
                             $"{PlayerName} Lv.{growth.Level}  XP {xp}  " +
                             $"ATK {combatant.AttackPower + _progress.TotalAttackBonus(_progress.ActiveMonId)}  " +
                             $"DEF {combatant.DefensePower + _progress.TotalDefenseBonus(_progress.ActiveMonId)}  {_def.DisplayName}";
@@ -516,7 +518,7 @@ namespace Numeria.Game
             var crystal = Ui.SpriteImg(panel.transform, "DigitCrystal", SpriteLib.One("generated/Story/digit_crystal"));
             crystal.preserveAspect = true;
             Ui.PlaceCentered(crystal.rectTransform, new Vector2(.5f, .5f), new Vector2(0, 20), new Vector2(140, 140));
-            var quest = Ui.Label(panel.transform, "Quest", "BEFRIEND MATHMONS  •  SOLVE MATH MAGIC  •  FIND 4 CRYSTALS",
+            var quest = Ui.Label(panel.transform, "Quest", "BEFRIEND MATHMONS  •  SOLVE MATH MAGIC  •  FIND 6 CRYSTALS",
                 25, Ui.Ink);
             Ui.Place(quest.rectTransform, new Vector2(.5f, 0), new Vector2(0, 200), new Vector2(820, 50));
 
@@ -643,7 +645,7 @@ namespace Numeria.Game
                 "Welcome to Numeria, Lucas. The gate home has lost its power.",
                 SpriteLib.One("generated/Story/digit_crystal"));
             yield return DialogueRoutine("VOICE OF NUMERIA",
-                "Four Digit Crystals can wake it. Seek the Crystal Guardians.",
+                "Six Digit Crystals can wake it. Seek the Crystal Guardians.",
                 SpriteLib.One("generated/Story/digit_crystal"));
             yield return DialogueRoutine("ADDMANDER",
                 "Let's be brave, make Mathmon friends, and solve this together!",
@@ -747,10 +749,10 @@ namespace Numeria.Game
                         {
                             yield return DialogueRoutine(_def.GuardianName, _def.GuardianVictoryLine,
                                 SpriteLib.One(_def.GuardianSpriteResource));
-                            if (_progress.DigitCrystalCount == 4)
+                            if (_progress.DigitCrystalCount == 6)
                             {
                                 yield return DialogueRoutine("DIGIT CRYSTALS",
-                                    "The four Digit Crystals sing together. The gate home is awake!",
+                                    "The six Digit Crystals sing together. The gate home is awake!",
                                     SpriteLib.One("generated/Story/digit_crystal"));
                                 yield return DialogueRoutine("LUCAS",
                                     "I can go home when I am ready—and Numeria will always be waiting.",

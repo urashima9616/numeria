@@ -37,6 +37,10 @@ unity/Assets/Casual Game Sounds U6.meta
 # use in the game, but not redistribution of the source art through this repo.
 unity/Assets/Tiny Swords/
 unity/Assets/Tiny Swords.meta
+# RPG Worlds Caves is also a locally imported licensed source pack. Runtime
+# references are serialized into Numeria's catalog; do not redistribute it.
+unity/Assets/RPGW_Caves/
+unity/Assets/RPGW_Caves.meta
 unity/Assets/Resources/Music/LocalStore/*.wav
 unity/Assets/Resources/Music/LocalStore/*.wav.meta
 unity/Assets/Resources/Music/Jukebox/

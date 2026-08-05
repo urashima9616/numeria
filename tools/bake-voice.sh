@@ -176,7 +176,13 @@ mathmons=(Addmander Sumdrake Equadragon Tenfin Decaqua Tidalten Shapling Patterv
   Flickerfin Neonray Luminamp Switchick Mirrorvolt Voltalance
   Budsum Vineplus Totalbloom Clovercub Fourleaf Cloverlord Sprouturn Spiralfern Symmetroak
   Mossbit Doublmoss Grovemult Seedseq Patternpod Orderchid
-  Numblet Tallywing Totalon)
+  Numblet Tallywing Totalon
+  Ohmlet Currabbit Voltamper Sparkseed Coilvine Teslatree Charguppy Ampfin Megavolt
+  Circuitick Relayhawk Gridgriff Numite Factorock Multimount Gemlet Prismine Geodeus
+  Shaleling Layerock Stratatitan Cragcub Boulderbear Tectotitan
+  Draddit Sumwyrm Calcularagon Scalip Patternake Sequendrake Digiling Tenswyrm Magnagon
+  Runelet Mirrorwyrm Symmetragon Embernum Plusprite Sumflare Cindercub Douburn Multilion
+  Torchick Patternix Sequenix Glowgecko Balablaze Equiferno)
 for mon in $mathmons; do
   bake "A wild $mon appeared!"
   bake "Gotcha! $mon joined your team!"
@@ -209,13 +215,21 @@ new_evolution_from=(Glimlet Twinkelle Moonmote Lunafae Charmite Pairabelle Wishw
   Addling Sumscale Dracount Tallywyrm Loopling Spirake Twinsting Doublescale Shardrake Prismwyrm
   Voltlet Sumvolt Sparkit Patternzap Chargecub Doublebolt Flickerfin Neonray Switchick Mirrorvolt
   Budsum Vineplus Clovercub Fourleaf Sprouturn Spiralfern Mossbit Doublmoss Seedseq Patternpod
-  Numblet Tallywing)
+  Numblet Tallywing
+  Ohmlet Currabbit Sparkseed Coilvine Charguppy Ampfin Circuitick Relayhawk
+  Numite Factorock Gemlet Prismine Shaleling Layerock Cragcub Boulderbear
+  Draddit Sumwyrm Scalip Patternake Digiling Tenswyrm Runelet Mirrorwyrm
+  Embernum Plusprite Cindercub Douburn Torchick Patternix Glowgecko Balablaze)
 new_evolution_to=(Twinkelle Luminara Lunafae Selenequin Pairabelle Harmonique Starwhisp Constellara Prismfae Radianta
   Sumscale Totalisk Tallywyrm Enumeragon Spirake Rotaragon Doublescale Multisaur Prismwyrm Geodragon
   Sumvolt Totalstorm Patternzap Sequencera Doublebolt Thunderbear Neonray Luminamp Mirrorvolt Voltalance
   Vineplus Totalbloom Fourleaf Cloverlord Spiralfern Symmetroak Doublmoss Grovemult Patternpod Orderchid
-  Tallywing Totalon)
-for i in {1..42}; do
+  Tallywing Totalon
+  Currabbit Voltamper Coilvine Teslatree Ampfin Megavolt Relayhawk Gridgriff
+  Factorock Multimount Prismine Geodeus Layerock Stratatitan Boulderbear Tectotitan
+  Sumwyrm Calcularagon Patternake Sequendrake Tenswyrm Magnagon Mirrorwyrm Symmetragon
+  Plusprite Sumflare Douburn Multilion Patternix Sequenix Balablaze Equiferno)
+for i in {1..74}; do
   bake "${new_evolution_from[$i]} is evolving!"
   bake "Amazing! ${new_evolution_from[$i]} evolved into ${new_evolution_to[$i]}!"
 done
@@ -228,6 +242,14 @@ bake "Reach level twelve to evolve!"
 bake "Reach level twenty to evolve!"
 bake "Reach level twenty-four to evolve!"
 bake "Reach level twenty-eight to evolve!"
+bake "Reach level thirty-six to evolve!"
+bake "Reach level forty-two to evolve!"
+bake "Reach level forty-eight to evolve!"
+bake "Reach level fifty-five to evolve!"
+bake "Reach level 36 to evolve!"
+bake "Reach level 42 to evolve!"
+bake "Reach level 48 to evolve!"
+bake "Reach level 55 to evolve!"
 bake "The enemy dropped an HP Potion!"
 bake "The enemy dropped a Gem Snack!"
 bake "Health is already full!"
@@ -242,6 +264,8 @@ bake "Tessa smiles. Beat my Paircub and my shop is yours to browse!"
 bake "Bram nods. Show my Stackstone your strongest math magic, then we can trade!"
 bake "Ari opens a star map. Outsmart my Polygoncat and the sky market opens!"
 bake "Nia raises her sun goggles. Match my Mirrorvolt and the oasis market is yours!"
+bake "Mara taps her helmet. Solve my Factorock's challenge and the supply cart opens!"
+bake "Rune raises a lantern. Match Balablaze's rhythm and my deep-cache shop opens!"
 bake "Shop unlocked!"
 bake "Great choice!"
 bake "Not enough coins."
@@ -249,7 +273,7 @@ bake "That item is sold out."
 bake "Lucas wakes beneath a sky full of glowing numbers."
 bake "Where am I? This isn't home."
 bake "Welcome to Numeria, Lucas. The gate home has lost its power."
-bake "Four Digit Crystals can wake it. Seek the Crystal Guardians."
+bake "Six Digit Crystals can wake it. Seek the Crystal Guardians."
 bake "Let's be brave, make Mathmon friends, and solve this together!"
 bake "Lucas, the Forest Crystal answers only to a kind and clever heart."
 bake "Show Numberfly what you have learned. Mistakes are steps, not failures."
@@ -264,10 +288,24 @@ bake "Welcome to Fever Desert!"
 bake "The desert sun hides patterns in every dune."
 bake "Join the four kinds of magic, and show Solar Totalisk how brightly you can think."
 bake "Solar Totalisk guards the final crystal!"
-bake "The Desert Digit Crystal is yours. All four lights now sing together."
-bake "The desert crystal blazes! The gate home is awake!"
-bake "The four Digit Crystals sing together. The gate home is awake!"
+bake "The Desert Digit Crystal is yours. A hidden fifth light calls from below."
+bake "The desert crystal reveals a stairway into the Dark Mines!"
+bake "Welcome to the Dark Mines!"
+bake "Every crystal circuit in this mine follows a number pattern."
+bake "Trace the current, steady the stones, and meet Master Voltamper bravely."
+bake "Master Voltamper guards the mine crystal!"
+bake "The Mine Digit Crystal is yours. One last light waits in Numeria's depths."
+bake "The Mine Digit Crystal lights a path into the Underground Tunnels!"
+bake "Welcome to the Underground Tunnels!"
+bake "These tunnels carry every number song back to Numeria's heart."
+bake "Follow the mirrored paths and show Ancient Calcularagon all you have learned."
+bake "Ancient Calcularagon guards Numeria's deepest crystal!"
+bake "The Core Digit Crystal is yours. All six lights now sing together."
+bake "All six Digit Crystals shine. The gate home is awake!"
+bake "The six Digit Crystals sing together. The gate home is awake!"
 bake "A wild Solar Totalisk appeared! It has a number shield!"
+bake "A wild Master Voltamper appeared! It has a number shield!"
+bake "A wild Ancient Calcularagon appeared! It has a number shield!"
 bake "I can go home when I am ready—and Numeria will always be waiting."
 for coins in {1..50}; do
   bake "You found $coins Numeria coins!"

@@ -2,10 +2,10 @@
 
 **A Pokémon-inspired math RPG built for a five-year-old.** In Numeria, numbers, shapes, symmetry, and patterns
 are magic. Players befriend original creatures called **Mathmons**, solve Kindergarten-level puzzles to power
-their skills, and help Lucas restore four Digit Crystals so he can reopen the legendary gate home.
+their skills, and help Lucas restore six Digit Crystals so he can reopen the legendary gate home.
 
-> Current state: a playable four-region Unity build with story, exploration, battles, catching, evolution,
-> economy, shops, saves, offline narration, and 93 Mathmon forms. iOS/TestFlight work has not started.
+> Current state: a playable six-region Unity build with story, exploration, battles, catching, evolution,
+> economy, shops, saves, offline narration, and 141 Mathmon forms. iOS/TestFlight work has not started.
 
 ![Numeria battle — Addmander casting math magic against Countipillar](docs/images/numeria-readme-cover.png)
 
@@ -16,10 +16,10 @@ their skills, and help Lucas restore four Digit Crystals so he can reopen the le
 | P0 — Project foundation | ✅ Complete | Repository, Unity project, asset pipelines |
 | P1 — Battle core | ✅ Complete | Skills, gems, number shields, ATK/DEF combat, VFX, narration |
 | P2 — Forest vertical slice | ✅ Complete | Exploration, encounters, catching, growth, chests, saving |
-| P3 — Full game systems | 🔶 Playable / polishing | Four distinct Tiny Swords worlds, 93 Mathmons, evolution, economy, merchants, Lucas story |
+| P3 — Full game systems | 🔶 Playable / polishing | Six mixed-art worlds, 141 Mathmons, evolution, economy, merchants, Lucas story |
 | P4 — iOS delivery | ⬜ Not started | Device build, signing, TestFlight and final performance QA |
 
-The current verification baseline compiles all four Unity assemblies and passes **115/115 Unity EditMode tests**
+The current verification baseline compiles all four Unity assemblies and passes **121/121 Unity EditMode tests**
 plus **15/15 Node prototype tests**.
 The save format is currently **schema v9**, with non-destructive migration for older saves.
 
@@ -39,8 +39,8 @@ The save format is currently **schema v9**, with non-destructive migration for o
 
 ### Battle and Mathmons
 
-- 93 Mathmon forms across 32 evolution families, with independent level, XP, HP, ATK, and DEF growth to Lv. 99.
-  Fairy, Dragon, Electric, and Grass each have five new families, plus the Flying family Numblet → Tallywing → Totalon.
+- 141 Mathmon forms across 48 evolution families, with independent level, XP, HP, ATK, and DEF growth to Lv. 99.
+  The newest 16 three-stage families add four Electric, four Rock, four Dragon, and four Fire lines.
 - The original eleven families retain distinct skills, while each new elemental group has its own generated icon,
   palette, and battle performance.
 - Number shields, shield-break stun, gems, powered math skills, consumable items, and equippable accessories.
@@ -63,10 +63,11 @@ The save format is currently **schema v9**, with non-destructive migration for o
 
 ### Exploration and economy
 
-- Four large, pathfinding-based worlds rebuilt with the Tiny Swords visual language: Mystic Forest is a wooded
-  river valley, Silent Peaks a rocky switchback maze, Azure Sky City a network of floating islands, and Fever
-  Desert an ochre ruin-and-oasis region. Roads, water, cliffs, bridges, landmarks, treasure, and chapter exits
-  are authored as semantic map tiles rather than interchangeable decoration.
+- Six large, pathfinding-based worlds with chapter-specific art direction. Mystic Forest, Silent Peaks, Azure Sky
+  City, and Fever Desert use the painterly `Tiles and Hexes: 2D Painted Terrain Samples` tiles and props. Dark Mines
+  and Underground Tunnels use `RPG Worlds Caves` floors, rock walls, abyss tiles, bridges, and blue crystals. Roads,
+  water, cliffs, bridges, landmarks, treasure, and chapter exits remain semantic map tiles rather than
+  interchangeable decoration.
 - Four visible math-discovery runes per map. Solving their themed puzzle awards one-time coins and occasional
   battle items; incorrect answers leave the discovery available for another attempt.
 - Ordinary enemies, merchant challenges, and bosses award region-scaled coins.
@@ -79,11 +80,11 @@ The save format is currently **schema v9**, with non-destructive migration for o
 - A title screen with **Start a New Game** and **Load Game**, ten-slot selection, overwrite confirmation, and a
   narrated introduction starring Lucas and Addmander.
 - Lucas explores Numeria while the selected Mathmon remains the active battle companion.
-- Elder Rowan, Keeper Orin, Astronomer Lyra, and Sage Solara guard the four Digit Crystals through powerful Mathmons.
-- Guardian conversations appear before and after each boss, leading to a four-crystal ending while leaving free
+- Elder Rowan, Keeper Orin, Astronomer Lyra, Sage Solara, Engineer Vesper, and Keeper Echo guard the six Digit Crystals.
+- Guardian conversations appear before and after each boss, leading to a six-crystal ending while leaving free
   exploration available.
 - TEAM, ITEMS, RECORDS, SAVES, and SETTINGS menus; ten independent save slots and a save-aware return-to-menu flow.
-- Unified TextMeshPro/Jersey 10 typography, generated pixel-art characters and icons, ten SFX cues, and seven
+- Unified TextMeshPro/Jersey 10 typography, generated pixel-art characters and icons, ten SFX cues, and nine
   mood-based 8-bit music tracks with crossfading and narration ducking.
 
 ## Kindergarten math progression
@@ -94,6 +95,8 @@ The save format is currently **schema v9**, with non-destructive migration for o
 | ⛰️ Silent Peaks | 0–20 | Harder arithmetic, make-target, three-term sums, equality balance, pattern gaps | Duplirock Elder |
 | ☁️ Azure Sky City | 0–30 | Four-term sums, geometry, mirror-order matching, number paths/sequences, mixed patterns | Symmetrix |
 | 🏜️ Fever Desert | 0–40 | Larger arithmetic, selective shape/color matching, equality balance, advanced mixed patterns | Solar Totalisk |
+| ⛏️ Dark Mines | 0–40 | Multi-step review, factor-like grouping, circuit sequences, mirrored routes | Master Voltamper |
+| 🔥 Underground Tunnels | 0–40 | Cumulative arithmetic, symmetry, equality, mixed pattern mastery | Ancient Calcularagon |
 
 Portal trials always include arithmetic, use three different puzzle families, and allow unlimited zero-penalty
 retries.
@@ -123,21 +126,23 @@ from Git. After importing the package at
 zsh tools/install-jukebox-music.sh
 ```
 
-The installer maps seven local tracks to forest, mountain, sky, desert, battle, boss, and evolution moods. Attribution and
+The installer maps nine local tracks to six regions plus battle, boss, and evolution moods. Attribution and
 the exact track list are documented in [`docs/music-attribution.md`](docs/music-attribution.md).
 
-### Install the Tiny Swords map art
+### Install the licensed map art
 
-The free **Tiny Swords** package is used under its own asset license. Its source PNGs are intentionally excluded
-from Git because the package may be used in a game but not redistributed as a standalone art pack.
+The first four chapters use the checked-in **Tiles and Hexes: 2D Painted Terrain Samples** sprites under
+`Resources/Cainos`. The two underground chapters use **RPG Worlds Caves**, whose licensed source PNGs are excluded
+from Git rather than redistributed as a standalone art pack. **Tiny Swords** remains an optional legacy fallback.
 
-1. Import Tiny Swords from your Unity Asset Store/My Assets library into `unity/Assets/Tiny Swords`.
-2. In Unity, run **Numeria → Rebuild Tiny Swords Catalog**.
-3. Optionally run **Numeria → Export Map Previews** to render all four complete maps to
+1. Import RPG Worlds Caves into `unity/Assets/RPGW_Caves` (and, if desired, Tiny Swords into
+   `unity/Assets/Tiny Swords`).
+2. In Unity, run **Numeria → Rebuild Map Asset Catalogs**.
+3. Optionally run **Numeria → Export Map Previews** to render all six complete maps to
    `/tmp/numeria-map-previews` for visual review.
 
-The generated catalog stores Unity object references only; runtime map selection and all layout definitions stay
-version-controlled.
+The generated catalog stores Unity object references only. Licensed RPG Worlds Caves and Tiny Swords source files
+remain ignored, while runtime selection, semantic layouts, and tests stay version-controlled.
 
 ## Run the Web battle prototype
 
@@ -192,7 +197,8 @@ Unity EditMode tests, with the Unity Editor closed:
 - **Unity 2D / C#** with a pure `Numeria.Core` logic assembly and a programmatic UGUI/TMP presentation layer.
 - Deterministic injected RNG for battles, encounter generation, rewards, and puzzle tests.
 - Breadth-first pathfinding over semantic ASCII-authored maps (`~` water, `=` road, `B` bridge, `#` cliff,
-  `L` landmark), with Tiny Swords 3×3 neighbor-aware terrain selection.
+  `L` landmark), rendered through chapter-aware Painted Terrain / RPG Worlds Caves selection with a Tiny Swords
+  fallback.
 - Local JSON saves in `Application.persistentDataPath`, ten slots, and explicit schema migration.
 - Convention-based `Resources` loading with generated-art fallbacks and automatic pixel-art import settings.
 - Offline Samantha narration WAVs, independent voice/SFX/music settings, and mood-based music crossfades.

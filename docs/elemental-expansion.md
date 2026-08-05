@@ -44,7 +44,8 @@ balance remains authoritative in `GameData.cs`, `Progress.cs`, and `MapDefs.cs`.
 | Flying | Numblet | Tallywing | Totalon | Skip-counting winds |
 
 Each elemental group has a dedicated generated skill icon and presentation language: Fairy Glimmer, Dragon
-Spiral, Electric Bolt, Grass Bloom, and Flying Gust. The complete project roster is now 93 forms across 32 families.
+Spiral, Electric Bolt, Grass Bloom, and Flying Gust. The later depths expansion brings the complete project roster
+to 141 forms across 48 families.
 
 ## Chapter four: Fever Desert
 
@@ -54,6 +55,18 @@ Spiral, Electric Bolt, Grass Bloom, and Flying Gust. The complete project roster
 - Guardian: Sage Solara.
 - Boss: Solar Totalisk, minimum level 32, with tier-scaled HP and defense.
 - Rewards: five chests, four discovery runes, desert merchant stock, and the fourth Digit Crystal.
-- Progression: Azure Sky City's cleared gate unlocks Fever Desert; all four crystals wake the gate home.
+- Progression: Azure Sky City's cleared gate unlocks Fever Desert; the desert now reveals the Dark Mines rather
+  than ending the story.
 - Presentation: generated desert battlefield, Nia and Solara portraits, dedicated Jukebox desert music, and fully
   offline narration.
+
+## Chapters five and six: the depths
+
+- **Dark Mines:** Electric and Rock ecology, crystal rails, Engineer Vesper, merchant Mara, Master Voltamper,
+  and the fifth Digit Crystal.
+- **Underground Tunnels:** Dragon and Fire ecology, violet ruins and lava channels, Keeper Echo, merchant Rune,
+  Ancient Calcularagon, and the sixth Digit Crystal that wakes the gate home.
+- Each requested element contributes four new three-stage families. Their 48 forms retain independent HP/ATK/DEF
+  curves, skills, catch state, evolution requirements, generated icons, and offline narration.
+- Both chapters keep puzzle values within 40 for Kindergarten readability, while increasing challenge through
+  mixed operations, symmetry, equality, sequences, and multi-step review rather than larger numbers.

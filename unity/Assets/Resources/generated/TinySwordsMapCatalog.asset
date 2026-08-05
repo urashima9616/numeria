@@ -266,6 +266,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3cbd575d4968745d3a7f79a654fae04a, type: 3}
   - {fileID: 21300000, guid: 1b31b5c18d1114c22b3cc92b7cecc6a3, type: 3}
   - {fileID: 21300000, guid: ebc3f75c6f0fa49c38b57b0d8b13968e, type: 3}
+  - {fileID: 21300000, guid: d8438425f07ba4e019d15b79cb6ce389, type: 3}
+  - {fileID: 21300000, guid: c84d25441265a4e42b000f20f8fb20d8, type: 3}
   Treasures:
   - {fileID: 21300000, guid: 67d30015e15234b60a2097cd3001c423, type: 3}
   - {fileID: 21300000, guid: 79eb76530889a4283aab87921fff68cf, type: 3}
@@ -279,3 +281,62 @@ MonoBehaviour:
   - {fileID: 21300000, guid: d0349d8d3a04044f7a4810157b116b14, type: 3}
   - {fileID: 21300000, guid: defebd30b7d2e4bff960711bed04e54f, type: 3}
   - {fileID: 21300000, guid: 9d04bb2c5630042c7b93442ef26a6843, type: 3}
+  - {fileID: 21300000, guid: d0349d8d3a04044f7a4810157b116b14, type: 3}
+  - {fileID: 21300000, guid: 03b438cc1edb849a7978ee3571c43887, type: 3}
+  CaveFloorDark:
+  - {fileID: 21302070, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  - {fileID: 21302074, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  - {fileID: 21302078, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  - {fileID: 21302082, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  - {fileID: 21302170, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  - {fileID: 21302178, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  CaveFloorPurple:
+  - {fileID: 21302018, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  - {fileID: 21302022, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  - {fileID: 21302026, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  - {fileID: 21302030, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  - {fileID: 21302118, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  - {fileID: 21302126, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  CavePaths:
+  - {fileID: 21302518, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  - {fileID: 21302520, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  - {fileID: 21302524, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  - {fileID: 21302530, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  - {fileID: 21302536, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  CaveWalls:
+  - {fileID: 21300148, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  - {fileID: 21300150, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  - {fileID: 21300152, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  - {fileID: 21300154, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  - {fileID: 21300248, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  - {fileID: 21300254, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  CaveVoids:
+  - {fileID: 21300182, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  - {fileID: 21300184, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  - {fileID: 21300186, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  - {fileID: 21300188, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  - {fileID: 21300282, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  - {fileID: 21300288, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  CaveCrystals:
+  - {fileID: 21300194, guid: ca1f1e20c71399f4ab9c815c2528cc1c, type: 3}
+  - {fileID: 21300196, guid: ca1f1e20c71399f4ab9c815c2528cc1c, type: 3}
+  - {fileID: 21300198, guid: ca1f1e20c71399f4ab9c815c2528cc1c, type: 3}
+  - {fileID: 21300200, guid: ca1f1e20c71399f4ab9c815c2528cc1c, type: 3}
+  - {fileID: 21300210, guid: ca1f1e20c71399f4ab9c815c2528cc1c, type: 3}
+  - {fileID: 21300212, guid: ca1f1e20c71399f4ab9c815c2528cc1c, type: 3}
+  - {fileID: 21300214, guid: ca1f1e20c71399f4ab9c815c2528cc1c, type: 3}
+  - {fileID: 21300216, guid: ca1f1e20c71399f4ab9c815c2528cc1c, type: 3}
+  - {fileID: 21300244, guid: ca1f1e20c71399f4ab9c815c2528cc1c, type: 3}
+  CaveRocks:
+  - {fileID: 21300258, guid: ca1f1e20c71399f4ab9c815c2528cc1c, type: 3}
+  - {fileID: 21300260, guid: ca1f1e20c71399f4ab9c815c2528cc1c, type: 3}
+  - {fileID: 21300264, guid: ca1f1e20c71399f4ab9c815c2528cc1c, type: 3}
+  - {fileID: 21300274, guid: ca1f1e20c71399f4ab9c815c2528cc1c, type: 3}
+  - {fileID: 21300276, guid: ca1f1e20c71399f4ab9c815c2528cc1c, type: 3}
+  - {fileID: 21300280, guid: ca1f1e20c71399f4ab9c815c2528cc1c, type: 3}
+  - {fileID: 21300306, guid: ca1f1e20c71399f4ab9c815c2528cc1c, type: 3}
+  - {fileID: 21300310, guid: ca1f1e20c71399f4ab9c815c2528cc1c, type: 3}
+  CaveBridge: {fileID: 21302550, guid: aa9f510a84a336543994cb3b86dea09f, type: 3}
+  CaveLandmark: {fileID: 21300214, guid: ca1f1e20c71399f4ab9c815c2528cc1c, type: 3}
+  CavePortal: {fileID: 21300244, guid: ca1f1e20c71399f4ab9c815c2528cc1c, type: 3}
+  CaveGlow: {fileID: 21300194, guid: ca1f1e20c71399f4ab9c815c2528cc1c, type: 3}

@@ -766,7 +766,7 @@ namespace Numeria.Game
             }
         }
 
-        /// <summary>数块提示:前 orange 格橙色、到 total 为绿色；按每行十格扩展到第四章的 40。</summary>
+        /// <summary>数块提示:前 orange 格橙色、到 total 为绿色；按每行十格覆盖后期章节的 40。</summary>
         private void BuildHintFrame(RectTransform parent, int orange, int total)
         {
             foreach (Transform child in parent) UnityEngine.Object.Destroy(child.gameObject);

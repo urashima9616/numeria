@@ -48,9 +48,9 @@ namespace Numeria.Game.Tests
         }
 
         [Test]
-        public void AllFourChapterMaps_HaveReachablePortalAndChests()
+        public void AllSixChapterMaps_HaveReachablePortalAndChests()
         {
-            foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky(), Maps.Desert() })
+            foreach (var def in Maps.All())
             {
                 var map = GridMap.Parse(def.Rows);
                 Assert.GreaterOrEqual(map.Width * map.Height, 480, $"{def.Id} must be at least twice the old 240 tiles");
@@ -74,7 +74,7 @@ namespace Numeria.Game.Tests
         public void ChapterMapsHaveUniqueReadableBiomeStructure()
         {
             var layouts = new System.Collections.Generic.HashSet<string>();
-            foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky(), Maps.Desert() })
+            foreach (var def in Maps.All())
             {
                 Assert.AreEqual(18, def.Rows.Length, def.Id);
                 foreach (string row in def.Rows) Assert.AreEqual(32, row.Length, def.Id);
@@ -107,7 +107,7 @@ namespace Numeria.Game.Tests
         [Test]
         public void EveryMapHasWeightedEnemyEcologyAndBossRequiresAllChests()
         {
-            foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky(), Maps.Desert() })
+            foreach (var def in Maps.All())
             {
                 Assert.GreaterOrEqual(def.Encounters.Length, 5);
                 var ids = new System.Collections.Generic.HashSet<string>();
@@ -130,7 +130,7 @@ namespace Numeria.Game.Tests
                 Assert.IsNotNull(Resources.Load<Sprite>($"generated/{species.Id}_large_icon"),
                     $"missing large icon for {species.Id}");
 
-            foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky(), Maps.Desert() })
+            foreach (var def in Maps.All())
                 Assert.IsNotNull(Resources.Load<Sprite>(def.BattleBg),
                     $"missing battle background for {def.Id}: {def.BattleBg}");
 

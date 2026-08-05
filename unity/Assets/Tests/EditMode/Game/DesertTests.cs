@@ -42,10 +42,10 @@ namespace Numeria.Game.Tests
         }
 
         [Test]
-        public void AllNewFamiliesAreEncounterableAcrossTheFourChapters()
+        public void AllNewFamiliesAreEncounterableAcrossTheSixChapters()
         {
             var encounteredBases = new HashSet<string>();
-            foreach (var map in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky(), Maps.Desert() })
+            foreach (var map in Maps.All())
                 foreach (var entry in map.Encounters)
                     encounteredBases.Add(GameData.BaseId(entry.SpeciesId));
 
@@ -60,14 +60,14 @@ namespace Numeria.Game.Tests
         }
 
         [Test]
-        public void DesertHasCompleteRewardsMerchantAndFinalGate()
+        public void DesertHasCompleteRewardsMerchantAndLeadsToDarkMines()
         {
             var desert = Maps.Desert();
             Assert.AreEqual(5, desert.ChestRewards.Count);
             Assert.AreEqual(4, desert.Discoveries.Length);
             Assert.NotNull(desert.Merchant);
             Assert.AreEqual("mirrorvolt", desert.Merchant.PartnerSpeciesId);
-            Assert.IsNull(desert.PortalTargetMap);
+            Assert.AreEqual("dark_mines", desert.PortalTargetMap);
 
             var progress = new Progress();
             Assert.False(desert.GateCleared(progress));

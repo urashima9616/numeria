@@ -128,7 +128,7 @@ namespace Numeria.Game
         }
     }
 
-    public static class Maps
+    public static partial class Maps
     {
         // Four eight-character chunks keep every authored map row visibly locked to 32 tiles.
         private static string Row(string a, string b, string c, string d) => a + b + c + d;
@@ -164,9 +164,16 @@ namespace Numeria.Game
                 case "mountains": return Mountains();
                 case "sky": return Sky();
                 case "desert": return Desert();
+                case "dark_mines": return DarkMines();
+                case "underground": return UndergroundTunnels();
                 default: return Forest();
             }
         }
+
+        public static MapDef[] All() => new[]
+        {
+            Forest(), Mountains(), Sky(), Desert(), DarkMines(), UndergroundTunnels(),
+        };
 
         public static MapDef Forest() => new MapDef
         {
@@ -449,8 +456,8 @@ namespace Numeria.Game
                 E("totalon", 2, 30, 0, 3),
             },
             BossSpeciesId = "totalisk", BossDisplayName = "Solar Totalisk", BossMinLevel = 32,
-            BossLine = "Solar Totalisk guards the final crystal!",
-            GateClearLine = "The desert crystal blazes! The gate home is awake!",
+            BossLine = "Solar Totalisk guards the desert crystal!",
+            GateClearLine = "The desert crystal reveals a stairway into the Dark Mines!",
             CrystalName = "Desert Digit Crystal", GuardianName = "Sage Solara",
             GuardianSpriteResource = "generated/Story/guardian_solara",
             GuardianChallengeLines = new[]
@@ -458,10 +465,10 @@ namespace Numeria.Game
                 "The desert sun hides patterns in every dune.",
                 "Join the four kinds of magic, and show Solar Totalisk how brightly you can think.",
             },
-            GuardianVictoryLine = "The Desert Digit Crystal is yours. All four lights now sing together.",
+            GuardianVictoryLine = "The Desert Digit Crystal is yours. A hidden fifth light calls from below.",
             GateCleared = p => p.ClearedGates.Contains("desert"),
             ClearGate = p => { if (!p.ClearedGates.Contains("desert")) p.ClearedGates.Add("desert"); },
-            PortalTargetMap = null, NextName = "The gate home",
+            PortalTargetMap = "dark_mines", NextName = "Dark Mines",
             ChestRewards = new Dictionary<string, ChestRewardDef>
             {
                 { "desert-chest-12-2", R(ChestRewardType.EvolutionStone, "Sunstone") },

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Numeria.Game
 {
-    /// <summary>由编辑器从已导入的 Tiny Swords 素材生成；运行时不依赖 AssetDatabase。</summary>
+    /// <summary>由编辑器从本地地图素材包生成；运行时不依赖 AssetDatabase。</summary>
     public sealed class TinySwordsCatalog : ScriptableObject
     {
         public Sprite[] Terrain1;
@@ -22,5 +22,17 @@ namespace Numeria.Game
         public Sprite[] Treasures;
         public Sprite TreasureOpened;
         public Sprite[] Portals;
+
+        public Sprite[] CaveFloorDark;
+        public Sprite[] CaveFloorPurple;
+        public Sprite[] CavePaths;
+        public Sprite[] CaveWalls;
+        public Sprite[] CaveVoids;
+        public Sprite[] CaveCrystals;
+        public Sprite[] CaveRocks;
+        public Sprite CaveBridge;
+        public Sprite CaveLandmark;
+        public Sprite CavePortal;
+        public Sprite CaveGlow;
     }
 }

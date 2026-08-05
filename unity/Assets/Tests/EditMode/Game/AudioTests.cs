@@ -46,7 +46,7 @@ namespace Numeria.Game.Tests
         }
 
         [Test]
-        public void ExpansionRosterAndDesertLinesHaveOfflineNarration()
+        public void ExpansionRosterAndChapterLinesHaveOfflineNarration()
         {
             foreach (SpeciesDef species in GameData.Roster)
             {
@@ -60,7 +60,7 @@ namespace Numeria.Game.Tests
             AssertVoice("You caught a stronger friend. Keep it, or turn the catch into experience.");
             AssertVoice("Your stronger friend is ready for adventure!");
             AssertVoice("Welcome to Fever Desert!");
-            AssertVoice("The four Digit Crystals sing together. The gate home is awake!");
+            AssertVoice("The six Digit Crystals sing together. The gate home is awake!");
             AssertVoice("What tile comes next in the pattern?");
             AssertVoice("Which tile fills the pattern gap?");
             AssertVoice("Find the exact tile pattern!");

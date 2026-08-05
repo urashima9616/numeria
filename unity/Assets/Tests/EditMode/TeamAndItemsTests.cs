@@ -236,10 +236,10 @@ namespace Numeria.Core.Tests
         }
 
         [Test]
-        public void ExpandedRoster_HasNinetyThreeUniqueSpeciesAcrossThirtyTwoLines()
+        public void ExpandedRoster_HasOneHundredFortyOneUniqueSpeciesAcrossFortyEightLines()
         {
-            Assert.AreEqual(93, GameData.Roster.Count);
-            Assert.AreEqual(32, GameData.Lines.Count);
+            Assert.AreEqual(141, GameData.Roster.Count);
+            Assert.AreEqual(48, GameData.Lines.Count);
 
             var ids = new HashSet<string>();
             int stageCount = 0;
@@ -254,7 +254,30 @@ namespace Numeria.Core.Tests
                     Assert.AreEqual(line.BaseId, GameData.BaseId(id));
                 }
             }
-            Assert.AreEqual(93, stageCount);
+            Assert.AreEqual(141, stageCount);
+        }
+
+        [Test]
+        public void DepthsExpansionAddsFourThreeStageFamiliesForEachRequestedElement()
+        {
+            var requested = new Dictionary<string, string[]>
+            {
+                { "ELECTRIC", new[] { "ohmlet", "sparkseed", "charguppy", "circuitick" } },
+                { "ROCK", new[] { "numite", "gemlet", "shaleling", "cragcub" } },
+                { "DRAGON", new[] { "draddit", "scalip", "digiling", "runelet" } },
+                { "FIRE", new[] { "embernum", "cindercub", "torchick", "glowgecko" } },
+            };
+
+            foreach (var element in requested)
+                foreach (string baseId in element.Value)
+                {
+                    var line = GameData.LineFor(baseId);
+                    Assert.NotNull(line, baseId);
+                    Assert.AreEqual(element.Key, line.Element, baseId);
+                    Assert.AreEqual(3, line.StageIds.Length, baseId);
+                    Assert.AreEqual(2, line.EvolutionLevels.Length, baseId);
+                    foreach (string formId in line.StageIds) Assert.IsNotNull(GameData.SpeciesById(formId), formId);
+                }
         }
 
         [Test]

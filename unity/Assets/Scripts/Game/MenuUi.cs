@@ -762,7 +762,7 @@ namespace Numeria.Game
 
             SectionRow(content, "Key items");
             if (_progress.DigitCrystalCount > 0)
-                ItemRow(content, "Digit Crystals", $"Restored: {_progress.DigitCrystalCount} / 4");
+                ItemRow(content, "Digit Crystals", $"Restored: {_progress.DigitCrystalCount} / 6");
             if (_progress.EvolutionStones > 0)
                 ItemRow(content, "Evolution Stone", $"Owned: {_progress.EvolutionStones}");
             if (_progress.EvolutionStones == 0 && _progress.DigitCrystalCount == 0)
@@ -818,7 +818,7 @@ namespace Numeria.Game
             RecordRow(content, "Bosses defeated", r.BossesDefeated.ToString());
             RecordRow(content, "Friends caught", r.MonstersCaught.ToString());
             RecordRow(content, "Treasure chests", r.ChestsOpened.ToString());
-            RecordRow(content, "Digit Crystals", $"{_progress.DigitCrystalCount} / 4");
+            RecordRow(content, "Digit Crystals", $"{_progress.DigitCrystalCount} / 6");
             RecordRow(content, "Math discoveries", r.DiscoveriesSolved.ToString());
             RecordRow(content, "Merchants defeated", r.MerchantsDefeated.ToString());
             RecordRow(content, "Coins", $"{_progress.Coins} held / {r.CoinsEarned} earned");
@@ -982,6 +982,20 @@ namespace Numeria.Game
                     desertUnlocked ? "Fever Desert" : "Fever Desert (locked)", 22);
                 desertBtn.interactable = desertUnlocked && _progress.CurrentMap != "desert";
                 desertBtn.onClick.AddListener(() => CloseThen(() => _onTravel("desert")));
+            });
+            ListRow(content, "TravelDepthsRow", 66, row =>
+            {
+                FillButtonRow(row);
+                var mineUnlocked = _progress.ClearedGates.Contains("desert");
+                var mineBtn = Ui.Btn(row, "BtnDarkMines",
+                    mineUnlocked ? "Dark Mines" : "Dark Mines (locked)", 22);
+                mineBtn.interactable = mineUnlocked && _progress.CurrentMap != "dark_mines";
+                mineBtn.onClick.AddListener(() => CloseThen(() => _onTravel("dark_mines")));
+                var undergroundUnlocked = _progress.ClearedGates.Contains("dark_mines");
+                var undergroundBtn = Ui.Btn(row, "BtnUnderground",
+                    undergroundUnlocked ? "Underground Tunnels" : "Underground Tunnels (locked)", 22);
+                undergroundBtn.interactable = undergroundUnlocked && _progress.CurrentMap != "underground";
+                undergroundBtn.onClick.AddListener(() => CloseThen(() => _onTravel("underground")));
             });
 
             SectionRow(content, "Game");

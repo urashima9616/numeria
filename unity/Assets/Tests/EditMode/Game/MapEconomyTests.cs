@@ -11,7 +11,7 @@ namespace Numeria.Game.Tests
         public void EveryMapHasReachableMathDiscoveriesAndMerchant()
         {
             var allIds = new HashSet<string>();
-            foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky(), Maps.Desert() })
+            foreach (var def in Maps.All())
             {
                 var map = GridMap.Parse(def.Rows);
                 Assert.AreEqual(4, def.Discoveries.Length, def.Id);
@@ -37,7 +37,7 @@ namespace Numeria.Game.Tests
         [Test]
         public void EveryMerchantHasLimitedBalancedInventoryAndTrainerPartner()
         {
-            foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky(), Maps.Desert() })
+            foreach (var def in Maps.All())
             {
                 var merchant = def.Merchant;
                 Assert.AreEqual(4, merchant.Stock.Length, def.Id);
@@ -61,7 +61,7 @@ namespace Numeria.Game.Tests
         public void EconomyArtworkIsImportedAsSprites()
         {
             Assert.IsNotNull(Resources.Load<Sprite>("generated/Economy/numeria_coin"));
-            foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky(), Maps.Desert() })
+            foreach (var def in Maps.All())
                 Assert.IsNotNull(Resources.Load<Sprite>(def.Merchant.SpriteResource), def.Merchant.SpriteResource);
         }
 
@@ -69,7 +69,7 @@ namespace Numeria.Game.Tests
         public void EveryMapHasACompleteCrystalGuardianStoryBeat()
         {
             var names = new HashSet<string>();
-            foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky(), Maps.Desert() })
+            foreach (var def in Maps.All())
             {
                 Assert.IsNotEmpty(def.CrystalName, def.Id);
                 Assert.IsNotEmpty(def.GuardianName, def.Id);

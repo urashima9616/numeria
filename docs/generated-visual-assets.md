@@ -125,3 +125,41 @@ watermark, trademark or existing franchise character.
 
 These images are original fictional characters. The generated chroma-key sources remain in the local Codex
 generation cache; the repository contains only the transparent production PNGs.
+
+## Dark Mines and Underground Tunnels expansion
+
+The 2026-08-05 built-in ImageGen pass produced 16 three-stage family sheets (48 final form icons), two 16:9
+battlefields, two merchants, and two guardians. Final production assets live under
+`unity/Assets/Resources/generated/`; source generations stay in the local Codex generation cache.
+
+Every family sheet used this shared production direction plus a family-specific brief:
+
+> Create one original Numeria three-stage creature evolution sheet. Render polished enlarged 32-bit pixel art
+> with crisp block pixels, a strong dark navy-brown outline, readable handheld-RPG silhouettes, two-step shading,
+> and friendly Kindergarten-safe expressions. Show exactly three complete forms left-to-right, fully separated
+> and centered in equal cells, growing clearly in scale and complexity. Use a perfectly flat uniform `#ff00ff`
+> chroma-key background. No text, written numbers, frames, floor, shadows, watermark, logo, trademark, or existing
+> franchise character; do not use magenta in the subjects.
+
+- **Electric:** Ohmlet → Currabbit → Voltamper; Sparkseed → Coilvine → Teslatree; Charguppy → Ampfin → Megavolt;
+  Circuitick → Relayhawk → Gridgriff.
+- **Rock:** Numite → Factorock → Multimount; Gemlet → Prismine → Geodeus; Shaleling → Layerock → Stratatitan;
+  Cragcub → Boulderbear → Tectotitan.
+- **Dragon:** Draddit → Sumwyrm → Calcularagon; Scalip → Patternake → Sequendrake; Digiling → Tenswyrm → Magnagon;
+  Runelet → Mirrorwyrm → Symmetragon.
+- **Fire:** Embernum → Plusprite → Sumflare; Cindercub → Douburn → Multilion; Torchick → Patternix → Sequenix;
+  Glowgecko → Balablaze → Equiferno.
+
+`tools/import-evolution-sheet.sh` removed the chroma key and split each sheet into three 512×512 RGBA icons.
+The final files follow `generated/<species>_large_icon.png` and are imported by `PixelArtImporter` using Point
+filtering, no compression, and transparent alpha.
+
+The two battlefield prompts requested wide, empty 32-bit pixel-art combat arenas with clear foreground space:
+Dark Mines uses timber supports, mine rails, lanterns, and blue/gold crystals; Underground Tunnels uses violet
+ancient masonry, teal crystals, and controlled lava channels. The resulting Resources are
+`generated/Backgrounds/Dark_Mines_2048x1152.png` and
+`generated/Backgrounds/Underground_Tunnels_2048x1152.png`.
+
+The character prompts used the same pixel scale and chroma rules for Engineer Vesper, Keeper Echo, merchant Mara,
+and merchant Rune. Their transparent final resources are `generated/Story/guardian_{vesper,echo}.png` and
+`generated/Economy/merchant_{mara,rune}.png`.

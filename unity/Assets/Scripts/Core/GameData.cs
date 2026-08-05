@@ -37,7 +37,7 @@ namespace Numeria.Core
         public ConsumableType PreferredDrop;
     }
 
-    /// <summary>93 个数灵形态、32 条家族线及所有战斗成长的唯一真理源。</summary>
+    /// <summary>141 个数灵形态、48 条家族线及所有战斗成长的唯一真理源。</summary>
     public static class GameData
     {
         private static readonly EvolutionLineDef[] EvolutionLines =
@@ -117,6 +117,42 @@ namespace Numeria.Core
             // Flying — one complete three-stage family focused on aerial skip-counting.
             Line("numblet", "FLYING", "skip-counting winds", PuzzleAffinity.RepeatedAddition,
                 new[] { "numblet", "tallywing", "totalon" }, new[] { 12, 24 }),
+
+            // Dark Mines — four Electric and four Rock three-stage families.
+            Line("ohmlet", "ELECTRIC", "missing-number circuits", PuzzleAffinity.Formula,
+                new[] { "ohmlet", "currabbit", "voltamper" }, new[] { 36, 48 }),
+            Line("sparkseed", "ELECTRIC", "growing circuit patterns", PuzzleAffinity.Pattern,
+                new[] { "sparkseed", "coilvine", "teslatree" }, new[] { 36, 48 }),
+            Line("charguppy", "ELECTRIC", "counting glowing currents", PuzzleAffinity.Counting,
+                new[] { "charguppy", "ampfin", "megavolt" }, new[] { 36, 48 }),
+            Line("circuitick", "ELECTRIC", "mirrored electric paths", PuzzleAffinity.Symmetry,
+                new[] { "circuitick", "relayhawk", "gridgriff" }, new[] { 36, 48 }),
+            Line("numite", "ROCK", "factor groups", PuzzleAffinity.RepeatedAddition,
+                new[] { "numite", "factorock", "multimount" }, new[] { 36, 48 }),
+            Line("gemlet", "ROCK", "crystal shapes", PuzzleAffinity.Symmetry,
+                new[] { "gemlet", "prismine", "geodeus" }, new[] { 36, 48 }),
+            Line("shaleling", "ROCK", "layered number sequences", PuzzleAffinity.Pattern,
+                new[] { "shaleling", "layerock", "stratatitan" }, new[] { 36, 48 }),
+            Line("cragcub", "ROCK", "balancing stone totals", PuzzleAffinity.Formula,
+                new[] { "cragcub", "boulderbear", "tectotitan" }, new[] { 36, 48 }),
+
+            // Underground Tunnels — four Dragon and four Fire three-stage families.
+            Line("draddit", "DRAGON", "deep-cave addition", PuzzleAffinity.Formula,
+                new[] { "draddit", "sumwyrm", "calcularagon" }, new[] { 42, 55 }),
+            Line("scalip", "DRAGON", "scale sequences", PuzzleAffinity.Pattern,
+                new[] { "scalip", "patternake", "sequendrake" }, new[] { 42, 55 }),
+            Line("digiling", "DRAGON", "place-value counting", PuzzleAffinity.Counting,
+                new[] { "digiling", "tenswyrm", "magnagon" }, new[] { 42, 55 }),
+            Line("runelet", "DRAGON", "mirrored cave runes", PuzzleAffinity.Symmetry,
+                new[] { "runelet", "mirrorwyrm", "symmetragon" }, new[] { 42, 55 }),
+            Line("embernum", "FIRE", "ember addition", PuzzleAffinity.Formula,
+                new[] { "embernum", "plusprite", "sumflare" }, new[] { 42, 55 }),
+            Line("cindercub", "FIRE", "doubling flames", PuzzleAffinity.RepeatedAddition,
+                new[] { "cindercub", "douburn", "multilion" }, new[] { 42, 55 }),
+            Line("torchick", "FIRE", "flame sequences", PuzzleAffinity.Pattern,
+                new[] { "torchick", "patternix", "sequenix" }, new[] { 42, 55 }),
+            Line("glowgecko", "FIRE", "balanced heat", PuzzleAffinity.Symmetry,
+                new[] { "glowgecko", "balablaze", "equiferno" }, new[] { 42, 55 }),
         };
 
         private static readonly SpeciesDef[] Species =
@@ -233,6 +269,62 @@ namespace Numeria.Core
             Mon("numblet", "Numblet", 9, 3, 2, 9, 4, 3, 8, "Counting Gust", 5, true, .24, ConsumableType.GemSnack),
             Mon("tallywing", "Tallywing", 15, 6, 4, 10, 4, 4, 12, "Tally Tailwind", 6, true, .31, ConsumableType.GemSnack),
             Mon("totalon", "Totalon", 23, 9, 7, 12, 5, 5, 17, "Total Cyclone", 7, true, .39, ConsumableType.GemSnack),
+
+            // Dark Mines: Electric families.
+            Mon("ohmlet", "Ohmlet", 11, 5, 2, 9, 5, 3, 10, "Circuit Sum", 6, true, .27, ConsumableType.GemSnack),
+            Mon("currabbit", "Currabbit", 18, 8, 5, 11, 6, 4, 15, "Current Equation", 7, true, .34, ConsumableType.GemSnack),
+            Mon("voltamper", "Voltamper", 27, 12, 8, 13, 7, 5, 21, "Voltage Unknown", 8, true, .42, ConsumableType.GemSnack),
+            Mon("sparkseed", "Sparkseed", 12, 4, 3, 10, 4, 4, 10, "Circuit Sprout", 6, true, .27, ConsumableType.HealthPotion),
+            Mon("coilvine", "Coilvine", 20, 7, 6, 12, 5, 5, 15, "Coil Pattern", 7, true, .34, ConsumableType.HealthPotion),
+            Mon("teslatree", "Teslatree", 30, 10, 10, 14, 6, 6, 21, "Tesla Sequence", 8, true, .42, ConsumableType.HealthPotion),
+            Mon("charguppy", "Charguppy", 11, 4, 4, 10, 4, 4, 10, "Current Count", 6, true, .27, ConsumableType.GemSnack),
+            Mon("ampfin", "Ampfin", 19, 7, 7, 12, 5, 5, 15, "Ampere Tally", 7, true, .34, ConsumableType.GemSnack),
+            Mon("megavolt", "Megavolt", 28, 11, 10, 14, 6, 6, 21, "Million Sparks", 8, true, .42, ConsumableType.GemSnack),
+            Mon("circuitick", "Circuitick", 10, 5, 3, 9, 5, 4, 10, "Circuit Mirror", 6, true, .27, ConsumableType.HealthPotion),
+            Mon("relayhawk", "Relayhawk", 17, 8, 6, 11, 6, 5, 15, "Relay Reflection", 7, true, .34, ConsumableType.HealthPotion),
+            Mon("gridgriff", "Gridgriff", 26, 12, 9, 13, 7, 6, 21, "Perfect Grid", 8, true, .42, ConsumableType.HealthPotion),
+
+            // Dark Mines: Rock families.
+            Mon("numite", "Numite", 14, 3, 6, 11, 4, 6, 10, "Factor Pebbles", 6, true, .29, ConsumableType.HealthPotion),
+            Mon("factorock", "Factorock", 23, 6, 10, 13, 5, 7, 15, "Factor Formation", 7, true, .36, ConsumableType.HealthPotion),
+            Mon("multimount", "Multimount", 35, 9, 15, 16, 6, 8, 21, "Mountain Groups", 8, true, .44, ConsumableType.HealthPotion),
+            Mon("gemlet", "Gemlet", 13, 4, 5, 11, 4, 6, 10, "Gem Mirror", 6, true, .29, ConsumableType.GemSnack),
+            Mon("prismine", "Prismine", 22, 7, 9, 13, 5, 7, 15, "Crystal Reflection", 7, true, .36, ConsumableType.GemSnack),
+            Mon("geodeus", "Geodeus", 33, 10, 14, 15, 6, 8, 21, "Geode Symmetry", 8, true, .44, ConsumableType.GemSnack),
+            Mon("shaleling", "Shaleling", 14, 3, 6, 11, 4, 6, 10, "Shale Sequence", 6, true, .29, ConsumableType.HealthPotion),
+            Mon("layerock", "Layerock", 24, 6, 10, 13, 5, 7, 15, "Layer Pattern", 7, true, .36, ConsumableType.HealthPotion),
+            Mon("stratatitan", "Stratatitan", 36, 9, 15, 16, 6, 8, 21, "Strata Order", 8, true, .44, ConsumableType.HealthPotion),
+            Mon("cragcub", "Cragcub", 13, 4, 5, 11, 4, 6, 10, "Crag Balance", 6, true, .29, ConsumableType.GemSnack),
+            Mon("boulderbear", "Boulderbear", 22, 7, 9, 13, 5, 7, 15, "Boulder Equation", 7, true, .36, ConsumableType.GemSnack),
+            Mon("tectotitan", "Tectotitan", 34, 10, 14, 15, 6, 8, 21, "Tectonic Total", 8, true, .44, ConsumableType.GemSnack),
+
+            // Underground Tunnels: Dragon families.
+            Mon("draddit", "Draddit", 13, 5, 4, 11, 5, 5, 11, "Cavern Add", 6, true, .30, ConsumableType.HealthPotion),
+            Mon("sumwyrm", "Sumwyrm", 22, 9, 7, 13, 6, 6, 16, "Deep Sum", 7, true, .37, ConsumableType.HealthPotion),
+            Mon("calcularagon", "Calcularagon", 34, 13, 11, 16, 8, 7, 23, "Core Calculation", 8, true, .45, ConsumableType.HealthPotion),
+            Mon("scalip", "Scalip", 12, 5, 4, 10, 5, 5, 11, "Scale Pattern", 6, true, .30, ConsumableType.GemSnack),
+            Mon("patternake", "Patternake", 21, 9, 7, 12, 6, 6, 16, "Cavern Sequence", 7, true, .37, ConsumableType.GemSnack),
+            Mon("sequendrake", "Sequendrake", 33, 13, 11, 15, 8, 7, 23, "Endless Pattern", 8, true, .45, ConsumableType.GemSnack),
+            Mon("digiling", "Digiling", 14, 4, 5, 11, 5, 5, 11, "Digit Count", 6, true, .30, ConsumableType.HealthPotion),
+            Mon("tenswyrm", "Tenswyrm", 23, 8, 8, 13, 6, 6, 16, "Tens Tally", 7, true, .37, ConsumableType.HealthPotion),
+            Mon("magnagon", "Magnagon", 35, 12, 12, 16, 7, 7, 23, "Place Value Roar", 8, true, .45, ConsumableType.HealthPotion),
+            Mon("runelet", "Runelet", 13, 5, 4, 11, 5, 5, 11, "Rune Mirror", 6, true, .30, ConsumableType.GemSnack),
+            Mon("mirrorwyrm", "Mirrorwyrm", 22, 9, 7, 13, 6, 6, 16, "Echo Reflection", 7, true, .37, ConsumableType.GemSnack),
+            Mon("symmetragon", "Symmetragon", 34, 13, 11, 16, 8, 7, 23, "Perfect Rune", 8, true, .45, ConsumableType.GemSnack),
+
+            // Underground Tunnels: Fire families.
+            Mon("embernum", "Embernum", 11, 6, 3, 10, 6, 4, 11, "Ember Addition", 6, true, .28, ConsumableType.GemSnack),
+            Mon("plusprite", "Plusprite", 19, 10, 5, 12, 7, 5, 16, "Blazing Plus", 7, true, .35, ConsumableType.GemSnack),
+            Mon("sumflare", "Sumflare", 29, 14, 8, 14, 8, 6, 23, "Solar Sum", 8, true, .43, ConsumableType.GemSnack),
+            Mon("cindercub", "Cindercub", 12, 5, 4, 10, 6, 4, 11, "Cinder Double", 6, true, .28, ConsumableType.HealthPotion),
+            Mon("douburn", "Douburn", 20, 9, 7, 12, 7, 5, 16, "Twin Inferno", 7, true, .35, ConsumableType.HealthPotion),
+            Mon("multilion", "Multilion", 31, 13, 10, 15, 8, 6, 23, "Many Flame March", 8, true, .43, ConsumableType.HealthPotion),
+            Mon("torchick", "Torchick", 11, 6, 3, 10, 6, 4, 11, "Torch Pattern", 6, true, .28, ConsumableType.GemSnack),
+            Mon("patternix", "Patternix", 19, 10, 5, 12, 7, 5, 16, "Phoenix Sequence", 7, true, .35, ConsumableType.GemSnack),
+            Mon("sequenix", "Sequenix", 29, 14, 8, 14, 8, 6, 23, "Infinite Flame", 8, true, .43, ConsumableType.GemSnack),
+            Mon("glowgecko", "Glowgecko", 12, 5, 4, 10, 5, 5, 11, "Glow Balance", 6, true, .28, ConsumableType.HealthPotion),
+            Mon("balablaze", "Balablaze", 20, 9, 7, 12, 6, 6, 16, "Balanced Blaze", 7, true, .35, ConsumableType.HealthPotion),
+            Mon("equiferno", "Equiferno", 31, 13, 11, 15, 7, 7, 23, "Equal Inferno", 8, true, .43, ConsumableType.HealthPotion),
         };
 
         public static IReadOnlyList<EvolutionLineDef> Lines => EvolutionLines;
@@ -459,6 +551,11 @@ namespace Numeria.Core
                     {
                         skillId = $"{baseId}-flying-magic"; icon = "flying_gust";
                         visual = SkillVisualKind.FlyingGust;
+                    }
+                    else if (element == "ROCK")
+                    {
+                        skillId = $"{baseId}-rock-magic"; icon = "double_boulder";
+                        visual = SkillVisualKind.DoubleBoulder;
                     }
                     else
                     {

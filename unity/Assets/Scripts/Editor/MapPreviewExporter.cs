@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Numeria.Editor
 {
     /// <summary>
-    /// 使用游戏真实的 MapArt/SpriteLib 生成四章全景图。
+    /// 使用游戏真实的 MapArt/SpriteLib 生成六章全景图。
     /// 菜单与 CI 共用，便于在没有进入 Play Mode 时做视觉回归。
     /// </summary>
     public static class MapPreviewExporter
@@ -23,7 +23,7 @@ namespace Numeria.Editor
             if (string.IsNullOrEmpty(output)) output = "/tmp/numeria-map-previews";
             Directory.CreateDirectory(output);
 
-            foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky(), Maps.Desert() })
+            foreach (var def in Maps.All())
                 Export(def, Path.Combine(output, def.Id + ".png"));
 
             Debug.Log($"NUMERIA_MAP_PREVIEWS={output}");
@@ -68,12 +68,14 @@ namespace Numeria.Editor
                             }
                             break;
                         case Tile.Cliff:
-                            if ((def.Theme == "mountains" || def.Theme == "desert") && variant % 3 == 0)
+                            if ((def.Theme == "mountains" || def.Theme == "desert" ||
+                                def.Theme == "dark_mines" || def.Theme == "underground") && variant % 3 == 0)
                             {
                                 var rock = Add(root.transform, MapArt.Prop(def.Theme, "obstacle", variant),
                                     world + Vector3.up * .06f, SortOrder(world.y), "rock");
                                 rock.color = MapArt.Tint(def.Theme, tile, "obstacle");
-                                ScaleToHeight(rock, def.Theme == "mountains" ? .72f : .62f);
+                                ScaleToHeight(rock,
+                                    def.Theme == "mountains" || def.Theme == "dark_mines" ? .72f : .62f);
                             }
                             break;
                         case Tile.Tree:

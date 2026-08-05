@@ -1,8 +1,8 @@
 # Main Story: Lucas and the Digit Crystals
 
 Lucas wakes in Numeria beneath a sky full of glowing numbers. The gate home has lost its power, and a guiding
-voice tells him that four Digit Crystals can wake it. Addmander becomes his first friend. Together they befriend
-Mathmons, learn that mathematics is Numeria's magic, and seek the guardians of the four regions.
+voice tells him that six Digit Crystals can wake it. Addmander becomes his first friend. Together they befriend
+Mathmons, learn that mathematics is Numeria's magic, and seek the guardians of the six regions.
 
 ## Story beats
 
@@ -15,7 +15,12 @@ Mathmons, learn that mathematics is Numeria's magic, and seek the guardians of t
 4. **Fever Desert — Sage Solara.** Beyond the clouds, Solara teaches that steady thinking can find order even
    in the shimmering heat. Solar Totalisk tests forty-within arithmetic and the most advanced mixed patterns.
    The Desert Digit Crystal lights.
-5. **The gate home.** All four crystals sing together and wake the gate. Lucas can return when he is ready, but
+5. **Dark Mines — Engineer Vesper.** The Desert Crystal reveals a stairway below. Vesper teaches Lucas to trace
+   currents and group stones carefully. Master Voltamper tests mixed arithmetic, circuit sequences, and mirrored
+   routes. The Mine Digit Crystal lights.
+6. **Underground Tunnels — Keeper Echo.** At Numeria's deepest core, Echo asks Lucas to combine everything he has
+   learned. Ancient Calcularagon tests arithmetic, symmetry, equality, and patterns. The Core Digit Crystal lights.
+7. **The gate home.** All six crystals sing together and wake the gate. Lucas can return when he is ready, but
    the ending deliberately leaves free exploration open: Numeria and his Mathmon friends will still be waiting.
 
 ## Presentation rules

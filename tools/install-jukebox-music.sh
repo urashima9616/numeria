@@ -1,5 +1,5 @@
 #!/bin/zsh
-# 将本地 8-bit Jukebox Lite 选曲同步到 Numeria 的七个运行时音乐 mood。
+# 将本地 8-bit Jukebox Lite 选曲同步到 Numeria 的九个运行时音乐 mood。
 # 默认安装 Jukebox；传 --restore-dynamic 可恢复此前的 Dynamic Music 选曲。
 set -e
 
@@ -26,6 +26,8 @@ if [[ "$1" == "--restore-dynamic" ]]; then
   copy_track "$DYNAMIC/Tibet/Parts/Tibet Menu Loop.wav" mountains
   copy_track "$DYNAMIC/Centurion/Parts/Centurion Menu Loop.wav" sky
   copy_track "$DYNAMIC/Tibet/Parts/Tibet Part 2 Loop.wav" desert
+  copy_track "$DYNAMIC/Stealth/Parts/Stealth Part 1 Loop.wav" dark_mines
+  copy_track "$DYNAMIC/Tension/Parts/Tension Menu Loop.wav" underground
   copy_track "$DYNAMIC/Battlefield/Parts/Battlefield Part 1.wav" battle
   copy_track "$DYNAMIC/Battlefield/Parts/Battlefield Part 3.wav" boss
   copy_track "$DYNAMIC/Tension/Parts/Tension Part 1 Loop.wav" evolution
@@ -37,6 +39,8 @@ copy_track "$JUKEBOX/CaptChipPants.wav" forest
 copy_track "$JUKEBOX/LittleHauntedMansion.wav" mountains
 copy_track "$JUKEBOX/Don'tFallOffTheClouds.wav" sky
 copy_track "$JUKEBOX/PyramidsPyramids.wav" desert
+copy_track "$JUKEBOX/TrialOfSpikes.wav" dark_mines
+copy_track "$JUKEBOX/DeepInTheCavesBelow.wav" underground
 copy_track "$JUKEBOX/OfGodsAndPhilosophers.wav" battle
 copy_track "$JUKEBOX/WakingTheDemons.wav" boss
 copy_track "$JUKEBOX/VictoryAtLast.wav" evolution

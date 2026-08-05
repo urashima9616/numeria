@@ -27,3 +27,32 @@ Generated with the built-in ImageGen tool on 2026-08-02. Each asset used the com
 | | Ordinalion — leaf lion with ordered mane bands and repeating tail/leg pattern | `ordinalion_large_icon.png` |
 
 All final assets are 1254×1254 RGBA PNGs under `unity/Assets/Resources/generated/`. Unity imports them as point-filtered sprites through the existing `PixelArtImporter` pipeline.
+
+## 48-form depths expansion — 2026-08-05
+
+The built-in ImageGen tool generated 16 family sheets, each containing three separated forms. The production
+prompt kept the same crisp 32-bit pixel-art language and dark navy-brown outline as this manifest, changed the
+canvas to a left-to-right evolution sheet, required a flat `#ff00ff` key, and prohibited text, numbers, frames,
+floor shadows, trademarks, and existing franchise characters.
+
+| Element | Family brief | Exported forms |
+|---|---|---|
+| Electric | yellow electric rabbit growing into an armored circuit guardian | Ohmlet, Currabbit, Voltamper |
+| Electric | blue spark seed growing into a coiled lightning tree | Sparkseed, Coilvine, Teslatree |
+| Electric | cyan charged guppy growing into a manta-like voltage beast | Charguppy, Ampfin, Megavolt |
+| Electric | copper circuit insect growing into a relay bird and grid griffin | Circuitick, Relayhawk, Gridgriff |
+| Rock | round number pebble growing into a factored mountain golem | Numite, Factorock, Multimount |
+| Rock | gem creature growing through prism crystal into a geode guardian | Gemlet, Prismine, Geodeus |
+| Rock | layered shale creature growing into a stratified titan | Shaleling, Layerock, Stratatitan |
+| Rock | friendly crag cub growing into a boulder bear and tectonic guardian | Cragcub, Boulderbear, Tectotitan |
+| Dragon | orange addition hatchling growing into a blue arithmetic dragon | Draddit, Sumwyrm, Calcularagon |
+| Dragon | green scale serpent growing through ordered patterns | Scalip, Patternake, Sequendrake |
+| Dragon | gold digit dragon growing from tens motifs into magnitude armor | Digiling, Tenswyrm, Magnagon |
+| Dragon | indigo rune hatchling growing into mirrored crystal wings | Runelet, Mirrorwyrm, Symmetragon |
+| Fire | red-orange number ember growing into a bright sum phoenix | Embernum, Plusprite, Sumflare |
+| Fire | friendly coal cub growing into a double-flame lion guardian | Cindercub, Douburn, Multilion |
+| Fire | tiny torch bird growing through repeating flame patterns | Torchick, Patternix, Sequenix |
+| Fire | glowing fire gecko growing into a balanced lava guardian | Glowgecko, Balablaze, Equiferno |
+
+`tools/import-evolution-sheet.sh` converted and split the sheets into 48 square 512×512 RGBA files named
+`unity/Assets/Resources/generated/<species>_large_icon.png`.

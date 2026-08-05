@@ -6,10 +6,11 @@ using UnityEngine;
 
 namespace Numeria.Editor
 {
-    /// <summary>把 Assets/Tiny Swords 的 Sprite 引用写入 Resources catalog，供运行时安全加载。</summary>
+    /// <summary>把本地 Tiny Swords / RPG Worlds Caves 引用写入 Resources catalog，供运行时安全加载。</summary>
     public static class TinySwordsCatalogBuilder
     {
         private const string Root = "Assets/Tiny Swords/";
+        private const string CaveRoot = "Assets/RPGW_Caves/Sliced/";
         private const string CatalogPath = "Assets/Resources/generated/TinySwordsMapCatalog.asset";
 
         [MenuItem("Numeria/Rebuild Tiny Swords Catalog")]
@@ -65,6 +66,8 @@ namespace Numeria.Editor
                 Single("Buildings/Black Buildings/Tower.png"),
                 Single("Buildings/Yellow Buildings/Monastery.png"),
                 Single("Buildings/Red Buildings/Castle.png"),
+                Single("Buildings/Black Buildings/Monastery.png"),
+                Single("Buildings/Purple Buildings/Tower.png"),
             };
             catalog.Treasures = Enumerable.Range(1, 6)
                 .Select(index => Single($"Pawn and Resources/Gold/Gold Stones/Gold Stone {index}.png"))
@@ -76,12 +79,45 @@ namespace Numeria.Editor
                 Single("Buildings/Black Buildings/Castle.png"),
                 Single("Buildings/Yellow Buildings/Tower.png"),
                 Single("Buildings/Red Buildings/Monastery.png"),
+                Single("Buildings/Black Buildings/Castle.png"),
+                Single("Buildings/Purple Buildings/Castle.png"),
             };
+
+            catalog.CaveFloorDark = CaveCells("MainLev2.0.png",
+                new Vector2Int(27, 27), new Vector2Int(29, 27), new Vector2Int(31, 27),
+                new Vector2Int(33, 27), new Vector2Int(27, 28), new Vector2Int(31, 28));
+            catalog.CaveFloorPurple = CaveCells("MainLev2.0.png",
+                new Vector2Int(1, 27), new Vector2Int(3, 27), new Vector2Int(5, 27),
+                new Vector2Int(7, 27), new Vector2Int(1, 28), new Vector2Int(5, 28));
+            catalog.CavePaths = CaveCells("MainLev2.0.png",
+                new Vector2Int(26, 32), new Vector2Int(28, 32), new Vector2Int(30, 32),
+                new Vector2Int(32, 32), new Vector2Int(34, 32), new Vector2Int(38, 32));
+            catalog.CaveWalls = CaveCells("MainLev2.0.png",
+                new Vector2Int(29, 1), new Vector2Int(30, 1), new Vector2Int(31, 1),
+                new Vector2Int(32, 1), new Vector2Int(29, 2), new Vector2Int(32, 2));
+            catalog.CaveVoids = CaveCells("MainLev2.0.png",
+                new Vector2Int(46, 1), new Vector2Int(47, 1), new Vector2Int(48, 1),
+                new Vector2Int(49, 1), new Vector2Int(46, 2), new Vector2Int(49, 2));
+            catalog.CaveCrystals = CaveCells("decorative.png",
+                new Vector2Int(0, 18), new Vector2Int(1, 18), new Vector2Int(2, 18),
+                new Vector2Int(3, 18), new Vector2Int(0, 19), new Vector2Int(1, 19),
+                new Vector2Int(2, 19), new Vector2Int(3, 19), new Vector2Int(1, 21));
+            catalog.CaveRocks = CaveCells("decorative.png",
+                new Vector2Int(0, 23), new Vector2Int(1, 23), new Vector2Int(3, 23),
+                new Vector2Int(0, 24), new Vector2Int(1, 24), new Vector2Int(3, 24),
+                new Vector2Int(0, 26), new Vector2Int(2, 26));
+            catalog.CaveBridge = CaveAt("MainLev2.0.png", 46, 32);
+            catalog.CaveLandmark = CaveAt("decorative.png", 2, 19);
+            catalog.CavePortal = CaveAt("decorative.png", 1, 21);
+            catalog.CaveGlow = CaveAt("decorative.png", 0, 18);
 
             EditorUtility.SetDirty(catalog);
             AssetDatabase.SaveAssets();
-            Debug.Log($"TINY_SWORDS_CATALOG_READY terrain={catalog.Terrain1.Length} path={CatalogPath}");
+            Debug.Log($"MAP_CATALOG_READY tiny={catalog.Terrain1.Length} cave={catalog.CaveFloorDark.Length} path={CatalogPath}");
         }
+
+        [MenuItem("Numeria/Rebuild Map Asset Catalogs")]
+        public static void RebuildAll() => Rebuild();
 
         public static void RebuildAndExit()
         {
@@ -96,6 +132,20 @@ namespace Numeria.Editor
         private static Sprite First(string relative) => Sheet(relative).FirstOrDefault();
 
         private static Sprite Single(string relative) => AssetDatabase.LoadAssetAtPath<Sprite>(Root + relative);
+
+        private static Sprite[] CaveCells(string relative, params Vector2Int[] cells) =>
+            cells.Select(cell => CaveAt(relative, cell.x, cell.y)).Where(sprite => sprite != null).ToArray();
+
+        private static Sprite CaveAt(string relative, int column, int rowFromTop)
+        {
+            string path = CaveRoot + relative;
+            var texture = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+            if (texture == null) return null;
+            float x = column * 32f;
+            float y = texture.height - (rowFromTop + 1) * 32f;
+            return AssetDatabase.LoadAllAssetsAtPath(path).OfType<Sprite>().FirstOrDefault(sprite =>
+                Mathf.Approximately(sprite.rect.x, x) && Mathf.Approximately(sprite.rect.y, y));
+        }
 
         private static int Suffix(string name)
         {
