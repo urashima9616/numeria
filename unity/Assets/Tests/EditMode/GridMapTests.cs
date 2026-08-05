@@ -7,24 +7,29 @@ namespace Numeria.Core.Tests
     {
         private static readonly string[] Rows =
         {
-            "TTTTT",
-            "TS.bT",
-            "T.TCT",
-            "T..PT",
-            "TTTTT",
+            "TT#TTTT",
+            "TS=bBCT",
+            "T.~L..T",
+            "T..P..T",
+            "TTTTTTT",
         };
 
         [Test]
         public void Parse_DimensionsSpawnAndTiles()
         {
             var m = GridMap.Parse(Rows);
-            Assert.AreEqual(5, m.Width);
+            Assert.AreEqual(7, m.Width);
             Assert.AreEqual(5, m.Height);
             Assert.AreEqual((1, 1), m.Spawn);
             Assert.AreEqual(Tile.Grass, m.At(1, 1)); // S 是草地
+            Assert.AreEqual(Tile.Path, m.At(2, 1));
             Assert.AreEqual(Tile.Bush, m.At(3, 1));
-            Assert.AreEqual(Tile.Chest, m.At(3, 2));
+            Assert.AreEqual(Tile.Bridge, m.At(4, 1));
+            Assert.AreEqual(Tile.Chest, m.At(5, 1));
             Assert.AreEqual(Tile.Portal, m.At(3, 3));
+            Assert.AreEqual(Tile.Water, m.At(2, 2));
+            Assert.AreEqual(Tile.Landmark, m.At(3, 2));
+            Assert.AreEqual(Tile.Cliff, m.At(2, 0));
             Assert.AreEqual(Tile.Tree, m.At(0, 0));
         }
 
@@ -34,10 +39,14 @@ namespace Numeria.Core.Tests
             var m = GridMap.Parse(Rows);
             Assert.True(m.Walkable(1, 1));
             Assert.True(m.Walkable(3, 3));  // 传送门可走
+            Assert.True(m.Walkable(2, 1));  // 道路可走
+            Assert.True(m.Walkable(4, 1));  // 桥可走
             Assert.False(m.Walkable(0, 0)); // 树
-            Assert.False(m.Walkable(2, 2)); // 中间的树
+            Assert.False(m.Walkable(2, 2)); // 水面
+            Assert.False(m.Walkable(3, 2)); // 地标
+            Assert.False(m.Walkable(2, 0)); // 悬崖
             Assert.False(m.Walkable(-1, 0));
-            Assert.False(m.Walkable(5, 5));
+            Assert.False(m.Walkable(7, 5));
         }
 
         [Test]
@@ -45,7 +54,7 @@ namespace Numeria.Core.Tests
         {
             var m = GridMap.Parse(Rows);
             var path = m.FindPath((1, 1), (3, 3));
-            Assert.That(path.Count, Is.GreaterThanOrEqualTo(4)); // 绕过 (2,2) 的树
+            Assert.That(path.Count, Is.GreaterThanOrEqualTo(4)); // 绕过水面与地标
             Assert.AreEqual((3, 3), path[path.Count - 1]);
             // 路径连续且每步可走
             var prev = (1, 1);

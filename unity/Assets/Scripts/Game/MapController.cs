@@ -9,7 +9,7 @@ using UnityEngine.UI;
 namespace Numeria.Game
 {
     /// <summary>
-    /// 地图控制器:按 MapDef 构建世界(ASCII 网格 + Cainos 美术),
+    /// 地图控制器:按 MapDef 构建世界(ASCII 网格 + 邻接感知的主题像素美术),
     /// 点触寻路、草丛遇敌、数学宝箱、Boss 守门传送、进化试炼。
     /// </summary>
     public class MapController : MonoBehaviour
@@ -102,6 +102,28 @@ namespace Numeria.Game
 
         private static int SortOrder(float worldY) => 1000 - (int)(worldY * 10);
 
+        private int NeighborMask(int x, int y, Tile tile)
+        {
+            bool Joins(int nx, int ny)
+            {
+                if (!_map.InBounds(nx, ny)) return false;
+                Tile other = _map.At(nx, ny);
+                if (tile == Tile.Path || tile == Tile.Bridge)
+                    return other == Tile.Path || other == Tile.Bridge;
+                if (tile == Tile.Water)
+                    return other == Tile.Water || other == Tile.Bridge;
+                if (tile == Tile.Cliff) return other == Tile.Cliff;
+                return other != Tile.Water && other != Tile.Cliff;
+            }
+
+            int mask = 0;
+            if (Joins(x, y - 1)) mask |= 1; // north / sprite top
+            if (Joins(x + 1, y)) mask |= 2;
+            if (Joins(x, y + 1)) mask |= 4;
+            if (Joins(x - 1, y)) mask |= 8;
+            return mask;
+        }
+
         private void BuildWorld()
         {
             _mapRoot = new GameObject("MapRoot");
@@ -113,91 +135,70 @@ namespace Numeria.Game
                     var world = TileWorld(x, y);
                     int hash = (x * 73856093) ^ (y * 19349663);
                     int variant = ((hash % 97) + 97) % 97;
-                    if (_def.Theme == "sky" || _def.Theme == "mountains" || _def.Theme == "desert")
-                    {
-                        var ground = AddSprite(SpriteLib.Cainos("TX Tileset Stone Ground",
-                            $"TX Tileset Stone Ground_{variant % 50}"), world, 0,
-                            _def.Theme == "sky" ? "sky-stone" :
-                            _def.Theme == "desert" ? "desert-sand" : "mountain-stone");
-                        if (_def.Theme == "desert") ground.color = Ui.Hex("#d9b96e");
-                    }
-                    else
-                    {
-                        string groundName = variant < 6
-                            ? $"TX Tileset Grass Flower {variant}"
-                            : $"TX Tileset Grass {variant % 4}";
-                        AddSprite(SpriteLib.Cainos("TX Tileset Grass", groundName), world, 0, "ground");
-                    }
+                    Tile tile = _map.At(x, y);
+                    int neighbors = NeighborMask(x, y, tile);
+                    var terrain = AddSprite(MapArt.Terrain(_def.Theme, tile, variant, neighbors), world, 0,
+                        $"terrain-{tile.ToString().ToLowerInvariant()}");
+                    terrain.color = MapArt.Tint(_def.Theme, tile);
 
-                    switch (_map.At(x, y))
+                    switch (tile)
                     {
-                        case Tile.Tree:
-                            if (_def.Theme == "sky")
+                        case Tile.Water:
+                            if (_def.Theme == "sky" && variant % 17 == 0)
                             {
-                                string pillar = variant % 4 == 0 ? "TX Props Pillar Broken" : "TX Props Pillar";
-                                AddSprite(SpriteLib.Cainos("TX Props", pillar), world, SortOrder(world.y), "sky-pillar");
-                            }
-                            else if (_def.Theme == "mountains")
-                            {
-                                string rock = variant % 7 == 0 ? "TX Props Pillar Broken" :
-                                    $"TX Props Stone T{(variant % 7) + 1}";
-                                var ridge = AddSprite(SpriteLib.Cainos("TX Props", rock), world,
-                                    SortOrder(world.y), "mountain-ridge");
-                                ridge.transform.localScale = Vector3.one * (variant % 3 == 0 ? 1.15f : 1f);
-                            }
-                            else if (_def.Theme == "desert")
-                            {
-                                string ruin = variant % 4 == 0 ? "TX Props Pillar Broken" :
-                                    $"TX Props Stone T{(variant % 7) + 1}";
-                                var desertRock = AddSprite(SpriteLib.Cainos("TX Props", ruin), world,
-                                    SortOrder(world.y), "desert-ruin");
-                                desertRock.color = Ui.Hex("#c98c4a");
-                            }
-                            else
-                            {
-                                int t = (variant % 3) + 1;
-                                AddSprite(SpriteLib.Cainos("TX Plant", $"TX Tree T{t} Lower"), world, SortOrder(world.y), "tree");
-                                AddSprite(SpriteLib.Cainos("TX Plant", $"TX Tree T{t} Upper"), world + Vector3.up, SortOrder(world.y), "tree");
+                                var cloud = AddSprite(MapArt.Prop(_def.Theme, "obstacle", variant),
+                                    world + Vector3.up * .08f, 1, "sky-cloud");
+                                cloud.color = new Color(1f, 1f, 1f, .86f);
+                                ScaleSpriteToHeight(cloud, .58f);
                             }
                             break;
+                        case Tile.Cliff:
+                            if ((_def.Theme == "mountains" || _def.Theme == "desert") && variant % 3 == 0)
+                            {
+                                var rock = AddSprite(MapArt.Prop(_def.Theme, "obstacle", variant),
+                                    world + Vector3.up * .06f, SortOrder(world.y), $"{_def.Theme}-rock");
+                                rock.color = MapArt.Tint(_def.Theme, tile, "obstacle");
+                                ScaleSpriteToHeight(rock, _def.Theme == "mountains" ? .72f : .62f);
+                            }
+                            break;
+                        case Tile.Tree:
+                            var obstacle = AddSprite(MapArt.Prop(_def.Theme, "obstacle", variant),
+                                world + Vector3.up * .2f, SortOrder(world.y), $"{_def.Theme}-obstacle");
+                            obstacle.color = MapArt.Tint(_def.Theme, tile, "obstacle");
+                            ScaleSpriteToHeight(obstacle, MapArt.PropHeight(_def.Theme, "obstacle"));
+                            break;
                         case Tile.Bush:
-                            if (_def.Theme == "sky")
-                            {
-                                var rune = AddSprite(SpriteLib.Cainos("TX Props", $"TX Props Altar Rune {(variant % 4) + 1}"),
-                                    world, SortOrder(world.y), "pattern-rune");
-                                rune.color = Ui.Hex("#7fe7ff");
-                            }
-                            else if (_def.Theme == "mountains")
-                            {
-                                var scrub = AddSprite(SpriteLib.Cainos("TX Props", $"TX Props Grass {(char)('A' + variant % 10)}"),
-                                    world, SortOrder(world.y), "mountain-scrub");
-                                scrub.color = Ui.Hex("#a5ad78");
-                            }
-                            else if (_def.Theme == "desert")
-                            {
-                                var dryGrass = AddSprite(SpriteLib.Cainos("TX Props",
-                                    $"TX Props Grass {(char)('A' + variant % 10)}"), world,
-                                    SortOrder(world.y), "desert-scrub");
-                                dryGrass.color = Ui.Hex("#9f8a3e");
-                            }
-                            else
-                            {
-                                AddSprite(SpriteLib.Cainos("TX Plant", $"TX Bush T{(variant % 6) + 1}"), world,
-                                    SortOrder(world.y), "bush");
-                            }
+                            var encounter = AddSprite(MapArt.Prop(_def.Theme, "encounter", variant),
+                                world + Vector3.up * .08f, SortOrder(world.y), $"{_def.Theme}-encounter");
+                            encounter.color = MapArt.Tint(_def.Theme, tile, "encounter");
+                            ScaleSpriteToHeight(encounter, MapArt.PropHeight(_def.Theme, "encounter"));
+                            break;
+                        case Tile.Landmark:
+                            var landmark = AddSprite(MapArt.Prop(_def.Theme, "landmark", variant),
+                                world + Vector3.up * .52f, SortOrder(world.y) + 2, $"{_def.Theme}-landmark");
+                            ScaleSpriteToHeight(landmark, MapArt.PropHeight(_def.Theme, "landmark"));
+                            break;
+                        case Tile.Bridge:
+                            var bridge = AddSprite(MapArt.Prop(_def.Theme, "bridge", variant), world,
+                                2, $"{_def.Theme}-bridge");
+                            ScaleSpriteToHeight(bridge, MapArt.PropHeight(_def.Theme, "bridge"));
                             break;
                         case Tile.Chest:
                             bool opened = _progress.OpenedChests.Contains(ChestId(x, y));
-                            _chestRenderers[(x, y)] = AddSprite(
-                                SpriteLib.Cainos("TX Props", opened ? "TX Props Chest Opened" : "TX Props Chest"),
-                                world, SortOrder(world.y), "chest");
+                            string treasureKind = opened ? "treasure-opened" : "treasure";
+                            var treasure = AddSprite(MapArt.Prop(_def.Theme, treasureKind, variant),
+                                world + Vector3.up * .08f, SortOrder(world.y) + 2, treasureKind);
+                            ScaleSpriteToHeight(treasure, MapArt.PropHeight(_def.Theme, treasureKind));
+                            _chestRenderers[(x, y)] = treasure;
                             break;
                         case Tile.Portal:
-                            // 地面祭坛始终在角色下方，修复角色被传送门盖住的问题。
-                            AddSprite(SpriteLib.Cainos("TX Props", "TX Props Altar"), world,
-                                SortOrder(world.y) - 4, "portal");
-                            _portalGlow = AddSprite(SpriteLib.Cainos("TX Props", "TX Props Altar Rune 1"),
-                                world, SortOrder(world.y) - 3, "portal-glow");
+                            // 主题建筑作为关卡出口，位于角色身后；水沫精灵提供统一的魔法光环。
+                            var portal = AddSprite(MapArt.Prop(_def.Theme, "portal", variant),
+                                world + Vector3.up * .48f, SortOrder(world.y) - 4, $"{_def.Theme}-portal");
+                            ScaleSpriteToHeight(portal, MapArt.PropHeight(_def.Theme, "portal"));
+                            _portalGlow = AddSprite(MapArt.Prop(_def.Theme, "portal-glow", variant),
+                                world + Vector3.up * .03f, SortOrder(world.y) - 3, "portal-glow");
+                            ScaleSpriteToHeight(_portalGlow, MapArt.PropHeight(_def.Theme, "portal-glow"));
                             _bossMarker = AddSprite(SpriteLib.EnemyBattleSprite(_def.BossSpeciesId),
                                 world + new Vector3(0, .28f, 0), SortOrder(world.y) + 4, "boss-marker");
                             if (_bossMarker.sprite != null)
@@ -1211,7 +1212,10 @@ namespace Numeria.Game
                 _progress.OpenChest(id);
                 _progress.Records.ChestsOpened++;
                 if (_chestRenderers.TryGetValue((x, y), out var sr))
-                    sr.sprite = SpriteLib.Cainos("TX Props", "TX Props Chest Opened");
+                {
+                    sr.sprite = MapArt.Prop(_def.Theme, "treasure-opened", 0);
+                    ScaleSpriteToHeight(sr, MapArt.PropHeight(_def.Theme, "treasure-opened"));
+                }
                 ChestRewardDef reward = null;
                 _def.ChestRewards?.TryGetValue(id, out reward);
                 if (reward != null && reward.Type == ChestRewardType.EvolutionStone)

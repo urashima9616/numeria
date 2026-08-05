@@ -20,7 +20,7 @@ namespace Numeria.Game.Tests
             Assert.AreEqual("desert", sky.PortalTargetMap);
             Assert.AreEqual("numberfly", Maps.Forest().BossSpeciesId);
             Assert.AreEqual("duplirock", Maps.Mountains().BossSpeciesId);
-            Assert.True(sky.ChestRewards.ContainsKey("sky-chest-15-2"));
+            Assert.True(sky.ChestRewards.ContainsKey("sky-chest-21-2"));
         }
 
         [Test]
@@ -67,6 +67,40 @@ namespace Numeria.Game.Tests
                     }
                 Assert.AreEqual(1, portals, $"{def.Id} must have one portal");
                 Assert.That(chests, Is.GreaterThanOrEqualTo(2), $"{def.Id} needs exploration rewards");
+            }
+        }
+
+        [Test]
+        public void ChapterMapsHaveUniqueReadableBiomeStructure()
+        {
+            var layouts = new System.Collections.Generic.HashSet<string>();
+            foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky(), Maps.Desert() })
+            {
+                Assert.AreEqual(18, def.Rows.Length, def.Id);
+                foreach (string row in def.Rows) Assert.AreEqual(32, row.Length, def.Id);
+                Assert.True(layouts.Add(string.Join("\n", def.Rows)), $"{def.Id} reuses another chapter layout");
+
+                var map = GridMap.Parse(def.Rows);
+                int paths = 0, bridges = 0, landmarks = 0, themedBoundaries = 0;
+                for (int y = 0; y < map.Height; y++)
+                    for (int x = 0; x < map.Width; x++)
+                    {
+                        switch (map.At(x, y))
+                        {
+                            case Tile.Path: paths++; break;
+                            case Tile.Bridge: bridges++; break;
+                            case Tile.Landmark: landmarks++; break;
+                            case Tile.Water:
+                            case Tile.Cliff: themedBoundaries++; break;
+                        }
+                    }
+
+                Assert.GreaterOrEqual(paths, 12, $"{def.Id} needs a readable route");
+                Assert.GreaterOrEqual(bridges, 2, $"{def.Id} needs a memorable crossing");
+                Assert.AreEqual(1, landmarks, $"{def.Id} needs one chapter landmark");
+                Assert.Greater(themedBoundaries, 20, $"{def.Id} needs biome-defining terrain");
+                CollectionAssert.AreEquivalent(def.ChestIds(), def.ChestRewards.Keys,
+                    $"{def.Id} chest rewards must track authored coordinates exactly");
             }
         }
 

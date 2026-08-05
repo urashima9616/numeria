@@ -16,11 +16,11 @@ their skills, and help Lucas restore four Digit Crystals so he can reopen the le
 | P0 — Project foundation | ✅ Complete | Repository, Unity project, asset pipelines |
 | P1 — Battle core | ✅ Complete | Skills, gems, number shields, ATK/DEF combat, VFX, narration |
 | P2 — Forest vertical slice | ✅ Complete | Exploration, encounters, catching, growth, chests, saving |
-| P3 — Full game systems | 🔶 Playable / polishing | Four maps, 93 Mathmons, evolution, economy, merchants, Lucas story |
+| P3 — Full game systems | 🔶 Playable / polishing | Four distinct Tiny Swords worlds, 93 Mathmons, evolution, economy, merchants, Lucas story |
 | P4 — iOS delivery | ⬜ Not started | Device build, signing, TestFlight and final performance QA |
 
-The current verification baseline compiles all four Unity assemblies and passes **15/15 Node prototype tests**.
-The full Unity EditMode suite remains available for the Editor Test Runner.
+The current verification baseline compiles all four Unity assemblies and passes **115/115 Unity EditMode tests**
+plus **15/15 Node prototype tests**.
 The save format is currently **schema v9**, with non-destructive migration for older saves.
 
 ## Design principles
@@ -63,7 +63,10 @@ The save format is currently **schema v9**, with non-destructive migration for o
 
 ### Exploration and economy
 
-- Four large, pathfinding-based maps: Mystic Forest, Silent Peaks, Azure Sky City, and Fever Desert.
+- Four large, pathfinding-based worlds rebuilt with the Tiny Swords visual language: Mystic Forest is a wooded
+  river valley, Silent Peaks a rocky switchback maze, Azure Sky City a network of floating islands, and Fever
+  Desert an ochre ruin-and-oasis region. Roads, water, cliffs, bridges, landmarks, treasure, and chapter exits
+  are authored as semantic map tiles rather than interchangeable decoration.
 - Four visible math-discovery runes per map. Solving their themed puzzle awards one-time coins and occasional
   battle items; incorrect answers leave the discovery available for another attempt.
 - Ordinary enemies, merchant challenges, and bosses award region-scaled coins.
@@ -123,6 +126,19 @@ zsh tools/install-jukebox-music.sh
 The installer maps seven local tracks to forest, mountain, sky, desert, battle, boss, and evolution moods. Attribution and
 the exact track list are documented in [`docs/music-attribution.md`](docs/music-attribution.md).
 
+### Install the Tiny Swords map art
+
+The free **Tiny Swords** package is used under its own asset license. Its source PNGs are intentionally excluded
+from Git because the package may be used in a game but not redistributed as a standalone art pack.
+
+1. Import Tiny Swords from your Unity Asset Store/My Assets library into `unity/Assets/Tiny Swords`.
+2. In Unity, run **Numeria → Rebuild Tiny Swords Catalog**.
+3. Optionally run **Numeria → Export Map Previews** to render all four complete maps to
+   `/tmp/numeria-map-previews` for visual review.
+
+The generated catalog stores Unity object references only; runtime map selection and all layout definitions stay
+version-controlled.
+
 ## Run the Web battle prototype
 
 The dependency-free Web prototype remains useful for quickly checking the original battle loop:
@@ -175,7 +191,8 @@ Unity EditMode tests, with the Unity Editor closed:
 
 - **Unity 2D / C#** with a pure `Numeria.Core` logic assembly and a programmatic UGUI/TMP presentation layer.
 - Deterministic injected RNG for battles, encounter generation, rewards, and puzzle tests.
-- Breadth-first pathfinding over ASCII-authored maps.
+- Breadth-first pathfinding over semantic ASCII-authored maps (`~` water, `=` road, `B` bridge, `#` cliff,
+  `L` landmark), with Tiny Swords 3×3 neighbor-aware terrain selection.
 - Local JSON saves in `Application.persistentDataPath`, ten slots, and explicit schema migration.
 - Convention-based `Resources` loading with generated-art fallbacks and automatic pixel-art import settings.
 - Offline Samantha narration WAVs, independent voice/SFX/music settings, and mood-based music crossfades.

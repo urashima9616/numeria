@@ -1,6 +1,6 @@
 # Numeria 开发交接文档(Handoff Note)
 
-> 日期:2026-08-04。本文档面向接手开发的 agent/工程师,涵盖项目现状、架构约定、踩坑记录与后续路线。
+> 日期:2026-08-05。本文档面向接手开发的 agent/工程师,涵盖项目现状、架构约定、踩坑记录与后续路线。
 > 必读配套:[numeria-game-design.md](numeria-game-design.md)(游戏设计定稿)、[unity-roadmap.md](unity-roadmap.md)(P0–P4 路线图)。
 
 ---
@@ -34,13 +34,14 @@
 - `PuzzleGenerator`:四关 10/20/30/40 上限;加减填空、凑目标、连加、点数/比较、图形识别、形状×颜色规律、四类图案匹配、等式平衡、正反数字路径与数列;候选答案唯一。`NumberWord` 安全覆盖 0–99,避免第四关 31–40 越界
 - `BattleState`:宝石经济、数字护盾、破盾眩晕一回合 + 每次破盾各自触发一次双倍 + 命中后护盾重置;`SkillResult.BreakBonusApplied` 是 UI 与测试的单一判据;正式 ATK/DEF 公式 `max(1, ATK − DEF + 1 + [-1,1])`,小幅可控波动、零惩罚不变量
 - `Progress`:save schema v9;Lv.99 上限、物种成长曲线、捕捉个体 HP/ATK/DEF 偏移、动态经验、每家族独立成长、独占饰品装备、金币/限量库存、Digit Crystal 主线与冒险记录 —— **新字段必须带默认值和迁移**
-- `GridMap`:ASCII 地图解析('.'草地 'T'树 'b'草丛 'C'宝箱 'P'传送门 'S'出生)+ BFS 寻路
+- `GridMap`:语义 ASCII 地图解析('.'草地 'T'树 'b'草丛 'C'宝藏 'P'出口 'S'出生
+  '~'水域 '='道路 'B'桥 '#'悬崖 'L'地标)+ BFS 寻路;水域/悬崖/树木/地标不可通行
 - `GameData`:93 只数灵、32 条进化线;Fairy/Dragon/Electric/Grass 各 5 条扩展线,另有 Flying 三段线;各物种配置基础经验、HP/ATK/DEF 成长与数学亲和
-- 测试:`unity/Assets/Tests/EditMode/`;当前四个 C# assembly 已单独编译通过,Node 原型 **15/15**。Unity license 正常后应补跑完整 EditMode Test Runner
+- 测试:`unity/Assets/Tests/EditMode/`;当前四个 C# assembly 已单独编译通过,Unity EditMode **115/115**、Node 原型 **15/15**
 
 ### Game 层(`Numeria.Game`)
 - **全程序化 UGUI,零场景文件**——所有界面代码搭建,SampleScene 只是空壳,`BattleBootstrap` 用 `RuntimeInitializeOnLoadMethod` 拉起 `MapController`
-- `MapController`:四张 480–512 格地图、点触 BFS + 跟随相机、带权多物种生态、宝箱谜题、全宝箱后 Boss 图标与三题开门试炼、掉落与进化试炼
+- `MapController`:四张 32×18 地图、点触 BFS + 跟随相机、带权多物种生态、宝箱谜题、全宝箱后 Boss 图标与三题开门试炼、掉落与进化试炼。地图视觉由 `MapArt` 通过 `TinySwordsMapCatalog` 选择真实 Tiny Swords 地形、树木、岩石、云、建筑、宝藏与桥梁;不同章节不再共用同一随机装饰
 - `BattleController`:`Init(enemy, progress, tier, battleBg, onEnd)`;双方状态牌显示 ATK/DEF,普通怪与 Boss HP 均按关卡和物种成长合理浮动
 - `SkillDef` 保存独立 `IconResource` + `SkillVisualKind`;11 条家族各有专属像素图标与战斗弹道/命中节奏,不要再硬编码 `Flame_Formula`
 - `PuzzleUi`:谜题遮罩共用;第一关 10 内加减+图形/彩色规律/数字路径,第二关 20 内并加入三项连加/等式平衡/ABC-AAB,第三关 30 内并加入四项连加/正反数字路径/四类图案匹配,第四关扩展到 40 并混合高阶题型;旋转题已彻底淘汰;传送门三题必含算术
@@ -53,6 +54,8 @@
 ### Editor 层
 - `PixelArtImporter`:`Resources/Art` 与 `Resources/generated` 自动 Sprite/Point/不压缩/AlphaIsTransparency;**素材包 `UI/` 目录强制 100 PPU**(见 §6 坑 3),9-slice border 表与包内 JSON 一致
 - `PackReimportGuard`:域重载后自检素材包导入参数,不对就强制重导入(自愈时序坑)
+- `TinySwordsCatalogBuilder`:从本地 `Assets/Tiny Swords` 建立运行时 Sprite 引用表;导入/升级素材包后运行菜单 **Numeria → Rebuild Tiny Swords Catalog**
+- `MapPreviewExporter`:使用与游戏相同的 `MapArt` 逻辑离屏渲染四章全景图;菜单 **Numeria → Export Map Previews**,默认输出 `/tmp/numeria-map-previews`;批处理预览必须保留图形管线,不要加 `-nographics`
 
 ## 4. 当前进度(对照 roadmap)
 
@@ -78,6 +81,7 @@
   - ✅ 探索经济:每图 4 个主题数学符文、战斗金币、四位商人挑战、永久限量库存、消耗品/饰品/进化石平衡,见 `docs/economy-design.md`
   - ✅ Lucas 主线:标题页与有声开场、四位 Crystal Guardian 的 Boss 前后对白、四枚 Digit Crystal、旧存档至 v9 无损兼容及结局节点,见 `docs/main-story.md`
   - ✅ 存档入口重构:标题页选择新游戏/读取游戏与十槽存档;新游戏真正清空宝箱等世界状态;设置页以保存提示返回主菜单
+  - ✅ 四章地图重构:Tiny Swords 邻接地形与主题道具全面接入;森林河谷、山脉岩壁路线、天空浮岛桥群、沙漠遗迹绿洲分别使用独立 32×18 布局;每图 5 个宝藏、1 个章节出口和 1 个地标均有可达性测试
   - ⬜ 未做:JSON 数据驱动落地(现在数值在 GameData/MapDefs 硬编码)、自适应难度引擎(错题变形复现/隐形升降档)、家长面板(PIN + 掌握度热图)
 - ⬜ **P4**:iOS 构建、真机、TestFlight(免费 Apple ID 7 天签名 vs $99/年,已告知用户)
 
@@ -101,6 +105,7 @@
   - 加载优先级封装在 `SpriteLib`:pack → generated 单图 → 16px 像素图,**永远有回退**
   - 缺的图:Duplirock/Doublit/Sumdrake 的 Battle_Front、Sumdrake Battle_Back、山脉/天空城战斗背景、UI Icons 里的 Shield
   - 带色幕的生成图用 `node tools/key-out-bg.mjs <in> <out>` 抠透明(边缘泛洪 + 去色晕)
+- **Tiny Swords 地图包**:用户从 Unity Asset Store 导入到 `unity/Assets/Tiny Swords`;原始素材及 `.meta` 因第三方许可禁止再分发,已在 `.gitignore` 排除,不能强行提交。导入后运行 `Numeria/Rebuild Tiny Swords Catalog`;版本库只保存引用 catalog、选图代码、地图布局和测试
 
 ## 6. 踩过的坑(接手必读,别再踩)
 
@@ -119,6 +124,7 @@
 7. 用户 shell 的 `rm` 是 `rm -i` 别名,脚本里用 `rm -f`;Node 26 的 `node --test <目录>` 坏的,用 glob(package.json 已配好)
 8. Web Speech/浏览器音频需要用户手势解锁——Unity 版已绕开(预烘焙 wav),但 Web 原型如再动要记得
 9. 语音新句子:**先加 bake 脚本跑掉,再写 C#**,否则静默无声
+10. **Tiny Swords 不是仓库内置素材**:新 clone 若地图为空,先从拥有许可的 Asset Store 帐号导入素材,再重建 catalog。不要复制源 PNG 到公开仓库
 
 ## 7. 工作流约定
 

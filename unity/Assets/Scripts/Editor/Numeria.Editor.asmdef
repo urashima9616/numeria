@@ -1,7 +1,10 @@
 {
     "name": "Numeria.Editor",
     "rootNamespace": "Numeria.Editor",
-    "references": [],
+    "references": [
+        "Numeria.Core",
+        "Numeria.Game"
+    ],
     "includePlatforms": [
         "Editor"
     ],

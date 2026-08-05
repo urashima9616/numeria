@@ -11,7 +11,7 @@ namespace Numeria.Game.Tests
         public void EveryMapHasReachableMathDiscoveriesAndMerchant()
         {
             var allIds = new HashSet<string>();
-            foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky() })
+            foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky(), Maps.Desert() })
             {
                 var map = GridMap.Parse(def.Rows);
                 Assert.AreEqual(4, def.Discoveries.Length, def.Id);
@@ -37,7 +37,7 @@ namespace Numeria.Game.Tests
         [Test]
         public void EveryMerchantHasLimitedBalancedInventoryAndTrainerPartner()
         {
-            foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky() })
+            foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky(), Maps.Desert() })
             {
                 var merchant = def.Merchant;
                 Assert.AreEqual(4, merchant.Stock.Length, def.Id);
@@ -46,7 +46,7 @@ namespace Numeria.Game.Tests
                 foreach (var item in merchant.Stock)
                 {
                     Assert.Greater(item.Price, 0, item.Id);
-                    Assert.That(item.StockLimit, Is.InRange(1, 4), item.Id);
+                    Assert.That(item.StockLimit, Is.InRange(1, 5), item.Id);
                     Assert.LessOrEqual(item.AttackBonus + item.DefenseBonus, 2, item.Id);
                 }
 
@@ -61,7 +61,7 @@ namespace Numeria.Game.Tests
         public void EconomyArtworkIsImportedAsSprites()
         {
             Assert.IsNotNull(Resources.Load<Sprite>("generated/Economy/numeria_coin"));
-            foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky() })
+            foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky(), Maps.Desert() })
                 Assert.IsNotNull(Resources.Load<Sprite>(def.Merchant.SpriteResource), def.Merchant.SpriteResource);
         }
 
@@ -69,7 +69,7 @@ namespace Numeria.Game.Tests
         public void EveryMapHasACompleteCrystalGuardianStoryBeat()
         {
             var names = new HashSet<string>();
-            foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky() })
+            foreach (var def in new[] { Maps.Forest(), Maps.Mountains(), Maps.Sky(), Maps.Desert() })
             {
                 Assert.IsNotEmpty(def.CrystalName, def.Id);
                 Assert.IsNotEmpty(def.GuardianName, def.Id);

@@ -32,6 +32,11 @@ unity/Assets/Cyberleaf Music - The 8-bit Jukebox Lite/
 unity/Assets/Cyberleaf Music - The 8-bit Jukebox Lite.meta
 unity/Assets/Casual Game Sounds U6/
 unity/Assets/Casual Game Sounds U6.meta
+
+# Tiny Swords is imported locally from the Unity Asset Store. Its license allows
+# use in the game, but not redistribution of the source art through this repo.
+unity/Assets/Tiny Swords/
+unity/Assets/Tiny Swords.meta
 unity/Assets/Resources/Music/LocalStore/*.wav
 unity/Assets/Resources/Music/LocalStore/*.wav.meta
 unity/Assets/Resources/Music/Jukebox/

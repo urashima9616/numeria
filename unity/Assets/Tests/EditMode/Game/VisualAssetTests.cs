@@ -40,5 +40,23 @@ namespace Numeria.Game.Tests
                 Assert.AreEqual(line.Element, MenuUi.TypeLabelFor(line.BaseId),
                     $"Missing TEAM type presentation for {line.BaseId} ({line.Element})");
         }
+
+        [Test]
+        public void TinySwordsMapCatalog_HasEveryRuntimeAssetFamily()
+        {
+            var catalog = Resources.Load<TinySwordsCatalog>("generated/TinySwordsMapCatalog");
+            Assert.IsNotNull(catalog, "Import Tiny Swords, then run Numeria/Rebuild Tiny Swords Catalog.");
+            Assert.IsTrue(MapArt.Ready);
+            Assert.GreaterOrEqual(catalog.Terrain1.Length, 44);
+            Assert.IsNotNull(catalog.Water);
+            Assert.IsNotNull(catalog.Bridge);
+            Assert.AreEqual(4, catalog.Landmarks.Length);
+            Assert.AreEqual(4, catalog.Portals.Length);
+            Assert.AreEqual(6, catalog.Treasures.Length);
+            Assert.IsNotNull(catalog.TreasureOpened);
+            CollectionAssert.AllItemsAreNotNull(catalog.Landmarks);
+            CollectionAssert.AllItemsAreNotNull(catalog.Portals);
+            CollectionAssert.AllItemsAreNotNull(catalog.Treasures);
+        }
     }
 }
