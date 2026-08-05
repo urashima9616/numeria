@@ -28,7 +28,7 @@ balance remains authoritative in `GameData.cs`, `Progress.cs`, and `MapDefs.cs`.
 | Fairy | Pixipip | Prismfae | Radianta | Prism symmetry |
 | Dragon | Addling | Sumscale | Totalisk | Addition |
 | Dragon | Dracount | Tallywyrm | Enumeragon | Tallies and counting |
-| Dragon | Loopling | Spirake | Rotaragon | Spirals and rotation |
+| Dragon | Loopling | Spirake | Rotaragon | Spirals and sequences |
 | Dragon | Twinsting | Doublescale | Multisaur | Doubling |
 | Dragon | Shardrake | Prismwyrm | Geodragon | Geometry |
 | Electric | Voltlet | Sumvolt | Totalstorm | Addition |
@@ -48,7 +48,7 @@ Spiral, Electric Bolt, Grass Bloom, and Flying Gust. The complete project roster
 
 ## Chapter four: Fever Desert
 
-- Number range: 0–40, with mixed arithmetic, sequence, geometry, symmetry, and rotation challenges.
+- Number range: 0–40, with mixed arithmetic, number paths, geometry, pattern matching, and equality challenges.
 - Ecosystem: evolved forms from all 20 new families.
 - Merchant: Nia, partnered with Mirrorvolt.
 - Guardian: Sage Solara.

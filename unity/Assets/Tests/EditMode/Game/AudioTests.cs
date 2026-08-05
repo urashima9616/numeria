@@ -61,6 +61,15 @@ namespace Numeria.Game.Tests
             AssertVoice("Your stronger friend is ready for adventure!");
             AssertVoice("Welcome to Fever Desert!");
             AssertVoice("The four Digit Crystals sing together. The gate home is awake!");
+            AssertVoice("What tile comes next in the pattern?");
+            AssertVoice("Which tile fills the pattern gap?");
+            AssertVoice("Find the exact tile pattern!");
+            AssertVoice("Find the tiles in mirror order!");
+            AssertVoice("Match the shapes. Colors can change!");
+            AssertVoice("Match the colors. Shapes can change!");
+            AssertVoice("Balance both sides. What number is missing?");
+            AssertVoice("Which number fills the path?");
+            AssertVoice("Double damage!");
         }
 
         private static void AssertVoice(string line)

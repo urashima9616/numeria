@@ -991,7 +991,7 @@ namespace Numeria.Game
             string name = (discovery?.Name ?? "").ToLowerInvariant();
             if (name.Contains("count") || name.Contains("number")) return MapPuzzleKind.Counting;
             if (name.Contains("symmetry") || name.Contains("mirror")) return MapPuzzleKind.Symmetry;
-            if (name.Contains("rotation")) return MapPuzzleKind.Rotation;
+            if (name.Contains("balance")) return MapPuzzleKind.Balance;
             if (name.Contains("pattern") || name.Contains("order") || name.Contains("sequence"))
                 return tier >= 2 ? MapPuzzleKind.NumberSequence : MapPuzzleKind.Pattern;
             if (name.Contains("shape") || name.Contains("prism")) return MapPuzzleKind.Shape;
@@ -1281,8 +1281,8 @@ namespace Numeria.Game
                         yield return _puzzles.RunMakeTen(v => ok = v, growth.Stage == 0 ? 10 : 12);
                         break;
                     case PuzzleAffinity.Pattern:
-                        if (growth.Stage == 0) yield return _puzzles.RunPattern(v => ok = v);
-                        else yield return _puzzles.RunSymmetry(v => ok = v);
+                        if (growth.Stage == 0) yield return _puzzles.RunPattern(v => ok = v, 1);
+                        else yield return _puzzles.RunSymmetry(v => ok = v, 3);
                         break;
                     case PuzzleAffinity.Counting:
                         if (_rng.Next() < 0.5) yield return _puzzles.RunCounting(v => ok = v);
@@ -1293,8 +1293,8 @@ namespace Numeria.Game
                         else yield return _puzzles.RunChainSum(v => ok = v);
                         break;
                     case PuzzleAffinity.Symmetry:
-                        if (_rng.Next() < 0.5) yield return _puzzles.RunSymmetry(v => ok = v);
-                        else yield return _puzzles.RunRotation(v => ok = v);
+                        if (_rng.Next() < 0.5) yield return _puzzles.RunSymmetry(v => ok = v, growth.Stage + 2);
+                        else yield return _puzzles.RunPattern(v => ok = v, growth.Stage + 2);
                         break;
                     default:
                         yield return _puzzles.RunFormula(v => ok = v, growth.Stage == 0 ? 2 : 3);

@@ -19,7 +19,8 @@ their skills, and help Lucas restore four Digit Crystals so he can reopen the le
 | P3 — Full game systems | 🔶 Playable / polishing | Four maps, 93 Mathmons, evolution, economy, merchants, Lucas story |
 | P4 — iOS delivery | ⬜ Not started | Device build, signing, TestFlight and final performance QA |
 
-The latest automated baseline is **105/105 Unity EditMode tests** and **14/14 Node prototype tests**.
+The current verification baseline compiles all four Unity assemblies and passes **15/15 Node prototype tests**.
+The full Unity EditMode suite remains available for the Editor Test Runner.
 The save format is currently **schema v9**, with non-destructive migration for older saves.
 
 ## Design principles
@@ -43,6 +44,7 @@ The save format is currently **schema v9**, with non-destructive migration for o
 - The original eleven families retain distinct skills, while each new elemental group has its own generated icon,
   palette, and battle performance.
 - Number shields, shield-break stun, gems, powered math skills, consumable items, and equippable accessories.
+- Every shield break independently arms one clearly labeled **2× next hit** bonus, including second and later cycles.
 - Damage uses `max(1, ATK - DEF + 1 + [-1, 1])`; enemy HP also has controlled per-encounter variation.
 - Bosses have higher region-scaled HP and number shields without becoming mandatory difficulty walls.
 
@@ -85,10 +87,10 @@ The save format is currently **schema v9**, with non-destructive migration for o
 
 | Region | Number range | Puzzle progression | Boss |
 |---|---:|---|---|
-| 🌲 Mystic Forest | 0–10 | Addition, subtraction, counting, comparison, shapes, AB patterns, symmetry | Numberfly |
-| ⛰️ Silent Peaks | 0–20 | Harder addition/subtraction, make-ten, three-term sums, doubling, ABC patterns, turns | Duplirock Elder |
-| ☁️ Azure Sky City | 0–30 | Four-term sums, geometry properties, symmetry, rotation, number sequences, ABCD patterns | Symmetrix |
-| 🏜️ Fever Desert | 0–40 | Larger arithmetic, advanced sequences, geometry, symmetry, rotation, and mixed patterns | Solar Totalisk |
+| 🌲 Mystic Forest | 0–10 | Addition, subtraction, counting, comparison, shapes, colored AB patterns, number paths | Numberfly |
+| ⛰️ Silent Peaks | 0–20 | Harder arithmetic, make-target, three-term sums, equality balance, pattern gaps | Duplirock Elder |
+| ☁️ Azure Sky City | 0–30 | Four-term sums, geometry, mirror-order matching, number paths/sequences, mixed patterns | Symmetrix |
+| 🏜️ Fever Desert | 0–40 | Larger arithmetic, selective shape/color matching, equality balance, advanced mixed patterns | Solar Totalisk |
 
 Portal trials always include arithmetic, use three different puzzle families, and allow unlimited zero-penalty
 retries.

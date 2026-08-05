@@ -20,7 +20,7 @@ namespace Numeria.Core.Tests
         }
 
         [Test]
-        public void NumberWord_Covers0To30()
+        public void NumberWord_CoversTierFourAndAllSupportedBoundaries()
         {
             Assert.AreEqual("zero", PuzzleGenerator.NumberWord(0));
             Assert.AreEqual("seven", PuzzleGenerator.NumberWord(7));
@@ -28,6 +28,11 @@ namespace Numeria.Core.Tests
             Assert.AreEqual("twenty", PuzzleGenerator.NumberWord(20));
             Assert.AreEqual("twenty-five", PuzzleGenerator.NumberWord(25));
             Assert.AreEqual("thirty", PuzzleGenerator.NumberWord(30));
+            Assert.AreEqual("thirty-one", PuzzleGenerator.NumberWord(31));
+            Assert.AreEqual("forty", PuzzleGenerator.NumberWord(40));
+            Assert.AreEqual("ninety-nine", PuzzleGenerator.NumberWord(99));
+            Assert.Throws<System.ArgumentOutOfRangeException>(() => PuzzleGenerator.NumberWord(-1));
+            Assert.Throws<System.ArgumentOutOfRangeException>(() => PuzzleGenerator.NumberWord(100));
         }
 
         [Test]

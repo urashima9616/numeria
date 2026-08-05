@@ -20,8 +20,8 @@ namespace Numeria.Game
         private readonly Action<string[]> _say;
         private readonly Action<bool> _onCompleted;
         private static readonly Dictionary<ShapeKind, Sprite> ShapeSprites = new Dictionary<ShapeKind, Sprite>();
-        private static readonly Dictionary<DirectionKind, Sprite> DirectionSprites =
-            new Dictionary<DirectionKind, Sprite>();
+        private static readonly Dictionary<PatternToken, Sprite> PatternSprites =
+            new Dictionary<PatternToken, Sprite>();
 
         public PuzzleUi(MonoBehaviour host, RectTransform canvasRoot, Rng rng, Action<string[]> say,
             Action<bool> onCompleted = null)
@@ -126,10 +126,13 @@ namespace Numeria.Game
                     yield return RunPattern(done, tier);
                     break;
                 case MapPuzzleKind.Symmetry:
-                    yield return RunSymmetry(done);
+                    yield return RunSymmetry(done, tier);
                     break;
-                case MapPuzzleKind.Rotation:
-                    yield return RunRotation(done, tier);
+                case MapPuzzleKind.Balance:
+                    yield return RunBalance(done, tier);
+                    break;
+                case MapPuzzleKind.NumberPath:
+                    yield return RunNumberPath(done, tier);
                     break;
                 case MapPuzzleKind.NumberSequence:
                     yield return RunNumberSequence(done, tier);
@@ -149,38 +152,50 @@ namespace Numeria.Game
             var overlay = BuildOverlay(p.Prompt, out var choiceRow);
 
             var sequenceRow = Ui.Node(overlay, "PatternSequence");
-            Ui.Place(sequenceRow, new Vector2(0.5f, 0.61f), Vector2.zero, new Vector2(820, 96));
+            Ui.Place(sequenceRow, new Vector2(0.5f, 0.61f), Vector2.zero, new Vector2(920, 96));
             var layout = sequenceRow.gameObject.AddComponent<HorizontalLayoutGroup>();
-            layout.spacing = 14;
+            float tileSize = p.Sequence.Count >= 9 ? 64 : p.Sequence.Count >= 8 ? 70 : 78;
+            layout.spacing = p.Sequence.Count >= 8 ? 8 : 12;
             layout.childAlignment = TextAnchor.MiddleCenter;
             layout.childControlWidth = false;
             layout.childControlHeight = false;
             layout.childForceExpandWidth = false;
             layout.childForceExpandHeight = false;
 
-            foreach (ShapeKind shape in p.Sequence) MakeShapeCard(sequenceRow, shape, 82, null);
-
-            var answerSlot = Ui.Img(sequenceRow, "PatternAnswer", new Color(1f, 1f, 1f, 0.12f));
-            answerSlot.rectTransform.sizeDelta = new Vector2(82, 82);
-            Ui.AddOutline(answerSlot.gameObject);
-            var question = Ui.Label(answerSlot.transform, "Question", "?", 54, Ui.Hex("#ffe082"));
-            Ui.Stretch(question.rectTransform);
+            Image answerSlot = null;
+            TMP_Text question = null;
+            for (int i = 0; i < p.Sequence.Count; i++)
+            {
+                if (i != p.MissingIndex)
+                {
+                    MakePatternCard(sequenceRow, p.Sequence[i], tileSize, null);
+                    continue;
+                }
+                answerSlot = Ui.Img(sequenceRow, "PatternAnswer", new Color(1f, 1f, 1f, 0.12f));
+                answerSlot.rectTransform.sizeDelta = new Vector2(tileSize, tileSize);
+                var slotElement = answerSlot.gameObject.AddComponent<LayoutElement>();
+                slotElement.preferredWidth = tileSize;
+                slotElement.preferredHeight = tileSize;
+                Ui.AddOutline(answerSlot.gameObject);
+                question = Ui.Label(answerSlot.transform, "Question", "?", 50, Ui.Hex("#ffe082"));
+                Ui.Stretch(question.rectTransform);
+            }
 
             int attempts = 0;
             bool? result = null;
-            void Submit(ShapeKind shape, Button button)
+            void Submit(PatternToken token, Button button)
             {
                 if (result.HasValue) return;
                 attempts++;
-                if (PuzzleGenerator.CheckPattern(p, shape))
+                if (PuzzleGenerator.CheckPattern(p, token))
                 {
                     Sfx.Play(SfxCue.Correct);
                     question.gameObject.SetActive(false);
-                    var answer = Ui.SpriteImg(answerSlot.transform, "Answer", ShapeSprite(shape));
+                    var answer = Ui.SpriteImg(answerSlot.transform, "Answer", PatternSprite(token));
                     answer.preserveAspect = true;
                     Ui.Stretch(answer.rectTransform);
-                    answer.rectTransform.offsetMin = new Vector2(12, 12);
-                    answer.rectTransform.offsetMax = new Vector2(-12, -12);
+                    answer.rectTransform.offsetMin = new Vector2(8, 8);
+                    answer.rectTransform.offsetMax = new Vector2(-8, -8);
                     Say("Great job!");
                     result = true;
                 }
@@ -199,11 +214,11 @@ namespace Numeria.Game
                 }
             }
 
-            foreach (ShapeKind shape in p.Candidates)
+            foreach (PatternToken token in p.Candidates)
             {
                 Button button = null;
-                ShapeKind captured = shape;
-                button = MakeShapeCard(choiceRow, shape, 96, () => Submit(captured, button));
+                PatternToken captured = token;
+                button = MakePatternCard(choiceRow, token, 96, () => Submit(captured, button));
             }
 
             Say(p.Prompt);
@@ -213,27 +228,25 @@ namespace Numeria.Game
             Complete(done, result.Value);
         }
 
-        public IEnumerator RunSymmetry(Action<bool> done)
+        public IEnumerator RunSymmetry(Action<bool> done, int tier = 1)
         {
-            var p = PuzzleGenerator.GenerateSymmetry(_rng);
+            var p = PuzzleGenerator.GeneratePatternMatch(_rng, tier);
             var overlay = BuildOverlay(p.Prompt, out var choiceRow);
-            var focus = Ui.Node(overlay, "SymmetryFocus");
-            Ui.Place(focus, new Vector2(0.5f, 0.6f), Vector2.zero, new Vector2(420, 116));
-            MakeShapeCard(focus, p.Wing, 104, null);
-            Ui.PlaceCentered((RectTransform)focus.GetChild(focus.childCount - 1),
-                new Vector2(0.5f, 0.5f), new Vector2(-98, 0), new Vector2(104, 104));
-            var axis = Ui.Img(focus, "MirrorAxis", Ui.Hex("#ffe082"));
-            Ui.PlaceCentered(axis.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(8, 112));
-            var missing = Ui.Label(focus, "MissingWing", "?", 72, Ui.Hex("#ffe082"));
-            Ui.PlaceCentered(missing.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(98, 0), new Vector2(104, 104));
+            var focus = Ui.Node(overlay, "PatternMatchFocus");
+            Ui.Place(focus, new Vector2(0.5f, 0.61f), Vector2.zero, new Vector2(620, 110));
+            BuildPatternStrip(focus, p.Target, 76);
+
+            Ui.Place(choiceRow, new Vector2(0.5f, 0.35f), Vector2.zero, new Vector2(720, 108));
+            var choiceLayout = choiceRow.GetComponent<HorizontalLayoutGroup>();
+            choiceLayout.spacing = 16;
 
             int attempts = 0;
             bool? result = null;
-            void Submit(ShapeKind shape, Button button)
+            void Submit(int candidateIndex, Button button)
             {
                 if (result.HasValue) return;
                 attempts++;
-                if (PuzzleGenerator.CheckSymmetry(p, shape))
+                if (PuzzleGenerator.CheckPatternMatch(p, candidateIndex))
                 {
                     Sfx.Play(SfxCue.Correct);
                     Say("Great job!");
@@ -253,11 +266,11 @@ namespace Numeria.Game
                 }
             }
 
-            foreach (ShapeKind shape in p.Candidates)
+            for (int i = 0; i < p.Candidates.Count; i++)
             {
                 Button button = null;
-                ShapeKind captured = shape;
-                button = MakeShapeCard(choiceRow, shape, 96, () => Submit(captured, button));
+                int captured = i;
+                button = MakePatternStripCard(choiceRow, p.Candidates[i], () => Submit(captured, button));
             }
             Say(p.Prompt);
             yield return new WaitUntil(() => result.HasValue);
@@ -266,57 +279,23 @@ namespace Numeria.Game
             Complete(done, result.Value);
         }
 
-        public IEnumerator RunRotation(Action<bool> done, int tier = 2)
+        public IEnumerator RunBalance(Action<bool> done, int tier = 2)
         {
-            var p = PuzzleGenerator.GenerateRotation(_rng, tier);
-            var overlay = BuildOverlay(p.Prompt, out var choiceRow);
-            var focus = Ui.Node(overlay, "RotationFocus");
-            Ui.Place(focus, new Vector2(0.5f, 0.6f), Vector2.zero, new Vector2(560, 116));
-            MakeDirectionCard(focus, p.Start, 104, null);
-            Ui.PlaceCentered((RectTransform)focus.GetChild(focus.childCount - 1),
-                new Vector2(0.5f, 0.5f), new Vector2(-170, 0), new Vector2(104, 104));
-            var turn = Ui.Label(focus, "Turn", $"TURN RIGHT x{p.QuarterTurns}", 34, Ui.Hex("#ffe082"));
-            Ui.PlaceCentered(turn.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(260, 80));
-            var missing = Ui.Label(focus, "MissingDirection", "?", 72, Ui.Hex("#ffe082"));
-            Ui.PlaceCentered(missing.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(170, 0), new Vector2(104, 104));
+            var p = PuzzleGenerator.GenerateBalance(_rng, tier);
+            string display = $"{p.LeftA}  +  {p.LeftB}  =  {p.RightKnown}  +  ?";
+            yield return RunNumberChoice(p.Prompt, display, p.Candidates,
+                answer => PuzzleGenerator.CheckBalance(p, answer), done);
+        }
 
-            int attempts = 0;
-            bool? result = null;
-            void Submit(DirectionKind direction, Button button)
-            {
-                if (result.HasValue) return;
-                attempts++;
-                if (PuzzleGenerator.CheckRotation(p, direction))
-                {
-                    Sfx.Play(SfxCue.Correct);
-                    Say("Great job!");
-                    result = true;
-                }
-                else if (attempts == 1)
-                {
-                    Sfx.Play(SfxCue.SoftMiss, 0.7f);
-                    button.interactable = false;
-                    Say("Hmm, not quite.", p.Prompt);
-                }
-                else
-                {
-                    Sfx.Play(SfxCue.SoftMiss, 0.7f);
-                    Say("Nice try! Your move still works!");
-                    result = false;
-                }
-            }
-
-            foreach (DirectionKind direction in p.Candidates)
-            {
-                Button button = null;
-                DirectionKind captured = direction;
-                button = MakeDirectionCard(choiceRow, direction, 96, () => Submit(captured, button));
-            }
-            Say(p.Prompt);
-            yield return new WaitUntil(() => result.HasValue);
-            yield return new WaitForSeconds(result.Value ? 0.65f : 0.4f);
-            UnityEngine.Object.Destroy(overlay.gameObject);
-            Complete(done, result.Value);
+        public IEnumerator RunNumberPath(Action<bool> done, int tier = 1)
+        {
+            var p = PuzzleGenerator.GenerateNumberPath(_rng, tier);
+            var displaySequence = new List<string>();
+            for (int i = 0; i < p.Sequence.Count; i++)
+                displaySequence.Add(i == p.MissingIndex ? "?" : p.Sequence[i].ToString());
+            string display = string.Join("  ,  ", displaySequence);
+            yield return RunNumberChoice(p.Prompt, display, p.Candidates,
+                answer => PuzzleGenerator.CheckNumberPath(p, answer), done);
         }
 
         public IEnumerator RunNumberSequence(Action<bool> done, int tier = 3)
@@ -397,20 +376,52 @@ namespace Numeria.Game
             return button;
         }
 
-        private static Button MakeDirectionCard(Transform parent, DirectionKind direction, float size, Action onClick)
+        private static Button MakePatternCard(Transform parent, PatternToken token, float size, Action onClick)
         {
-            var card = Ui.Img(parent, $"Direction-{direction}", Ui.Hex("#f6efdc"));
+            var card = Ui.Img(parent, $"Pattern-{token.Shape}-{token.Color}", Ui.Hex("#f6efdc"));
             card.rectTransform.sizeDelta = new Vector2(size, size);
             var element = card.gameObject.AddComponent<LayoutElement>();
             element.preferredWidth = size;
             element.preferredHeight = size;
             Ui.AddOutline(card.gameObject);
-            var icon = Ui.SpriteImg(card.transform, "Icon", DirectionSprite(direction));
+            var icon = Ui.SpriteImg(card.transform, "Icon", PatternSprite(token));
             icon.preserveAspect = true;
             Ui.Stretch(icon.rectTransform);
-            icon.rectTransform.offsetMin = new Vector2(12, 12);
-            icon.rectTransform.offsetMax = new Vector2(-12, -12);
+            icon.rectTransform.offsetMin = new Vector2(8, 8);
+            icon.rectTransform.offsetMax = new Vector2(-8, -8);
             if (onClick == null) return null;
+            var button = Sfx.WireClick(card.gameObject.AddComponent<Button>());
+            button.targetGraphic = card;
+            button.onClick.AddListener(() => onClick());
+            return button;
+        }
+
+        private static void BuildPatternStrip(Transform parent, IList<PatternToken> tokens, float tileSize)
+        {
+            var row = Ui.Node(parent, "PatternStrip");
+            Ui.Stretch(row);
+            var layout = row.gameObject.AddComponent<HorizontalLayoutGroup>();
+            layout.spacing = 8;
+            layout.childAlignment = TextAnchor.MiddleCenter;
+            layout.childControlWidth = false;
+            layout.childControlHeight = false;
+            layout.childForceExpandWidth = false;
+            layout.childForceExpandHeight = false;
+            foreach (PatternToken token in tokens) MakePatternCard(row, token, tileSize, null);
+        }
+
+        private static Button MakePatternStripCard(Transform parent, IList<PatternToken> tokens, Action onClick)
+        {
+            var card = Ui.Img(parent, "PatternChoice", Ui.Hex("#f6efdc"));
+            card.rectTransform.sizeDelta = new Vector2(160, 104);
+            var element = card.gameObject.AddComponent<LayoutElement>();
+            element.preferredWidth = 160;
+            element.preferredHeight = 104;
+            Ui.AddOutline(card.gameObject);
+            BuildPatternStrip(card.transform, tokens, tokens.Count >= 4 ? 31 : 38);
+            var row = (RectTransform)card.transform.GetChild(0);
+            row.offsetMin = new Vector2(8, 8);
+            row.offsetMax = new Vector2(-8, -8);
             var button = Sfx.WireClick(card.gameObject.AddComponent<Button>());
             button.targetGraphic = card;
             button.onClick.AddListener(() => onClick());
@@ -458,52 +469,43 @@ namespace Numeria.Game
             }
         }
 
-        private static Sprite DirectionSprite(DirectionKind direction)
+        private static Sprite PatternSprite(PatternToken token)
         {
-            if (DirectionSprites.TryGetValue(direction, out var sprite)) return sprite;
+            if (PatternSprites.TryGetValue(token, out var sprite)) return sprite;
             const int size = 48;
+            const int radius = 18;
             var texture = new Texture2D(size, size, TextureFormat.RGBA32, false);
-            texture.name = $"Direction-{direction}";
+            texture.name = $"Pattern-{token.Shape}-{token.Color}";
             texture.filterMode = FilterMode.Point;
             texture.wrapMode = TextureWrapMode.Clamp;
             var pixels = new Color32[size * size];
-            Color32 fill = Ui.Hex("#49b9d1");
+            Color32 fill = PatternColorValue(token.Color);
             Color32 outline = Ui.Hex("#263238");
             for (int y = 0; y < size; y++)
                 for (int x = 0; x < size; x++)
                 {
                     int dx = x - size / 2;
                     int dy = y - size / 2;
-                    RotateToUp(direction, dx, dy, out int ux, out int uy);
-                    if (!InsideArrow(ux, uy, 19)) continue;
-                    pixels[y * size + x] = InsideArrow(ux, uy, 14) ? fill : outline;
+                    if (!InsideShape(token.Shape, dx, dy, radius)) continue;
+                    pixels[y * size + x] = InsideShape(token.Shape, dx, dy, radius - 4) ? fill : outline;
                 }
             texture.SetPixels32(pixels);
             texture.Apply(false, true);
             sprite = Sprite.Create(texture, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), size);
-            sprite.name = $"Direction-{direction}";
-            DirectionSprites[direction] = sprite;
+            sprite.name = texture.name;
+            PatternSprites[token] = sprite;
             return sprite;
         }
 
-        private static void RotateToUp(DirectionKind direction, int x, int y, out int ux, out int uy)
+        private static Color32 PatternColorValue(PatternColor color)
         {
-            switch (direction)
+            switch (color)
             {
-                case DirectionKind.Right: ux = y; uy = -x; break;
-                case DirectionKind.Down: ux = -x; uy = -y; break;
-                case DirectionKind.Left: ux = -y; uy = x; break;
-                default: ux = x; uy = y; break;
+                case PatternColor.Blue: return Ui.Hex("#49b9d1");
+                case PatternColor.Gold: return Ui.Hex("#f2b04e");
+                case PatternColor.Coral: return Ui.Hex("#e8705a");
+                default: return Ui.Hex("#8e78c5");
             }
-        }
-
-        private static bool InsideArrow(int x, int y, int radius)
-        {
-            int shaft = System.Math.Max(3, radius / 3);
-            bool inShaft = System.Math.Abs(x) <= shaft && y >= -radius && y <= radius / 3;
-            bool inHead = y >= -radius / 5 && y <= radius &&
-                          System.Math.Abs(x) <= radius - y + radius / 5;
-            return inShaft || inHead;
         }
 
         private static bool InsideShape(ShapeKind shape, int x, int y, int radius)

@@ -372,10 +372,14 @@ namespace Numeria.Game
             var result = _state.UseSkill("tackle");
             RecordDamage(result.Damage);
             Sfx.Play(SfxCue.Hit);
-            PopDamage(_enemySprite, $"-{result.Damage}", Ui.Hex("#ffd24a"));
+            PopDamage(_enemySprite, result.BreakBonusApplied ? $"-{result.Damage}  2X" : $"-{result.Damage}",
+                Ui.Hex("#ffd24a"));
+            if (result.BreakBonusApplied) _voice.Say("Double damage!");
             yield return Flash(_enemySprite);
             RenderAll();
-            SetLog("Tackle!", $"{result.Damage} DAMAGE");
+            SetLog("Tackle!", result.BreakBonusApplied
+                ? $"2X SHIELD BREAK - {result.Damage} DAMAGE"
+                : $"{result.Damage} DAMAGE");
             yield return EndPlayerTurn();
         }
 
@@ -389,15 +393,16 @@ namespace Numeria.Game
             var result = _state.UseSkill(_themeSkill.Id, correct.Value);
             RecordDamage(result.Damage);
             Sfx.Play(SfxCue.Hit, result.Powered ? 1f : 0.72f);
-            PopDamage(_enemySprite, $"-{result.Damage}", result.Powered
+            PopDamage(_enemySprite, result.BreakBonusApplied ? $"-{result.Damage}  2X" : $"-{result.Damage}", result.Powered
                 ? ThemeColor(_themeSkill.Visual)
                 : Ui.Hex("#ffd24a"));
+            if (result.BreakBonusApplied) _voice.Say("Double damage!");
             if (result.Powered) StartCoroutine(Shake());
             yield return Flash(_enemySprite);
             RenderAll();
-            SetLog($"{_themeSkill.Name}!", result.Powered
-                ? $"{result.Damage} DAMAGE"
-                : $"{result.Damage} DAMAGE - NICE TRY");
+            SetLog($"{_themeSkill.Name}!", result.BreakBonusApplied
+                ? $"2X SHIELD BREAK - {result.Damage} DAMAGE"
+                : result.Powered ? $"{result.Damage} DAMAGE" : $"{result.Damage} DAMAGE - NICE TRY");
             yield return EndPlayerTurn();
         }
 

@@ -23,14 +23,16 @@ export function useSkill(state, skillId, { correct = true } = {}) {
   if (state.gems < skill.cost) throw new Error('not enough gems');
   state.gems -= skill.cost;
   const powered = skill.type !== 'formula' || correct;
+  const breakBonusApplied = state.enemy.shield != null &&
+    !state.enemy.shielded && state.enemy.breakBonusReady;
   const dmg = damageToEnemy(state, powered ? skill.power : skill.basePower);
   state.enemy.hp = Math.max(0, state.enemy.hp - dmg);
-  if (state.enemy.shield != null && state.enemy.breakBonusReady) {
+  if (breakBonusApplied) {
     state.enemy.breakBonusReady = false;
     state.enemy.shielded = state.enemy.hp > 0;
   }
   if (state.enemy.hp === 0) state.outcome = 'win';
-  return { dmg, powered };
+  return { dmg, powered, breakBonusApplied };
 }
 
 export function breakShield(state) {

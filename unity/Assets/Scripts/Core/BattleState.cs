@@ -93,6 +93,7 @@ namespace Numeria.Core
     {
         public int Damage;
         public bool Powered;
+        public bool BreakBonusApplied;
     }
 
     /// <summary>
@@ -176,9 +177,10 @@ namespace Numeria.Core
             bool powered = skill.Type != SkillType.Formula || correct;
             int attack = (powered ? skill.Power : skill.BasePower) +
                          Player.AttackPower + PlayerAttackBonus;
+            bool breakBonusApplied = Enemy.Shield.HasValue && !EnemyShielded && BreakBonusReady;
             int dmg = DamageToEnemy(attack);
             EnemyHp = Math.Max(0, EnemyHp - dmg);
-            if (Enemy.Shield.HasValue && BreakBonusReady)
+            if (breakBonusApplied)
             {
                 // 破盾奖励只作用于第一次攻击；命中后若敌人仍存活，护盾立即重置。
                 BreakBonusReady = false;
@@ -186,7 +188,12 @@ namespace Numeria.Core
             }
             if (EnemyHp == 0) Outcome = BattleOutcome.Win;
 
-            return new SkillResult { Damage = dmg, Powered = powered };
+            return new SkillResult
+            {
+                Damage = dmg,
+                Powered = powered,
+                BreakBonusApplied = breakBonusApplied
+            };
         }
 
         public void BreakShield()

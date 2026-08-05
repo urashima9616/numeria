@@ -118,8 +118,9 @@ Boss 拥有**多段护盾**,每段对应一种题型,像音乐游戏一样有节
 | 点数 | 数出屏幕上的萤火虫:🪲×6 | "How many fireflies do you see?" |
 | 数量比较 | 左边 5 只蘑菇 vs 右边 8 只,哪边多? | "Which side has more mushrooms?" |
 | 图形识别 | 从四张图形卡中找到三角形 | "Find the triangle!" |
-| 对称 | 为单个图形找到镜像另一半 | "Find the matching wing!" |
-| 入门规律 | ABAB / AABB 选下一个 | "What comes next in the pattern?" |
+| 数字路径 | 在 5 个连续数字中补一个中间空格 | "Which number fills the path?" |
+| 入门规律 | 彩色 ABAB / AABB,选下一个或补空格 | "Which tile fills the pattern gap?" |
+| 图案匹配 | 从四条短图案中找精确复制或镜像顺序 | "Find the tiles in mirror order!" |
 
 ### ⛰️ 静寂山脉(Silent Peaks)— 成长区,主练习场
 
@@ -128,7 +129,8 @@ Boss 拥有**多段护盾**,每段对应一种题型,像音乐游戏一样有节
 | 20 以内加减 | $13 + \square = 17$ | "Thirteen plus what makes seventeen?" |
 | 凑目标 | 从候选数中选两张凑成 $20$ | "Pick two crystals that make twenty!" |
 | 连加 | $2 + 3 + 4 = \square$ | "Add them all up!" |
-| 中级规律/对称 | ABC 循环、按边数识图、向右转 1 次 | 图形语音提示 |
+| 中级规律/匹配 | ABC/AAB 循环、按边数识图、形状匹配 | 图形语音提示 |
+| 等式平衡 | $8+7=9+\square$ | "Balance both sides. What number is missing?" |
 
 ### ☁️ 蔚蓝天空城(Azure Sky City)— 30 以内综合区
 
@@ -136,9 +138,9 @@ Boss 拥有**多段护盾**,每段对应一种题型,像音乐游戏一样有节
 |---|---|---|
 | 30 以内加减 | $18 + \square = 27$ / $30 - \square = 19$ | 完整数字语音读题 |
 | 四项连加 | $3+4+6+5=\square$ | "Add them all up!" |
-| 高级图形规律 | ABCD ABC❓ 选下一个 | "What comes next in the pattern?" |
-| 对称/旋转 | 镜像匹配、向右转 2–3 次 | 图形语音提示 |
-| 数列 | 按 2–5 递增且结果不超过 30 | "What number comes next?" |
+| 高级图形规律 | 形状 × 颜色双规律,中间缺项与下一个混合 | "What tile comes next in the pattern?" |
+| 图案匹配 | 精确、镜像顺序、只看形状、只看颜色四种规则 | 图形语音提示 |
+| 数字路径/数列 | 按 1/2/5 正向或反向补空格,或预测下一项 | "Which number fills the path?" |
 
 ---
 

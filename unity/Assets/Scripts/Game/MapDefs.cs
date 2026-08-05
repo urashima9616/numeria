@@ -375,7 +375,7 @@ namespace Numeria.Game
             Discoveries = new[]
             {
                 D("sky-rune-1", "Cloud Sequence Rune", 6, 3, 10),
-                D("sky-rune-2", "Prism Rotation Rune", 14, 4, 11, ConsumableType.GemSnack, 1),
+                D("sky-rune-2", "Prism Balance Rune", 14, 4, 11, ConsumableType.GemSnack, 1),
                 D("sky-rune-3", "Mirror Wing Rune", 25, 11, 12),
                 D("sky-rune-4", "Starlight Pattern Rune", 12, 14, 14, ConsumableType.HealthPotion, 1),
             },
@@ -460,7 +460,7 @@ namespace Numeria.Game
             Discoveries = new[]
             {
                 D("desert-rune-1", "Dune Addition Rune", 5, 2, 15),
-                D("desert-rune-2", "Sun Rotation Rune", 12, 6, 16, ConsumableType.HealthPotion, 1),
+                D("desert-rune-2", "Sun Balance Rune", 12, 6, 16, ConsumableType.HealthPotion, 1),
                 D("desert-rune-3", "Cactus Sequence Rune", 26, 9, 18),
                 D("desert-rune-4", "Mirage Symmetry Rune", 7, 14, 20, ConsumableType.GemSnack, 1),
             },

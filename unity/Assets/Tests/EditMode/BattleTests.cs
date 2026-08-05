@@ -106,6 +106,7 @@ namespace Numeria.Core.Tests
 
             var result = s.UseSkill("tackle");
             Assert.GreaterOrEqual(result.Damage, 2);
+            Assert.True(result.BreakBonusApplied);
             Assert.False(s.BreakBonusReady);
             Assert.True(s.EnemyShielded);
 
@@ -113,6 +114,27 @@ namespace Numeria.Core.Tests
             Assert.False(s.EnemyShielded);
             Assert.True(s.BreakBonusReady);
             Assert.AreEqual(1, s.EnemySkipTurns);
+        }
+
+        [Test]
+        public void EveryShieldBreak_AppliesAndConsumesItsOwnDoubleDamageBonus()
+        {
+            var enemy = GameData.Numberfly();
+            enemy.MaxHp = 500;
+            var s = new BattleState(GameData.Addmander(), enemy, new Rng(77));
+
+            for (int cycle = 1; cycle <= 3; cycle++)
+            {
+                s.BreakShield();
+                Assert.True(s.BreakBonusReady, $"cycle {cycle} should arm bonus");
+                Assert.True(s.ConsumeEnemySkipTurn(), $"cycle {cycle} should stun");
+
+                var result = s.UseSkill("tackle");
+                Assert.True(result.BreakBonusApplied, $"cycle {cycle} should deal 2x damage");
+                Assert.GreaterOrEqual(result.Damage, 2);
+                Assert.False(s.BreakBonusReady, $"cycle {cycle} should consume bonus");
+                Assert.True(s.EnemyShielded, $"cycle {cycle} should restore shield");
+            }
         }
 
         [Test]

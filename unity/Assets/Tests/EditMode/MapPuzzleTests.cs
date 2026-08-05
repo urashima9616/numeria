@@ -45,28 +45,70 @@ namespace Numeria.Core.Tests
         }
 
         [Test]
-        public void SkyPuzzleFamilies_HaveUniqueValidAnswers()
+        public void PatternMatching_UsesFourDifferentRulesWithOneValidChoice()
         {
+            var rules = new HashSet<PatternMatchRule>();
+            for (int tier = 1; tier <= 4; tier++)
+            for (uint seed = 1; seed <= 160; seed++)
+            {
+                var puzzle = PuzzleGenerator.GeneratePatternMatch(new Rng(seed), tier);
+                rules.Add(puzzle.Rule);
+                Assert.AreEqual(4, puzzle.Candidates.Count);
+                Assert.That(puzzle.AnswerIndex, Is.InRange(0, 3));
+                int valid = 0;
+                for (int i = 0; i < puzzle.Candidates.Count; i++)
+                    if (PuzzleGenerator.MatchesPatternRule(puzzle, puzzle.Candidates[i])) valid++;
+                Assert.AreEqual(1, valid, $"tier {tier}, seed {seed}, rule {puzzle.Rule}");
+                Assert.True(PuzzleGenerator.CheckPatternMatch(puzzle, puzzle.AnswerIndex));
+            }
+            CollectionAssert.AreEquivalent(new[]
+            {
+                PatternMatchRule.ExactCopy, PatternMatchRule.MirrorOrder,
+                PatternMatchRule.ShapesOnly, PatternMatchRule.ColorsOnly
+            }, rules);
+        }
+
+        [Test]
+        public void BalanceAndNumberPath_HaveBoundedUniqueAnswers()
+        {
+            for (int tier = 1; tier <= 4; tier++)
+            for (uint seed = 1; seed <= 100; seed++)
+            {
+                int max = PuzzleGenerator.MaxForTier(tier);
+                var balance = PuzzleGenerator.GenerateBalance(new Rng(seed), tier);
+                Assert.AreEqual(balance.LeftA + balance.LeftB,
+                    balance.RightKnown + balance.Answer);
+                Assert.Contains(balance.Answer, balance.Candidates);
+                Assert.AreEqual(4, new HashSet<int>(balance.Candidates).Count);
+                Assert.That(balance.Answer, Is.InRange(0, max));
+                Assert.True(PuzzleGenerator.CheckBalance(balance, balance.Answer));
+
+                var path = PuzzleGenerator.GenerateNumberPath(new Rng(seed), tier);
+                Assert.AreEqual(5, path.Sequence.Count);
+                Assert.That(path.MissingIndex, Is.InRange(1, 3));
+                Assert.AreEqual(path.Sequence[path.MissingIndex], path.Answer);
+                Assert.Contains(path.Answer, path.Candidates);
+                Assert.AreEqual(4, new HashSet<int>(path.Candidates).Count);
+                for (int i = 1; i < path.Sequence.Count; i++)
+                    Assert.AreEqual(path.Descending ? -path.Step : path.Step,
+                        path.Sequence[i] - path.Sequence[i - 1]);
+                foreach (int value in path.Sequence) Assert.That(value, Is.InRange(0, max));
+                Assert.True(PuzzleGenerator.CheckNumberPath(path, path.Answer));
+            }
+        }
+
+        [Test]
+        public void NumberSequences_HaveValidIncreasingSteps()
+        {
+            for (int tier = 2; tier <= 4; tier++)
             for (uint seed = 1; seed <= 80; seed++)
             {
-                var symmetry = PuzzleGenerator.GenerateSymmetry(new Rng(seed));
-                Assert.AreEqual(4, new HashSet<ShapeKind>(symmetry.Candidates).Count);
-                Assert.Contains(symmetry.Wing, symmetry.Candidates);
-                Assert.True(PuzzleGenerator.CheckSymmetry(symmetry, symmetry.Wing));
-
-                var rotation = PuzzleGenerator.GenerateRotation(new Rng(seed), 3);
-                Assert.AreEqual(4, new HashSet<DirectionKind>(rotation.Candidates).Count);
-                Assert.AreEqual((DirectionKind)(((int)rotation.Start + rotation.QuarterTurns) % 4),
-                    rotation.Answer);
-                Assert.True(PuzzleGenerator.CheckRotation(rotation, rotation.Answer));
-
-                var sequence = PuzzleGenerator.GenerateNumberSequence(new Rng(seed), 3);
+                var sequence = PuzzleGenerator.GenerateNumberSequence(new Rng(seed), tier);
                 Assert.AreEqual(sequence.Step, sequence.Sequence[1] - sequence.Sequence[0]);
                 Assert.AreEqual(sequence.Step, sequence.Sequence[2] - sequence.Sequence[1]);
                 Assert.AreEqual(sequence.Sequence[2] + sequence.Step, sequence.Answer);
                 Assert.Contains(sequence.Answer, sequence.Candidates);
-                Assert.That(sequence.Answer, Is.LessThanOrEqualTo(30));
-                Assert.That(sequence.Step, Is.InRange(2, 5));
+                Assert.That(sequence.Answer, Is.LessThanOrEqualTo(PuzzleGenerator.MaxForTier(tier)));
                 Assert.True(PuzzleGenerator.CheckNumberSequence(sequence, sequence.Answer));
             }
         }
@@ -90,41 +132,61 @@ namespace Numeria.Core.Tests
         }
 
         [Test]
+        public void TierFourGenerators_NeverThrowAcrossManySeeds()
+        {
+            for (uint seed = 1; seed <= 500; seed++)
+            {
+                Assert.DoesNotThrow(() => PuzzleGenerator.GenerateFormula(new Rng(seed), 40));
+                Assert.DoesNotThrow(() => PuzzleGenerator.GenerateSubtraction(new Rng(seed), 40));
+                Assert.DoesNotThrow(() => PuzzleGenerator.GenerateMakeTen(new Rng(seed), 40));
+                Assert.DoesNotThrow(() => PuzzleGenerator.GenerateChainSum(new Rng(seed), 40, 4));
+                Assert.DoesNotThrow(() => PuzzleGenerator.GeneratePattern(new Rng(seed), 4));
+                Assert.DoesNotThrow(() => PuzzleGenerator.GeneratePatternMatch(new Rng(seed), 4));
+                Assert.DoesNotThrow(() => PuzzleGenerator.GenerateBalance(new Rng(seed), 4));
+                Assert.DoesNotThrow(() => PuzzleGenerator.GenerateNumberPath(new Rng(seed), 4));
+                Assert.DoesNotThrow(() => PuzzleGenerator.GenerateNumberSequence(new Rng(seed), 4));
+                Assert.DoesNotThrow(() => PuzzleGenerator.GenerateShape(new Rng(seed), 4));
+            }
+        }
+
+        [Test]
         public void ShapeQuestions_ProgressFromNamingToProperties()
         {
-            for (int tier = 1; tier <= 3; tier++)
+            for (int tier = 1; tier <= 4; tier++)
+            for (uint seed = 1; seed <= 40; seed++)
             {
-                for (uint seed = 1; seed <= 40; seed++)
-                {
-                    var puzzle = PuzzleGenerator.GenerateShape(new Rng(seed), tier);
-                    Assert.AreEqual(4, new HashSet<ShapeKind>(puzzle.Candidates).Count);
-                    Assert.Contains(puzzle.Answer, puzzle.Candidates);
-                    Assert.True(PuzzleGenerator.CheckShape(puzzle, puzzle.Answer));
-                    if (tier == 1) StringAssert.StartsWith("Find the", puzzle.Prompt);
-                    else StringAssert.Contains("shape", puzzle.Prompt);
-                }
+                var puzzle = PuzzleGenerator.GenerateShape(new Rng(seed), tier);
+                Assert.AreEqual(4, new HashSet<ShapeKind>(puzzle.Candidates).Count);
+                Assert.Contains(puzzle.Answer, puzzle.Candidates);
+                Assert.True(PuzzleGenerator.CheckShape(puzzle, puzzle.Answer));
+                if (tier == 1) StringAssert.StartsWith("Find the", puzzle.Prompt);
+                else StringAssert.Contains("shape", puzzle.Prompt);
             }
         }
 
         [Test]
         public void EveryMapTier_HasItsDesignPool_AndGateUsesThreeDifferentKinds()
         {
-            CollectionAssert.AreEquivalent(
-                new[] { MapPuzzleKind.Formula, MapPuzzleKind.Pattern, MapPuzzleKind.Symmetry,
-                    MapPuzzleKind.Shape, MapPuzzleKind.Counting, MapPuzzleKind.Comparison },
-                PuzzleGenerator.MapPuzzleKindsForTier(1));
-            CollectionAssert.AreEquivalent(
-                new[] { MapPuzzleKind.Formula, MapPuzzleKind.MakeTen, MapPuzzleKind.ChainSum,
-                    MapPuzzleKind.Pattern, MapPuzzleKind.Symmetry, MapPuzzleKind.Rotation,
-                    MapPuzzleKind.Shape },
-                PuzzleGenerator.MapPuzzleKindsForTier(2));
-            CollectionAssert.AreEquivalent(
-                new[] { MapPuzzleKind.Formula, MapPuzzleKind.MakeTen, MapPuzzleKind.ChainSum,
-                    MapPuzzleKind.Pattern, MapPuzzleKind.Symmetry, MapPuzzleKind.Rotation,
-                    MapPuzzleKind.NumberSequence, MapPuzzleKind.Shape },
-                PuzzleGenerator.MapPuzzleKindsForTier(3));
+            CollectionAssert.AreEquivalent(new[]
+            {
+                MapPuzzleKind.Formula, MapPuzzleKind.Pattern, MapPuzzleKind.Symmetry,
+                MapPuzzleKind.NumberPath, MapPuzzleKind.Shape, MapPuzzleKind.Counting,
+                MapPuzzleKind.Comparison
+            }, PuzzleGenerator.MapPuzzleKindsForTier(1));
+            CollectionAssert.AreEquivalent(new[]
+            {
+                MapPuzzleKind.Formula, MapPuzzleKind.MakeTen, MapPuzzleKind.ChainSum,
+                MapPuzzleKind.Pattern, MapPuzzleKind.Symmetry, MapPuzzleKind.Balance,
+                MapPuzzleKind.NumberPath, MapPuzzleKind.Shape
+            }, PuzzleGenerator.MapPuzzleKindsForTier(2));
+            CollectionAssert.AreEquivalent(new[]
+            {
+                MapPuzzleKind.Formula, MapPuzzleKind.MakeTen, MapPuzzleKind.ChainSum,
+                MapPuzzleKind.Pattern, MapPuzzleKind.Symmetry, MapPuzzleKind.Balance,
+                MapPuzzleKind.NumberPath, MapPuzzleKind.NumberSequence, MapPuzzleKind.Shape
+            }, PuzzleGenerator.MapPuzzleKindsForTier(3));
 
-            for (int tier = 1; tier <= 3; tier++)
+            for (int tier = 1; tier <= 4; tier++)
             {
                 var gate = PuzzleGenerator.GatePuzzleKinds(new Rng((uint)tier), tier);
                 Assert.AreEqual(3, gate.Count);
@@ -138,7 +200,7 @@ namespace Numeria.Core.Tests
         [Test]
         public void RandomMapPractice_KeepsArithmeticAsTheCoreSkill()
         {
-            for (int tier = 1; tier <= 3; tier++)
+            for (int tier = 1; tier <= 4; tier++)
             {
                 int formulas = 0;
                 var rng = new Rng((uint)(800 + tier));

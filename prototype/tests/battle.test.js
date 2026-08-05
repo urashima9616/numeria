@@ -37,10 +37,25 @@ test('shield break skips one turn, doubles first hit, then resets', () => {
   assert.deepEqual(enemyTurn(s), { dmg: 0, skipped: true });
   const result = useSkill(s, 'tackle');
   assert.equal(result.dmg, 4);
+  assert.equal(result.breakBonusApplied, true);
   assert.equal(s.enemy.breakBonusReady, false);
   assert.equal(s.enemy.shielded, true);
   breakShield(s);
   assert.equal(s.enemy.skipTurns, 1);
+});
+
+test('every later shield break grants another doubled hit', () => {
+  const s = fresh();
+  s.enemy.hp = 100;
+  for (let cycle = 1; cycle <= 3; cycle++) {
+    breakShield(s);
+    assert.equal(s.enemy.breakBonusReady, true, `cycle ${cycle} arms bonus`);
+    const result = useSkill(s, 'tackle');
+    assert.equal(result.dmg, 4, `cycle ${cycle} doubles tackle`);
+    assert.equal(result.breakBonusApplied, true, `cycle ${cycle} reports bonus`);
+    assert.equal(s.enemy.breakBonusReady, false, `cycle ${cycle} consumes bonus`);
+    assert.equal(s.enemy.shielded, true, `cycle ${cycle} restores shield`);
+  }
 });
 
 test('formula skill: correct uses power, wrong uses basePower (zero punishment)', () => {

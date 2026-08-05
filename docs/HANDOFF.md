@@ -1,6 +1,6 @@
 # Numeria 开发交接文档(Handoff Note)
 
-> 日期:2026-08-03。本文档面向接手开发的 agent/工程师,涵盖项目现状、架构约定、踩坑记录与后续路线。
+> 日期:2026-08-04。本文档面向接手开发的 agent/工程师,涵盖项目现状、架构约定、踩坑记录与后续路线。
 > 必读配套:[numeria-game-design.md](numeria-game-design.md)(游戏设计定稿)、[unity-roadmap.md](unity-roadmap.md)(P0–P4 路线图)。
 
 ---
@@ -31,19 +31,19 @@
 
 ### Core 层(`Numeria.Core`,纯 C#,noEngineReferences,全部 TDD)
 - `Rng`:确定性 LCG(与 Web 原型逐位一致),所有生成函数注入 rng
-- `PuzzleGenerator`:四关 10/20/30/40 上限;加减填空、凑目标、连加、点数/比较、图形识别、AB/ABC/ABCD 规律、对称、旋转、数列;候选答案唯一
-- `BattleState`:宝石经济、数字护盾、破盾眩晕一回合 + 首次命中双倍 + 命中后护盾重置;正式 ATK/DEF 公式 `max(1, ATK − DEF + 1 + [-1,1])`,小幅可控波动、零惩罚不变量
+- `PuzzleGenerator`:四关 10/20/30/40 上限;加减填空、凑目标、连加、点数/比较、图形识别、形状×颜色规律、四类图案匹配、等式平衡、正反数字路径与数列;候选答案唯一。`NumberWord` 安全覆盖 0–99,避免第四关 31–40 越界
+- `BattleState`:宝石经济、数字护盾、破盾眩晕一回合 + 每次破盾各自触发一次双倍 + 命中后护盾重置;`SkillResult.BreakBonusApplied` 是 UI 与测试的单一判据;正式 ATK/DEF 公式 `max(1, ATK − DEF + 1 + [-1,1])`,小幅可控波动、零惩罚不变量
 - `Progress`:save schema v9;Lv.99 上限、物种成长曲线、捕捉个体 HP/ATK/DEF 偏移、动态经验、每家族独立成长、独占饰品装备、金币/限量库存、Digit Crystal 主线与冒险记录 —— **新字段必须带默认值和迁移**
 - `GridMap`:ASCII 地图解析('.'草地 'T'树 'b'草丛 'C'宝箱 'P'传送门 'S'出生)+ BFS 寻路
 - `GameData`:93 只数灵、32 条进化线;Fairy/Dragon/Electric/Grass 各 5 条扩展线,另有 Flying 三段线;各物种配置基础经验、HP/ATK/DEF 成长与数学亲和
-- 测试:`unity/Assets/Tests/EditMode/`,**105 个**;最后一次完整 headless 为 **105/105**
+- 测试:`unity/Assets/Tests/EditMode/`;当前四个 C# assembly 已单独编译通过,Node 原型 **15/15**。Unity license 正常后应补跑完整 EditMode Test Runner
 
 ### Game 层(`Numeria.Game`)
 - **全程序化 UGUI,零场景文件**——所有界面代码搭建,SampleScene 只是空壳,`BattleBootstrap` 用 `RuntimeInitializeOnLoadMethod` 拉起 `MapController`
 - `MapController`:四张 480–512 格地图、点触 BFS + 跟随相机、带权多物种生态、宝箱谜题、全宝箱后 Boss 图标与三题开门试炼、掉落与进化试炼
 - `BattleController`:`Init(enemy, progress, tier, battleBg, onEnd)`;双方状态牌显示 ATK/DEF,普通怪与 Boss HP 均按关卡和物种成长合理浮动
 - `SkillDef` 保存独立 `IconResource` + `SkillVisualKind`;11 条家族各有专属像素图标与战斗弹道/命中节奏,不要再硬编码 `Flame_Formula`
-- `PuzzleUi`:谜题遮罩共用;第一关 10 内加减+图形/对称/规律,第二关 20 内并加入三项连加/转向/ABC,第三关 30 内并加入四项连加/2–5 步数列/ABCD,第四关扩展到 40 并混合高阶题型;传送门三题必含算术
+- `PuzzleUi`:谜题遮罩共用;第一关 10 内加减+图形/彩色规律/数字路径,第二关 20 内并加入三项连加/等式平衡/ABC-AAB,第三关 30 内并加入四项连加/正反数字路径/四类图案匹配,第四关扩展到 40 并混合高阶题型;旋转题已彻底淘汰;传送门三题必含算术
 - `MenuUi`:TEAM/ITEMS/RECORDS/SAVES/SETTINGS 五 tab,TEAM 可为每只数灵装备/卸下饰品,SAVES 提供十槽存取;SETTINGS 返回主菜单前询问保存/不保存/取消
 - `Voice`:预烘焙语音播放,`VoiceKeys.Sanitize` 文本→文件名(**必须与 bake 脚本规则一致**);`Voice.Enabled` 全局开关(存档持久化)
 - `Sfx` / `Music`:独立短音效通道 + 双通道交叉淡化;六个 mood 已改用 8-bit Jukebox Lite 选曲,语音播放时自动 duck,Voice/SFX/Music 分别持久化开关
@@ -60,12 +60,13 @@
 - ✅ **P1** 战斗核心移植(逻辑层 + 全套演出 + 语音)
 - ✅ **P2** 神秘森林垂直切片(探索/遇敌/收服/升级/存档/宝箱)
 - 🔶 **P3 进行中**:
-  - ✅ 四段 Kindergarten 难度:10/20/30/40 内加减 + 同步递进的图形、对称、规律、旋转、数列
+  - ✅ 四段 Kindergarten 难度:10/20/30/40 内加减 + 同步递进的图形、彩色规律、图案匹配、等式平衡、数字路径/数列
   - ✅ 进化系统全链(御三家 Lv.8/Lv.15、野生线 Lv.5 + 里程碑进化石 + 家族亲和三题试炼 + 蜕变演出)
   - ✅ 菜单(tab 化)、出战位切换、道具栏、99 只队伍上限与满员放走/替换流程；非首发伙伴可按等级换金币或当前出战伙伴经验（金币 = Lv.+2，经验 = 2×Lv.+4）
   - ✅ 捕捉成长继承:保留野生等级、进化阶段及战斗时 HP/ATK/DEF;个体偏移随升级/进化和存档延续;同家族更强个体可选择收编或转换为 125% 捕捉经验
   - ✅ 用户 AI 生成美术管线(`generated/` 约定 + NUMERIA Battle Asset Pack 全面接入战斗)
-  - ✅ 蔚蓝天空城:独立浮空遗迹路线、Mirrowl/Symmetrix、规律/对称/旋转/数字序列、Sky/Boss 音乐
+  - ✅ 蔚蓝天空城:独立浮空遗迹路线、Mirrowl/Symmetrix、多维规律/镜像顺序/数字路径与序列、Sky/Boss 音乐
+  - ✅ 谜题稳定性与多样性:第四关 31–40 英文数字越界已修复;Find Pattern 混合形状/颜色/缺口位置,Match Pattern 有精确/镜像/只看形状/只看颜色;破盾循环每次均可靠触发并显示 2×
   - ✅ 93 只数灵 / 32 条线:Fairy、Dragon、Electric、Grass 各新增 5 条线,另有 Flying 的 Numblet → Tallywing → Totalon;全部有统一高清图标、技能、成长与进化语音
   - ✅ 狂热沙漠(Fever Desert):第四章地图、20 家族进化态生态、商人 Nia、守护者 Solara、Solar Totalisk Boss 与第四枚水晶
   - ✅ 音频系统:10 种 SFX + 7 首 8-bit Jukebox Lite 本地 mood + 语音 duck/独立开关
@@ -128,7 +129,7 @@
 
 ## 8. 建议的下一步(按价值排序)
 
-1. **战斗/菜单/新谜题视觉收敛**:继续用户截图循环,尤其检查 iPad 4:3 下点数、比较、对称与旋转题
+1. **战斗/菜单/新谜题视觉收敛**:继续用户截图循环,尤其检查 iPad 4:3 下点数、比较、图案条、等式平衡与数字路径题
 2. **JSON 数据驱动**:GameData/MapDefs → StreamingAssets JSON(设计文档承诺的 DLC 架构)
 3. **自适应难度**:Progress 记每题型正误 → 隐形升降档 + 错题变形复现(设计文档 §9)
 4. **家长面板**:菜单加 PIN 门 tab(掌握度热图、时长)
