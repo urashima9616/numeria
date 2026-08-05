@@ -43,6 +43,7 @@ namespace Numeria.Editor
             camera.clearFlags = CameraClearFlags.SolidColor;
             camera.backgroundColor = Hex(def.CameraBg);
             camera.cullingMask = ~0;
+            PaintedTerrainRenderer.Build(root.transform, map, def.Theme);
 
             for (int y = 0; y < map.Height; y++)
                 for (int x = 0; x < map.Width; x++)
@@ -51,15 +52,11 @@ namespace Numeria.Editor
                     int hash = (x * 73856093) ^ (y * 19349663);
                     int variant = ((hash % 97) + 97) % 97;
                     Tile tile = map.At(x, y);
-                    int neighbors = NeighborMask(map, x, y, tile);
-                    var terrain = Add(root.transform, MapArt.Terrain(def.Theme, tile, variant, neighbors), world, 0,
-                        $"terrain-{x}-{y}");
-                    terrain.color = MapArt.Tint(def.Theme, tile);
 
                     switch (tile)
                     {
                         case Tile.Water:
-                            if (def.Theme == "sky" && variant % 17 == 0)
+                            if (!MapArt.PaintedReady && def.Theme == "sky" && variant % 17 == 0)
                             {
                                 var cloud = Add(root.transform, MapArt.Prop(def.Theme, "obstacle", variant),
                                     world + Vector3.up * .08f, 1, "sky-cloud");
@@ -68,7 +65,7 @@ namespace Numeria.Editor
                             }
                             break;
                         case Tile.Cliff:
-                            if ((def.Theme == "mountains" || def.Theme == "desert" ||
+                            if (!MapArt.PaintedReady && (def.Theme == "mountains" || def.Theme == "desert" ||
                                 def.Theme == "dark_mines" || def.Theme == "underground") && variant % 3 == 0)
                             {
                                 var rock = Add(root.transform, MapArt.Prop(def.Theme, "obstacle", variant),
@@ -79,37 +76,48 @@ namespace Numeria.Editor
                             }
                             break;
                         case Tile.Tree:
-                            var obstacle = Add(root.transform, MapArt.Prop(def.Theme, "obstacle", variant),
-                                world + Vector3.up * .2f, SortOrder(world.y), "obstacle");
-                            obstacle.color = MapArt.Tint(def.Theme, tile, "obstacle");
-                            ScaleToHeight(obstacle, MapArt.PropHeight(def.Theme, "obstacle"));
+                            if (!MapArt.PaintedReady)
+                            {
+                                var obstacle = Add(root.transform, MapArt.Prop(def.Theme, "obstacle", variant),
+                                    world + Vector3.up * .2f, SortOrder(world.y) + 10, "obstacle");
+                                obstacle.color = MapArt.Tint(def.Theme, tile, "obstacle");
+                                ScaleToHeight(obstacle, MapArt.PropHeight(def.Theme, "obstacle"));
+                            }
                             break;
                         case Tile.Bush:
+                            if (!IsEncounterClusterAnchor(map, x, y)) break;
                             var encounter = Add(root.transform, MapArt.Prop(def.Theme, "encounter", variant),
-                                world + Vector3.up * .08f, SortOrder(world.y), "encounter");
+                                world + Vector3.up * .08f, SortOrder(world.y) + 12, "encounter");
                             encounter.color = MapArt.Tint(def.Theme, tile, "encounter");
                             ScaleToHeight(encounter, MapArt.PropHeight(def.Theme, "encounter"));
                             break;
                         case Tile.Landmark:
-                            var landmark = Add(root.transform, MapArt.Prop(def.Theme, "landmark", variant),
-                                world + Vector3.up * .52f, SortOrder(world.y) + 2, "landmark");
-                            ScaleToHeight(landmark, MapArt.PropHeight(def.Theme, "landmark"));
+                            if (!MapArt.PaintedReady)
+                            {
+                                var landmark = Add(root.transform, MapArt.Prop(def.Theme, "landmark", variant),
+                                    world + Vector3.up * .52f, SortOrder(world.y) + 12, "landmark");
+                                ScaleToHeight(landmark, MapArt.PropHeight(def.Theme, "landmark"));
+                            }
                             break;
                         case Tile.Bridge:
-                            var bridge = Add(root.transform, MapArt.Prop(def.Theme, "bridge", variant), world, 2, "bridge");
+                            var bridge = Add(root.transform, MapArt.Prop(def.Theme, "bridge", variant), world,
+                                SortOrder(world.y) + 5, "bridge");
                             ScaleToHeight(bridge, MapArt.PropHeight(def.Theme, "bridge"));
                             break;
                         case Tile.Chest:
                             var treasure = Add(root.transform, MapArt.Prop(def.Theme, "treasure", variant),
-                                world + Vector3.up * .08f, SortOrder(world.y) + 2, "treasure");
+                                world + Vector3.up * .08f, SortOrder(world.y) + 15, "treasure");
                             ScaleToHeight(treasure, MapArt.PropHeight(def.Theme, "treasure"));
                             break;
                         case Tile.Portal:
-                            var portal = Add(root.transform, MapArt.Prop(def.Theme, "portal", variant),
-                                world + Vector3.up * .48f, SortOrder(world.y) - 4, "portal");
-                            ScaleToHeight(portal, MapArt.PropHeight(def.Theme, "portal"));
+                            if (!MapArt.PaintedReady)
+                            {
+                                var portal = Add(root.transform, MapArt.Prop(def.Theme, "portal", variant),
+                                    world + Vector3.up * .48f, SortOrder(world.y) + 4, "portal");
+                                ScaleToHeight(portal, MapArt.PropHeight(def.Theme, "portal"));
+                            }
                             var glow = Add(root.transform, MapArt.Prop(def.Theme, "portal-glow", variant),
-                                world + Vector3.up * .03f, SortOrder(world.y) - 3, "portal-glow");
+                                world + Vector3.up * .03f, SortOrder(world.y) + 8, "portal-glow");
                             ScaleToHeight(glow, MapArt.PropHeight(def.Theme, "portal-glow"));
                             break;
                     }
@@ -119,7 +127,7 @@ namespace Numeria.Editor
             {
                 Vector3 world = new Vector3(discovery.X, map.Height - 1 - discovery.Y, 0);
                 var marker = Add(root.transform, SpriteLib.One("generated/Economy/numeria_coin"),
-                    world + Vector3.up * .22f, SortOrder(world.y) + 5, "discovery");
+                    world + Vector3.up * .22f, SortOrder(world.y) + 25, "discovery");
                 ScaleToHeight(marker, .62f);
             }
 
@@ -127,7 +135,7 @@ namespace Numeria.Editor
             {
                 Vector3 world = new Vector3(def.Merchant.X, map.Height - 1 - def.Merchant.Y, 0);
                 var merchant = Add(root.transform, SpriteLib.One(def.Merchant.SpriteResource),
-                    world + Vector3.up * .32f, SortOrder(world.y) + 7, "merchant");
+                    world + Vector3.up * .32f, SortOrder(world.y) + 30, "merchant");
                 ScaleToHeight(merchant, 1.35f);
             }
 
@@ -154,27 +162,9 @@ namespace Numeria.Editor
             UnityEngine.Object.DestroyImmediate(root);
         }
 
-        private static int NeighborMask(GridMap map, int x, int y, Tile tile)
-        {
-            bool Joins(int nx, int ny)
-            {
-                if (!map.InBounds(nx, ny)) return false;
-                Tile other = map.At(nx, ny);
-                if (tile == Tile.Path || tile == Tile.Bridge)
-                    return other == Tile.Path || other == Tile.Bridge;
-                if (tile == Tile.Water)
-                    return other == Tile.Water || other == Tile.Bridge;
-                if (tile == Tile.Cliff) return other == Tile.Cliff;
-                return other != Tile.Water && other != Tile.Cliff;
-            }
-
-            int mask = 0;
-            if (Joins(x, y - 1)) mask |= 1;
-            if (Joins(x + 1, y)) mask |= 2;
-            if (Joins(x, y + 1)) mask |= 4;
-            if (Joins(x - 1, y)) mask |= 8;
-            return mask;
-        }
+        private static bool IsEncounterClusterAnchor(GridMap map, int x, int y) =>
+            (y == 0 || map.At(x, y - 1) != Tile.Bush) &&
+            (x == 0 || map.At(x - 1, y) != Tile.Bush);
 
         private static SpriteRenderer Add(Transform parent, Sprite sprite, Vector3 position, int order, string name)
         {
@@ -194,7 +184,7 @@ namespace Numeria.Editor
             renderer.transform.localScale = Vector3.one * scale;
         }
 
-        private static int SortOrder(float worldY) => 1000 - (int)(worldY * 10);
+        private static int SortOrder(float worldY) => PaintedTerrainRenderer.SortOrder(worldY);
 
         private static Color Hex(string value)
         {

@@ -100,34 +100,13 @@ namespace Numeria.Game
 
         private Vector3 TileWorld(int x, int y) => new Vector3(x, _map.Height - 1 - y, 0);
 
-        private static int SortOrder(float worldY) => 1000 - (int)(worldY * 10);
-
-        private int NeighborMask(int x, int y, Tile tile)
-        {
-            bool Joins(int nx, int ny)
-            {
-                if (!_map.InBounds(nx, ny)) return false;
-                Tile other = _map.At(nx, ny);
-                if (tile == Tile.Path || tile == Tile.Bridge)
-                    return other == Tile.Path || other == Tile.Bridge;
-                if (tile == Tile.Water)
-                    return other == Tile.Water || other == Tile.Bridge;
-                if (tile == Tile.Cliff) return other == Tile.Cliff;
-                return other != Tile.Water && other != Tile.Cliff;
-            }
-
-            int mask = 0;
-            if (Joins(x, y - 1)) mask |= 1; // north / sprite top
-            if (Joins(x + 1, y)) mask |= 2;
-            if (Joins(x, y + 1)) mask |= 4;
-            if (Joins(x - 1, y)) mask |= 8;
-            return mask;
-        }
+        private static int SortOrder(float worldY) => PaintedTerrainRenderer.SortOrder(worldY);
 
         private void BuildWorld()
         {
             _mapRoot = new GameObject("MapRoot");
             _mapRoot.transform.SetParent(transform, false);
+            PaintedTerrainRenderer.Build(_mapRoot.transform, _map, _def.Theme);
 
             for (int y = 0; y < _map.Height; y++)
                 for (int x = 0; x < _map.Width; x++)
@@ -136,15 +115,11 @@ namespace Numeria.Game
                     int hash = (x * 73856093) ^ (y * 19349663);
                     int variant = ((hash % 97) + 97) % 97;
                     Tile tile = _map.At(x, y);
-                    int neighbors = NeighborMask(x, y, tile);
-                    var terrain = AddSprite(MapArt.Terrain(_def.Theme, tile, variant, neighbors), world, 0,
-                        $"terrain-{tile.ToString().ToLowerInvariant()}");
-                    terrain.color = MapArt.Tint(_def.Theme, tile);
 
                     switch (tile)
                     {
                         case Tile.Water:
-                            if (_def.Theme == "sky" && variant % 17 == 0)
+                            if (!MapArt.PaintedReady && _def.Theme == "sky" && variant % 17 == 0)
                             {
                                 var cloud = AddSprite(MapArt.Prop(_def.Theme, "obstacle", variant),
                                     world + Vector3.up * .08f, 1, "sky-cloud");
@@ -153,7 +128,7 @@ namespace Numeria.Game
                             }
                             break;
                         case Tile.Cliff:
-                            if ((_def.Theme == "mountains" || _def.Theme == "desert" ||
+                            if (!MapArt.PaintedReady && (_def.Theme == "mountains" || _def.Theme == "desert" ||
                                 _def.Theme == "dark_mines" || _def.Theme == "underground") && variant % 3 == 0)
                             {
                                 var rock = AddSprite(MapArt.Prop(_def.Theme, "obstacle", variant),
@@ -164,45 +139,55 @@ namespace Numeria.Game
                             }
                             break;
                         case Tile.Tree:
-                            var obstacle = AddSprite(MapArt.Prop(_def.Theme, "obstacle", variant),
-                                world + Vector3.up * .2f, SortOrder(world.y), $"{_def.Theme}-obstacle");
-                            obstacle.color = MapArt.Tint(_def.Theme, tile, "obstacle");
-                            ScaleSpriteToHeight(obstacle, MapArt.PropHeight(_def.Theme, "obstacle"));
+                            if (!MapArt.PaintedReady)
+                            {
+                                var obstacle = AddSprite(MapArt.Prop(_def.Theme, "obstacle", variant),
+                                    world + Vector3.up * .2f, SortOrder(world.y) + 10, $"{_def.Theme}-obstacle");
+                                obstacle.color = MapArt.Tint(_def.Theme, tile, "obstacle");
+                                ScaleSpriteToHeight(obstacle, MapArt.PropHeight(_def.Theme, "obstacle"));
+                            }
                             break;
                         case Tile.Bush:
+                            if (!IsEncounterClusterAnchor(x, y)) break;
                             var encounter = AddSprite(MapArt.Prop(_def.Theme, "encounter", variant),
-                                world + Vector3.up * .08f, SortOrder(world.y), $"{_def.Theme}-encounter");
+                                world + Vector3.up * .08f, SortOrder(world.y) + 12, $"{_def.Theme}-encounter");
                             encounter.color = MapArt.Tint(_def.Theme, tile, "encounter");
                             ScaleSpriteToHeight(encounter, MapArt.PropHeight(_def.Theme, "encounter"));
                             break;
                         case Tile.Landmark:
-                            var landmark = AddSprite(MapArt.Prop(_def.Theme, "landmark", variant),
-                                world + Vector3.up * .52f, SortOrder(world.y) + 2, $"{_def.Theme}-landmark");
-                            ScaleSpriteToHeight(landmark, MapArt.PropHeight(_def.Theme, "landmark"));
+                            if (!MapArt.PaintedReady)
+                            {
+                                var landmark = AddSprite(MapArt.Prop(_def.Theme, "landmark", variant),
+                                    world + Vector3.up * .52f, SortOrder(world.y) + 12, $"{_def.Theme}-landmark");
+                                ScaleSpriteToHeight(landmark, MapArt.PropHeight(_def.Theme, "landmark"));
+                            }
                             break;
                         case Tile.Bridge:
                             var bridge = AddSprite(MapArt.Prop(_def.Theme, "bridge", variant), world,
-                                2, $"{_def.Theme}-bridge");
+                                SortOrder(world.y) + 5, $"{_def.Theme}-bridge");
                             ScaleSpriteToHeight(bridge, MapArt.PropHeight(_def.Theme, "bridge"));
                             break;
                         case Tile.Chest:
                             bool opened = _progress.OpenedChests.Contains(ChestId(x, y));
                             string treasureKind = opened ? "treasure-opened" : "treasure";
                             var treasure = AddSprite(MapArt.Prop(_def.Theme, treasureKind, variant),
-                                world + Vector3.up * .08f, SortOrder(world.y) + 2, treasureKind);
+                                world + Vector3.up * .08f, SortOrder(world.y) + 15, treasureKind);
                             ScaleSpriteToHeight(treasure, MapArt.PropHeight(_def.Theme, treasureKind));
                             _chestRenderers[(x, y)] = treasure;
                             break;
                         case Tile.Portal:
                             // 主题建筑作为关卡出口，位于角色身后；水沫精灵提供统一的魔法光环。
-                            var portal = AddSprite(MapArt.Prop(_def.Theme, "portal", variant),
-                                world + Vector3.up * .48f, SortOrder(world.y) - 4, $"{_def.Theme}-portal");
-                            ScaleSpriteToHeight(portal, MapArt.PropHeight(_def.Theme, "portal"));
+                            if (!MapArt.PaintedReady)
+                            {
+                                var portal = AddSprite(MapArt.Prop(_def.Theme, "portal", variant),
+                                    world + Vector3.up * .48f, SortOrder(world.y) + 4, $"{_def.Theme}-portal");
+                                ScaleSpriteToHeight(portal, MapArt.PropHeight(_def.Theme, "portal"));
+                            }
                             _portalGlow = AddSprite(MapArt.Prop(_def.Theme, "portal-glow", variant),
-                                world + Vector3.up * .03f, SortOrder(world.y) - 3, "portal-glow");
+                                world + Vector3.up * .03f, SortOrder(world.y) + 8, "portal-glow");
                             ScaleSpriteToHeight(_portalGlow, MapArt.PropHeight(_def.Theme, "portal-glow"));
                             _bossMarker = AddSprite(SpriteLib.EnemyBattleSprite(_def.BossSpeciesId),
-                                world + new Vector3(0, .28f, 0), SortOrder(world.y) + 4, "boss-marker");
+                                world + new Vector3(0, .28f, 0), SortOrder(world.y) + 24, "boss-marker");
                             if (_bossMarker.sprite != null)
                             {
                                 float markerScale = .9f / Mathf.Max(.01f, _bossMarker.sprite.bounds.size.y);
@@ -217,7 +202,7 @@ namespace Numeria.Game
                 if (_progress.CollectedDiscoveries.Contains(discovery.Id)) continue;
                 Vector3 world = TileWorld(discovery.X, discovery.Y);
                 var marker = AddSprite(SpriteLib.One("generated/Economy/numeria_coin"),
-                    world + Vector3.up * .22f, SortOrder(world.y) + 5, $"discovery-{discovery.Id}");
+                    world + Vector3.up * .22f, SortOrder(world.y) + 25, $"discovery-{discovery.Id}");
                 ScaleSpriteToHeight(marker, .62f);
                 _discoveryRenderers[discovery.Id] = marker;
             }
@@ -226,7 +211,7 @@ namespace Numeria.Game
             {
                 Vector3 world = TileWorld(_def.Merchant.X, _def.Merchant.Y);
                 _merchantRenderer = AddSprite(SpriteLib.One(_def.Merchant.SpriteResource),
-                    world + Vector3.up * .32f, SortOrder(world.y) + 7, $"merchant-{_def.Merchant.Id}");
+                    world + Vector3.up * .32f, SortOrder(world.y) + 30, $"merchant-{_def.Merchant.Id}");
                 ScaleSpriteToHeight(_merchantRenderer, 1.35f);
             }
 
@@ -234,12 +219,16 @@ namespace Numeria.Game
             var avatarGo = new GameObject("Avatar");
             avatarGo.transform.SetParent(_mapRoot.transform, false);
             var sr = avatarGo.AddComponent<SpriteRenderer>();
-            sr.sortingOrder = SortOrder(TileWorld(_pos.x, _pos.y).y) + 10;
+            sr.sortingOrder = SortOrder(TileWorld(_pos.x, _pos.y).y) + 40;
             avatarGo.transform.position = TileWorld(_pos.x, _pos.y);
             _avatar = avatarGo.transform;
             ApplyAvatarSprite();
             RefreshPortalState();
         }
+
+        private bool IsEncounterClusterAnchor(int x, int y) =>
+            (y == 0 || _map.At(x, y - 1) != Tile.Bush) &&
+            (x == 0 || _map.At(x - 1, y) != Tile.Bush);
 
         private void ApplyAvatarSprite()
         {

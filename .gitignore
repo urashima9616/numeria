@@ -41,6 +41,10 @@ unity/Assets/Tiny Swords.meta
 # references are serialized into Numeria's catalog; do not redistribute it.
 unity/Assets/RPGW_Caves/
 unity/Assets/RPGW_Caves.meta
+# Tiles and Hexes is imported from the Unity Asset Store. The runtime catalog
+# keeps object references, but the third-party source art is not redistributed.
+unity/Assets/Terrain Tile Hex Samples/
+unity/Assets/Terrain Tile Hex Samples.meta
 unity/Assets/Resources/Music/LocalStore/*.wav
 unity/Assets/Resources/Music/LocalStore/*.wav.meta
 unity/Assets/Resources/Music/Jukebox/

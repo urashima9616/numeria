@@ -16,7 +16,7 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 | P0 — Project foundation | ✅ Complete | Repository, Unity project, asset pipelines |
 | P1 — Battle core | ✅ Complete | Skills, gems, number shields, ATK/DEF combat, VFX, narration |
 | P2 — Forest vertical slice | ✅ Complete | Exploration, encounters, catching, growth, chests, saving |
-| P3 — Full game systems | 🔶 Playable / polishing | Six mixed-art worlds, 141 Mathmons, evolution, economy, merchants, Lucas story |
+| P3 — Full game systems | 🔶 Playable / polishing | Six painterly worlds, 141 Mathmons, evolution, economy, merchants, Lucas story |
 | P4 — iOS delivery | ⬜ Not started | Device build, signing, TestFlight and final performance QA |
 
 The current verification baseline compiles all four Unity assemblies and passes **121/121 Unity EditMode tests**
@@ -63,11 +63,12 @@ The save format is currently **schema v9**, with non-destructive migration for o
 
 ### Exploration and economy
 
-- Six large, pathfinding-based worlds with chapter-specific art direction. Mystic Forest, Silent Peaks, Azure Sky
-  City, and Fever Desert use the painterly `Tiles and Hexes: 2D Painted Terrain Samples` tiles and props. Dark Mines
-  and Underground Tunnels use `RPG Worlds Caves` floors, rock walls, abyss tiles, bridges, and blue crystals. Roads,
-  water, cliffs, bridges, landmarks, treasure, and chapter exits remain semantic map tiles rather than
-  interchangeable decoration.
+- Six large, pathfinding-based worlds use the actual square tiles from `Tiles and Hexes: 2D Painted Terrain
+  Samples`. The renderer normalizes the pack's bottom-anchored 256×384 artwork to the gameplay grid and sorts lower
+  screen rows in front, so forests, snowy pines, mountains, castles, cacti, oceans, and volcanoes keep their painted
+  depth. Each chapter has its own palette and terrain mix; narrow translucent route overlays keep roads readable
+  without replacing the painted ground. Water, cliffs, bridges, landmarks, treasure, and exits remain semantic
+  gameplay tiles rather than interchangeable decoration.
 - Four visible math-discovery runes per map. Solving their themed puzzle awards one-time coins and occasional
   battle items; incorrect answers leave the discovery available for another attempt.
 - Ordinary enemies, merchant challenges, and bosses award region-scaled coins.
@@ -131,18 +132,17 @@ the exact track list are documented in [`docs/music-attribution.md`](docs/music-
 
 ### Install the licensed map art
 
-The first four chapters use the checked-in **Tiles and Hexes: 2D Painted Terrain Samples** sprites under
-`Resources/Cainos`. The two underground chapters use **RPG Worlds Caves**, whose licensed source PNGs are excluded
-from Git rather than redistributed as a standalone art pack. **Tiny Swords** remains an optional legacy fallback.
+All six chapters use **Tiles and Hexes: 2D Painted Terrain Samples**. Its Asset Store source PNGs are excluded from
+Git rather than redistributed as a standalone art pack. **RPG Worlds Caves** and **Tiny Swords** remain optional
+legacy fallbacks only; neither is selected when the Painted Terrain catalog is complete.
 
-1. Import RPG Worlds Caves into `unity/Assets/RPGW_Caves` (and, if desired, Tiny Swords into
-   `unity/Assets/Tiny Swords`).
+1. Import Tiles and Hexes into the default `unity/Assets/Terrain Tile Hex Samples` directory.
 2. In Unity, run **Numeria → Rebuild Map Asset Catalogs**.
 3. Optionally run **Numeria → Export Map Previews** to render all six complete maps to
    `/tmp/numeria-map-previews` for visual review.
 
-The generated catalog stores Unity object references only. Licensed RPG Worlds Caves and Tiny Swords source files
-remain ignored, while runtime selection, semantic layouts, and tests stay version-controlled.
+The generated catalog stores Unity object references only. Third-party source files remain ignored, while runtime
+selection, semantic layouts, route rendering, and tests stay version-controlled.
 
 ## Run the Web battle prototype
 
@@ -197,8 +197,7 @@ Unity EditMode tests, with the Unity Editor closed:
 - **Unity 2D / C#** with a pure `Numeria.Core` logic assembly and a programmatic UGUI/TMP presentation layer.
 - Deterministic injected RNG for battles, encounter generation, rewards, and puzzle tests.
 - Breadth-first pathfinding over semantic ASCII-authored maps (`~` water, `=` road, `B` bridge, `#` cliff,
-  `L` landmark), rendered through chapter-aware Painted Terrain / RPG Worlds Caves selection with a Tiny Swords
-  fallback.
+  `L` landmark), rendered through a chapter-aware Painted Terrain layer with optional legacy fallbacks.
 - Local JSON saves in `Application.persistentDataPath`, ten slots, and explicit schema migration.
 - Convention-based `Resources` loading with generated-art fallbacks and automatic pixel-art import settings.
 - Offline Samantha narration WAVs, independent voice/SFX/music settings, and mood-based music crossfades.

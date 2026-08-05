@@ -34,5 +34,21 @@ namespace Numeria.Game
         public Sprite CaveLandmark;
         public Sprite CavePortal;
         public Sprite CaveGlow;
+
+        // Tiles and Hexes: 2D Painted Terrain Samples. These are individual,
+        // bottom-anchored square tiles; the source pack stays local while this
+        // catalog serializes the references needed by runtime builds.
+        public Sprite PaintedBase;
+        public Sprite PaintedBelowDirt;
+        public Sprite PaintedBelowWater;
+        public Sprite PaintedDesert;
+        public Sprite PaintedForest;
+        public Sprite PaintedSnowForest;
+        public Sprite PaintedJungle;
+        public Sprite PaintedMountain;
+        public Sprite PaintedOcean;
+        public Sprite PaintedPlains;
+        public Sprite PaintedCastle;
+        public Sprite PaintedVolcano;
     }
 }

@@ -6,14 +6,14 @@ using UnityEngine;
 
 namespace Numeria.Editor
 {
-    /// <summary>把本地 Tiny Swords / RPG Worlds Caves 引用写入 Resources catalog，供运行时安全加载。</summary>
+    /// <summary>把本地地图素材引用写入 Resources catalog，供运行时安全加载。</summary>
     public static class TinySwordsCatalogBuilder
     {
         private const string Root = "Assets/Tiny Swords/";
         private const string CaveRoot = "Assets/RPGW_Caves/Sliced/";
+        private const string PaintedRoot = "Assets/Terrain Tile Hex Samples/Tile Samples/";
         private const string CatalogPath = "Assets/Resources/generated/TinySwordsMapCatalog.asset";
 
-        [MenuItem("Numeria/Rebuild Tiny Swords Catalog")]
         public static void Rebuild()
         {
             var catalog = AssetDatabase.LoadAssetAtPath<TinySwordsCatalog>(CatalogPath);
@@ -111,9 +111,25 @@ namespace Numeria.Editor
             catalog.CavePortal = CaveAt("decorative.png", 1, 21);
             catalog.CaveGlow = CaveAt("decorative.png", 0, 18);
 
+            catalog.PaintedBase = Painted("base00.png");
+            catalog.PaintedBelowDirt = Painted("below_dirt00.png");
+            catalog.PaintedBelowWater = Painted("below_water00.png");
+            catalog.PaintedDesert = Painted("desertYellowCactiForest00.png");
+            catalog.PaintedForest = Painted("forestBroadleaf00.png");
+            catalog.PaintedSnowForest = Painted("forestPineSnowCovered00.png");
+            catalog.PaintedJungle = Painted("jungle00.png");
+            catalog.PaintedMountain = Painted("mountain00.png");
+            catalog.PaintedOcean = Painted("oceanCalm00.png");
+            catalog.PaintedPlains = Painted("plains00.png");
+            catalog.PaintedCastle = Painted("plains_castle00.png");
+            catalog.PaintedVolcano = Painted("volcanoActive00.png");
+
             EditorUtility.SetDirty(catalog);
             AssetDatabase.SaveAssets();
-            Debug.Log($"MAP_CATALOG_READY tiny={catalog.Terrain1.Length} cave={catalog.CaveFloorDark.Length} path={CatalogPath}");
+            int tinyCount = catalog.Terrain1?.Length ?? 0;
+            int caveCount = catalog.CaveFloorDark?.Length ?? 0;
+            Debug.Log($"MAP_CATALOG_READY painted={(catalog.PaintedPlains != null ? 12 : 0)} " +
+                      $"tiny={tinyCount} cave={caveCount} path={CatalogPath}");
         }
 
         [MenuItem("Numeria/Rebuild Map Asset Catalogs")]
@@ -132,6 +148,9 @@ namespace Numeria.Editor
         private static Sprite First(string relative) => Sheet(relative).FirstOrDefault();
 
         private static Sprite Single(string relative) => AssetDatabase.LoadAssetAtPath<Sprite>(Root + relative);
+
+        private static Sprite Painted(string relative) =>
+            AssetDatabase.LoadAssetAtPath<Sprite>(PaintedRoot + relative);
 
         private static Sprite[] CaveCells(string relative, params Vector2Int[] cells) =>
             cells.Select(cell => CaveAt(relative, cell.x, cell.y)).Where(sprite => sprite != null).ToArray();

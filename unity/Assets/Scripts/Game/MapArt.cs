@@ -4,8 +4,8 @@ using UnityEngine;
 namespace Numeria.Game
 {
     /// <summary>
-    /// 混合地图素材运行时选图器：前四章使用 Painted Terrain，深层两章使用
-    /// RPG Worlds Caves，Tiny Swords 作为本地素材未安装时的安全回退。
+    /// 六章地图统一使用 Tiles and Hexes: 2D Painted Terrain Samples。
+    /// 旧 Tiny Swords / RPG Worlds Caves 引用只在 Painted 素材尚未导入时作为安全回退。
     /// </summary>
     public static class MapArt
     {
@@ -14,17 +14,20 @@ namespace Numeria.Game
             _catalog != null ? _catalog : _catalog = Resources.Load<TinySwordsCatalog>("generated/TinySwordsMapCatalog");
 
         public static bool Ready => Catalog != null && Catalog.Terrain1 != null && Catalog.Terrain1.Length >= 44;
-        public static bool PaintedReady => SpriteLib.Cainos("TX Tileset Grass", "TX Tileset Grass 0") != null &&
-                                           SpriteLib.Cainos("TX Tileset Stone Ground", "TX Tileset Stone Ground_9") != null &&
-                                           SpriteLib.Cainos("TX Tileset Wall", "TX Tileset Wall_6") != null;
+        public static bool PaintedReady => Catalog != null && Catalog.PaintedBase != null &&
+                                           Catalog.PaintedDesert != null && Catalog.PaintedForest != null &&
+                                           Catalog.PaintedSnowForest != null && Catalog.PaintedJungle != null &&
+                                           Catalog.PaintedMountain != null && Catalog.PaintedOcean != null &&
+                                           Catalog.PaintedPlains != null && Catalog.PaintedCastle != null &&
+                                           Catalog.PaintedVolcano != null;
         public static bool CaveReady => Catalog != null && Catalog.CaveFloorDark != null &&
                                         Catalog.CaveFloorDark.Length >= 4 && Catalog.CaveWalls != null &&
                                         Catalog.CaveWalls.Length >= 4;
 
         public static Sprite Terrain(string theme, Tile tile, int variant, int neighbors)
         {
-            if (IsCave(theme) && CaveReady) return CaveTerrain(theme, tile, variant);
             if (PaintedReady) return PaintedTerrain(theme, tile, variant);
+            if (IsCave(theme) && CaveReady) return CaveTerrain(theme, tile, variant);
             if (!Ready) return null;
             if (tile == Tile.Water || tile == Tile.Bridge) return Catalog.Water;
 
@@ -36,8 +39,8 @@ namespace Numeria.Game
 
         public static Sprite Prop(string theme, string kind, int variant)
         {
-            if (IsCave(theme) && CaveReady) return CaveProp(kind, variant);
             if (PaintedReady) return PaintedProp(theme, kind, variant);
+            if (IsCave(theme) && CaveReady) return CaveProp(kind, variant);
             if (!Ready) return null;
             Sprite[] choices;
             switch (kind)
@@ -60,6 +63,7 @@ namespace Numeria.Game
 
         public static Color Tint(string theme, Tile tile, string kind = null)
         {
+            if (PaintedReady && kind == null) return Color.white;
             if (IsCave(theme)) return Color.white;
             if (kind == "bridge" || kind == "landmark" || kind == "portal" ||
                 kind == "portal-glow" || kind == "treasure" || kind == "treasure-opened")
@@ -82,16 +86,6 @@ namespace Numeria.Game
 
         public static float PropHeight(string theme, string kind)
         {
-            if (IsCave(theme))
-            {
-                if (kind == "landmark") return 1.9f;
-                if (kind == "portal") return 1.8f;
-                if (kind == "portal-glow") return .82f;
-                if (kind == "treasure") return .8f;
-                if (kind == "treasure-opened") return .55f;
-                if (kind == "encounter") return .72f;
-                return kind == "bridge" ? 1f : .88f;
-            }
             if (PaintedReady)
             {
                 if (kind == "landmark") return 1.8f;
@@ -101,6 +95,16 @@ namespace Numeria.Game
                 if (kind == "encounter") return .72f;
                 if (kind == "bridge") return 1f;
                 return theme == "forest" ? 1.35f : .92f;
+            }
+            if (IsCave(theme))
+            {
+                if (kind == "landmark") return 1.9f;
+                if (kind == "portal") return 1.8f;
+                if (kind == "portal-glow") return .82f;
+                if (kind == "treasure") return .8f;
+                if (kind == "treasure-opened") return .55f;
+                if (kind == "encounter") return .72f;
+                return kind == "bridge" ? 1f : .88f;
             }
             if (kind == "landmark") return theme == "sky" ? 2.8f : 2.5f;
             if (kind == "portal") return 2.15f;
@@ -139,21 +143,81 @@ namespace Numeria.Game
             }
         }
 
+        public static Color TerrainTint(string theme, Tile tile, Sprite sprite)
+        {
+            if (!PaintedReady || sprite == null) return Tint(theme, tile);
+            switch (theme)
+            {
+                case "mountains":
+                    if (sprite == Catalog.PaintedBase) return Hex("#8796a0");
+                    return Color.white;
+                case "sky":
+                    if (sprite == Catalog.PaintedOcean) return Hex("#92d8ee");
+                    if (sprite == Catalog.PaintedBase) return Hex("#9cc8d2");
+                    return Hex("#edf7f5");
+                case "desert":
+                    if (sprite == Catalog.PaintedBase) return Hex("#c9935f");
+                    if (sprite == Catalog.PaintedPlains) return Hex("#d4b46d");
+                    return Color.white;
+                case "dark_mines":
+                    if (sprite == Catalog.PaintedOcean) return Hex("#273347");
+                    if (sprite == Catalog.PaintedBase) return Hex("#555b6a");
+                    if (sprite == Catalog.PaintedVolcano) return Hex("#725f76");
+                    return Hex("#8b8593");
+                case "underground":
+                    if (sprite == Catalog.PaintedOcean) return Hex("#3b2852");
+                    if (sprite == Catalog.PaintedBase) return Hex("#725d7a");
+                    if (sprite == Catalog.PaintedVolcano) return Hex("#8d6578");
+                    return Hex("#807087");
+                default:
+                    if (sprite == Catalog.PaintedBase) return Hex("#b8aa82");
+                    return Color.white;
+            }
+        }
+
         private static Sprite PaintedTerrain(string theme, Tile tile, int variant)
         {
-            if (tile == Tile.Cliff)
-                // _6 是一块完整的砖墙中段；边角切片随机铺地会产生破碎拼布。
-                return SpriteLib.Cainos("TX Tileset Wall", "TX Tileset Wall_6");
+            if (tile == Tile.Water) return Catalog.PaintedOcean;
+            if (tile == Tile.Landmark) return Catalog.PaintedCastle;
+            if (tile == Tile.Portal)
+                return IsCave(theme) ? Catalog.PaintedVolcano : Catalog.PaintedCastle;
+            if (tile == Tile.Path || tile == Tile.Bridge)
+                return theme == "desert" ? Catalog.PaintedPlains :
+                    IsCave(theme) ? Catalog.PaintedBase : Catalog.PaintedPlains;
 
-            if (theme == "forest" && tile != Tile.Path && tile != Tile.Bridge && tile != Tile.Water)
+            switch (theme)
             {
-                int grass = variant % 16;
-                return SpriteLib.Cainos("TX Tileset Grass", $"TX Tileset Grass {grass}") ??
-                       SpriteLib.Cainos("TX Tileset Grass", $"TX Tileset Grass Flower {grass}");
+                case "forest":
+                    if (tile == Tile.Tree)
+                        return variant % 5 == 0 ? Catalog.PaintedJungle : Catalog.PaintedForest;
+                    if (tile == Tile.Bush)
+                        return variant % 3 == 0 ? Catalog.PaintedForest : Catalog.PaintedJungle;
+                    if (tile == Tile.Cliff) return Catalog.PaintedMountain;
+                    return Catalog.PaintedPlains;
+                case "mountains":
+                    if (tile == Tile.Cliff) return Catalog.PaintedMountain;
+                    if (tile == Tile.Tree) return Catalog.PaintedSnowForest;
+                    if (tile == Tile.Bush && variant % 3 == 0) return Catalog.PaintedSnowForest;
+                    return Catalog.PaintedPlains;
+                case "sky":
+                    if (tile == Tile.Cliff || tile == Tile.Tree) return Catalog.PaintedMountain;
+                    return Catalog.PaintedPlains;
+                case "desert":
+                    if (tile == Tile.Cliff)
+                        return variant % 5 == 0 ? Catalog.PaintedMountain : Catalog.PaintedDesert;
+                    if (tile == Tile.Bush || tile == Tile.Tree) return Catalog.PaintedDesert;
+                    return Catalog.PaintedPlains;
+                case "dark_mines":
+                    if (tile == Tile.Cliff || tile == Tile.Tree)
+                        return variant % 4 == 0 ? Catalog.PaintedVolcano : Catalog.PaintedMountain;
+                    return Catalog.PaintedBase;
+                case "underground":
+                    if (tile == Tile.Cliff || tile == Tile.Tree)
+                        return variant % 4 == 0 ? Catalog.PaintedMountain : Catalog.PaintedVolcano;
+                    return Catalog.PaintedBase;
+                default:
+                    return Catalog.PaintedPlains;
             }
-
-            // _9 是唯一四边都无边框的可平铺样本。其他编号是 RuleTile 边、角与缺口。
-            return SpriteLib.Cainos("TX Tileset Stone Ground", "TX Tileset Stone Ground_9");
         }
 
         private static Sprite PaintedProp(string theme, string kind, int variant)
@@ -161,7 +225,7 @@ namespace Numeria.Game
             switch (kind)
             {
                 case "bridge":
-                    return SpriteLib.Cainos("TX Tileset Stone Ground", "TX Tileset Stone Ground_4");
+                    return null;
                 case "portal-glow":
                     return SpriteLib.Cainos("TX Props", $"TX Props Altar Rune {(variant % 4) + 1}");
                 case "treasure":
@@ -169,21 +233,19 @@ namespace Numeria.Game
                 case "treasure-opened":
                     return SpriteLib.Cainos("TX Props", "TX Props Chest Opened");
                 case "portal":
-                    return SpriteLib.Cainos("TX Props", "TX Props Altar");
+                    return null;
                 case "landmark":
-                    return SpriteLib.Cainos("TX Props", theme == "forest" ? "TX Props Well" :
-                        theme == "mountains" ? "TX Props Statue" :
-                        theme == "sky" ? "TX Props Rune Pillar X3" : "TX Props Rune Pillar X2");
+                    // Landmark / portal architecture is embedded in the Painted terrain tile.
+                    return null;
                 case "encounter":
                     if (theme == "forest")
                         return SpriteLib.Cainos("TX Plant", $"TX Bush T{(variant % 6) + 1}");
-                    if (theme == "sky")
+                    if (theme == "sky" || theme == "dark_mines" || theme == "underground")
                         return SpriteLib.Cainos("TX Props", $"TX Props Altar Rune {(variant % 4) + 1}");
                     return SpriteLib.Cainos("TX Plant", $"TX Plant - Grass {((variant % 15) + 1):00}");
                 default:
-                    if (theme == "forest") return SpriteLib.Cainos("TX Plant", "TX Bush T6");
-                    if (theme == "sky") return SpriteLib.Cainos("TX Props", "TX Props Pillar");
-                    return SpriteLib.Cainos("TX Props", $"TX Props - Stone {((variant % 6) + 1):00}");
+                    // Forests, cliffs and mountains are already represented by full Painted tiles.
+                    return null;
             }
         }
 

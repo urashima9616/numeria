@@ -41,7 +41,7 @@
 
 ### Game 层(`Numeria.Game`)
 - **全程序化 UGUI,零场景文件**——所有界面代码搭建,SampleScene 只是空壳,`BattleBootstrap` 用 `RuntimeInitializeOnLoadMethod` 拉起 `MapController`
-- `MapController`:六张 32×18 地图、点触 BFS + 跟随相机、带权多物种生态、宝箱谜题、全宝箱后 Boss 图标与三题开门试炼、掉落与进化试炼。`MapArt` 按章节分流:前四章用 Tiles and Hexes Painted Terrain,黑暗矿山/地底隧道用 RPG Worlds Caves,Tiny Swords 仅作素材缺失时回退
+- `MapController`:六张 32×18 地图、点触 BFS + 跟随相机、带权多物种生态、宝箱谜题、全宝箱后 Boss 图标与三题开门试炼、掉落与进化试炼。六章统一由 `PaintedTerrainRenderer` 使用 Tiles and Hexes Painted Terrain:按底部锚点缩放到语义格、下方行覆盖上方行、主题配色 + 半透明窄道路;RPG Worlds Caves/Tiny Swords 只在 Painted catalog 不完整时回退
 - `BattleController`:`Init(enemy, progress, tier, battleBg, onEnd)`;双方状态牌显示 ATK/DEF,普通怪与 Boss HP 均按关卡和物种成长合理浮动
 - `SkillDef` 保存独立 `IconResource` + `SkillVisualKind`;11 条家族各有专属像素图标与战斗弹道/命中节奏,不要再硬编码 `Flame_Formula`
 - `PuzzleUi`:谜题遮罩共用;第一关 10 内加减+图形/彩色规律/数字路径,第二关 20 内并加入三项连加/等式平衡/ABC-AAB,第三关 30 内并加入四项连加/正反数字路径/四类图案匹配,第四关扩展到 40 并混合高阶题型;旋转题已彻底淘汰;传送门三题必含算术
@@ -54,8 +54,8 @@
 ### Editor 层
 - `PixelArtImporter`:`Resources/Art` 与 `Resources/generated` 自动 Sprite/Point/不压缩/AlphaIsTransparency;**素材包 `UI/` 目录强制 100 PPU**(见 §6 坑 3),9-slice border 表与包内 JSON 一致
 - `PackReimportGuard`:域重载后自检素材包导入参数,不对就强制重导入(自愈时序坑)
-- `TinySwordsCatalogBuilder`:将本地 `Assets/RPGW_Caves` 与可选 `Assets/Tiny Swords` 写入运行时 Sprite 引用表;导入/升级素材包后运行 **Numeria → Rebuild Map Asset Catalogs**
-- `MapPreviewExporter`:使用与游戏相同的 `MapArt` 逻辑离屏渲染六章全景图;菜单 **Numeria → Export Map Previews**,默认输出 `/tmp/numeria-map-previews`;批处理预览必须保留图形管线,不要加 `-nographics`
+- `TinySwordsCatalogBuilder`:将本地 `Assets/Terrain Tile Hex Samples`(以及可选旧素材)写入运行时 Sprite 引用表;导入/升级素材包后运行 **Numeria → Rebuild Map Asset Catalogs**
+- `MapPreviewExporter`:使用与游戏相同的 `PaintedTerrainRenderer` + `MapArt` 逻辑离屏渲染六章全景图;菜单 **Numeria → Export Map Previews**,默认输出 `/tmp/numeria-map-previews`;批处理预览必须保留图形管线,不要加 `-nographics`
 
 ## 4. 当前进度(对照 roadmap)
 
@@ -72,7 +72,7 @@
   - ✅ 谜题稳定性与多样性:第四关 31–40 英文数字越界已修复;Find Pattern 混合形状/颜色/缺口位置,Match Pattern 有精确/镜像/只看形状/只看颜色;破盾循环每次均可靠触发并显示 2×
   - ✅ 141 只数灵 / 48 条线:在既有阵容上新增 Electric、Rock、Dragon、Fire 各 4 条三段线;全部有统一高清图标、技能、成长与进化语音
   - ✅ 狂热沙漠(Fever Desert):第四章地图、20 家族进化态生态、商人 Nia、守护者 Solara、Solar Totalisk Boss 与第四枚水晶
-  - ✅ 黑暗矿山与地底隧道:两张独立 RPG Worlds Caves 地图、暗色岩壁/深渊桥/蓝色晶簇视觉、商人 Mara/Rune、守护者 Vesper/Echo、两位新 Boss 与第五/第六枚水晶
+  - ✅ 黑暗矿山与地底隧道:两张独立 Painted Terrain 深层地图、暗色山岩/深水/火山视觉、商人 Mara/Rune、守护者 Vesper/Echo、两位新 Boss 与第五/第六枚水晶
   - ✅ 音频系统:10 种 SFX + 9 首 8-bit Jukebox Lite 本地 mood + 语音 duck/独立开关
   - ✅ 99级平衡:各物种 HP/ATK/DEF 成长、动态等级差经验、普通怪 HP 92%–108% 波动、动态 Boss 倍率、±1 伤害波动
   - ✅ 扩图与系统:带权生态、山脉重绘、全宝箱 Boss 条件、战斗消耗品/掉落、RECORDS 存档
@@ -82,7 +82,7 @@
   - ✅ 探索经济:每图 4 个主题数学符文、战斗金币、六位商人挑战、永久限量库存、消耗品/饰品/进化石平衡,见 `docs/economy-design.md`
   - ✅ Lucas 主线:标题页与有声开场、六位 Crystal Guardian 的 Boss 前后对白、六枚 Digit Crystal、旧存档至 v9 无损兼容及结局节点,见 `docs/main-story.md`
   - ✅ 存档入口重构:标题页选择新游戏/读取游戏与十槽存档;新游戏真正清空宝箱等世界状态;设置页以保存提示返回主菜单
-  - ✅ 六章地图重构:前四章使用 Tiles and Hexes Painted Terrain 的草地/石地/墙体/植物/遗迹,后两章使用 RPG Worlds Caves 的地面/岩壁/深渊/晶簇;六张独立 32×18 布局的每图 5 个宝藏、1 个章节出口和 1 个地标均有可达性测试
+  - ✅ 六章地图重构:六章全部使用真正的 Tiles and Hexes Painted Terrain 方形素材;256×384 底锚点按语义格归一化并逐行排序,道路另加窄叠层保持可读;每章拥有独立的森林/雪山/海岛/沙漠/矿山/火山组合;六张 32×18 布局的每图 5 个宝藏、1 个章节出口和 1 个地标均有可达性测试
   - ⬜ 未做:JSON 数据驱动落地(现在数值在 GameData/MapDefs 硬编码)、自适应难度引擎(错题变形复现/隐形升降档)、家长面板(PIN + 掌握度热图)
 - ⬜ **P4**:iOS 构建、真机、TestFlight(免费 Apple ID 7 天签名 vs $99/年,已告知用户)
 
@@ -107,7 +107,7 @@
   - 加载优先级封装在 `SpriteLib`:pack → generated 单图 → 16px 像素图,**永远有回退**
   - 缺的图:Duplirock/Doublit/Sumdrake 的 Battle_Front、Sumdrake Battle_Back、山脉/天空城战斗背景、UI Icons 里的 Shield
   - 带色幕的生成图用 `node tools/key-out-bg.mjs <in> <out>` 抠透明(边缘泛洪 + 去色晕)
-- **地图素材分层**:`Resources/Cainos` 内的 Tiles and Hexes Painted Terrain 随仓库供前四章使用;`RPGW_Caves` 与可选 Tiny Swords 为本地授权源包,已在 `.gitignore` 排除,不能强行提交。导入后运行 `Numeria/Rebuild Map Asset Catalogs`;仓库只保存引用 catalog、选图代码、地图布局和测试
+- **地图素材分层**:`Terrain Tile Hex Samples` 才是真正的 Tiles and Hexes Painted Terrain(不是 `Resources/Cainos`);它和 RPGW_Caves/Tiny Swords 都是本地素材包,已在 `.gitignore` 排除,不能强行提交。六章正常运行只需前者;导入后运行 `Numeria/Rebuild Map Asset Catalogs`;仓库只保存引用 catalog、逐行绘制/选图代码、地图布局和测试
 
 ## 6. 踩过的坑(接手必读,别再踩)
 
@@ -126,7 +126,7 @@
 7. 用户 shell 的 `rm` 是 `rm -i` 别名,脚本里用 `rm -f`;Node 26 的 `node --test <目录>` 坏的,用 glob(package.json 已配好)
 8. Web Speech/浏览器音频需要用户手势解锁——Unity 版已绕开(预烘焙 wav),但 Web 原型如再动要记得
 9. 语音新句子:**先加 bake 脚本跑掉,再写 C#**,否则静默无声
-10. **RPG Worlds Caves 不是仓库内置素材**:新 clone 的黑暗矿山/地底隧道若回退或为空,先从拥有许可的 Asset Store 帐号导入到 `Assets/RPGW_Caves`,再重建 map catalog。不要复制源 PNG 到公开仓库
+10. **Painted Terrain 不是 Cainos**:`Resources/Cainos` 是另一套 Pixel Art Top Down Basic,不能拿它冒充 Tiles and Hexes。新 clone 必须从有许可的 Asset Store 帐号把 `Tiles and Hexes: 2D Painted Terrain Samples` 导入默认 `Assets/Terrain Tile Hex Samples`,再重建 map catalog。不要复制任何第三方源 PNG 到公开仓库
 
 ## 7. 工作流约定
 
