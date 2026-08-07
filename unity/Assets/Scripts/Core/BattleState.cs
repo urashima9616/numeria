@@ -97,6 +97,80 @@ namespace Numeria.Core
     }
 
     /// <summary>
+    /// 每个 Mathmon 都由物种 ID 稳定派生一份 Mega 配置。无需逐个维护 141 份数据，
+    /// 新增物种也会自动获得 25–35% 增幅、外形变体和专属强力技能。
+    /// </summary>
+    public sealed class MegaProfile
+    {
+        public int BonusPercent;
+        public int AppearanceVariant;
+        public SkillDef Skill;
+    }
+
+    public static class MegaSystem
+    {
+        public const int RequiredGems = 7;
+        public const int MinimumBonusPercent = 25;
+        public const int MaximumBonusPercent = 35;
+
+        public static MegaProfile For(CombatantDef combatant)
+        {
+            if (combatant == null) throw new ArgumentNullException(nameof(combatant));
+            uint hash = StableHash(combatant.Id ?? combatant.Name ?? "mathmon");
+            int bonus = MinimumBonusPercent +
+                        (int)(hash % (MaximumBonusPercent - MinimumBonusPercent + 1));
+            var theme = combatant.Skills?
+                .Where(skill => skill != null && skill.Type == SkillType.Formula)
+                .OrderByDescending(skill => skill.Power)
+                .FirstOrDefault();
+            var strongest = combatant.Skills?
+                .Where(skill => skill != null)
+                .OrderByDescending(skill => skill.Power)
+                .FirstOrDefault();
+            int power = Math.Max(9, (strongest?.Power ?? 4) + 5);
+
+            return new MegaProfile
+            {
+                BonusPercent = bonus,
+                AppearanceVariant = (int)((hash / 11u) % 3u),
+                Skill = new SkillDef
+                {
+                    Id = $"mega-{combatant.Id}-nova",
+                    Name = $"{combatant.Name} Nova",
+                    Cost = 0,
+                    Power = power,
+                    BasePower = power,
+                    Type = SkillType.Basic,
+                    IconResource = theme?.IconResource ?? strongest?.IconResource,
+                    Visual = theme?.Visual ?? strongest?.Visual ?? SkillVisualKind.Physical,
+                }
+            };
+        }
+
+        public static int BoostedStat(int baseStat, int bonusPercent)
+        {
+            if (baseStat <= 0) return 0;
+            int clamped = Math.Max(MinimumBonusPercent,
+                Math.Min(MaximumBonusPercent, bonusPercent));
+            return (baseStat * (100 + clamped) + 99) / 100;
+        }
+
+        private static uint StableHash(string value)
+        {
+            unchecked
+            {
+                uint hash = 2166136261u;
+                foreach (char c in value)
+                {
+                    hash ^= c;
+                    hash *= 16777619u;
+                }
+                return hash;
+            }
+        }
+    }
+
+    /// <summary>
     /// 战斗状态机,移植自 Web 原型 battle.js(已验证的逻辑)。
     /// 零惩罚不变量:答错谜题绝不扣玩家 HP,技能以 BasePower 释放。
     /// </summary>
@@ -113,6 +187,9 @@ namespace Numeria.Core
         public int EnemySkipTurns;
         public int PlayerAttackBonus;
         public int PlayerDefenseBonus;
+        public MegaProfile Mega { get; }
+        public bool MegaActive { get; private set; }
+        public int MegaActivationCount { get; private set; }
         public BattleOutcome Outcome = BattleOutcome.None;
         private readonly Rng _rng;
 
@@ -124,19 +201,66 @@ namespace Numeria.Core
             PlayerHp = player.MaxHp;
             EnemyHp = enemy.MaxHp;
             EnemyShielded = enemy.Shield.HasValue;
+            Mega = MegaSystem.For(player);
         }
 
-        public void StartPlayerTurn() => Gems = Math.Min(MaxGems, Gems + 2);
+        public int EffectivePlayerMaxHp => MegaActive
+            ? MegaSystem.BoostedStat(Player.MaxHp, Mega.BonusPercent)
+            : Player.MaxHp;
+
+        public int EffectivePlayerAttack =>
+            (MegaActive ? MegaSystem.BoostedStat(Player.AttackPower, Mega.BonusPercent) : Player.AttackPower) +
+            PlayerAttackBonus;
+
+        public int EffectivePlayerDefense =>
+            (MegaActive ? MegaSystem.BoostedStat(Player.DefensePower, Mega.BonusPercent) : Player.DefensePower) +
+            PlayerDefenseBonus;
+
+        public bool CanMegaEvolve => Outcome == BattleOutcome.None && !MegaActive && Gems >= MegaSystem.RequiredGems;
+        public bool CanRestoreGems => !MegaActive;
+
+        public int SkillCost(SkillDef skill) => MegaActive ? 0 : Math.Max(0, skill?.Cost ?? 0);
+
+        public void StartPlayerTurn()
+        {
+            // Mega 必须持续净消耗 Gem；否则每回合自动 +2 会令形态永不结束。
+            if (!MegaActive) Gems = Math.Min(MaxGems, Gems + 2);
+        }
+
+        /// <summary>数学谜题答对且拥有至少 7 Gem 才能激活；激活不消耗当前行动。</summary>
+        public bool TryActivateMega(bool puzzleSolved)
+        {
+            if (!puzzleSolved || !CanMegaEvolve) return false;
+            int oldMax = Player.MaxHp;
+            MegaActive = true;
+            MegaActivationCount++;
+            PlayerHp += EffectivePlayerMaxHp - oldMax;
+            return true;
+        }
+
+        /// <summary>
+        /// 每个玩家行动结束后调用。返回 true 表示本次消耗令 Gem 归零并触发退化。
+        /// </summary>
+        public bool ConsumeMegaTurn()
+        {
+            if (!MegaActive) return false;
+            Gems = Math.Max(0, Gems - 1);
+            if (Gems > 0) return false;
+            MegaActive = false;
+            PlayerHp = Math.Min(PlayerHp, Player.MaxHp);
+            return true;
+        }
 
         public int HealPlayer(int amount)
         {
             int before = PlayerHp;
-            PlayerHp = Math.Min(Player.MaxHp, PlayerHp + Math.Max(0, amount));
+            PlayerHp = Math.Min(EffectivePlayerMaxHp, PlayerHp + Math.Max(0, amount));
             return PlayerHp - before;
         }
 
         public int RestoreGems(int amount)
         {
+            if (!CanRestoreGems) return 0;
             int before = Gems;
             Gems = Math.Min(MaxGems, Gems + Math.Max(0, amount));
             return Gems - before;
@@ -170,13 +294,16 @@ namespace Numeria.Core
 
         public SkillResult UseSkill(string skillId, bool correct = true)
         {
-            var skill = Player.Skills.First(s => s.Id == skillId);
-            if (Gems < skill.Cost) throw new InvalidOperationException("not enough gems");
-            Gems -= skill.Cost;
+            var skill = Player.Skills.FirstOrDefault(s => s.Id == skillId);
+            if (skill == null && MegaActive && Mega.Skill.Id == skillId) skill = Mega.Skill;
+            if (skill == null) throw new InvalidOperationException("skill is not available");
+            int cost = SkillCost(skill);
+            if (Gems < cost) throw new InvalidOperationException("not enough gems");
+            Gems -= cost;
 
             bool powered = skill.Type != SkillType.Formula || correct;
             int attack = (powered ? skill.Power : skill.BasePower) +
-                         Player.AttackPower + PlayerAttackBonus;
+                         EffectivePlayerAttack;
             bool breakBonusApplied = Enemy.Shield.HasValue && !EnemyShielded && BreakBonusReady;
             int dmg = DamageToEnemy(attack);
             EnemyHp = Math.Max(0, EnemyHp - dmg);
@@ -213,7 +340,7 @@ namespace Numeria.Core
 
         public int EnemyTurn()
         {
-            int dmg = RollDamage(Enemy.AttackPower, Player.DefensePower + PlayerDefenseBonus);
+            int dmg = RollDamage(Enemy.AttackPower, EffectivePlayerDefense);
             PlayerHp = Math.Max(0, PlayerHp - dmg);
             if (PlayerHp == 0) Outcome = BattleOutcome.Lose;
             return dmg;

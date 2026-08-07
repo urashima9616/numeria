@@ -46,6 +46,118 @@ namespace Numeria.Core.Tests
         }
 
         [Test]
+        public void MegaEvolution_RequiresSolvedPuzzleAndSevenGems()
+        {
+            var s = Fresh();
+            s.Gems = 6;
+            Assert.False(s.CanMegaEvolve);
+            Assert.False(s.TryActivateMega(true));
+
+            s.Gems = 7;
+            Assert.True(s.CanMegaEvolve);
+            Assert.False(s.TryActivateMega(false));
+            Assert.False(s.MegaActive);
+            Assert.AreEqual(7, s.Gems);
+
+            Assert.True(s.TryActivateMega(true));
+            Assert.True(s.MegaActive);
+            Assert.AreEqual(1, s.MegaActivationCount);
+            Assert.AreEqual(7, s.Gems); // 激活本身不花行动或 Gem
+        }
+
+        [Test]
+        public void MegaEvolution_BoostsBaseStatsAndAddsAFreePowerfulSkill()
+        {
+            var enemy = GameData.Numberfly();
+            enemy.MaxHp = 500;
+            var player = GameData.Addmander();
+            var s = new BattleState(player, enemy, new Rng(41));
+            s.PlayerAttackBonus = 2;
+            s.PlayerDefenseBonus = 1;
+            s.Gems = 7;
+
+            Assert.Throws<InvalidOperationException>(() => s.UseSkill(s.Mega.Skill.Id),
+                "Mega Nova must not exist in the normal form's move set");
+
+            Assert.True(s.TryActivateMega(true));
+            Assert.That(s.Mega.BonusPercent, Is.InRange(25, 35));
+            Assert.AreEqual(MegaSystem.BoostedStat(player.MaxHp, s.Mega.BonusPercent),
+                s.EffectivePlayerMaxHp);
+            Assert.AreEqual(MegaSystem.BoostedStat(player.AttackPower, s.Mega.BonusPercent) + 2,
+                s.EffectivePlayerAttack);
+            Assert.AreEqual(MegaSystem.BoostedStat(player.DefensePower, s.Mega.BonusPercent) + 1,
+                s.EffectivePlayerDefense);
+            Assert.AreEqual(s.EffectivePlayerMaxHp, s.PlayerHp);
+
+            var theme = Array.Find(player.Skills, skill => skill.Type == SkillType.Formula);
+            Assert.Greater(s.Mega.Skill.Power, theme.Power);
+            Assert.AreEqual(0, s.Mega.Skill.Cost);
+            int gems = s.Gems;
+            s.UseSkill(theme.Id, true);
+            Assert.AreEqual(gems, s.Gems, "normal skills are free while Mega is active");
+            s.UseSkill(s.Mega.Skill.Id);
+            Assert.AreEqual(gems, s.Gems, "the new Mega skill is free too");
+        }
+
+        [Test]
+        public void MegaEvolution_DrainsOneGemPerActionBlocksRefillsAndCanRepeat()
+        {
+            var s = Fresh();
+            s.Gems = 7;
+            Assert.True(s.TryActivateMega(true));
+            Assert.False(s.CanRestoreGems);
+            Assert.AreEqual(0, s.RestoreGems(3));
+            s.StartPlayerTurn();
+            Assert.AreEqual(7, s.Gems, "Mega turns must not receive the normal +2 gems");
+
+            for (int remaining = 6; remaining >= 1; remaining--)
+            {
+                Assert.False(s.ConsumeMegaTurn());
+                Assert.True(s.MegaActive);
+                Assert.AreEqual(remaining, s.Gems);
+            }
+            Assert.True(s.ConsumeMegaTurn());
+            Assert.False(s.MegaActive);
+            Assert.AreEqual(0, s.Gems);
+            Assert.LessOrEqual(s.PlayerHp, s.Player.MaxHp);
+            Assert.Throws<InvalidOperationException>(() => s.UseSkill(s.Mega.Skill.Id),
+                "Mega Nova must disappear when the form reverts");
+
+            // 回到普通状态后重新积攒，达到 7 Gem 即可在同一战斗再次激活。
+            s.StartPlayerTurn();
+            s.StartPlayerTurn();
+            s.StartPlayerTurn();
+            s.StartPlayerTurn();
+            Assert.AreEqual(8, s.Gems);
+            Assert.True(s.TryActivateMega(true));
+            Assert.AreEqual(2, s.MegaActivationCount);
+        }
+
+        [Test]
+        public void EveryRegisteredMathmonAutomaticallyGetsAStableMegaProfile()
+        {
+            Assert.AreEqual(141, GameData.Roster.Count);
+            foreach (var species in GameData.Roster)
+            {
+                var player = GameData.PlayerMon(GameData.BaseId(species.Id),
+                    GameData.StageIndex(species.Id), 20);
+                var first = MegaSystem.For(player);
+                var second = MegaSystem.For(player);
+                var theme = Array.Find(player.Skills, skill => skill.Type == SkillType.Formula);
+
+                Assert.That(first.BonusPercent, Is.InRange(25, 35), species.Id);
+                Assert.AreEqual(first.BonusPercent, second.BonusPercent, species.Id);
+                Assert.That(first.AppearanceVariant, Is.InRange(0, 2), species.Id);
+                Assert.AreEqual(first.AppearanceVariant, second.AppearanceVariant, species.Id);
+                Assert.AreEqual($"mega-{species.Id}-nova", first.Skill.Id, species.Id);
+                Assert.AreEqual(0, first.Skill.Cost, species.Id);
+                Assert.Greater(first.Skill.Power, theme.Power, species.Id);
+                Assert.AreEqual(theme.Visual, first.Skill.Visual, species.Id);
+                Assert.AreEqual(theme.IconResource, first.Skill.IconResource, species.Id);
+            }
+        }
+
+        [Test]
         public void CatchChanceIsAlwaysAvailableAndRisesAsEnemyWeakens()
         {
             Assert.AreEqual(10, CatchSystem.Percent(100, 100));

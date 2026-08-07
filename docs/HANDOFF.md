@@ -32,19 +32,19 @@
 ### Core 层(`Numeria.Core`,纯 C#,noEngineReferences,全部 TDD)
 - `Rng`:确定性 LCG(与 Web 原型逐位一致),所有生成函数注入 rng
 - `PuzzleGenerator`:统一算术边界为第一关 10、后续关卡 20,且所有显式加减生成器内部再次硬限制到 20;十几数优先用 `10 + ones`、向前数最多 5、退回 10 或向后数最多 5 的 Kindergarten 支架;加减填空、凑目标、连加、点数/比较、图形识别、形状×颜色规律、四类图案匹配、等式平衡、正反数字路径与数列;候选答案唯一、减法无负数。`NumberWord` 仍安全覆盖 0–99
-- `BattleState`:宝石经济、数字护盾、破盾眩晕一回合 + 每次破盾各自触发一次双倍 + 命中后护盾重置;`SkillResult.BreakBonusApplied` 是 UI 与测试的单一判据;正式 ATK/DEF 公式 `max(1, ATK − DEF + 1 + [-1,1])`,小幅可控波动、零惩罚不变量
+- `BattleState`:宝石经济、数字护盾、破盾眩晕一回合 + 每次破盾各自触发一次双倍 + 命中后护盾重置;全物种 Mega 状态机(7 Gem + 解题激活、25–35% 稳定增幅、免费 Nova/普通技能、行动后 -1 Gem、禁用 Gem Snack、0 Gem 退化、单场可重复);`SkillResult.BreakBonusApplied` 是 UI 与测试的单一判据;正式 ATK/DEF 公式 `max(1, ATK − DEF + 1 + [-1,1])`,小幅可控波动、零惩罚不变量
 - `Progress`:save schema v9;Lv.99 上限、物种成长曲线、捕捉个体 HP/ATK/DEF 偏移、动态经验、每家族独立成长、独占饰品装备、金币/限量库存、Digit Crystal 主线与冒险记录 —— **新字段必须带默认值和迁移**
 - `GridMap`:语义 ASCII 地图解析('.'草地 'T'树 'b'草丛 'C'宝藏 'P'出口 'S'出生
   '~'水域 '='道路 'B'桥 '#'悬崖 'L'地标)+ BFS 寻路;水域/悬崖/树木/地标不可通行
 - `GameData`:141 只数灵、48 条进化线;最新扩展为 Electric/Rock/Dragon/Fire 各 4 条三段线;各物种配置基础经验、HP/ATK/DEF 成长与数学亲和
-- 测试:`unity/Assets/Tests/EditMode/`;当前四个 C# assembly 已单独编译通过,Unity EditMode **121/121**、Node 原型 **15/15**
+- 测试:`unity/Assets/Tests/EditMode/`;当前四个 C# assembly 已单独编译通过,Unity EditMode **128/128**、Node 原型 **15/15**
 
 ### Game 层(`Numeria.Game`)
 - **全程序化 UGUI,零场景文件**——所有界面代码搭建,SampleScene 只是空壳,`BattleBootstrap` 用 `RuntimeInitializeOnLoadMethod` 拉起 `MapController`
 - `MapController`:六张 32×18 地图、点触 BFS + 跟随相机、带权多物种生态、宝箱谜题、全宝箱后 Boss 图标与三题开门试炼、掉落与进化试炼。六章统一由 `PaintedTerrainRenderer` 使用 Tiles and Hexes Painted Terrain:按底部锚点缩放到语义格、下方行覆盖上方行、主题配色 + 半透明窄道路;RPG Worlds Caves/Tiny Swords 只在 Painted catalog 不完整时回退
-- `BattleController`:`Init(enemy, progress, tier, battleBg, onEnd)`;双方状态牌显示 ATK/DEF,普通怪与 Boss HP 均按关卡和物种成长合理浮动
+- `BattleController`:`Init(enemy, progress, tier, battleBg, onEnd)`;双方状态牌显示 ATK/DEF,普通怪与 Boss HP 均按关卡和物种成长合理浮动;Mega 按钮位于玩家状态牌,动态复用当前精灵生成发光轮廓、12 段旋转光环、3 种翼/冠变体,含激活/退化遮罩与专属 Nova 演出
 - `SkillDef` 保存独立 `IconResource` + `SkillVisualKind`;11 条家族各有专属像素图标与战斗弹道/命中节奏,不要再硬编码 `Flame_Formula`
-- `PuzzleUi`:谜题遮罩共用;第一关 10 内加减+图形/彩色规律/数字路径,第二关 20 内并加入三项连加/等式平衡/ABC-AAB,第三关 30 内并加入四项连加/正反数字路径/四类图案匹配,第四关扩展到 40 并混合高阶题型;旋转题已彻底淘汰;传送门三题必含算术
+- `PuzzleUi`:谜题遮罩共用;第一关 10 内加减+图形/彩色规律/数字路径,第二至六关加减均硬限制 20 内,通过连加项数、拆分、等式平衡、正反数字路径与四类图案匹配递进;旋转题已彻底淘汰;传送门三题必含算术
 - `MenuUi`:TEAM/ITEMS/RECORDS/SAVES/SETTINGS 五 tab,TEAM 可为每只数灵装备/卸下饰品,SAVES 提供十槽存取;SETTINGS 返回主菜单前询问保存/不保存/取消
 - `Voice`:预烘焙语音播放,`VoiceKeys.Sanitize` 文本→文件名(**必须与 bake 脚本规则一致**);`Voice.Enabled` 全局开关(存档持久化)
 - `Sfx` / `Music`:独立短音效通道 + 双通道交叉淡化;九个 mood 已改用 8-bit Jukebox Lite 选曲,语音播放时自动 duck,Voice/SFX/Music 分别持久化开关
@@ -65,6 +65,7 @@
 - 🔶 **P3 进行中**:
   - ✅ Kindergarten 难度:第一章 10 以内核心加减,第二至六章 20 以内扩展;用项数、拆分、图形、彩色规律、图案匹配、等式平衡、数字路径/数列递进
   - ✅ 进化系统全链(御三家 Lv.8/Lv.15、野生线 Lv.5 + 里程碑进化石 + 家族亲和三题试炼 + 蜕变演出)
+  - ✅ 全物种 Mega Evolution:战斗内 7 Gem + 数学谜题激活,141 个形态自动获得 25–35% 增幅、动态外观变体与免费 Nova;每行动消耗 1 Gem、禁用补 Gem、归零退化并支持单场重复激活
   - ✅ 菜单(tab 化)、出战位切换、道具栏、99 只队伍上限与满员放走/替换流程；非首发伙伴可按等级换金币或当前出战伙伴经验（金币 = Lv.+2，经验 = 2×Lv.+4）
   - ✅ 捕捉成长继承:保留野生等级、进化阶段及战斗时 HP/ATK/DEF;个体偏移随升级/进化和存档延续;同家族更强个体可选择收编或转换为 125% 捕捉经验
   - ✅ 用户 AI 生成美术管线(`generated/` 约定 + NUMERIA Battle Asset Pack 全面接入战斗)

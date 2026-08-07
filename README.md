@@ -4,8 +4,8 @@
 are magic. Players befriend original creatures called **Mathmons**, solve Kindergarten-level puzzles to power
 their skills, and help Lucas restore six Digit Crystals so he can reopen the legendary gate home.
 
-> Current state: a playable six-region Unity build with story, exploration, battles, catching, evolution,
-> economy, shops, saves, offline narration, and 141 Mathmon forms. iOS/TestFlight work has not started.
+> Current state: a playable six-region Unity build with story, exploration, battles, catching, evolution and Mega
+> Evolution, economy, shops, saves, offline narration, and 141 Mathmon forms. iOS/TestFlight work has not started.
 
 ![Numeria battle — Addmander casting math magic against Countipillar](docs/images/numeria-readme-cover.png)
 
@@ -19,7 +19,7 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 | P3 — Full game systems | 🔶 Playable / polishing | Six painterly worlds, 141 Mathmons, evolution, economy, merchants, Lucas story |
 | P4 — iOS delivery | ⬜ Not started | Device build, signing, TestFlight and final performance QA |
 
-The current verification baseline compiles all four Unity assemblies and passes **121/121 Unity EditMode tests**
+The current verification baseline compiles all four Unity assemblies and passes **128/128 Unity EditMode tests**
 plus **15/15 Node prototype tests**.
 The save format is currently **schema v9**, with non-destructive migration for older saves.
 
@@ -44,6 +44,10 @@ The save format is currently **schema v9**, with non-destructive migration for o
 - The original eleven families retain distinct skills, while each new elemental group has its own generated icon,
   palette, and battle performance.
 - Number shields, shield-break stun, gems, powered math skills, consumable items, and equippable accessories.
+- Every Mathmon can Mega Evolve in battle after reaching 7 Gems and solving a tier-appropriate math puzzle. Mega
+  forms gain a stable species-specific 25–35% base-stat boost, animated elemental outlines/wings/crests, and a free
+  Nova skill. All skills are free while transformed; one Gem drains after every action, Gem Snacks are sealed, and
+  the form ends at zero Gems. Gems can then be rebuilt for another activation in the same battle.
 - Every shield break independently arms one clearly labeled **2× next hit** bonus, including second and later cycles.
 - Damage uses `max(1, ATK - DEF + 1 + [-1, 1])`; enemy HP also has controlled per-encounter variation.
 - Bosses have higher region-scaled HP and number shields without becoming mandatory difficulty walls.
@@ -195,6 +199,7 @@ Unity EditMode tests, with the Unity Editor closed:
 | [`docs/main-story.md`](docs/main-story.md) | Lucas and the Digit Crystals story structure |
 | [`docs/economy-design.md`](docs/economy-design.md) | Coin rewards, shop stock, pricing, and balance rationale |
 | [`docs/elemental-expansion.md`](docs/elemental-expansion.md) | Capture upgrades, 20 new families, and Fever Desert design |
+| [`docs/mega-evolution.md`](docs/mega-evolution.md) | Mega Evolution rules, balance, visuals, and invariants |
 | [`docs/generated-visual-assets.md`](docs/generated-visual-assets.md) | Image-generation prompts and production asset locations |
 | [`docs/music-attribution.md`](docs/music-attribution.md) | 8-bit Jukebox track mapping and credits |
 | [`docs/HANDOFF.md`](docs/HANDOFF.md) | Detailed engineering status and maintenance notes |

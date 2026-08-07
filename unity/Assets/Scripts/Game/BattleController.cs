@@ -33,6 +33,8 @@ namespace Numeria.Game
         private Image _enemyHpFill;
         private TMP_Text _playerHpText;
         private TMP_Text _enemyHpText;
+        private TMP_Text _playerNameText;
+        private TMP_Text _playerStatText;
         private readonly List<Image> _gemIcons = new List<Image>();
         private TMP_Text _gemLabel;
         private GameObject _shieldRow;
@@ -41,11 +43,18 @@ namespace Numeria.Game
         private Button _btnTackle;
         private Button _btnFormula;
         private Image _formulaBg;
+        private TMP_Text _formulaCostText;
         private Button _btnShield;
         private Button _btnCatch;
         private TMP_Text _catchChanceText;
         private Button _btnItem;
+        private Button _btnMega;
+        private TMP_Text _megaButtonLabel;
+        private Image _megaButtonImage;
         private CanvasGroup _dockGroup;
+        private RectTransform _megaFormRoot;
+        private RectTransform _megaAuraRing;
+        private bool _actionsEnabled = true;
         private int _playerLevel = 1;
 
         // 参考图配色(与菜单一致)
@@ -128,12 +137,16 @@ namespace Numeria.Game
             playerImg.preserveAspect = true;
             Ui.PlaceCentered(playerImg.rectTransform, new Vector2(0.235f, 0.49f), Vector2.zero, new Vector2(490, 490));
             _playerSprite = playerImg.rectTransform;
+            BuildMegaAppearance(playerImg.sprite);
             var playerPlate = BuildStatusPlate("PlayerPlate", new Vector2(1, 0), new Vector2(-28, 267), new Vector2(560, 310),
                 _state.Player.Name,
                 $"Lv. {_playerLevel}   ATK {_state.Player.AttackPower + _state.PlayerAttackBonus}   " +
                 $"DEF {_state.Player.DefensePower + _state.PlayerDefenseBonus}",
                 out _playerHpFill, out _playerHpText);
+            _playerNameText = playerPlate.Find("Name").GetComponent<TMP_Text>();
+            _playerStatText = playerPlate.Find("Sub").GetComponent<TMP_Text>();
             BuildGemRow(playerPlate);
+            BuildMegaButton(playerPlate);
 
             // 回合横幅只承载短主标题 + 一行结果，避免战斗叙述横穿整个画面。
             var logPlate = Ui.SpriteImg(_shakeRoot, "LogPlate", SpriteLib.Pack("UI/Panels/Turn_Banner"));
@@ -173,6 +186,7 @@ namespace Numeria.Game
             var themeIcon = SpriteLib.One(_themeSkill.IconResource) ?? SpriteLib.Pack("UI/Icons/Flame_Formula");
             _btnFormula = ActionButton(dock.rectTransform, themeIcon,
                 _themeSkill.Name.ToUpperInvariant(), $"COST {_themeSkill.Cost}", ThemeColor(_themeSkill.Visual), out _formulaBg);
+            _formulaCostText = _btnFormula.transform.Find("SubT").GetComponent<TMP_Text>();
             _btnFormula.onClick.AddListener(() => StartCoroutine(FormulaRoutine()));
             _btnShield = ActionButton(dock.rectTransform, SpriteLib.One("Art/Sprites/shield"),
                 "BREAK SHIELD", _tier >= 3 ? "FINISH PATTERN" :
@@ -186,6 +200,73 @@ namespace Numeria.Game
             _btnItem = ActionButton(dock.rectTransform, SpriteLib.One("Art/Sprites/gem"),
                 "ITEMS", "BATTLE ONLY", Ui.Hex("#5c8a3f"), out _);
             _btnItem.onClick.AddListener(() => StartCoroutine(ItemRoutine()));
+        }
+
+        /// <summary>
+        /// 所有物种共用的动态 Mega 形态层：保留原精灵辨识度，同时增加发光轮廓、属性翼片与冠角。
+        /// 形态数量由稳定的 AppearanceVariant 决定，因此每只 Mathmon 在每场战斗中的造型一致。
+        /// </summary>
+        private void BuildMegaAppearance(Sprite playerSprite)
+        {
+            _megaFormRoot = Ui.Node(_shakeRoot, "MegaForm");
+            Ui.PlaceCentered(_megaFormRoot, new Vector2(0.235f, 0.49f), Vector2.zero, new Vector2(590, 590));
+            _megaFormRoot.SetSiblingIndex(_playerSprite.GetSiblingIndex());
+
+            Color theme = ThemeColor(_state.Mega.Skill.Visual);
+            var silhouette = Ui.SpriteImg(_megaFormRoot, "MegaOutline", playerSprite);
+            silhouette.preserveAspect = true;
+            silhouette.color = new Color(theme.r, theme.g, theme.b, .58f);
+            Ui.PlaceCentered(silhouette.rectTransform, new Vector2(.5f, .5f), Vector2.zero, new Vector2(535, 535));
+
+            _megaAuraRing = Ui.Node(_megaFormRoot, "AuraRing");
+            Ui.PlaceCentered(_megaAuraRing, new Vector2(.5f, .5f), Vector2.zero, new Vector2(560, 560));
+            for (int i = 0; i < 12; i++)
+            {
+                float angle = i * Mathf.PI * 2f / 12f;
+                var ray = Ui.Img(_megaAuraRing, $"Ray{i}", new Color(theme.r, theme.g, theme.b, .72f));
+                Ui.PlaceCentered(ray.rectTransform, new Vector2(.5f, .5f),
+                    new Vector2(Mathf.Cos(angle) * 252f, Mathf.Sin(angle) * 252f),
+                    new Vector2(13, 58 + (i % 2) * 18));
+                ray.rectTransform.localRotation = Quaternion.Euler(0, 0, angle * Mathf.Rad2Deg - 90f);
+            }
+
+            Sprite gem = SpriteLib.Pack("UI/Icons/Gem") ?? SpriteLib.One("Art/Sprites/gem");
+            int wingCount = 3 + _state.Mega.AppearanceVariant;
+            for (int side = -1; side <= 1; side += 2)
+            for (int i = 0; i < wingCount; i++)
+            {
+                var shard = Ui.SpriteImg(_megaFormRoot, $"Wing{side}-{i}", gem);
+                shard.preserveAspect = true;
+                shard.color = new Color(theme.r, theme.g, theme.b, .9f);
+                float spread = 132 + i * 38;
+                Ui.PlaceCentered(shard.rectTransform, new Vector2(.5f, .5f),
+                    new Vector2(side * spread, 18 + i * 45), new Vector2(62 - i * 4, 92 - i * 3));
+                shard.rectTransform.localRotation = Quaternion.Euler(0, 0, side * (28 + i * 12));
+            }
+
+            int crestCount = 3 + _state.Mega.AppearanceVariant;
+            for (int i = 0; i < crestCount; i++)
+            {
+                float centered = i - (crestCount - 1) * .5f;
+                var crest = Ui.SpriteImg(_megaFormRoot, $"Crest{i}", gem);
+                crest.preserveAspect = true;
+                crest.color = Color.Lerp(theme, Color.white, .22f);
+                Ui.PlaceCentered(crest.rectTransform, new Vector2(.5f, .5f),
+                    new Vector2(centered * 48f, 226 + Mathf.Abs(centered) * 8f), new Vector2(52, 72));
+                crest.rectTransform.localRotation = Quaternion.Euler(0, 0, centered * -10f);
+            }
+
+            _megaFormRoot.gameObject.SetActive(false);
+        }
+
+        private void BuildMegaButton(RectTransform playerPlate)
+        {
+            _btnMega = Ui.Btn(playerPlate, "BtnMega", "MEGA EVOLVE — 7+ GEMS", 22);
+            Ui.Place((RectTransform)_btnMega.transform, new Vector2(1, 0), new Vector2(-28, 12), new Vector2(268, 56));
+            _megaButtonLabel = _btnMega.transform.Find("Label").GetComponent<TMP_Text>();
+            FitText(_megaButtonLabel, 17, 22);
+            _megaButtonImage = _btnMega.GetComponent<Image>();
+            _btnMega.onClick.AddListener(() => StartCoroutine(MegaButtonRoutine()));
         }
 
         /// <summary>状态名牌:名字、等级、HP 数字与血条严格纵向分层，不共享基线。</summary>
@@ -311,19 +392,28 @@ namespace Numeria.Game
 
         private void RenderAll()
         {
-            SetHpBar(_playerHpFill, _playerHpText, _state.PlayerHp, _state.Player.MaxHp);
+            SetHpBar(_playerHpFill, _playerHpText, _state.PlayerHp, _state.EffectivePlayerMaxHp);
             SetHpBar(_enemyHpFill, _enemyHpText, _state.EnemyHp, _state.Enemy.MaxHp);
+
+            _playerNameText.text = (_state.MegaActive ? "MEGA " : "") + _state.Player.Name.ToUpperInvariant();
+            _playerStatText.text = $"Lv. {_playerLevel}   ATK {_state.EffectivePlayerAttack}   " +
+                                   $"DEF {_state.EffectivePlayerDefense}";
 
             for (int i = 0; i < _gemIcons.Count; i++)
                 _gemIcons[i].gameObject.SetActive(i < _state.Gems);
-            _gemLabel.text = $"{_state.Gems} GEMS";
+            _gemLabel.text = _state.MegaActive
+                ? $"{_state.Gems} GEMS  -1/TURN"
+                : $"{_state.Gems} GEMS";
 
             _shieldRow.SetActive(_state.EnemyShielded);
-            _btnFormula.interactable = _state.Gems >= _themeSkill.Cost;
-            _formulaBg.sprite = _state.Gems >= _themeSkill.Cost
+            int formulaCost = _state.SkillCost(_themeSkill);
+            bool formulaReady = _state.Gems >= formulaCost;
+            _btnFormula.interactable = _actionsEnabled && formulaReady;
+            _formulaCostText.text = _state.MegaActive ? "FREE — MEGA" : $"COST {_themeSkill.Cost}";
+            _formulaBg.sprite = formulaReady
                 ? SpriteLib.Pack("UI/Buttons/Button_Selected")
                 : SpriteLib.Pack("UI/Buttons/Button_Normal");
-            _formulaBg.color = _state.Gems >= _themeSkill.Cost ? Color.white : new Color(1f, 1f, 1f, 0.85f);
+            _formulaBg.color = formulaReady ? Color.white : new Color(1f, 1f, 1f, 0.85f);
             // 命令坞保持稳定的三栏结构:普通敌人显示 Catch，护盾敌人显示 Break Shield。
             _btnShield.gameObject.SetActive(_state.Enemy.Shield.HasValue);
             _btnShield.interactable = _state.EnemyShielded;
@@ -331,7 +421,28 @@ namespace Numeria.Game
             _btnCatch.interactable = true;
             if (_catchChanceText != null)
                 _catchChanceText.text = $"{CatchSystem.Percent(_state.EnemyHp, _state.Enemy.MaxHp)}% CHANCE";
-            _btnItem.interactable = _progress.HealthPotions > 0 || _progress.GemSnacks > 0;
+            _btnItem.interactable = _actionsEnabled &&
+                (_progress.HealthPotions > 0 || (_progress.GemSnacks > 0 && _state.CanRestoreGems));
+
+            _megaFormRoot.gameObject.SetActive(_state.MegaActive);
+            _playerSprite.localScale = _state.MegaActive ? Vector3.one * 1.1f : Vector3.one;
+            _megaButtonLabel.text = _state.MegaActive
+                ? "MEGA NOVA — FREE"
+                : $"MEGA EVOLVE — {MegaSystem.RequiredGems}+ GEMS";
+            _megaButtonImage.color = _state.MegaActive
+                ? Color.Lerp(ThemeColor(_state.Mega.Skill.Visual), Color.white, .36f)
+                : _state.CanMegaEvolve ? Amber : Cream;
+            _btnMega.interactable = _actionsEnabled && (_state.MegaActive || _state.CanMegaEvolve);
+        }
+
+        private void Update()
+        {
+            if (_megaFormRoot == null || !_megaFormRoot.gameObject.activeSelf || _playerSprite == null) return;
+            _megaFormRoot.position = _playerSprite.position;
+            float pulse = 1f + Mathf.Sin(Time.unscaledTime * 4.2f) * .025f;
+            _megaFormRoot.localScale = Vector3.one * pulse;
+            if (_megaAuraRing != null)
+                _megaAuraRing.localRotation = Quaternion.Euler(0, 0, Time.unscaledTime * 18f);
         }
 
         private static void SetHpBar(Image fill, TMP_Text label, int hp, int maxHp)
@@ -351,11 +462,13 @@ namespace Numeria.Game
 
         private void SetActionsEnabled(bool on)
         {
+            _actionsEnabled = on;
             _btnTackle.interactable = on;
             _btnFormula.interactable = on;
             _btnShield.interactable = on;
             _btnCatch.interactable = on;
             _btnItem.interactable = on;
+            _btnMega.interactable = on;
             if (_dockGroup != null)
             {
                 _dockGroup.alpha = on ? 1f : 0.6f;
@@ -365,6 +478,57 @@ namespace Numeria.Game
         }
 
         // ---------- 战斗流程 ----------
+
+        private IEnumerator MegaButtonRoutine()
+        {
+            if (_state.MegaActive) yield return MegaSkillRoutine();
+            else yield return MegaEvolutionRoutine();
+        }
+
+        private IEnumerator MegaEvolutionRoutine()
+        {
+            if (!_state.CanMegaEvolve) yield break;
+            SetActionsEnabled(false);
+            SetLog("Mega challenge!", "SOLVE TO TRANSFORM");
+            bool? solved = null;
+            yield return _puzzles.RunTierPuzzle(value => solved = value, _tier);
+            if (!solved.GetValueOrDefault() || !_state.TryActivateMega(true))
+            {
+                Sfx.Play(SfxCue.SoftMiss, .7f);
+                SetLog("Mega energy waits", "SOLVE IT NEXT TIME");
+                SetActionsEnabled(true);
+                yield break;
+            }
+
+            Sfx.Play(SfxCue.Evolution);
+            yield return PlayMegaTransformation(true);
+            RenderAll();
+            SetLog("Mega evolved!", $"ALL STATS +{_state.Mega.BonusPercent}%");
+            SetActionsEnabled(true); // 激活不消耗行动，可立即使用新技能
+        }
+
+        private IEnumerator MegaSkillRoutine()
+        {
+            if (!_state.MegaActive) yield break;
+            SetActionsEnabled(false);
+            SkillDef skill = _state.Mega.Skill;
+            Color color = ThemeColor(skill.Visual);
+            yield return Lunge(_playerSprite, new Vector2(75, 38));
+            yield return PlayThemeSkill(skill, true);
+            yield return RadialBurst(_enemySprite.position, Color.Lerp(color, Color.white, .25f), 16);
+            var result = _state.UseSkill(skill.Id);
+            RecordDamage(result.Damage);
+            Sfx.Play(SfxCue.Hit, 1f);
+            PopDamage(_enemySprite, result.BreakBonusApplied ? $"-{result.Damage}  2X" : $"-{result.Damage}", color);
+            if (result.BreakBonusApplied) _voice.Say("Double damage!");
+            StartCoroutine(Shake());
+            yield return Flash(_enemySprite);
+            RenderAll();
+            SetLog($"{skill.Name}!", result.BreakBonusApplied
+                ? $"2X SHIELD BREAK - {result.Damage} DAMAGE"
+                : $"MEGA POWER - {result.Damage} DAMAGE");
+            yield return EndPlayerTurn();
+        }
 
         private IEnumerator TackleRoutine()
         {
@@ -481,9 +645,12 @@ namespace Numeria.Game
             potion.interactable = _progress.HealthPotions > 0;
             potion.onClick.AddListener(() => choice = ConsumableType.HealthPotion);
 
-            var gems = Ui.Btn(panel.transform, "Gems", $"GEM SNACK  x{_progress.GemSnacks}\nRESTORE 3 GEMS", 26);
+            string gemItemText = _state.CanRestoreGems
+                ? $"GEM SNACK  x{_progress.GemSnacks}\nRESTORE 3 GEMS"
+                : $"GEM SNACK  x{_progress.GemSnacks}\nSEALED DURING MEGA";
+            var gems = Ui.Btn(panel.transform, "Gems", gemItemText, 26);
             Ui.Place((RectTransform)gems.transform, new Vector2(.5f, .5f), new Vector2(200, 18), new Vector2(330, 150));
-            gems.interactable = _progress.GemSnacks > 0;
+            gems.interactable = _progress.GemSnacks > 0 && _state.CanRestoreGems;
             gems.onClick.AddListener(() => choice = ConsumableType.GemSnack);
 
             var back = Ui.Btn(panel.transform, "Back", "BACK", 24);
@@ -499,12 +666,13 @@ namespace Numeria.Game
             }
 
             int restored = choice == ConsumableType.HealthPotion
-                ? _state.HealPlayer(Math.Max(5, (int)Math.Ceiling(_state.Player.MaxHp * .4f)))
+                ? _state.HealPlayer(Math.Max(5, (int)Math.Ceiling(_state.EffectivePlayerMaxHp * .4f)))
                 : _state.RestoreGems(3);
             if (restored <= 0)
             {
-                _voice.Say(choice == ConsumableType.HealthPotion
-                    ? "Health is already full!" : "Gems are already full!");
+                if (choice == ConsumableType.HealthPotion) _voice.Say("Health is already full!");
+                else if (_state.CanRestoreGems) _voice.Say("Gems are already full!");
+                else SetLog("Gem Snacks sealed", "MEGA ENERGY CANNOT BE REFILLED");
                 SetActionsEnabled(true);
                 yield break;
             }
@@ -524,6 +692,22 @@ namespace Numeria.Game
 
         private IEnumerator EndPlayerTurn()
         {
+            bool spentMegaGem = _state.MegaActive;
+            bool megaEnded = _state.ConsumeMegaTurn();
+            if (spentMegaGem)
+            {
+                RenderAll();
+                if (megaEnded)
+                {
+                    SetLog("Mega faded", "GEMS EMPTY - NORMAL FORM");
+                    yield return PlayMegaTransformation(false);
+                }
+                else
+                {
+                    SetLog("Mega energy", $"{_state.Gems} GEMS LEFT");
+                    yield return new WaitForSeconds(.42f);
+                }
+            }
             if (_state.Outcome != BattleOutcome.None) { ShowOutcome(); yield break; }
             yield return new WaitForSeconds(0.6f);
             if (_state.ConsumeEnemySkipTurn())
@@ -534,7 +718,9 @@ namespace Numeria.Game
                 yield return new WaitForSeconds(1f);
                 _state.StartPlayerTurn();
                 RenderAll();
-                SetLog("Your turn", "+2 GEMS - DOUBLE HIT READY");
+                SetLog("Your turn", _state.MegaActive
+                    ? $"MEGA ACTIVE - {_state.Gems} GEMS - DOUBLE READY"
+                    : "+2 GEMS - DOUBLE HIT READY");
                 SetActionsEnabled(true);
                 yield break;
             }
@@ -550,7 +736,9 @@ namespace Numeria.Game
             yield return new WaitForSeconds(0.5f);
             _state.StartPlayerTurn();
             RenderAll();
-            SetLog("Your turn", "+2 GEMS");
+            SetLog("Your turn", _state.MegaActive
+                ? $"MEGA ACTIVE - {_state.Gems} GEMS"
+                : "+2 GEMS");
             SetActionsEnabled(true);
         }
 
@@ -581,6 +769,60 @@ namespace Numeria.Game
         }
 
         // ---------- 演出 ----------
+
+        private IEnumerator PlayMegaTransformation(bool activating)
+        {
+            Color color = ThemeColor(_state.Mega.Skill.Visual);
+            var veil = Ui.Img(_canvasRoot, activating ? "MegaVeil" : "MegaFadeVeil",
+                new Color(.02f, .025f, .08f, 0f));
+            Ui.Stretch(veil.rectTransform);
+            veil.raycastTarget = false;
+            var title = Ui.DisplayLabel(veil.transform, "MegaTitle",
+                activating ? "MEGA EVOLVE!" : "RETURN TO NORMAL", 68, Color.Lerp(color, Color.white, .3f));
+            Ui.PlaceCentered(title.rectTransform, new Vector2(.5f, .72f), Vector2.zero, new Vector2(900, 100));
+            title.gameObject.AddComponent<Outline>().effectColor = new Color(0, 0, 0, .8f);
+
+            if (!activating)
+            {
+                _megaFormRoot.gameObject.SetActive(true);
+                _playerSprite.localScale = Vector3.one * 1.1f;
+            }
+            else
+            {
+                _megaFormRoot.gameObject.SetActive(false);
+                _playerSprite.localScale = Vector3.one;
+            }
+
+            float t = 0f;
+            const float revealTime = .72f;
+            while (t < revealTime)
+            {
+                t += Time.deltaTime;
+                float p = Mathf.Clamp01(t / revealTime);
+                float alpha = Mathf.Sin(p * Mathf.PI) * .76f;
+                veil.color = new Color(.02f, .025f, .08f, alpha);
+                title.color = new Color(title.color.r, title.color.g, title.color.b,
+                    Mathf.Clamp01(p * 4f) * Mathf.Clamp01((1f - p) * 4f));
+                float pulse = 1f + Mathf.Sin(p * Mathf.PI * 7f) * .07f + p * .08f;
+                _playerSprite.localScale = Vector3.one * pulse;
+                if (activating && p >= .5f && !_megaFormRoot.gameObject.activeSelf)
+                {
+                    _megaFormRoot.gameObject.SetActive(true);
+                    yield return RadialBurst(_playerSprite.position, color, 18);
+                }
+                if (!activating && p >= .5f && _megaFormRoot.gameObject.activeSelf)
+                {
+                    _megaFormRoot.gameObject.SetActive(false);
+                    yield return RadialBurst(_playerSprite.position, Ui.Hex("#f6efdc"), 12);
+                }
+                yield return null;
+            }
+
+            Destroy(veil.gameObject);
+            _megaFormRoot.gameObject.SetActive(activating);
+            _megaFormRoot.localScale = Vector3.one;
+            _playerSprite.localScale = activating ? Vector3.one * 1.1f : Vector3.one;
+        }
 
         private static Color ThemeColor(SkillVisualKind visual)
         {
