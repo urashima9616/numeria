@@ -181,8 +181,11 @@ namespace Numeria.Core
             return ones == 0 ? TensWords[tens] : $"{TensWords[tens]}-{SmallWords[ones]}";
         }
 
-        /// <summary>幼儿园课程的三段数字边界:10、20、30。</summary>
-        public static int MaxForTier(int tier) => tier >= 4 ? 40 : tier == 3 ? 30 : tier == 2 ? 20 : 10;
+        /// <summary>
+        /// 算术数字边界：第一章保持 Kindergarten 核心的 10 以内，后续章节只扩展到 20。
+        /// 高章节通过更多项、等式拆分、正反数列和图形规律增加难度，不再靠 30/40 的大数字。
+        /// </summary>
+        public static int MaxForTier(int tier) => tier <= 1 ? 10 : 20;
 
         private static string Cap(string s) => char.ToUpperInvariant(s[0]) + s.Substring(1);
 

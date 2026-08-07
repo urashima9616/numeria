@@ -25,7 +25,7 @@ namespace Numeria.Core.Tests
         }
 
         [Test]
-        public void ChainSums_ScaleFromThreeTermsWithinTwenty_ToFourWithinThirty()
+        public void ChainSums_AddComplexityWithoutExceedingTwenty()
         {
             for (uint seed = 1; seed <= 80; seed++)
             {
@@ -35,11 +35,11 @@ namespace Numeria.Core.Tests
                 Assert.That(tier2.Answer, Is.LessThanOrEqualTo(20));
                 Assert.Contains(tier2.Answer, tier2.Candidates);
 
-                var tier3 = PuzzleGenerator.GenerateChainSum(new Rng(seed), 30, 4);
+                var tier3 = PuzzleGenerator.GenerateChainSum(new Rng(seed), 20, 4);
                 Assert.AreEqual(4, tier3.Terms.Count);
                 Assert.AreEqual(tier3.Terms[0] + tier3.Terms[1] + tier3.Terms[2] + tier3.Terms[3],
                     tier3.Answer);
-                Assert.That(tier3.Answer, Is.LessThanOrEqualTo(30));
+                Assert.That(tier3.Answer, Is.LessThanOrEqualTo(20));
                 Assert.True(PuzzleGenerator.CheckChainSum(tier3, tier3.Answer));
             }
         }
@@ -114,32 +114,47 @@ namespace Numeria.Core.Tests
         }
 
         [Test]
-        public void FormulaDifficulty_UsesStrictTenTwentyThirtyFortyBounds()
+        public void ArithmeticDifficulty_UsesKindergartenTenThenStretchTwentyBounds()
         {
-            for (int tier = 1; tier <= 4; tier++)
+            for (int tier = 1; tier <= 6; tier++)
             {
                 int max = PuzzleGenerator.MaxForTier(tier);
-                Assert.AreEqual(tier * 10, max);
+                Assert.AreEqual(tier == 1 ? 10 : 20, max);
                 for (uint seed = 1; seed <= 80; seed++)
                 {
                     var add = PuzzleGenerator.GenerateFormula(new Rng(seed), max);
                     var subtract = PuzzleGenerator.GenerateSubtraction(new Rng(seed), max);
+                    var chain = PuzzleGenerator.GenerateChainSum(new Rng(seed), max, tier >= 3 ? 4 : 3);
+                    var makeTarget = PuzzleGenerator.GenerateMakeTen(new Rng(seed), max);
+                    var balance = PuzzleGenerator.GenerateBalance(new Rng(seed), tier);
+
+                    Assert.AreEqual(add.Sum, add.A + add.Missing);
+                    Assert.That(add.A, Is.InRange(0, max));
+                    Assert.That(add.Missing, Is.InRange(0, max));
                     Assert.That(add.Sum, Is.InRange(0, max));
+                    Assert.AreEqual(subtract.Sum, subtract.A - subtract.Missing);
                     Assert.That(subtract.A, Is.InRange(0, max));
+                    Assert.That(subtract.Missing, Is.InRange(0, max));
                     Assert.That(subtract.Sum, Is.InRange(0, max));
+                    Assert.That(chain.Answer, Is.InRange(0, max));
+                    Assert.AreEqual(max, makeTarget.Target);
+                    Assert.That(balance.LeftA + balance.LeftB, Is.InRange(0, max));
+                    Assert.That(balance.RightKnown + balance.Answer, Is.InRange(0, max));
                 }
             }
         }
 
         [Test]
-        public void TierFourGenerators_NeverThrowAcrossManySeeds()
+        public void HighTierGenerators_NeverExceedTwentyOrThrowAcrossManySeeds()
         {
+            int max = PuzzleGenerator.MaxForTier(6);
+            Assert.AreEqual(20, max);
             for (uint seed = 1; seed <= 500; seed++)
             {
-                Assert.DoesNotThrow(() => PuzzleGenerator.GenerateFormula(new Rng(seed), 40));
-                Assert.DoesNotThrow(() => PuzzleGenerator.GenerateSubtraction(new Rng(seed), 40));
-                Assert.DoesNotThrow(() => PuzzleGenerator.GenerateMakeTen(new Rng(seed), 40));
-                Assert.DoesNotThrow(() => PuzzleGenerator.GenerateChainSum(new Rng(seed), 40, 4));
+                Assert.DoesNotThrow(() => PuzzleGenerator.GenerateFormula(new Rng(seed), max));
+                Assert.DoesNotThrow(() => PuzzleGenerator.GenerateSubtraction(new Rng(seed), max));
+                Assert.DoesNotThrow(() => PuzzleGenerator.GenerateMakeTen(new Rng(seed), max));
+                Assert.DoesNotThrow(() => PuzzleGenerator.GenerateChainSum(new Rng(seed), max, 4));
                 Assert.DoesNotThrow(() => PuzzleGenerator.GeneratePattern(new Rng(seed), 4));
                 Assert.DoesNotThrow(() => PuzzleGenerator.GeneratePatternMatch(new Rng(seed), 4));
                 Assert.DoesNotThrow(() => PuzzleGenerator.GenerateBalance(new Rng(seed), 4));

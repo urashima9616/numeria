@@ -92,15 +92,20 @@ The save format is currently **schema v9**, with non-destructive migration for o
 
 | Region | Number range | Puzzle progression | Boss |
 |---|---:|---|---|
-| 🌲 Mystic Forest | 0–10 | Addition, subtraction, counting, comparison, shapes, colored AB patterns, number paths | Numberfly |
-| ⛰️ Silent Peaks | 0–20 | Harder arithmetic, make-target, three-term sums, equality balance, pattern gaps | Duplirock Elder |
-| ☁️ Azure Sky City | 0–30 | Four-term sums, geometry, mirror-order matching, number paths/sequences, mixed patterns | Symmetrix |
-| 🏜️ Fever Desert | 0–40 | Larger arithmetic, selective shape/color matching, equality balance, advanced mixed patterns | Solar Totalisk |
-| ⛏️ Dark Mines | 0–40 | Multi-step review, factor-like grouping, circuit sequences, mirrored routes | Master Voltamper |
-| 🔥 Underground Tunnels | 0–40 | Cumulative arithmetic, symmetry, equality, mixed pattern mastery | Ancient Calcularagon |
+| 🌲 Mystic Forest | 0–10 | Core addition/subtraction, counting, comparison, shapes, colored AB patterns, number paths | Numberfly |
+| ⛰️ Silent Peaks | 0–20 | Gentle stretch arithmetic, make-target, three-term sums, equality balance, pattern gaps | Duplirock Elder |
+| ☁️ Azure Sky City | 0–20 | Four-term sums with small addends, geometry, mirror-order matching, number paths, mixed patterns | Symmetrix |
+| 🏜️ Fever Desert | 0–20 | Number decomposition, selective shape/color matching, equality balance, advanced mixed patterns | Solar Totalisk |
+| ⛏️ Dark Mines | 0–20 | Multi-step review, grouping, circuit sequences, mirrored routes | Master Voltamper |
+| 🔥 Underground Tunnels | 0–20 | Cumulative review, symmetry, equality, and mixed pattern mastery | Ancient Calcularagon |
 
 Portal trials always include arithmetic, use three different puzzle families, and allow unlimited zero-penalty
 retries.
+
+[Common Core Kindergarten mathematics](https://corestandards.org/wp-content/uploads/2023/09/ADA-Compliant-Math-Standards.pdf)
+treats addition and subtraction within 10 as the core expectation. Numeria keeps the first region inside that
+boundary, then uses the requested within-20 range as a scaffolded stretch goal. Later chapters increase reasoning
+complexity instead of introducing 30- or 40-sized arithmetic.
 
 ## Run the Unity game
 

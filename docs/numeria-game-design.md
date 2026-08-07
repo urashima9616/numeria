@@ -132,12 +132,12 @@ Boss 拥有**多段护盾**,每段对应一种题型,像音乐游戏一样有节
 | 中级规律/匹配 | ABC/AAB 循环、按边数识图、形状匹配 | 图形语音提示 |
 | 等式平衡 | $8+7=9+\square$ | "Balance both sides. What number is missing?" |
 
-### ☁️ 蔚蓝天空城(Azure Sky City)— 30 以内综合区
+### ☁️ 蔚蓝天空城(Azure Sky City)— 20 以内进阶综合区
 
 | 题型 | 示例 | 语音旁白示例 |
 |---|---|---|
-| 30 以内加减 | $18 + \square = 27$ / $30 - \square = 19$ | 完整数字语音读题 |
-| 四项连加 | $3+4+6+5=\square$ | "Add them all up!" |
+| 20 以内加减 | $11 + \square = 18$ / $20 - \square = 13$ | 完整数字语音读题 |
+| 四项连加 | $2+3+4+5=\square$ | "Add them all up!" |
 | 高级图形规律 | 形状 × 颜色双规律,中间缺项与下一个混合 | "What tile comes next in the pattern?" |
 | 图案匹配 | 精确、镜像顺序、只看形状、只看颜色四种规则 | 图形语音提示 |
 | 数字路径/数列 | 按 1/2/5 正向或反向补空格,或预测下一项 | "Which number fills the path?" |

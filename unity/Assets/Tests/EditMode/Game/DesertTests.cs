@@ -16,7 +16,7 @@ namespace Numeria.Game.Tests
             Assert.AreEqual(4, desert.Tier);
             Assert.AreEqual("desert", desert.Theme);
             Assert.AreEqual("totalisk", desert.BossSpeciesId);
-            Assert.AreEqual(40, PuzzleGenerator.MaxForTier(desert.Tier));
+            Assert.AreEqual(20, PuzzleGenerator.MaxForTier(desert.Tier));
         }
 
         [Test]

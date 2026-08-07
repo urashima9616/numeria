@@ -52,21 +52,17 @@ bake "Which side has more mushrooms?"
 
 # ---- 咒语算式读题(与 PuzzleGenerator 一致) ----
 lower=(zero one two three four five six seven eight nine ten
-  eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty
-  twenty-one twenty-two twenty-three twenty-four twenty-five twenty-six twenty-seven
-  twenty-eight twenty-nine thirty)
-lower+=(thirty-one thirty-two thirty-three thirty-four thirty-five thirty-six thirty-seven
-  thirty-eight thirty-nine forty)
+  eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty)
 
-# 加法填空:a + ? = sum,sum 3..40
-for sum in {3..40}; do
+# 加法填空:a + ? = sum,sum 3..20
+for sum in {3..20}; do
   for a in {1..$((sum - 1))}; do
     bake "${lower[$((a + 1))]} plus what makes ${lower[$((sum + 1))]}?"
   done
 done
 
-# 减法填空:a - ? = c,a 3..40
-for a in {3..40}; do
+# 减法填空:a - ? = c,a 3..20
+for a in {3..20}; do
   for c in {1..$((a - 1))}; do
     bake "${lower[$((a + 1))]} take away what leaves ${lower[$((c + 1))]}?"
   done
@@ -80,8 +76,6 @@ done
 # 三关护盾 / 凑数题
 bake "Pick two crystals that make twelve!"
 bake "Pick two crystals that make twenty!"
-bake "Pick two crystals that make thirty!"
-bake "Pick two crystals that make forty!"
 
 # ---- P3 山脉与进化台词 ----
 bake "A wild Doublit appeared!"

@@ -49,7 +49,7 @@ to 141 forms across 48 families.
 
 ## Chapter four: Fever Desert
 
-- Number range: 0–40, with mixed arithmetic, number paths, geometry, pattern matching, and equality challenges.
+- Number range: 0–20, with mixed arithmetic, number paths, geometry, pattern matching, and equality challenges.
 - Ecosystem: evolved forms from all 20 new families.
 - Merchant: Nia, partnered with Mirrorvolt.
 - Guardian: Sage Solara.
@@ -68,5 +68,5 @@ to 141 forms across 48 families.
   Ancient Calcularagon, and the sixth Digit Crystal that wakes the gate home.
 - Each requested element contributes four new three-stage families. Their 48 forms retain independent HP/ATK/DEF
   curves, skills, catch state, evolution requirements, generated icons, and offline narration.
-- Both chapters keep puzzle values within 40 for Kindergarten readability, while increasing challenge through
-  mixed operations, symmetry, equality, sequences, and multi-step review rather than larger numbers.
+- Both chapters keep addition and subtraction within 20, while increasing challenge through decomposition,
+  symmetry, equality, sequences, and multi-step review rather than larger numbers.

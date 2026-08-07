@@ -18,6 +18,8 @@ namespace Numeria.Game.Tests
             Assert.AreEqual(6, tunnels.Tier);
             Assert.AreEqual("underground", tunnels.Theme);
             Assert.IsNull(tunnels.PortalTargetMap);
+            Assert.AreEqual(20, PuzzleGenerator.MaxForTier(mines.Tier));
+            Assert.AreEqual(20, PuzzleGenerator.MaxForTier(tunnels.Tier));
         }
 
         [Test]

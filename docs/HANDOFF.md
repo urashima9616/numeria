@@ -13,7 +13,7 @@
 - **数学是魔法不是测验**:谜题以咒语/封印/符文形式存在于世界观内
 - **三层数学融入**:环境浸泡(数字元素)→ 决策层(宝石经济心算)→ 高潮层(显式谜题)
 - **听得懂就能玩**:全部台词有预烘焙英文语音,不依赖识字量
-- 孩子水平:5 岁 / Kindergarten;前四关使用 10/20/30/40 以内加减,后两关保持 40 以内并综合图形、对称、规律与等式
+- 孩子水平:5 岁 / Kindergarten;第一关使用标准核心的 10 以内加减,第二至六关使用家长要求的 20 以内扩展;后期通过图形、对称、规律、拆分与等式提升难度,不再扩大到 30/40
 
 ## 2. 仓库与环境
 
@@ -31,7 +31,7 @@
 
 ### Core 层(`Numeria.Core`,纯 C#,noEngineReferences,全部 TDD)
 - `Rng`:确定性 LCG(与 Web 原型逐位一致),所有生成函数注入 rng
-- `PuzzleGenerator`:四关 10/20/30/40 上限;加减填空、凑目标、连加、点数/比较、图形识别、形状×颜色规律、四类图案匹配、等式平衡、正反数字路径与数列;候选答案唯一。`NumberWord` 安全覆盖 0–99,避免第四关 31–40 越界
+- `PuzzleGenerator`:统一算术边界为第一关 10、后续关卡 20;加减填空、凑目标、连加、点数/比较、图形识别、形状×颜色规律、四类图案匹配、等式平衡、正反数字路径与数列;候选答案唯一、减法无负数。`NumberWord` 仍安全覆盖 0–99
 - `BattleState`:宝石经济、数字护盾、破盾眩晕一回合 + 每次破盾各自触发一次双倍 + 命中后护盾重置;`SkillResult.BreakBonusApplied` 是 UI 与测试的单一判据;正式 ATK/DEF 公式 `max(1, ATK − DEF + 1 + [-1,1])`,小幅可控波动、零惩罚不变量
 - `Progress`:save schema v9;Lv.99 上限、物种成长曲线、捕捉个体 HP/ATK/DEF 偏移、动态经验、每家族独立成长、独占饰品装备、金币/限量库存、Digit Crystal 主线与冒险记录 —— **新字段必须带默认值和迁移**
 - `GridMap`:语义 ASCII 地图解析('.'草地 'T'树 'b'草丛 'C'宝藏 'P'出口 'S'出生
@@ -63,7 +63,7 @@
 - ✅ **P1** 战斗核心移植(逻辑层 + 全套演出 + 语音)
 - ✅ **P2** 神秘森林垂直切片(探索/遇敌/收服/升级/存档/宝箱)
 - 🔶 **P3 进行中**:
-  - ✅ 四段 Kindergarten 难度:10/20/30/40 内加减 + 同步递进的图形、彩色规律、图案匹配、等式平衡、数字路径/数列
+  - ✅ Kindergarten 难度:第一章 10 以内核心加减,第二至六章 20 以内扩展;用项数、拆分、图形、彩色规律、图案匹配、等式平衡、数字路径/数列递进
   - ✅ 进化系统全链(御三家 Lv.8/Lv.15、野生线 Lv.5 + 里程碑进化石 + 家族亲和三题试炼 + 蜕变演出)
   - ✅ 菜单(tab 化)、出战位切换、道具栏、99 只队伍上限与满员放走/替换流程；非首发伙伴可按等级换金币或当前出战伙伴经验（金币 = Lv.+2，经验 = 2×Lv.+4）
   - ✅ 捕捉成长继承:保留野生等级、进化阶段及战斗时 HP/ATK/DEF;个体偏移随升级/进化和存档延续;同家族更强个体可选择收编或转换为 125% 捕捉经验
@@ -95,7 +95,7 @@
 ## 5. 资产管线(全部约定式,零代码接新资产)
 
 - **手绘像素**:改 `prototype/js/sprites.js` 字符网格 → `node tools/export-sprites.mjs` → PNG 落到 `Resources/Art/Sprites/`
-- **语音**:台词加进 `tools/bake-voice.sh` → 跑脚本(macOS `say`,Samantha,-r 150)→ wav 落到 `Resources/Voice/`;**C# 里说的每句台词必须有对应烘焙**,`VoiceKeys.Sanitize` = 脚本规则;覆盖 0–40 加减读法、图形题、捕捉选择、141 个形态、进化、经济与六章主线对白
+- **语音**:台词加进 `tools/bake-voice.sh` → 跑脚本(macOS `say`,Samantha,-r 150)→ wav 落到 `Resources/Voice/`;**C# 里说的每句台词必须有对应烘焙**,`VoiceKeys.Sanitize` = 脚本规则;覆盖 0–20 加减读法、图形题、捕捉选择、141 个形态、进化、经济与六章主线对白
 - **音乐**:`tools/install-jukebox-music.sh` 从本地授权的 8-bit Jukebox Lite 同步九首选曲到 ignored `Resources/Music/Jukebox`;`--restore-dynamic` 可将旧曲同步到同一运行槽;原 `LocalStore` 保持不变,完整曲目/署名见 `docs/music-attribution.md`
 - **AI 生成图**(使用内置 ImageGen + imagegen skill,放 `Resources/generated/`):
   - `{id}_large_icon.png` → 菜单详情/回退链

@@ -524,7 +524,7 @@ namespace Numeria.Game
 
         // ---------- 咒语算式 ----------
 
-        /// <summary>按关卡严格限制到 10/20/30 以内，并在每关混合加法与减法。</summary>
+        /// <summary>第一章严格限制到 10 以内，后续章节加减法不超过 20，并混合加法与减法。</summary>
         public FormulaPuzzle PickPuzzle(int tier)
         {
             double roll = _rng.Next();
