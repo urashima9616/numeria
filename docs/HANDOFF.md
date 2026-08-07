@@ -31,7 +31,7 @@
 
 ### Core 层(`Numeria.Core`,纯 C#,noEngineReferences,全部 TDD)
 - `Rng`:确定性 LCG(与 Web 原型逐位一致),所有生成函数注入 rng
-- `PuzzleGenerator`:统一算术边界为第一关 10、后续关卡 20;加减填空、凑目标、连加、点数/比较、图形识别、形状×颜色规律、四类图案匹配、等式平衡、正反数字路径与数列;候选答案唯一、减法无负数。`NumberWord` 仍安全覆盖 0–99
+- `PuzzleGenerator`:统一算术边界为第一关 10、后续关卡 20,且所有显式加减生成器内部再次硬限制到 20;十几数优先用 `10 + ones`、向前数最多 5、退回 10 或向后数最多 5 的 Kindergarten 支架;加减填空、凑目标、连加、点数/比较、图形识别、形状×颜色规律、四类图案匹配、等式平衡、正反数字路径与数列;候选答案唯一、减法无负数。`NumberWord` 仍安全覆盖 0–99
 - `BattleState`:宝石经济、数字护盾、破盾眩晕一回合 + 每次破盾各自触发一次双倍 + 命中后护盾重置;`SkillResult.BreakBonusApplied` 是 UI 与测试的单一判据;正式 ATK/DEF 公式 `max(1, ATK − DEF + 1 + [-1,1])`,小幅可控波动、零惩罚不变量
 - `Progress`:save schema v9;Lv.99 上限、物种成长曲线、捕捉个体 HP/ATK/DEF 偏移、动态经验、每家族独立成长、独占饰品装备、金币/限量库存、Digit Crystal 主线与冒险记录 —— **新字段必须带默认值和迁移**
 - `GridMap`:语义 ASCII 地图解析('.'草地 'T'树 'b'草丛 'C'宝藏 'P'出口 'S'出生

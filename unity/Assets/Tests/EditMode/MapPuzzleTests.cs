@@ -165,6 +165,48 @@ namespace Numeria.Core.Tests
         }
 
         [Test]
+        public void ArithmeticGenerators_ClampAccidentalThirtyOrFortyRequestsToTwenty()
+        {
+            for (uint seed = 1; seed <= 200; seed++)
+            {
+                var add = PuzzleGenerator.GenerateFormula(new Rng(seed), 40);
+                var subtract = PuzzleGenerator.GenerateSubtraction(new Rng(seed), 30);
+                var doubled = PuzzleGenerator.GenerateDouble(new Rng(seed), 40);
+                var makeTarget = PuzzleGenerator.GenerateMakeTen(new Rng(seed), 30);
+                var chain = PuzzleGenerator.GenerateChainSum(new Rng(seed), 40, 4);
+
+                Assert.That(add.Sum, Is.InRange(0, 20));
+                Assert.That(subtract.A, Is.InRange(0, 20));
+                Assert.That(subtract.Sum, Is.InRange(0, 20));
+                Assert.That(doubled.Sum, Is.InRange(0, 20));
+                Assert.AreEqual(20, makeTarget.Target);
+                Assert.That(chain.Answer, Is.InRange(0, 20));
+            }
+        }
+
+        [Test]
+        public void WithinTwentyArithmetic_UsesKindergartenFriendlyTeenScaffolds()
+        {
+            for (uint seed = 1; seed <= 500; seed++)
+            {
+                var add = PuzzleGenerator.GenerateFormula(new Rng(seed), 20);
+                var subtract = PuzzleGenerator.GenerateSubtraction(new Rng(seed), 20);
+
+                Assert.AreEqual(add.Sum, add.A + add.Missing);
+                Assert.That(add.Sum, Is.InRange(0, 20));
+                if (add.Sum > 10)
+                    Assert.True(add.A == 10 || add.Missing <= 5,
+                        $"Addition should use a ten-bond or count-on step: {add.A} + {add.Missing}");
+
+                Assert.AreEqual(subtract.Sum, subtract.A - subtract.Missing);
+                Assert.That(subtract.Sum, Is.InRange(0, 20));
+                if (subtract.A > 10)
+                    Assert.True(subtract.Sum == 10 || subtract.Missing <= 5,
+                        $"Subtraction should return to ten or count back: {subtract.A} - {subtract.Missing}");
+            }
+        }
+
+        [Test]
         public void ShapeQuestions_ProgressFromNamingToProperties()
         {
             for (int tier = 1; tier <= 4; tier++)

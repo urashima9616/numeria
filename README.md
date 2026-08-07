@@ -105,7 +105,9 @@ retries.
 [Common Core Kindergarten mathematics](https://corestandards.org/wp-content/uploads/2023/09/ADA-Compliant-Math-Standards.pdf)
 treats addition and subtraction within 10 as the core expectation. Numeria keeps the first region inside that
 boundary, then uses the requested within-20 range as a scaffolded stretch goal. Later chapters increase reasoning
-complexity instead of introducing 30- or 40-sized arithmetic.
+complexity instead of introducing 30- or 40-sized arithmetic. Teen-number facts use `10 + ones`, counting on by
+at most five, returning to 10, or counting back by at most five; every arithmetic generator also enforces 20 as a
+hard ceiling even if a future caller requests a larger range.
 
 ## Run the Unity game
 

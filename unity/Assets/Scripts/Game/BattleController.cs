@@ -175,7 +175,8 @@ namespace Numeria.Game
                 _themeSkill.Name.ToUpperInvariant(), $"COST {_themeSkill.Cost}", ThemeColor(_themeSkill.Visual), out _formulaBg);
             _btnFormula.onClick.AddListener(() => StartCoroutine(FormulaRoutine()));
             _btnShield = ActionButton(dock.rectTransform, SpriteLib.One("Art/Sprites/shield"),
-                "BREAK SHIELD", _tier >= 3 ? "FINISH PATTERN" : $"MAKE {_state.Enemy.Shield ?? 10}",
+                "BREAK SHIELD", _tier >= 3 ? "FINISH PATTERN" :
+                    $"MAKE {PuzzleGenerator.ClampArithmeticMax(_state.Enemy.Shield ?? 10)}",
                 Ui.ShieldBlue, out _);
             _btnShield.onClick.AddListener(() => StartCoroutine(BreakShieldRoutine()));
             _btnCatch = ActionButton(dock.rectTransform, SpriteLib.Pack("UI/Icons/Catch"),
@@ -411,7 +412,8 @@ namespace Numeria.Game
             SetActionsEnabled(false);
             bool? ok = null;
             if (_tier >= 3) yield return _puzzles.RunPattern(v => ok = v, _tier);
-            else yield return _puzzles.RunMakeTen(v => ok = v, _state.Enemy.Shield ?? 10);
+            else yield return _puzzles.RunMakeTen(v => ok = v,
+                PuzzleGenerator.ClampArithmeticMax(_state.Enemy.Shield ?? 10));
             if (ok.Value)
             {
                 Sfx.Play(SfxCue.ShieldBreak);

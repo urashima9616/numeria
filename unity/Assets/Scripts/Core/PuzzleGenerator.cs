@@ -159,6 +159,9 @@ namespace Numeria.Core
     /// </summary>
     public static class PuzzleGenerator
     {
+        public const int KindergartenCoreMax = 10;
+        public const int KindergartenStretchMax = 20;
+
         private static readonly string[] SmallWords =
         {
             "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
@@ -185,7 +188,15 @@ namespace Numeria.Core
         /// 算术数字边界：第一章保持 Kindergarten 核心的 10 以内，后续章节只扩展到 20。
         /// 高章节通过更多项、等式拆分、正反数列和图形规律增加难度，不再靠 30/40 的大数字。
         /// </summary>
-        public static int MaxForTier(int tier) => tier <= 1 ? 10 : 20;
+        public static int MaxForTier(int tier) =>
+            tier <= 1 ? KindergartenCoreMax : KindergartenStretchMax;
+
+        /// <summary>
+        /// 所有显式加减法入口的最终安全边界。调用者即使误传 30/40，也不会把超出 20 的算术题带进游戏。
+        /// 下限 5 保证四个唯一候选和凑数题都能稳定生成。
+        /// </summary>
+        public static int ClampArithmeticMax(int requestedMax) =>
+            System.Math.Max(5, System.Math.Min(KindergartenStretchMax, requestedMax));
 
         private static string Cap(string s) => char.ToUpperInvariant(s[0]) + s.Substring(1);
 
@@ -200,9 +211,18 @@ namespace Numeria.Core
 
         public static FormulaPuzzle GenerateFormula(Rng rng, int max = 10)
         {
+            max = ClampArithmeticMax(max);
             int sum = rng.Pick(3, max);
-            int a = rng.Pick(1, sum - 1);
-            int missing = sum - a;
+            int missing;
+
+            // 11–20 是 Kindergarten 的延伸练习：用“十和几个一”或向前数不超过五步来搭脚手架，
+            // 避免把 8 + 9 这类需要熟练记忆的高难算式当作随机基础题。
+            if (sum > KindergartenCoreMax && rng.Next() < 0.5)
+                missing = sum - KindergartenCoreMax;
+            else
+                missing = rng.Pick(1, System.Math.Min(sum - 1,
+                    sum > KindergartenCoreMax ? 5 : sum - 1));
+            int a = sum - missing;
 
             return new FormulaPuzzle
             {
@@ -219,8 +239,16 @@ namespace Numeria.Core
         /// <summary>减法填空:A − □ = C。"Nine take away what leaves five?"</summary>
         public static FormulaPuzzle GenerateSubtraction(Rng rng, int max = 10)
         {
+            max = ClampArithmeticMax(max);
             int a = rng.Pick(3, max);
-            int missing = rng.Pick(1, a - 1);
+            int missing;
+
+            // 十几的减法同样采用“退回十”或向后数 1–5；结果始终为非负数。
+            if (a > KindergartenCoreMax && rng.Next() < 0.5)
+                missing = a - KindergartenCoreMax;
+            else
+                missing = rng.Pick(1, System.Math.Min(a - 1,
+                    a > KindergartenCoreMax ? 5 : a - 1));
             int c = a - missing;
             var candidates = BuildCandidates(rng, missing, max);
             return new FormulaPuzzle
@@ -234,6 +262,7 @@ namespace Numeria.Core
         /// <summary>翻倍:N + N = □。"What is double six?"</summary>
         public static FormulaPuzzle GenerateDouble(Rng rng, int max = 20)
         {
+            max = ClampArithmeticMax(max);
             int n = rng.Pick(2, System.Math.Min(10, max / 2));
             int answer = n * 2;
             var candidates = BuildCandidates(rng, answer, max);
@@ -268,6 +297,7 @@ namespace Numeria.Core
 
         public static MakeTenPuzzle GenerateMakeTen(Rng rng, int target = 10, int handSize = 4)
         {
+            target = ClampArithmeticMax(target);
             int a = rng.Pick(1, target - 1);
             var hand = new List<int> { a, target - a };
             while (hand.Count < handSize)
@@ -324,6 +354,7 @@ namespace Numeria.Core
 
         public static ChainSumPuzzle GenerateChainSum(Rng rng, int max = 20, int termCount = 3)
         {
+            max = ClampArithmeticMax(max);
             termCount = System.Math.Max(2, System.Math.Min(4, termCount));
             var terms = new List<int>();
             int answer = 0;
