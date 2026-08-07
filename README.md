@@ -19,7 +19,7 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 | P3 — Full game systems | 🔶 Playable / polishing | Six painterly worlds, 141 Mathmons, evolution, economy, merchants, Lucas story |
 | P4 — iOS delivery | ⬜ Not started | Device build, signing, TestFlight and final performance QA |
 
-The current verification baseline compiles all four Unity assemblies and passes **128/128 Unity EditMode tests**
+The current verification baseline compiles all four Unity assemblies and passes **129/129 Unity EditMode tests**
 plus **15/15 Node prototype tests**.
 The save format is currently **schema v9**, with non-destructive migration for older saves.
 
@@ -44,10 +44,11 @@ The save format is currently **schema v9**, with non-destructive migration for o
 - The original eleven families retain distinct skills, while each new elemental group has its own generated icon,
   palette, and battle performance.
 - Number shields, shield-break stun, gems, powered math skills, consumable items, and equippable accessories.
-- Every Mathmon can Mega Evolve in battle after reaching 7 Gems and solving a tier-appropriate math puzzle. Mega
-  forms gain a stable species-specific 25–35% base-stat boost, animated elemental outlines/wings/crests, and a free
-  Nova skill. All skills are free while transformed; one Gem drains after every action, Gem Snacks are sealed, and
-  the form ends at zero Gems. Gems can then be rebuilt for another activation in the same battle.
+- Every Mathmon can Mega Evolve in battle after reaching 7 Gems and solving a tier-appropriate math puzzle. All 141
+  forms have their own redesigned Mega sprite—not a scaled normal sprite or generic aura/wing overlay—plus a stable
+  species-specific 25–35% base-stat boost and a free Nova skill. All skills are free while transformed; one Gem
+  drains after every action, Gem Snacks are sealed, and the form ends at zero Gems. Gems can then be rebuilt for
+  another activation in the same battle.
 - Every shield break independently arms one clearly labeled **2× next hit** bonus, including second and later cycles.
 - Damage uses `max(1, ATK - DEF + 1 + [-1, 1])`; enemy HP also has controlled per-encounter variation.
 - Bosses have higher region-scaled HP and number shields without becoming mandatory difficulty walls.

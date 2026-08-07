@@ -28,6 +28,9 @@ namespace Numeria.Game
         private RectTransform _canvasRoot;
         private RectTransform _shakeRoot;
         private RectTransform _playerSprite;
+        private Image _playerImage;
+        private Sprite _normalPlayerSprite;
+        private Sprite _megaPlayerSprite;
         private RectTransform _enemySprite;
         private Image _playerHpFill;
         private Image _enemyHpFill;
@@ -52,8 +55,6 @@ namespace Numeria.Game
         private TMP_Text _megaButtonLabel;
         private Image _megaButtonImage;
         private CanvasGroup _dockGroup;
-        private RectTransform _megaFormRoot;
-        private RectTransform _megaAuraRing;
         private bool _actionsEnabled = true;
         private int _playerLevel = 1;
 
@@ -137,7 +138,9 @@ namespace Numeria.Game
             playerImg.preserveAspect = true;
             Ui.PlaceCentered(playerImg.rectTransform, new Vector2(0.235f, 0.49f), Vector2.zero, new Vector2(490, 490));
             _playerSprite = playerImg.rectTransform;
-            BuildMegaAppearance(playerImg.sprite);
+            _playerImage = playerImg;
+            _normalPlayerSprite = playerImg.sprite;
+            _megaPlayerSprite = SpriteLib.MegaBattleSprite(_state.Player.Id);
             var playerPlate = BuildStatusPlate("PlayerPlate", new Vector2(1, 0), new Vector2(-28, 267), new Vector2(560, 310),
                 _state.Player.Name,
                 $"Lv. {_playerLevel}   ATK {_state.Player.AttackPower + _state.PlayerAttackBonus}   " +
@@ -200,63 +203,6 @@ namespace Numeria.Game
             _btnItem = ActionButton(dock.rectTransform, SpriteLib.One("Art/Sprites/gem"),
                 "ITEMS", "BATTLE ONLY", Ui.Hex("#5c8a3f"), out _);
             _btnItem.onClick.AddListener(() => StartCoroutine(ItemRoutine()));
-        }
-
-        /// <summary>
-        /// 所有物种共用的动态 Mega 形态层：保留原精灵辨识度，同时增加发光轮廓、属性翼片与冠角。
-        /// 形态数量由稳定的 AppearanceVariant 决定，因此每只 Mathmon 在每场战斗中的造型一致。
-        /// </summary>
-        private void BuildMegaAppearance(Sprite playerSprite)
-        {
-            _megaFormRoot = Ui.Node(_shakeRoot, "MegaForm");
-            Ui.PlaceCentered(_megaFormRoot, new Vector2(0.235f, 0.49f), Vector2.zero, new Vector2(590, 590));
-            _megaFormRoot.SetSiblingIndex(_playerSprite.GetSiblingIndex());
-
-            Color theme = ThemeColor(_state.Mega.Skill.Visual);
-            var silhouette = Ui.SpriteImg(_megaFormRoot, "MegaOutline", playerSprite);
-            silhouette.preserveAspect = true;
-            silhouette.color = new Color(theme.r, theme.g, theme.b, .58f);
-            Ui.PlaceCentered(silhouette.rectTransform, new Vector2(.5f, .5f), Vector2.zero, new Vector2(535, 535));
-
-            _megaAuraRing = Ui.Node(_megaFormRoot, "AuraRing");
-            Ui.PlaceCentered(_megaAuraRing, new Vector2(.5f, .5f), Vector2.zero, new Vector2(560, 560));
-            for (int i = 0; i < 12; i++)
-            {
-                float angle = i * Mathf.PI * 2f / 12f;
-                var ray = Ui.Img(_megaAuraRing, $"Ray{i}", new Color(theme.r, theme.g, theme.b, .72f));
-                Ui.PlaceCentered(ray.rectTransform, new Vector2(.5f, .5f),
-                    new Vector2(Mathf.Cos(angle) * 252f, Mathf.Sin(angle) * 252f),
-                    new Vector2(13, 58 + (i % 2) * 18));
-                ray.rectTransform.localRotation = Quaternion.Euler(0, 0, angle * Mathf.Rad2Deg - 90f);
-            }
-
-            Sprite gem = SpriteLib.Pack("UI/Icons/Gem") ?? SpriteLib.One("Art/Sprites/gem");
-            int wingCount = 3 + _state.Mega.AppearanceVariant;
-            for (int side = -1; side <= 1; side += 2)
-            for (int i = 0; i < wingCount; i++)
-            {
-                var shard = Ui.SpriteImg(_megaFormRoot, $"Wing{side}-{i}", gem);
-                shard.preserveAspect = true;
-                shard.color = new Color(theme.r, theme.g, theme.b, .9f);
-                float spread = 132 + i * 38;
-                Ui.PlaceCentered(shard.rectTransform, new Vector2(.5f, .5f),
-                    new Vector2(side * spread, 18 + i * 45), new Vector2(62 - i * 4, 92 - i * 3));
-                shard.rectTransform.localRotation = Quaternion.Euler(0, 0, side * (28 + i * 12));
-            }
-
-            int crestCount = 3 + _state.Mega.AppearanceVariant;
-            for (int i = 0; i < crestCount; i++)
-            {
-                float centered = i - (crestCount - 1) * .5f;
-                var crest = Ui.SpriteImg(_megaFormRoot, $"Crest{i}", gem);
-                crest.preserveAspect = true;
-                crest.color = Color.Lerp(theme, Color.white, .22f);
-                Ui.PlaceCentered(crest.rectTransform, new Vector2(.5f, .5f),
-                    new Vector2(centered * 48f, 226 + Mathf.Abs(centered) * 8f), new Vector2(52, 72));
-                crest.rectTransform.localRotation = Quaternion.Euler(0, 0, centered * -10f);
-            }
-
-            _megaFormRoot.gameObject.SetActive(false);
         }
 
         private void BuildMegaButton(RectTransform playerPlate)
@@ -424,8 +370,8 @@ namespace Numeria.Game
             _btnItem.interactable = _actionsEnabled &&
                 (_progress.HealthPotions > 0 || (_progress.GemSnacks > 0 && _state.CanRestoreGems));
 
-            _megaFormRoot.gameObject.SetActive(_state.MegaActive);
-            _playerSprite.localScale = _state.MegaActive ? Vector3.one * 1.1f : Vector3.one;
+            _playerImage.sprite = _state.MegaActive ? _megaPlayerSprite : _normalPlayerSprite;
+            _playerSprite.localScale = Vector3.one;
             _megaButtonLabel.text = _state.MegaActive
                 ? "MEGA NOVA — FREE"
                 : $"MEGA EVOLVE — {MegaSystem.RequiredGems}+ GEMS";
@@ -433,16 +379,6 @@ namespace Numeria.Game
                 ? Color.Lerp(ThemeColor(_state.Mega.Skill.Visual), Color.white, .36f)
                 : _state.CanMegaEvolve ? Amber : Cream;
             _btnMega.interactable = _actionsEnabled && (_state.MegaActive || _state.CanMegaEvolve);
-        }
-
-        private void Update()
-        {
-            if (_megaFormRoot == null || !_megaFormRoot.gameObject.activeSelf || _playerSprite == null) return;
-            _megaFormRoot.position = _playerSprite.position;
-            float pulse = 1f + Mathf.Sin(Time.unscaledTime * 4.2f) * .025f;
-            _megaFormRoot.localScale = Vector3.one * pulse;
-            if (_megaAuraRing != null)
-                _megaAuraRing.localRotation = Quaternion.Euler(0, 0, Time.unscaledTime * 18f);
         }
 
         private static void SetHpBar(Image fill, TMP_Text label, int hp, int maxHp)
@@ -782,16 +718,9 @@ namespace Numeria.Game
             Ui.PlaceCentered(title.rectTransform, new Vector2(.5f, .72f), Vector2.zero, new Vector2(900, 100));
             title.gameObject.AddComponent<Outline>().effectColor = new Color(0, 0, 0, .8f);
 
-            if (!activating)
-            {
-                _megaFormRoot.gameObject.SetActive(true);
-                _playerSprite.localScale = Vector3.one * 1.1f;
-            }
-            else
-            {
-                _megaFormRoot.gameObject.SetActive(false);
-                _playerSprite.localScale = Vector3.one;
-            }
+            _playerImage.sprite = activating ? _normalPlayerSprite : _megaPlayerSprite;
+            _playerSprite.localScale = Vector3.one;
+            bool spriteSwapped = false;
 
             float t = 0f;
             const float revealTime = .72f;
@@ -805,23 +734,19 @@ namespace Numeria.Game
                     Mathf.Clamp01(p * 4f) * Mathf.Clamp01((1f - p) * 4f));
                 float pulse = 1f + Mathf.Sin(p * Mathf.PI * 7f) * .07f + p * .08f;
                 _playerSprite.localScale = Vector3.one * pulse;
-                if (activating && p >= .5f && !_megaFormRoot.gameObject.activeSelf)
+                if (p >= .5f && !spriteSwapped)
                 {
-                    _megaFormRoot.gameObject.SetActive(true);
-                    yield return RadialBurst(_playerSprite.position, color, 18);
-                }
-                if (!activating && p >= .5f && _megaFormRoot.gameObject.activeSelf)
-                {
-                    _megaFormRoot.gameObject.SetActive(false);
-                    yield return RadialBurst(_playerSprite.position, Ui.Hex("#f6efdc"), 12);
+                    _playerImage.sprite = activating ? _megaPlayerSprite : _normalPlayerSprite;
+                    spriteSwapped = true;
+                    yield return RadialBurst(_playerSprite.position,
+                        activating ? color : Ui.Hex("#f6efdc"), activating ? 18 : 12);
                 }
                 yield return null;
             }
 
             Destroy(veil.gameObject);
-            _megaFormRoot.gameObject.SetActive(activating);
-            _megaFormRoot.localScale = Vector3.one;
-            _playerSprite.localScale = activating ? Vector3.one * 1.1f : Vector3.one;
+            _playerImage.sprite = activating ? _megaPlayerSprite : _normalPlayerSprite;
+            _playerSprite.localScale = Vector3.one;
         }
 
         private static Color ThemeColor(SkillVisualKind visual)

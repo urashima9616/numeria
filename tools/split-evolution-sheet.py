@@ -45,12 +45,14 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("input")
     parser.add_argument("output_dir")
+    parser.add_argument("--suffix", default=None,
+                        help="output suffix before .png; defaults to _large_icon for multi-subject sheets")
     parser.add_argument("names", nargs="+")
     args = parser.parse_args()
 
     image = Image.open(args.input).convert("RGBA")
-    parts = components(image.getchannel("A"))
     count = len(args.names)
+    parts = components(image.getchannel("A"))
     if len(parts) < count:
         raise SystemExit(f"expected at least {count} connected bodies, found {len(parts)}: {parts}")
     anchors = sorted(sorted(parts, key=lambda box: box[4], reverse=True)[:count], key=lambda box: box[0])
@@ -75,7 +77,7 @@ def main():
         crop = image.crop((left, top, right, bottom))
         icon.alpha_composite(crop, ((side - width) // 2, (side - height) // 2))
         icon = icon.resize((512, 512), Image.Resampling.NEAREST)
-        suffix = "_large_icon" if count > 1 else ""
+        suffix = args.suffix if args.suffix is not None else ("_large_icon" if count > 1 else "")
         icon.save(output_dir / f"{name}{suffix}.png", optimize=True)
 
 

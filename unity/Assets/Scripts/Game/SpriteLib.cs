@@ -51,6 +51,16 @@ namespace Numeria.Game
             return back != null ? back : LargeIcon(id);
         }
 
+        /// <summary>
+        /// Mega 战斗立绘：每个图鉴条目都有独立的重新设计精灵。
+        /// 缺失时回退普通立绘，让开发中的新增物种仍可进入战斗；资源测试会阻止正式图鉴漏图。
+        /// </summary>
+        public static Sprite MegaBattleSprite(string id)
+        {
+            var mega = Resources.Load<Sprite>($"generated/{id}_mega_icon");
+            return mega != null ? mega : PlayerBattleSprite(id);
+        }
+
         /// <summary>敌方战斗立绘:素材包正面图 → 高清大图 → 像素图。</summary>
         public static Sprite EnemyBattleSprite(string id)
         {

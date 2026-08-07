@@ -56,3 +56,16 @@ floor shadows, trademarks, and existing franchise characters.
 
 `tools/import-evolution-sheet.sh` converted and split the sheets into 48 square 512×512 RGBA files named
 `unity/Assets/Resources/generated/<species>_large_icon.png`.
+
+## Mega form production
+
+Every registered form has an independent transparent 512×512 sprite at
+`unity/Assets/Resources/generated/<species-id>_mega_icon.png`. Mega art is generated family-by-family with each
+normal form supplied as a reference. The shared direction requires a true anatomical redesign—new proportions,
+stance, head, torso, limbs, tail/wings/foliage and silhouette—while preserving the recognizable face, core palette,
+element and evolutionary ancestry. Prompts explicitly reject simple enlargement, recoloring, aura-only treatment,
+generic wings/horns, crowns, and armor overlays.
+
+Sheets use a flat magenta key background (`#ff00ff`), except pink Fairy families which use green (`#00ff00`).
+`tools/import-mega-sheet.sh` removes the key color and splits each family into `_mega_icon` resources. Adjacent
+subjects must be regenerated with wider spacing rather than accepting clipped or contaminated icons.

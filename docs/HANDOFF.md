@@ -37,12 +37,12 @@
 - `GridMap`:语义 ASCII 地图解析('.'草地 'T'树 'b'草丛 'C'宝藏 'P'出口 'S'出生
   '~'水域 '='道路 'B'桥 '#'悬崖 'L'地标)+ BFS 寻路;水域/悬崖/树木/地标不可通行
 - `GameData`:141 只数灵、48 条进化线;最新扩展为 Electric/Rock/Dragon/Fire 各 4 条三段线;各物种配置基础经验、HP/ATK/DEF 成长与数学亲和
-- 测试:`unity/Assets/Tests/EditMode/`;当前四个 C# assembly 已单独编译通过,Unity EditMode **128/128**、Node 原型 **15/15**
+- 测试:`unity/Assets/Tests/EditMode/`;当前四个 C# assembly 已单独编译通过,Unity EditMode **129/129**、Node 原型 **15/15**
 
 ### Game 层(`Numeria.Game`)
 - **全程序化 UGUI,零场景文件**——所有界面代码搭建,SampleScene 只是空壳,`BattleBootstrap` 用 `RuntimeInitializeOnLoadMethod` 拉起 `MapController`
 - `MapController`:六张 32×18 地图、点触 BFS + 跟随相机、带权多物种生态、宝箱谜题、全宝箱后 Boss 图标与三题开门试炼、掉落与进化试炼。六章统一由 `PaintedTerrainRenderer` 使用 Tiles and Hexes Painted Terrain:按底部锚点缩放到语义格、下方行覆盖上方行、主题配色 + 半透明窄道路;RPG Worlds Caves/Tiny Swords 只在 Painted catalog 不完整时回退
-- `BattleController`:`Init(enemy, progress, tier, battleBg, onEnd)`;双方状态牌显示 ATK/DEF,普通怪与 Boss HP 均按关卡和物种成长合理浮动;Mega 按钮位于玩家状态牌,动态复用当前精灵生成发光轮廓、12 段旋转光环、3 种翼/冠变体,含激活/退化遮罩与专属 Nova 演出
+- `BattleController`:`Init(enemy, progress, tier, battleBg, onEnd)`;双方状态牌显示 ATK/DEF,普通怪与 Boss HP 均按关卡和物种成长合理浮动;Mega 按钮位于玩家状态牌,激活中途切换到 `generated/<id>_mega_icon`,退化恢复普通战斗精灵,含激活/退化遮罩与专属 Nova 演出;禁止恢复旧的放大/光环/通用翼冠伪形态
 - `SkillDef` 保存独立 `IconResource` + `SkillVisualKind`;11 条家族各有专属像素图标与战斗弹道/命中节奏,不要再硬编码 `Flame_Formula`
 - `PuzzleUi`:谜题遮罩共用;第一关 10 内加减+图形/彩色规律/数字路径,第二至六关加减均硬限制 20 内,通过连加项数、拆分、等式平衡、正反数字路径与四类图案匹配递进;旋转题已彻底淘汰;传送门三题必含算术
 - `MenuUi`:TEAM/ITEMS/RECORDS/SAVES/SETTINGS 五 tab,TEAM 可为每只数灵装备/卸下饰品,SAVES 提供十槽存取;SETTINGS 返回主菜单前询问保存/不保存/取消
@@ -65,7 +65,7 @@
 - 🔶 **P3 进行中**:
   - ✅ Kindergarten 难度:第一章 10 以内核心加减,第二至六章 20 以内扩展;用项数、拆分、图形、彩色规律、图案匹配、等式平衡、数字路径/数列递进
   - ✅ 进化系统全链(御三家 Lv.8/Lv.15、野生线 Lv.5 + 里程碑进化石 + 家族亲和三题试炼 + 蜕变演出)
-  - ✅ 全物种 Mega Evolution:战斗内 7 Gem + 数学谜题激活,141 个形态自动获得 25–35% 增幅、动态外观变体与免费 Nova;每行动消耗 1 Gem、禁用补 Gem、归零退化并支持单场重复激活
+  - ✅ 全物种 Mega Evolution:战斗内 7 Gem + 数学谜题激活,141 个形态各有独立 ImageGen 重设计精灵并获得 25–35% 增幅与免费 Nova;每行动消耗 1 Gem、禁用补 Gem、归零退化并支持单场重复激活
   - ✅ 菜单(tab 化)、出战位切换、道具栏、99 只队伍上限与满员放走/替换流程；非首发伙伴可按等级换金币或当前出战伙伴经验（金币 = Lv.+2，经验 = 2×Lv.+4）
   - ✅ 捕捉成长继承:保留野生等级、进化阶段及战斗时 HP/ATK/DEF;个体偏移随升级/进化和存档延续;同家族更强个体可选择收编或转换为 125% 捕捉经验
   - ✅ 用户 AI 生成美术管线(`generated/` 约定 + NUMERIA Battle Asset Pack 全面接入战斗)

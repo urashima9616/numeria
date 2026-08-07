@@ -14,19 +14,20 @@ the existing Gem economy so a child can see and plan the whole transformation wi
 
 ## Form and stats
 
-`MegaSystem` derives a stable profile from the current species ID, covering all 141 existing forms and future
-roster additions without per-form wiring:
+`MegaSystem` derives the combat profile from the current species ID. Art is deliberately explicit: every one of
+the 141 registered forms owns a separate `generated/<species-id>_mega_icon` sprite:
 
 - base HP, ATK, and DEF receive a deterministic **25–35%** boost (rounded upward for integer combat stats);
 - accessory bonuses are added after the base-stat multiplier;
 - current HP gains only the temporary difference between normal and Mega max HP, and is capped back to normal max
   when Mega ends;
-- the species' existing elemental/mathematical visual language determines its aura and Nova attack;
-- a stable three-way appearance variant changes the number of energy-wing shards and crown/crest pieces.
+- the species' existing elemental/mathematical visual language determines its Nova attack;
+- each Mega sprite changes anatomy, proportions, stance, head/limbs/tail and silhouette while retaining the normal
+  form's face, palette, element and family ancestry.
 
-The presentation keeps the original sprite recognizable, then adds a larger colored silhouette, twelve rotating
-aura rays, animated elemental wings and crown shards, a scale/pulse change, and full-screen activation/reversion
-beats. This works with every current battle sprite rather than requiring 141 separately painted transformation PNGs.
+The battle presentation swaps the normal sprite for that species' redesigned Mega sprite halfway through the
+full-screen activation beat. Persistent fake-form layers—scale boosts, colored silhouettes, generic wings, crest
+pieces and rotating aura rays—are intentionally not used. Reversion swaps the original battle sprite back.
 
 ## Skills and Gem lifecycle
 
@@ -42,5 +43,5 @@ beats. This works with every current battle sprite rather than requiring 141 sep
 ## Verified invariants
 
 EditMode tests cover the exact 7-Gem gate, solved-puzzle gate, deterministic 25–35% range, free regular and Nova
-skills, refill blocking, one-Gem drain, zero-Gem reversion, repeat activation, all 141 registered forms, and the
-runtime Mega UI hierarchy (outline, twelve-ray aura, wings, crests, button states, and normal-form restoration).
+skills, refill blocking, one-Gem drain, zero-Gem reversion, repeat activation, all 141 registered Mega resources,
+and the runtime normal → redesigned Mega → normal sprite swap.

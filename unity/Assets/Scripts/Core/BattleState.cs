@@ -98,12 +98,11 @@ namespace Numeria.Core
 
     /// <summary>
     /// 每个 Mathmon 都由物种 ID 稳定派生一份 Mega 配置。无需逐个维护 141 份数据，
-    /// 新增物种也会自动获得 25–35% 增幅、外形变体和专属强力技能。
+    /// 新增物种也会自动获得 25–35% 增幅和专属强力技能；外形由独立 Mega 精灵资源提供。
     /// </summary>
     public sealed class MegaProfile
     {
         public int BonusPercent;
-        public int AppearanceVariant;
         public SkillDef Skill;
     }
 
@@ -132,7 +131,6 @@ namespace Numeria.Core
             return new MegaProfile
             {
                 BonusPercent = bonus,
-                AppearanceVariant = (int)((hash / 11u) % 3u),
                 Skill = new SkillDef
                 {
                     Id = $"mega-{combatant.Id}-nova",

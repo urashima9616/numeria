@@ -2,8 +2,8 @@
 # Remove ImageGen's chroma key and split one three-stage family sheet into Unity icons.
 set -e
 
-if [[ $# -ne 5 ]]; then
-  echo "usage: $0 <sheet.png> <tag> <stage1-id> <stage2-id> <stage3-id>" >&2
+if [[ $# -lt 5 || $# -gt 6 ]]; then
+  echo "usage: $0 <sheet.png> <tag> <stage1-id> <stage2-id> <stage3-id> [output-suffix]" >&2
   exit 2
 fi
 
@@ -22,4 +22,6 @@ python3 "$KEY_HELPER" \
   --opaque-threshold 220 \
   --edge-contract 1
 
-python3 tools/split-evolution-sheet.py "$ALPHA" unity/Assets/Resources/generated "$3" "$4" "$5"
+SUFFIX="${6:-_large_icon}"
+python3 tools/split-evolution-sheet.py "$ALPHA" unity/Assets/Resources/generated \
+  --suffix "$SUFFIX" "$3" "$4" "$5"

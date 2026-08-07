@@ -1,0 +1,868 @@
+fileFormatVersion: 2
+guid: dfd0fc1a275924c26a1aea5bf87cbdc2
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 144361814593316684
+    second: sparkit_mega_icon_0
+  - first:
+      213: 3171514547146103012
+    second: sparkit_mega_icon_1
+  - first:
+      213: -6141889777453391801
+    second: sparkit_mega_icon_2
+  - first:
+      213: -6848882408748330921
+    second: sparkit_mega_icon_3
+  - first:
+      213: -5089812012300999276
+    second: sparkit_mega_icon_4
+  - first:
+      213: -4957255434241458140
+    second: sparkit_mega_icon_5
+  - first:
+      213: -3390097420134807720
+    second: sparkit_mega_icon_6
+  - first:
+      213: 2278402366750701194
+    second: sparkit_mega_icon_7
+  - first:
+      213: 2147384691193464002
+    second: sparkit_mega_icon_8
+  - first:
+      213: 2824405050432710426
+    second: sparkit_mega_icon_9
+  - first:
+      213: 6289351218656701780
+    second: sparkit_mega_icon_10
+  - first:
+      213: 3567950471050360023
+    second: sparkit_mega_icon_11
+  - first:
+      213: 6864791054478952078
+    second: sparkit_mega_icon_12
+  - first:
+      213: -362345903573006980
+    second: sparkit_mega_icon_13
+  - first:
+      213: 2555675790363114090
+    second: sparkit_mega_icon_14
+  - first:
+      213: -4596218811439459278
+    second: sparkit_mega_icon_15
+  - first:
+      213: -4174862587497695581
+    second: sparkit_mega_icon_16
+  - first:
+      213: 641666337683867575
+    second: sparkit_mega_icon_17
+  - first:
+      213: -7466656642220799772
+    second: sparkit_mega_icon_18
+  - first:
+      213: -8756469100605265498
+    second: sparkit_mega_icon_19
+  - first:
+      213: -8146844275217036630
+    second: sparkit_mega_icon_20
+  - first:
+      213: -7862918920991320783
+    second: sparkit_mega_icon_21
+  - first:
+      213: 973270684354614792
+    second: sparkit_mega_icon_22
+  - first:
+      213: -8862244628279220918
+    second: sparkit_mega_icon_23
+  - first:
+      213: 851210055675901861
+    second: sparkit_mega_icon_24
+  - first:
+      213: -7044698135454273797
+    second: sparkit_mega_icon_25
+  - first:
+      213: 5907282264688262807
+    second: sparkit_mega_icon_26
+  - first:
+      213: -3600446292944333072
+    second: sparkit_mega_icon_27
+  - first:
+      213: 1144948938953697824
+    second: sparkit_mega_icon_28
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: sparkit_mega_icon_0
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 257
+        width: 106
+        height: 83
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4727f53e40e00200800000000000000
+      internalID: 144361814593316684
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_1
+      rect:
+        serializedVersion: 2
+        x: 235
+        y: 329
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e890ae5dab730c20800000000000000
+      internalID: 3171514547146103012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_2
+      rect:
+        serializedVersion: 2
+        x: 237
+        y: 93
+        width: 197
+        height: 312
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 740a94dd9cf93caa0800000000000000
+      internalID: -6141889777453391801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_3
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 321
+        width: 109
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75052267cb1e3f0a0800000000000000
+      internalID: -6848882408748330921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_4
+      rect:
+        serializedVersion: 2
+        x: 322
+        y: 319
+        width: 55
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 495684911fa5d59b0800000000000000
+      internalID: -5089812012300999276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_5
+      rect:
+        serializedVersion: 2
+        x: 429
+        y: 320
+        width: 32
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 420c92d727a443bb0800000000000000
+      internalID: -4957255434241458140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_6
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 312
+        width: 20
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85785ee9b54f3f0d0800000000000000
+      internalID: -3390097420134807720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_7
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 125
+        width: 124
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a86b59d81e28e9f10800000000000000
+      internalID: 2278402366750701194
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_8
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 244
+        width: 38
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c4c2b2dffa0dcd10800000000000000
+      internalID: 2147384691193464002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_9
+      rect:
+        serializedVersion: 2
+        x: 410
+        y: 286
+        width: 31
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a176cd4dd6d423720800000000000000
+      internalID: 2824405050432710426
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_10
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 305
+        width: 15
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45de3b76c93484750800000000000000
+      internalID: 6289351218656701780
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_11
+      rect:
+        serializedVersion: 2
+        x: 437
+        y: 287
+        width: 33
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d4f423bc08e38130800000000000000
+      internalID: 3567950471050360023
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_12
+      rect:
+        serializedVersion: 2
+        x: 155
+        y: 251
+        width: 11
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e864f73c713a44f50800000000000000
+      internalID: 6864791054478952078
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_13
+      rect:
+        serializedVersion: 2
+        x: 422
+        y: 261
+        width: 17
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7586bb0250b8faf0800000000000000
+      internalID: -362345903573006980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_14
+      rect:
+        serializedVersion: 2
+        x: 444
+        y: 241
+        width: 22
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a6ab8ad3795977320800000000000000
+      internalID: 2555675790363114090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_15
+      rect:
+        serializedVersion: 2
+        x: 447
+        y: 266
+        width: 11
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 234de22c753f630c0800000000000000
+      internalID: -4596218811439459278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_16
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 211
+        width: 48
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a6b1269898ef06c0800000000000000
+      internalID: -4174862587497695581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_17
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 248
+        width: 19
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b709f96228a7e800800000000000000
+      internalID: 641666337683867575
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_18
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 101
+        width: 52
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e84e9c085b116890800000000000000
+      internalID: -7466656642220799772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_19
+      rect:
+        serializedVersion: 2
+        x: 433
+        y: 251
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a92dbb2fb5ca7680800000000000000
+      internalID: -8756469100605265498
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_20
+      rect:
+        serializedVersion: 2
+        x: 138
+        y: 231
+        width: 24
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aaa8347ab4890fe80800000000000000
+      internalID: -8146844275217036630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_21
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 201
+        width: 19
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1355d90a6ec41e290800000000000000
+      internalID: -7862918920991320783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_22
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 139
+        width: 57
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8061243e780c18d00800000000000000
+      internalID: 973270684354614792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_23
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 201
+        width: 13
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a45adcaf67bf20580800000000000000
+      internalID: -8862244628279220918
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_24
+      rect:
+        serializedVersion: 2
+        x: 411
+        y: 162
+        width: 48
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a77dc5290b10db00800000000000000
+      internalID: 851210055675901861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_25
+      rect:
+        serializedVersion: 2
+        x: 155
+        y: 185
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bfe2466ce543c3e90800000000000000
+      internalID: -7044698135454273797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_26
+      rect:
+        serializedVersion: 2
+        x: 158
+        y: 191
+        width: 11
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79e75beebe1eaf150800000000000000
+      internalID: 5907282264688262807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_27
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 101
+        width: 124
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f65e2c2c25a80ec0800000000000000
+      internalID: -3600446292944333072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkit_mega_icon_28
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 144
+        width: 19
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02aab486efca3ef00800000000000000
+      internalID: 1144948938953697824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable: {}
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

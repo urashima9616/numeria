@@ -147,8 +147,6 @@ namespace Numeria.Core.Tests
 
                 Assert.That(first.BonusPercent, Is.InRange(25, 35), species.Id);
                 Assert.AreEqual(first.BonusPercent, second.BonusPercent, species.Id);
-                Assert.That(first.AppearanceVariant, Is.InRange(0, 2), species.Id);
-                Assert.AreEqual(first.AppearanceVariant, second.AppearanceVariant, species.Id);
                 Assert.AreEqual($"mega-{species.Id}-nova", first.Skill.Id, species.Id);
                 Assert.AreEqual(0, first.Skill.Cost, species.Id);
                 Assert.Greater(first.Skill.Power, theme.Power, species.Id);

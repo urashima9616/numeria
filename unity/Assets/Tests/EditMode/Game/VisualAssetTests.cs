@@ -46,7 +46,21 @@ namespace Numeria.Game.Tests
         }
 
         [Test]
-        public void BattleUiBuildsAndTogglesTheCompleteMegaAppearanceForAnyPlayerSprite()
+        public void EveryMathmonHasAnIndependentTransparentMegaSprite()
+        {
+            Assert.AreEqual(141, GameData.Roster.Count);
+            foreach (var species in GameData.Roster)
+            {
+                var mega = Resources.Load<Sprite>($"generated/{species.Id}_mega_icon");
+                Assert.IsNotNull(mega, $"Missing Mega sprite for {species.Id}");
+                Assert.AreEqual(512, mega.texture.width, species.Id);
+                Assert.AreEqual(512, mega.texture.height, species.Id);
+                Assert.AreNotSame(SpriteLib.LargeIcon(species.Id), mega, species.Id);
+            }
+        }
+
+        [Test]
+        public void BattleUiSwapsBetweenNormalAndRedesignedMegaSprite()
         {
             var host = new GameObject("MegaBattleUiTest");
             bool voiceWasEnabled = Voice.Enabled;
@@ -58,33 +72,32 @@ namespace Numeria.Game.Tests
                 controller.Init(GameData.Countipillar(), new Progress(), 1,
                     "generated/NUMERIA_Unity_Battle_Assets/Backgrounds/Sunny_Meadow_2048x1152", _ => { });
                 var transforms = host.GetComponentsInChildren<Transform>(true);
-                Transform megaForm = transforms.Single(t => t.name == "MegaForm");
                 Transform megaButton = transforms.Single(t => t.name == "BtnMega");
-                Assert.False(megaForm.gameObject.activeSelf);
+                var playerImage = transforms.Single(t => t.name == "PlayerSprite").GetComponent<Image>();
                 Assert.False(megaButton.GetComponent<Button>().interactable);
-                Assert.AreEqual(12, transforms.Count(t => t.name.StartsWith("Ray")));
-                Assert.That(transforms.Count(t => t.name.StartsWith("Wing")), Is.InRange(6, 10));
-                Assert.That(transforms.Count(t => t.name.StartsWith("Crest")), Is.InRange(3, 5));
-                Assert.IsNotNull(transforms.Single(t => t.name == "MegaOutline").GetComponent<Image>().sprite);
 
                 var stateField = typeof(BattleController).GetField("_state",
                     BindingFlags.Instance | BindingFlags.NonPublic);
                 var render = typeof(BattleController).GetMethod("RenderAll",
                     BindingFlags.Instance | BindingFlags.NonPublic);
                 var state = (BattleState)stateField.GetValue(controller);
+                var normalSprite = SpriteLib.PlayerBattleSprite(state.Player.Id);
+                var megaSprite = Resources.Load<Sprite>($"generated/{state.Player.Id}_mega_icon");
+                Assert.AreSame(normalSprite, playerImage.sprite);
+                Assert.IsNotNull(megaSprite);
                 state.Gems = 7;
                 Assert.True(state.TryActivateMega(true));
                 render.Invoke(controller, null);
 
-                Assert.True(megaForm.gameObject.activeSelf);
+                Assert.AreSame(megaSprite, playerImage.sprite);
                 StringAssert.Contains("NOVA", megaButton.Find("Label").GetComponent<TMP_Text>().text);
                 Assert.IsNotNull(transforms.SingleOrDefault(t => t.name == "SubT" &&
                     t.GetComponent<TMP_Text>()?.text == "FREE — MEGA"));
-                Assert.Greater(transforms.Single(t => t.name == "PlayerSprite").localScale.x, 1f);
+                Assert.AreEqual(Vector3.one, transforms.Single(t => t.name == "PlayerSprite").localScale);
 
                 while (state.MegaActive) state.ConsumeMegaTurn();
                 render.Invoke(controller, null);
-                Assert.False(megaForm.gameObject.activeSelf);
+                Assert.AreSame(normalSprite, playerImage.sprite);
                 Assert.AreEqual(Vector3.one, transforms.Single(t => t.name == "PlayerSprite").localScale);
             }
             finally
