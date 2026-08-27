@@ -77,7 +77,8 @@ namespace Numeria.EditorTools
                 settings.preloadAudioData = true;
                 importer.defaultSampleSettings = settings;
             }
-            else if (assetPath.StartsWith("Assets/Resources/Music/LocalStore/"))
+            else if (assetPath.StartsWith("Assets/Resources/Music/LocalStore/") ||
+                     assetPath.StartsWith("Assets/Resources/Music/Jukebox/"))
             {
                 importer.forceToMono = false;
                 importer.loadInBackground = true;
@@ -87,6 +88,37 @@ namespace Numeria.EditorTools
                 settings.preloadAudioData = false;
                 importer.defaultSampleSettings = settings;
             }
+            else if (assetPath.StartsWith("Assets/Resources/Voice/"))
+            {
+                // 台词来自单一 Samantha 声道；双声道只会让 2,500+ 个片段包体和内存翻倍。
+                importer.forceToMono = true;
+                importer.loadInBackground = true;
+                settings.loadType = AudioClipLoadType.CompressedInMemory;
+                settings.compressionFormat = AudioCompressionFormat.Vorbis;
+                settings.quality = 0.45f;
+                settings.preloadAudioData = false;
+                importer.defaultSampleSettings = settings;
+            }
+        }
+
+        [MenuItem("Numeria/Audio/Reimport Runtime Audio")]
+        public static void ReimportRuntimeAudio()
+        {
+            string[] roots =
+            {
+                "Assets/Resources/Voice",
+                "Assets/Resources/Music/Jukebox",
+                "Assets/Resources/Music/LocalStore",
+                "Assets/Resources/Sfx",
+            };
+            int count = 0;
+            foreach (string guid in AssetDatabase.FindAssets("t:AudioClip", roots))
+            {
+                AssetDatabase.ImportAsset(AssetDatabase.GUIDToAssetPath(guid), ImportAssetOptions.ForceUpdate);
+                count++;
+            }
+            AssetDatabase.SaveAssets();
+            Debug.Log($"Numeria reimported {count} runtime audio clips with mobile-safe settings.");
         }
     }
 }
