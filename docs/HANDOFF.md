@@ -37,7 +37,7 @@
 - `GridMap`:语义 ASCII 地图解析('.'草地 'T'树 'b'草丛 'C'宝藏 'P'出口 'S'出生
   '~'水域 '='道路 'B'桥 '#'悬崖 'L'地标)+ BFS 寻路;水域/悬崖/树木/地标不可通行
 - `GameData`:141 只数灵、48 条进化线;最新扩展为 Electric/Rock/Dragon/Fire 各 4 条三段线;各物种配置基础经验、HP/ATK/DEF 成长与数学亲和
-- 测试:`unity/Assets/Tests/EditMode/`;当前四个 C# assembly 已单独编译通过,Unity EditMode **129/129**、Node 原型 **15/15**
+- 测试:`unity/Assets/Tests/EditMode/`;当前四个 C# assembly 已单独编译通过,Unity EditMode **131/131**、Node 原型 **15/15**
 
 ### Game 层(`Numeria.Game`)
 - **全程序化 UGUI,零场景文件**——所有界面代码搭建,SampleScene 只是空壳,`BattleBootstrap` 用 `RuntimeInitializeOnLoadMethod` 拉起 `MapController`
@@ -85,7 +85,7 @@
   - ✅ 存档入口重构:标题页选择新游戏/读取游戏与十槽存档;新游戏真正清空宝箱等世界状态;设置页以保存提示返回主菜单
   - ✅ 六章地图重构:六章全部使用真正的 Tiles and Hexes Painted Terrain 方形素材;256×384 底锚点按语义格归一化并逐行排序,道路另加窄叠层保持可读;每章拥有独立的森林/雪山/海岛/沙漠/矿山/火山组合;六张 32×18 布局的每图 5 个宝藏、1 个章节出口和 1 个地标均有可达性测试
   - ⬜ 未做:JSON 数据驱动落地(现在数值在 GameData/MapDefs 硬编码)、自适应难度引擎(错题变形复现/隐形升降档)、家长面板(PIN + 掌握度热图)
-- ⬜ **P4**:iOS 构建、真机、TestFlight(免费 Apple ID 7 天签名 vs $99/年,已告知用户)
+- 🔶 **P4 进行中**:Unity→Xcode 导出与无签名 arm64 device build 已通过;Bundle ID/横屏/iOS 15+/全套图标/Finder 文件共享已配置;待 Apple Team、Lucas 真机导入存档与 4:3 QA、TestFlight
 
 ### 正在收敛的工作(接手第一件事)
 战斗画面按参考图(`~/Documents/battle_design.png`)重构后处于**视觉打磨循环**中:用户截图 → 修排版 → 再截图。最后一轮修了名牌内缩/横幅宽度/按钮固定宽(`7a61472`),之后并行会话又重构了排版与字体(至 `35cd368`)。**用户对当前效果尚未最终满意**,预期还有几轮微调。菜单同理(参考图是用户提供的 mockup)。

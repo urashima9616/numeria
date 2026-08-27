@@ -5,7 +5,8 @@ are magic. Players befriend original creatures called **Mathmons**, solve Kinder
 their skills, and help Lucas restore six Digit Crystals so he can reopen the legendary gate home.
 
 > Current state: a playable six-region Unity build with story, exploration, battles, catching, evolution and Mega
-> Evolution, economy, shops, saves, offline narration, and 141 Mathmon forms. iOS/TestFlight work has not started.
+> Evolution, economy, shops, saves, offline narration, and 141 Mathmon forms. The iOS Xcode project and unsigned
+> device build now pass; physical-iPad signing, save import, and 4:3 playtesting are the remaining delivery steps.
 
 ![Numeria battle — Addmander casting math magic against Countipillar](docs/images/numeria-readme-cover.png)
 
@@ -17,9 +18,9 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 | P1 — Battle core | ✅ Complete | Skills, gems, number shields, ATK/DEF combat, VFX, narration |
 | P2 — Forest vertical slice | ✅ Complete | Exploration, encounters, catching, growth, chests, saving |
 | P3 — Full game systems | 🔶 Playable / polishing | Six painterly worlds, 141 Mathmons, evolution, economy, merchants, Lucas story |
-| P4 — iOS delivery | ⬜ Not started | Device build, signing, TestFlight and final performance QA |
+| P4 — iOS delivery | 🔶 Device-ready | Xcode export/build, landscape, app icon and Finder save transfer pass; signing and physical-iPad QA remain |
 
-The current verification baseline compiles all four Unity assemblies and passes **129/129 Unity EditMode tests**
+The current verification baseline compiles all four Unity assemblies and passes **131/131 Unity EditMode tests**
 plus **15/15 Node prototype tests**.
 The save format is currently **schema v9**, with non-destructive migration for older saves.
 
@@ -203,6 +204,7 @@ Unity EditMode tests, with the Unity Editor closed:
 | [`docs/mega-evolution.md`](docs/mega-evolution.md) | Mega Evolution rules, balance, visuals, and invariants |
 | [`docs/generated-visual-assets.md`](docs/generated-visual-assets.md) | Image-generation prompts and production asset locations |
 | [`docs/music-attribution.md`](docs/music-attribution.md) | 8-bit Jukebox track mapping and credits |
+| [`docs/ipad-deployment.md`](docs/ipad-deployment.md) | iOS build, signing, Finder save transfer, and recovery checklist |
 | [`docs/HANDOFF.md`](docs/HANDOFF.md) | Detailed engineering status and maintenance notes |
 
 ## Technical overview
@@ -211,7 +213,10 @@ Unity EditMode tests, with the Unity Editor closed:
 - Deterministic injected RNG for battles, encounter generation, rewards, and puzzle tests.
 - Breadth-first pathfinding over semantic ASCII-authored maps (`~` water, `=` road, `B` bridge, `#` cliff,
   `L` landmark), rendered through a chapter-aware Painted Terrain layer with optional legacy fallbacks.
-- Local JSON saves in `Application.persistentDataPath`, ten slots, and explicit schema migration.
+- Local JSON saves in `Application.persistentDataPath`, ten slots, explicit schema migration, and validated
+  single-file export/import with an automatic pre-import rollback backup.
+- iOS 15+ universal device target with permanent bundle ID `com.yuankunxue.numeria`, landscape-only rotation,
+  generated Digit Crystal app icon, Finder Files sharing, and a reproducible Unity-to-Xcode build command.
 - Convention-based `Resources` loading with generated-art fallbacks and automatic pixel-art import settings.
 - Offline Samantha narration WAVs, independent voice/SFX/music settings, and mood-based music crossfades.
 
@@ -221,7 +226,9 @@ Unity EditMode tests, with the Unity Editor closed:
 - Move hard-coded species/map balance data into validated JSON.
 - Add adaptive difficulty and transformed retries based on puzzle-family mastery.
 - Add a parent-gated progress dashboard.
-- Complete iOS landscape settings, device profiling, signing, and TestFlight distribution.
+- Sign and run the passing Xcode device build on Lucas's physical iPad, then import the verified migration backup.
+- Profile the current image-heavy Debug build and add iOS texture compression before TestFlight distribution.
+- Complete TestFlight distribution after physical-device QA.
 
 ---
 

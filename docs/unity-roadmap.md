@@ -52,8 +52,10 @@
 
 ## Phase 4 — 上机与分发
 
-1. Unity → Xcode 导出 → 真机调试
-2. **分发方式(注意成本)**:
+1. ✅ Unity → Xcode 导出与无签名 arm64 device build;待连接 Lucas iPad 做签名真机调试
+2. ✅ 固定 `com.yuankunxue.numeria`、iOS 15+、双向横屏、iPad 通用图标与 Finder 存档迁移
+3. 🔶 真机导入已校验的 v9 单文件备份,检查队伍/宝箱/记录后做 4:3 视觉与性能 QA
+4. **分发方式(注意成本)**:
    - **免费 Apple ID**:可直接装到自己的 iPad,但签名 **7 天过期**需重装——日常给儿子玩会烦
    - **Apple Developer Program($99/年)**:TestFlight 分发,90 天有效自动更新,体验好得多
    - 建议:真机调试阶段用免费 ID,玩法稳定后再决定是否上 TestFlight
