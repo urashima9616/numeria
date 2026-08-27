@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Numeria.Core;
 using TMPro;
 using UnityEngine;
@@ -850,6 +851,38 @@ namespace Numeria.Game
         {
             SelectTab("saves");
             var content = MakeScrollList(FreshWrap());
+            SectionRow(content, "Move or protect every save slot");
+            ListRow(content, "BackupTransferRow", 88, row =>
+            {
+                FillButtonRow(row);
+                var export = Ui.Btn(row, "BtnExportBackup", "EXPORT BACKUP", 21);
+                export.onClick.AddListener(() =>
+                {
+                    try
+                    {
+                        SaveSystem.Save(_progress);
+                        string path = SaveSystem.ExportBackup();
+                        ShowBackupMessage("BACKUP READY",
+                            $"Created {Path.GetFileName(path)}\nCopy it from Numeria with Finder's Files tab.");
+                    }
+                    catch (Exception e)
+                    {
+                        ShowBackupMessage("BACKUP FAILED", e.Message);
+                    }
+                });
+                var import = Ui.Btn(row, "BtnImportBackup", "IMPORT LATEST", 21);
+                import.onClick.AddListener(() =>
+                {
+                    var backups = SaveSystem.GetAvailableBackups();
+                    if (backups.Length == 0)
+                    {
+                        ShowBackupMessage("NO BACKUP FOUND",
+                            "Use Finder's Files tab to copy a numeria-backup-*.json file into Numeria, then try again.");
+                        return;
+                    }
+                    ConfirmBackupImport(backups[0]);
+                });
+            });
             SectionRow(content, "10 save slots - the active slot also autosaves");
             for (int slot = 1; slot <= SaveSystem.SlotCount; slot++)
             {
@@ -879,6 +912,47 @@ namespace Numeria.Game
                     load.onClick.AddListener(() => ConfirmSlotAction(capturedSlot, false));
                 });
             }
+        }
+
+        private void ConfirmBackupImport(string path)
+        {
+            var confirm = Ui.Img(_canvasRoot, "BackupImportConfirm", new Color(0, 0, 0, .72f));
+            Ui.Stretch(confirm.rectTransform);
+            var panel = Ui.Img(confirm.transform, "Panel", Cream);
+            Ui.Place(panel.rectTransform, new Vector2(.5f, .5f), Vector2.zero, new Vector2(800, 380));
+            Ui.AddOutline(panel.gameObject);
+            var msg = Ui.Label(panel.transform, "Message",
+                $"IMPORT THIS BACKUP?\n{Path.GetFileName(path)}\n\nCurrent saves will be backed up automatically first.",
+                25, Ui.Ink);
+            Ui.Place(msg.rectTransform, new Vector2(.5f, 1), new Vector2(0, -48), new Vector2(730, 180));
+            var yes = Ui.Btn(panel.transform, "BtnConfirmBackupImport", "YES, IMPORT", 23);
+            Ui.Place((RectTransform)yes.transform, new Vector2(.5f, 0), new Vector2(-155, 48), new Vector2(270, 68));
+            yes.onClick.AddListener(() =>
+            {
+                var result = SaveSystem.ImportBackup(path);
+                UnityEngine.Object.Destroy(confirm.gameObject);
+                if (result.Success) CloseThen(() => _onLoad(result.Progress));
+                else ShowBackupMessage("IMPORT STOPPED", result.Message);
+            });
+            var no = Ui.Btn(panel.transform, "Cancel", "CANCEL", 23);
+            Ui.Place((RectTransform)no.transform, new Vector2(.5f, 0), new Vector2(155, 48), new Vector2(270, 68));
+            no.onClick.AddListener(() => UnityEngine.Object.Destroy(confirm.gameObject));
+        }
+
+        private void ShowBackupMessage(string titleText, string messageText)
+        {
+            var overlay = Ui.Img(_canvasRoot, "BackupMessageOverlay", new Color(0, 0, 0, .72f));
+            Ui.Stretch(overlay.rectTransform);
+            var panel = Ui.Img(overlay.transform, "Panel", Cream);
+            Ui.Place(panel.rectTransform, new Vector2(.5f, .5f), Vector2.zero, new Vector2(820, 360));
+            Ui.AddOutline(panel.gameObject);
+            var title = Ui.Label(panel.transform, "Title", titleText, 31, TitleGreen);
+            Ui.Place(title.rectTransform, new Vector2(.5f, 1), new Vector2(0, -38), new Vector2(730, 54));
+            var message = Ui.Label(panel.transform, "Message", messageText, 23, Ui.Ink);
+            Ui.Place(message.rectTransform, new Vector2(.5f, .5f), new Vector2(0, 10), new Vector2(730, 130));
+            var close = Ui.Btn(panel.transform, "Close", "OK", 23);
+            Ui.Place((RectTransform)close.transform, new Vector2(.5f, 0), new Vector2(0, 38), new Vector2(240, 62));
+            close.onClick.AddListener(() => UnityEngine.Object.Destroy(overlay.gameObject));
         }
 
         private void ConfirmSlotAction(int slot, bool saving)

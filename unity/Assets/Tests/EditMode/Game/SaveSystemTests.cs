@@ -122,6 +122,55 @@ namespace Numeria.Game.Tests
         }
 
         [Test]
+        public void BackupRoundTripRestoresEverySlotAndCreatesPreImportSafetyCopy()
+        {
+            var first = new Progress { CurrentMap = "forest", Coins = 41 };
+            first.OpenedChests.Add("forest-chest-7-3");
+            first.ActiveGrowth.Level = 6;
+            SaveSystem.SaveToSlot(first, 1);
+            var third = new Progress { CurrentMap = "dark_mines", Coins = 311 };
+            third.ActiveGrowth.Level = 27;
+            SaveSystem.SaveToSlot(third, 3);
+
+            string exported = SaveSystem.ExportBackup("test");
+            Assert.True(File.Exists(exported));
+
+            var changed = new Progress { CurrentMap = "sky", Coins = 999 };
+            SaveSystem.SaveToSlot(changed, 1);
+            SaveSystem.SaveToSlot(new Progress(), 2);
+            SaveSystem.DeleteSlot(3);
+
+            var imported = SaveSystem.ImportBackup(exported);
+
+            Assert.True(imported.Success, imported.Message);
+            Assert.AreEqual(3, SaveSystem.ActiveSlot);
+            Assert.AreEqual(41, SaveSystem.LoadFromSlot(1).Coins);
+            Assert.Contains("forest-chest-7-3", SaveSystem.LoadFromSlot(1).OpenedChests);
+            Assert.False(SaveSystem.SlotExists(2), "Import should restore the backup's exact slot set.");
+            Assert.AreEqual(311, SaveSystem.LoadFromSlot(3).Coins);
+            Assert.AreEqual("dark_mines", imported.Progress.CurrentMap);
+            Assert.True(File.Exists(imported.SafetyBackupPath));
+            StringAssert.Contains("pre-import", Path.GetFileName(imported.SafetyBackupPath));
+        }
+
+        [Test]
+        public void InvalidBackupIsRejectedBeforeCurrentSaveChanges()
+        {
+            var current = new Progress { Coins = 73, CurrentMap = "mountains" };
+            SaveSystem.SaveToSlot(current, 1);
+            string invalid = Path.Combine(_root, "numeria-backup-invalid.json");
+            File.WriteAllText(invalid,
+                "{\"Magic\":\"NOT_NUMERIA\",\"FormatVersion\":1,\"ActiveSlot\":1,\"Slots\":[]}");
+
+            var result = SaveSystem.ImportBackup(invalid);
+
+            Assert.False(result.Success);
+            Assert.AreEqual(73, SaveSystem.LoadFromSlot(1).Coins);
+            Assert.AreEqual("mountains", SaveSystem.LoadFromSlot(1).CurrentMap);
+            Assert.IsEmpty(result.SafetyBackupPath, "Validation failures must not create or overwrite anything.");
+        }
+
+        [Test]
         public void EquippedAccessoriesRoundTripInsideTheirOwnSaveSlot()
         {
             var progress = new Progress();
@@ -175,6 +224,8 @@ namespace Numeria.Game.Tests
                 savesTab.GetComponent<Button>().onClick.Invoke();
                 for (int slot = 1; slot <= SaveSystem.SlotCount; slot++)
                     Assert.NotNull(Find(rootObject, $"SaveSlot{slot}"));
+                Assert.NotNull(Find(rootObject, "BtnExportBackup"));
+                Assert.NotNull(Find(rootObject, "BtnImportBackup"));
 
                 var settingsTab = Find(rootObject, "Tab-settings");
                 settingsTab.GetComponent<Button>().onClick.Invoke();
