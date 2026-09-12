@@ -206,7 +206,7 @@ namespace Numeria.Game
                 Row("TTTTTTTT", "TTTTTTTT", "TTTTTTTT", "TTTTTTTT"),
             },
             Tier = 1,
-            BattleBg = "generated/NUMERIA_Unity_Battle_Assets/Backgrounds/Sunny_Meadow_2048x1152",
+            BattleBg = "generated/Backgrounds/Painted/Mystic_Forest",
             CameraBg = "#2f4f2f", Theme = "forest",
             Encounters = new[]
             {
@@ -449,7 +449,7 @@ namespace Numeria.Game
                 Row("########", "########", "########", "########"),
             },
             Tier = 4,
-            BattleBg = "generated/Backgrounds/Fever_Desert_2048x1152",
+            BattleBg = "generated/Backgrounds/Fever_Desert_Battle_v2",
             CameraBg = "#d8aa5c", Theme = "desert",
             Encounters = new[]
             {

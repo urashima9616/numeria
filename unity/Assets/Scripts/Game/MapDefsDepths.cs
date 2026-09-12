@@ -114,7 +114,7 @@ namespace Numeria.Game
                 Row("########", "########", "########", "########"),
             },
             Tier = 6,
-            BattleBg = "generated/Backgrounds/Underground_Tunnels_2048x1152",
+            BattleBg = "generated/Backgrounds/Painted/Underground_Tunnels",
             CameraBg = "#241733", Theme = "underground",
             Encounters = new[]
             {

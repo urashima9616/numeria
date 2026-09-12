@@ -123,13 +123,6 @@ namespace Numeria.Game
 
             var bg = Ui.SpriteImg(_shakeRoot, "Background", SpriteLib.One(_battleBg));
             Ui.Stretch(bg.rectTransform);
-            if (bg.sprite != null && _battleBg.StartsWith("generated/Backgrounds/Painted/"))
-            {
-                // Painted panoramas fill the display by cropping, never by squeezing the mountains on iPad.
-                var fit = bg.gameObject.AddComponent<AspectRatioFitter>();
-                fit.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
-                fit.aspectRatio = bg.sprite.rect.width / bg.sprite.rect.height;
-            }
 
             // 敌方:左上状态牌。目标稿需要足够的纵向空间让名字、等级、HP 与血条各占一行。
             var enemyPlate = BuildStatusPlate("EnemyPlate", new Vector2(0, 1), new Vector2(28, -28), new Vector2(480, 228),
@@ -138,13 +131,13 @@ namespace Numeria.Game
                 out _enemyHpFill, out _enemyHpText);
             BuildShieldRow(enemyPlate);
             // 敌方立绘落在右上草圈，避开状态牌与回合横幅。
-            var enemyImg = Ui.SpriteImg(_shakeRoot, "EnemySprite", SpriteLib.EnemyBattleSprite(_state.Enemy.Id));
+            var enemyImg = GroundedBattleImage.Create(_shakeRoot, "EnemySprite", SpriteLib.EnemyBattleSprite(_state.Enemy.Id));
             enemyImg.preserveAspect = true;
             Ui.PlaceCentered(enemyImg.rectTransform, new Vector2(0.69f, 0.67f), Vector2.zero, new Vector2(360, 360));
             _enemySprite = enemyImg.rectTransform;
 
             // 我方立绘落在左下草圈，但给底部命令坞留出完整空间。
-            var playerImg = Ui.SpriteImg(_shakeRoot, "PlayerSprite", SpriteLib.PlayerBattleSprite(_state.Player.Id));
+            var playerImg = GroundedBattleImage.Create(_shakeRoot, "PlayerSprite", SpriteLib.PlayerBattleSprite(_state.Player.Id));
             playerImg.preserveAspect = true;
             Ui.PlaceCentered(playerImg.rectTransform, new Vector2(0.235f, 0.49f), Vector2.zero, new Vector2(490, 490));
             _playerSprite = playerImg.rectTransform;
@@ -160,6 +153,7 @@ namespace Numeria.Game
             _playerStatText = playerPlate.Find("Sub").GetComponent<TMP_Text>();
             BuildGemRow(playerPlate);
             BuildMegaButton(playerPlate);
+            BattleStageLayout.Build(_shakeRoot, bg, playerImg, enemyImg, playerPlate, _battleBg);
 
             // 回合横幅只承载短主标题 + 一行结果，避免战斗叙述横穿整个画面。
             var logPlate = Ui.SpriteImg(_shakeRoot, "LogPlate", SpriteLib.Pack("UI/Panels/Turn_Banner"));

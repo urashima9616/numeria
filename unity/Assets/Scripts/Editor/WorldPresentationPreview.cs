@@ -183,6 +183,55 @@ namespace Numeria.Editor
             File.WriteAllText(Path.Combine(Output, "skill-coverage.csv"), rows.ToString());
         }
 
+        [MenuItem("Numeria/Preview All Battle Backgrounds")]
+        public static void AllBattleBackgrounds()
+        {
+            Directory.CreateDirectory(Output);
+            bool spoken = Voice.Enabled;
+            Voice.Enabled = false;
+            BeginSheet(2, 3);
+            try
+            {
+                foreach (var map in Maps.All())
+                {
+                    var root = new GameObject("BattlePreview-" + map.Id);
+                    try
+                    {
+                        var camera = CameraFor(root.transform);
+                        var battle = root.AddComponent<BattleController>();
+                        battle.Init(GameData.CreateWild("pebblit", 5, new Rng(7)), new Progress(), map.Tier, map.BattleBg, _ => { });
+                        foreach (var canvas in root.GetComponentsInChildren<Canvas>())
+                        {
+                            canvas.renderMode = RenderMode.ScreenSpaceCamera; canvas.worldCamera = camera;
+                            canvas.planeDistance = 1; canvas.sortingOrder = 20000;
+                        }
+                        Capture(camera, "battle-" + map.Id + "-16x9", false, 1920, 1080);
+                        Capture(camera, "battle-" + map.Id + "-4x3", true);
+                        Capture(camera, "battle-" + map.Id + "-wide", false, 2048, 992);
+                        if (map.Id == "forest")
+                        {
+                            const System.Reflection.BindingFlags flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
+                            var state = (BattleState)typeof(BattleController).GetField("_state", flags).GetValue(battle);
+                            state.Gems = 8; state.TryActivateMega(true);
+                            typeof(BattleController).GetMethod("RenderAll", flags).Invoke(battle, null);
+                            Capture(camera, "battle-forest-mega-4x3", false);
+                            RectTransform Field(string name) => (RectTransform)typeof(BattleController).GetField(name, flags).GetValue(battle);
+                            var spell = SpellSequence.Create(Field("_canvasRoot"), Field("_playerSprite"), Field("_enemySprite"),
+                                SkillVisualKind.EquationFlame, new SpellTrace { A = 4, B = 6, Total = 10 }, true, "addmander", true);
+                            spell.Sample(1.23f);
+                            Capture(camera, "battle-forest-mega-cast-4x3", false);
+                            spell.Cancel();
+                        }
+                    }
+                    finally { Object.DestroyImmediate(root); }
+                }
+                FinishSheet("battle-backgrounds-contact");
+                SilentPeaksBattle();
+            }
+            finally { Voice.Enabled = spoken; }
+            Debug.Log("NUMERIA_BATTLE_BACKGROUNDS=" + Output);
+        }
+
         private static void Spell(SkillVisualKind kind)
         {
             var root = new GameObject("Preview-" + kind);

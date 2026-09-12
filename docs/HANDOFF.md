@@ -5,6 +5,15 @@
 
 ---
 
+## 最新修正：全战斗背景比例与站位
+
+见 [battle-background-alignment.md](battle-background-alignment.md)。六章战斗统一由 `BattleStageLayout`
+按背景比例铺满裁切，并将各背景地面坐标映射到角色脚底；不能恢复为所有章节共用固定屏幕坐标。
+`GroundedBattleImage` 用可见精灵网格底边对齐接触阴影，兼顾普通/Mega 图片比例不同。
+森林换为古橡树林间空地，地底换为熔岩玄武岩洞穴；沙漠保留原风格，只重排两块平台。天空/矿山/雪山保留素材。
+玩家状态牌缩至 78%，避开对手站位。`Numeria → Preview All Battle Backgrounds` 输出三种比例的六章画面、Mirrorwyrm/Mega 检查。
+本轮不改 Core、存档或数值。验证基线：Unity **151/151**、Node **15/15**；仍需物理 iPad 验收。
+
 ## 最新修正：Silent Peaks 战斗背景
 
 见 [silent-peaks-battle.md](silent-peaks-battle.md)。此前探索地图已更新，但雪山战斗仍引用
