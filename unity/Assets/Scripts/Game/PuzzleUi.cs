@@ -48,7 +48,16 @@ namespace Numeria.Game
             if (visual == SkillVisualKind.EquationFlame) yield return RunFormula(done, tier);
             else if (visual == SkillVisualKind.MakeTenWave) yield return RunMakeTen(done, PuzzleGenerator.MaxForTier(tier), false);
             else if (visual == SkillVisualKind.SymmetryBeam) yield return RunSymmetry(done, tier, true);
-            else yield return RunTierPuzzle(done, tier);
+            else if (visual == SkillVisualKind.PatternLeaf || visual == SkillVisualKind.GrassBloom) yield return RunPattern(done, tier);
+            else if (visual == SkillVisualKind.CountCrunch) yield return RunCounting(done, PuzzleGenerator.MaxForTier(tier));
+            else if (visual == SkillVisualKind.DoubleBoulder) yield return RunFormulaPuzzle(PuzzleGenerator.GenerateDouble(_rng, PuzzleGenerator.MaxForTier(tier)), done);
+            else if (visual == SkillVisualKind.MatchingPaws) yield return RunBalance(done, tier);
+            else if (visual == SkillVisualKind.SubtractionDash) yield return RunFormulaPuzzle(PuzzleGenerator.GenerateSubtraction(_rng, PuzzleGenerator.MaxForTier(tier)), done);
+            else if (visual == SkillVisualKind.TallyStone || visual == SkillVisualKind.FlyingGust) yield return RunNumberPath(done, tier);
+            else if (visual == SkillVisualKind.GeometryPrism) yield return RunShape(done, tier);
+            else if (visual == SkillVisualKind.SequenceSpark) yield return RunNumberSequence(done, tier);
+            else if (visual == SkillVisualKind.FairyGlimmer) yield return RunMakeTen(done, PuzzleGenerator.MaxForTier(tier), false);
+            else yield return RunFormula(done, tier);
         }
 
         // ---------- 通用构件 ----------
@@ -159,6 +168,7 @@ namespace Numeria.Game
         public IEnumerator RunPattern(Action<bool> done, int tier = 1)
         {
             var p = PuzzleGenerator.GeneratePattern(_rng, tier);
+            LastSpell = new SpellTrace { Pattern = p.Sequence.ToArray() };
             var overlay = BuildOverlay(p.Prompt, out var choiceRow);
 
             var sequenceRow = Ui.Node(overlay, "PatternSequence");
@@ -294,6 +304,7 @@ namespace Numeria.Game
         public IEnumerator RunBalance(Action<bool> done, int tier = 2)
         {
             var p = PuzzleGenerator.GenerateBalance(_rng, tier);
+            LastSpell = new SpellTrace { A = p.LeftA, B = p.LeftB, Total = p.LeftA + p.LeftB };
             string display = $"{p.LeftA}  +  {p.LeftB}  =  {p.RightKnown}  +  ?";
             yield return RunNumberChoice(p.Prompt, display, p.Candidates,
                 answer => PuzzleGenerator.CheckBalance(p, answer), done);
@@ -302,6 +313,7 @@ namespace Numeria.Game
         public IEnumerator RunNumberPath(Action<bool> done, int tier = 1)
         {
             var p = PuzzleGenerator.GenerateNumberPath(_rng, tier);
+            LastSpell = new SpellTrace { Numbers = p.Sequence.ToArray() };
             var displaySequence = new List<string>();
             for (int i = 0; i < p.Sequence.Count; i++)
                 displaySequence.Add(i == p.MissingIndex ? "?" : p.Sequence[i].ToString());
@@ -313,6 +325,8 @@ namespace Numeria.Game
         public IEnumerator RunNumberSequence(Action<bool> done, int tier = 3)
         {
             var p = PuzzleGenerator.GenerateNumberSequence(_rng, tier);
+            var spellNumbers = new List<int>(p.Sequence) { p.Answer };
+            LastSpell = new SpellTrace { Numbers = spellNumbers.ToArray() };
             // 使用逗号而不是 ">"，避免低龄玩家把序列分隔误读为“大于号”。
             string display = string.Join("  ,  ", p.Sequence) + "  ,  ?";
             yield return RunNumberChoice(p.Prompt, display, p.Candidates,
@@ -322,6 +336,7 @@ namespace Numeria.Game
         public IEnumerator RunShape(Action<bool> done, int tier = 1)
         {
             var p = PuzzleGenerator.GenerateShape(_rng, tier);
+            LastSpell = new SpellTrace { Pattern = new[] { new PatternToken(p.Answer, PatternColor.Blue) } };
             var overlay = BuildOverlay(p.Prompt, out var choiceRow);
             var clue = Ui.Label(overlay, "ShapeClue", tier == 1 ? "LOOK AT EACH SHAPE" : "COUNT THE STRAIGHT SIDES",
                 34, Ui.Hex("#ffe082"));
@@ -645,6 +660,7 @@ namespace Numeria.Game
         public IEnumerator RunCounting(Action<bool> done, int max = 10)
         {
             var p = PuzzleGenerator.GenerateCounting(_rng, max);
+            LastSpell = new SpellTrace { Total = p.Count };
             yield return RunNumberChoice(p.Prompt, null, p.Candidates,
                 answer => PuzzleGenerator.CheckCounting(p, answer), done,
                 focus => BuildCountGrid(focus, p.Count, SpriteLib.One("generated/puzzle_firefly")));

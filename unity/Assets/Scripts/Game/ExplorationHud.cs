@@ -86,7 +86,7 @@ namespace Numeria.Game
                 var tile = Ui.Img(shade.transform, "Region-" + map.Id, Ui.Hex("#35534e"));
                 Ui.PlaceCentered(tile.rectTransform, new Vector2(.5f, .5f),
                     new Vector2((i % 3 - 1) * 330, 132 - (i / 3) * 263), new Vector2(300, 240));
-                var art = Ui.SpriteImg(tile.transform, "Terrain", MapArt.Terrain(map.Theme, Tile.Landmark, 0, 0));
+                var art = Ui.SpriteImg(tile.transform, "Terrain", WorldScene.Prop(map.Id, 1));
                 art.preserveAspect = true;
                 art.color = unlocked ? Color.white : new Color(.4f, .5f, .5f, 1);
                 Ui.PlaceCentered(art.rectTransform, Vector2.one * .5f, new Vector2(0, 24), new Vector2(200, 175));

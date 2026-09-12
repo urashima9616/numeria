@@ -8,6 +8,8 @@ namespace Numeria.Game
         public int A, B, Total;
         public char Operation = '+';
         public PatternToken[] Pattern;
+        public int[] Numbers;
+        public bool HasEquation => Total > 0 && (Operation == '-' ? A - B == Total : A + B == Total);
         public string Equation => $"{A} {Operation} {B} = {Total}";
     }
 }

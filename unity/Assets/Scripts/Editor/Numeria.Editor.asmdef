@@ -3,7 +3,8 @@
     "rootNamespace": "Numeria.Editor",
     "references": [
         "Numeria.Core",
-        "Numeria.Game"
+        "Numeria.Game",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [
         "Editor"

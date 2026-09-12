@@ -144,7 +144,7 @@ namespace Numeria.Game
             _playerImage = playerImg;
             _normalPlayerSprite = playerImg.sprite;
             _megaPlayerSprite = SpriteLib.MegaBattleSprite(_state.Player.Id);
-            var playerPlate = BuildStatusPlate("PlayerPlate", new Vector2(1, 0), new Vector2(-28, 267), new Vector2(560, 310),
+            var playerPlate = BuildStatusPlate("PlayerPlate", new Vector2(1, 0), new Vector2(-28, 330), new Vector2(560, 310),
                 _state.Player.Name,
                 $"Lv. {_playerLevel}   ATK {_state.Player.AttackPower + _state.PlayerAttackBonus}   " +
                 $"DEF {_state.Player.DefensePower + _state.PlayerDefenseBonus}",
@@ -297,19 +297,19 @@ namespace Numeria.Game
 
             var iconImg = Ui.SpriteImg(bg.transform, "Icon", icon);
             iconImg.preserveAspect = true;
-            Ui.Place(iconImg.rectTransform, new Vector2(0, 0.5f), new Vector2(34, 0), new Vector2(76, 76));
+            Ui.PlaceCentered(iconImg.rectTransform, new Vector2(.5f, .44f), Vector2.zero, new Vector2(62, 62));
 
             var titleText = Ui.DisplayLabel(bg.transform, "Title", title, 50, TitleGreen);
-            titleText.rectTransform.anchorMin = new Vector2(0, 0.48f);
+            titleText.rectTransform.anchorMin = new Vector2(0, 0.60f);
             titleText.rectTransform.anchorMax = Vector2.one;
-            titleText.rectTransform.offsetMin = new Vector2(112, 0);
-            titleText.rectTransform.offsetMax = new Vector2(-18, -22);
-            FitText(titleText, 34, 50);
+            titleText.rectTransform.offsetMin = new Vector2(18, 0);
+            titleText.rectTransform.offsetMax = new Vector2(-18, -16);
+            FitText(titleText, 20, 44);
             var subText = Ui.DisplayLabel(bg.transform, "SubT", subtitle, 34, subtitleColor);
             subText.rectTransform.anchorMin = Vector2.zero;
-            subText.rectTransform.anchorMax = new Vector2(1, 0.48f);
-            subText.rectTransform.offsetMin = new Vector2(112, 20);
-            subText.rectTransform.offsetMax = new Vector2(-18, 0);
+            subText.rectTransform.anchorMax = new Vector2(1, 0.32f);
+            subText.rectTransform.offsetMin = new Vector2(18, 26);
+            subText.rectTransform.offsetMax = new Vector2(-18, 8);
             FitText(subText, 23, 34);
 
             var btn = Sfx.WireClick(bg.gameObject.AddComponent<Button>());
@@ -468,7 +468,7 @@ namespace Numeria.Game
             {
                 SkillResult megaResult = default;
                 var sequence = SpellSequence.Create(_canvasRoot, _playerSprite, _enemySprite,
-                    skill.Visual, null, true);
+                    skill.Visual, null, true, _state.Player.Id, true);
                 yield return sequence.Play(() =>
                 {
                     megaResult = _state.UseSkill(skill.Id);
@@ -501,15 +501,17 @@ namespace Numeria.Game
         private IEnumerator TackleRoutine()
         {
             SetActionsEnabled(false);
-            yield return Lunge(_playerSprite, new Vector2(60, 30));
-            var result = _state.UseSkill("tackle");
-            RecordDamage(result.Damage);
-            Sfx.Play(SfxCue.Hit);
-            PopDamage(_enemySprite, result.BreakBonusApplied ? $"-{result.Damage}  2X" : $"-{result.Damage}",
-                Ui.Hex("#ffd24a"));
-            if (result.BreakBonusApplied) _voice.Say("Double damage!");
-            yield return Flash(_enemySprite);
-            RenderAll();
+            SkillResult result = default;
+            var sequence = SpellSequence.Create(_canvasRoot, _playerSprite, _enemySprite,
+                SkillVisualKind.Physical, null, true, _state.Player.Id, _state.MegaActive);
+            yield return sequence.Play(() =>
+            {
+                result = _state.UseSkill("tackle");
+                RecordDamage(result.Damage);
+                PopDamage(_enemySprite, result.BreakBonusApplied ? $"-{result.Damage}  2X" : $"-{result.Damage}", Ui.Hex("#ffd24a"));
+                if (result.BreakBonusApplied) _voice.Say("Double damage!");
+                RenderAll();
+            });
             SetLog("Tackle!", result.BreakBonusApplied
                 ? $"2X SHIELD BREAK - {result.Damage} DAMAGE"
                 : $"{result.Damage} DAMAGE");
@@ -525,7 +527,7 @@ namespace Numeria.Game
             {
                 SkillResult impactResult = default;
                 var sequence = SpellSequence.Create(_canvasRoot, _playerSprite, _enemySprite,
-                    _themeSkill.Visual, _puzzles.LastSpell, correct.Value);
+                    _themeSkill.Visual, _puzzles.LastSpell, correct.Value, _state.Player.Id, _state.MegaActive);
                 yield return sequence.Play(() =>
                 {
                     impactResult = _state.UseSkill(_themeSkill.Id, correct.Value);
@@ -716,12 +718,17 @@ namespace Numeria.Game
                 yield break;
             }
             SetLog("Enemy turn", $"{_state.Enemy.Name.ToUpperInvariant()} ATTACKS");
-            yield return Lunge(_enemySprite, new Vector2(-60, -30));
-            int dmg = _state.EnemyTurn();
-            Sfx.Play(SfxCue.Hit, 0.82f);
-            PopDamage(_playerSprite, $"-{dmg}", Ui.Hex("#ff6b6b"));
-            yield return Flash(_playerSprite);
-            RenderAll();
+            var enemyForm = GameData.PlayerMon(_state.Enemy.Id, GameData.StageIndex(_state.Enemy.Id), _state.Enemy.Level);
+            var enemySkill = System.Array.Find(enemyForm.Skills, skill => skill.Type == SkillType.Formula);
+            int dmg = 0;
+            var response = SpellSequence.Create(_canvasRoot, _enemySprite, _playerSprite,
+                enemySkill?.Visual ?? SkillVisualKind.Physical, null, true, _state.Enemy.Id);
+            yield return response.Play(() =>
+            {
+                dmg = _state.EnemyTurn();
+                PopDamage(_playerSprite, $"-{dmg}", Ui.Hex("#ff6b6b"));
+                RenderAll();
+            });
             SetLog("Ouch!", $"{dmg} DAMAGE");
             if (_state.Outcome != BattleOutcome.None) { ShowOutcome(); yield break; }
             yield return new WaitForSeconds(0.5f);

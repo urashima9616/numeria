@@ -20,20 +20,25 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 | P3 — Full game systems | 🔶 Playable / polishing | Six painterly worlds, 141 Mathmons, evolution, economy, merchants, Lucas story |
 | P4 — iOS delivery | 🔶 Device-ready | Xcode export/build, landscape, app icon and Finder save transfer pass; signing and physical-iPad QA remain |
 
-The current verification baseline compiles all four Unity assemblies and passes **140/140 Unity EditMode tests**
+The current verification baseline compiles all four Unity assemblies and passes **145/145 Unity EditMode tests**
 plus **15/15 Node prototype tests**.
 The save format is currently **schema v10**, with non-destructive migration for older saves.
 
-### Forest presentation refresh — first playable iteration
+### World and skill presentation — full-roster rollout
 
-Mystic Forest now has character-scale painted trees, a landmark oak, continuous ground, living-water accents,
-and a vine bridge restored by solving a world puzzle. Three discoveries unlock its guardian; treasure is optional.
-Exploration has a compact companion card, spoken objective, tap-route markers, and a six-region travel atlas.
-Fire, water, and mirror skills use separate 1.9-second timelines with elemental artwork, sound and the actual
-numbers/shapes from the preceding puzzle. This is a **forest-first slice**, not a finished six-region art overhaul.
-See [implementation, generated assets, verification and remaining work](docs/forest-slice.md).
+All six regions now use character-scale environment rendering with distinct ground, vegetation, landmarks,
+bridges and atmospheric accents: woodland, snow, floating marble ruins, desert, crystal mines and lava tunnels.
+The existing gameplay layouts and saved progress are retained. Forest keeps its puzzle-restored vine bridge and
+three-discovery guardian unlock; other regions gain visible restoration accents around solved discoveries.
 
-![Forest bridge restored — Unity 4:3 editor render](docs/images/forest-slice-bridge.png)
+All **17 skill visual kinds** now have authored 1.9-second timelines, covering **141 forms / 48 families**, Tackle,
+normal math skills, Mega skills and enemy attacks. Evolution and Mega add scale and resonance; related creatures
+share choreography, rather than having 141 individually animated moves. Actual puzzle numbers/shapes feed the
+spell where relevant. See [coverage, verification and remaining limitations](docs/world-presentation.md).
+
+![Six regions — runtime renderer, 4:3 editor previews](docs/images/worlds-presentation.png)
+
+![Seventeen skill presentation kinds — representative editor samples](docs/images/skills-presentation.png)
 
 ## Design principles
 
@@ -80,15 +85,11 @@ See [implementation, generated assets, verification and remaining work](docs/for
 
 ### Exploration and economy
 
-- Five regions still use the actual square tiles from `Tiles and Hexes: 2D Painted Terrain
-  Samples`. The renderer normalizes the pack's bottom-anchored 256×384 artwork to the gameplay grid and sorts lower
-  screen rows in front, so forests, snowy pines, mountains, castles, cacti, oceans, and volcanoes keep their painted
-  depth. Each chapter has its own palette and terrain mix; narrow translucent route overlays keep roads readable
-  without replacing the painted ground. Water, cliffs, bridges, landmarks, treasure, and exits remain semantic
-  gameplay tiles rather than interchangeable decoration.
-- Mystic Forest uses a separate character-scale renderer and new generated environment assets. Its existing
-  gameplay grid, encounters, shops and rewards remain compatible; a new optional bridge shortcut responds to progress.
-  Painted Terrain also supplies the region illustrations in the new WORLD travel atlas.
+- All six regions use `WorldScene` and generated painted environments; Mystic Forest delegates its authored
+  events to `ForestScene`. Terrain surfaces, row-sorted props, cardinal bridges, landmarks and lightweight
+  atmospheric drift share the existing semantic gameplay grid. Water, cliffs, treasure and exits retain their
+  gameplay meaning. The WORLD atlas uses the same region landmarks. Older third-party tile renderers are retained
+  for reference, but no longer draw the main exploration scenes.
 - Four visible math-discovery runes per map. Solving their themed puzzle awards one-time coins and occasional
   battle items; incorrect answers leave the discovery available for another attempt.
 - Ordinary enemies, merchant challenges, and bosses award region-scaled coins.
@@ -157,19 +158,19 @@ zsh tools/install-jukebox-music.sh
 The installer maps nine local tracks to six regions plus battle, boss, and evolution moods. Attribution and
 the exact track list are documented in [`docs/music-attribution.md`](docs/music-attribution.md).
 
-### Install the licensed map art
+### Map art and preview tools
 
-All six chapters use **Tiles and Hexes: 2D Painted Terrain Samples**. Its Asset Store source PNGs are excluded from
-Git rather than redistributed as a standalone art pack. **RPG Worlds Caves** and **Tiny Swords** remain optional
-legacy fallbacks only; neither is selected when the Painted Terrain catalog is complete.
+The current six-region presentation uses committed generated resources under
+`unity/Assets/Resources/generated/Exploration`. No Asset Store download is needed for these new environment
+layers. See [asset provenance and exact generation prompts](docs/world-presentation-assets.md).
 
-1. Import Tiles and Hexes into the default `unity/Assets/Terrain Tile Hex Samples` directory.
-2. In Unity, run **Numeria → Rebuild Map Asset Catalogs**.
-3. Optionally run **Numeria → Export Map Previews** to render all six complete maps to
-   `/tmp/numeria-map-previews` for visual review.
+In Unity, run **Numeria → Preview All Worlds and Skills** for six 4:3 map samples, all 17 spell timelines,
+a full battle-UI sample and a roster coverage CSV in `/tmp/numeria-world-presentation`.
+**Numeria → Export Map Previews** still exports whole-map views to `/tmp/numeria-map-previews`.
 
-The generated catalog stores Unity object references only. Third-party source files remain ignored, while runtime
-selection, semantic layouts, route rendering, and tests stay version-controlled.
+**Tiles and Hexes**, **RPG Worlds Caves** and **Tiny Swords** source packages/catalog tools remain as legacy
+references. Their licensed source PNGs are excluded from Git. If working on those legacy catalogs, import Tiles
+and Hexes to `unity/Assets/Terrain Tile Hex Samples`, then run **Numeria → Rebuild Map Asset Catalogs**.
 
 ## Run the Web battle prototype
 

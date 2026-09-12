@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Numeria.Game
 {
-    /// <summary>Three authored spell timelines, evaluated in canvas units at any aspect ratio.</summary>
+    /// <summary>All skill timelines, evaluated in canvas units with one impact callback.</summary>
     public sealed class SpellSequence : MonoBehaviour
     {
         public const float Duration = 1.9f;
@@ -14,25 +14,43 @@ namespace Numeria.Game
         public SkillVisualKind Kind { get; private set; }
         private RectTransform _caster, _target;
         private Vector3 _casterScale, _targetPosition;
+        private Vector3 _casterPosition;
+        private float _styleScale = 1;
+        private SpellChoreography _authored;
+        private bool _mega;
+        private bool _landed;
         private Vector2 _start, _end;
         private Image[] _particles;
         private Image[] _frame;
         private Image _ribbon, _core;
         private Image _elementArt;
+        private Image _megaSeal;
         private static readonly Sprite[] Materials = new Sprite[3];
         private CanvasGroup _group;
         private bool _powered;
         private int _groupA;
         private bool _subtract;
         private static Sprite _glow;
-        private static readonly AudioClip[] Clips = new AudioClip[3];
+        private static readonly AudioClip[] Clips = new AudioClip[17];
 
-        public static bool Supports(SkillVisualKind visual) => visual == SkillVisualKind.EquationFlame ||
-            visual == SkillVisualKind.MakeTenWave || visual == SkillVisualKind.SymmetryBeam;
+        public static bool Supports(SkillVisualKind visual)
+        {
+            switch (visual)
+            {
+                case SkillVisualKind.Physical: case SkillVisualKind.EquationFlame: case SkillVisualKind.MakeTenWave:
+                case SkillVisualKind.PatternLeaf: case SkillVisualKind.CountCrunch: case SkillVisualKind.DoubleBoulder:
+                case SkillVisualKind.SymmetryBeam: case SkillVisualKind.MatchingPaws: case SkillVisualKind.SubtractionDash:
+                case SkillVisualKind.TallyStone: case SkillVisualKind.GeometryPrism: case SkillVisualKind.SequenceSpark:
+                case SkillVisualKind.FairyGlimmer: case SkillVisualKind.DragonSpiral: case SkillVisualKind.ElectricBolt:
+                case SkillVisualKind.GrassBloom: case SkillVisualKind.FlyingGust: return true;
+                default: return false; // New kinds must be deliberately authored and covered by tests.
+            }
+        }
 
         public static SpellSequence Create(RectTransform canvas, RectTransform caster, RectTransform target,
-            SkillVisualKind kind, SpellTrace trace, bool powered)
+            SkillVisualKind kind, SpellTrace trace, bool powered, string speciesId = "", bool mega = false)
         {
+            if (!Supports(kind)) throw new ArgumentOutOfRangeException(nameof(kind));
             var root = Ui.Node(canvas, "Spell-" + kind);
             Ui.Stretch(root);
             var sequence = root.gameObject.AddComponent<SpellSequence>();
@@ -40,10 +58,14 @@ namespace Numeria.Game
             sequence._caster = caster;
             sequence._target = target;
             sequence._casterScale = caster.localScale;
+            sequence._casterPosition = caster.localPosition;
             sequence._targetPosition = target.localPosition;
-            sequence._start = root.InverseTransformPoint(caster.position) + new Vector3(45, 50, 0);
+            float facing = Mathf.Sign(target.position.x - caster.position.x);
+            sequence._start = root.InverseTransformPoint(caster.position) + new Vector3(facing * 45, 50, 0);
             sequence._end = root.InverseTransformPoint(target.position);
             sequence._powered = powered;
+            sequence._mega = mega;
+            sequence._styleScale = 1 + Mathf.Max(0, GameData.StageIndex(speciesId)) * .10f + (mega ? .25f : 0);
             sequence.Build(trace);
             sequence.Sample(0);
             return sequence;
@@ -53,6 +75,17 @@ namespace Numeria.Game
         {
             _group = gameObject.AddComponent<CanvasGroup>();
             _group.blocksRaycasts = false;
+            if (_mega)
+            {
+                _megaSeal = Ui.SpriteImg(transform, "MegaResonance", SpellChoreography.Material("arcane", 3));
+                _megaSeal.raycastTarget = false;
+            }
+            if (Kind != SkillVisualKind.EquationFlame && Kind != SkillVisualKind.MakeTenWave && Kind != SkillVisualKind.SymmetryBeam)
+            {
+                _authored = new SpellChoreography(transform, _caster, Kind, _start, _end, _powered ? trace : null,
+                    _styleScale * (_powered ? 1 : .72f), _mega);
+                return;
+            }
             _ribbon = Ui.SpriteImg(transform, "ElementBody", Glow());
             _core = Ui.SpriteImg(transform, "ElementCore", Glow());
             _ribbon.raycastTarget = _core.raycastTarget = false;
@@ -71,7 +104,7 @@ namespace Numeria.Game
             _elementArt = Ui.SpriteImg(transform, "SpellMaterial", Materials[materialIndex]);
             _elementArt.raycastTarget = false;
             int count = Kind == SkillVisualKind.SymmetryBeam ? (trace?.Pattern?.Length ?? 3) * 2 : 20;
-            if (trace != null && trace.Total > 0 && _powered && Kind != SkillVisualKind.SymmetryBeam)
+            if (trace != null && trace.HasEquation && _powered && Kind != SkillVisualKind.SymmetryBeam)
                 count = Mathf.Clamp(trace.Operation == '-' ? trace.A : trace.Total, 1, 20);
             _subtract = trace?.Operation == '-' && _powered;
             _groupA = trace != null && _powered ? (_subtract ? trace.Total : trace.A) : count / 2;
@@ -135,14 +168,28 @@ namespace Numeria.Game
             float charge = Mathf.Clamp01(seconds / .65f);
             float release = Mathf.Clamp01((seconds - .65f) / (ImpactTime - .65f));
             float aftermath = Mathf.Clamp01((seconds - ImpactTime) / (Duration - ImpactTime));
+            if (_megaSeal != null)
+            {
+                _megaSeal.rectTransform.anchoredPosition = release < 1 ? _start : _end;
+                _megaSeal.rectTransform.sizeDelta = Vector2.one * (190 + charge * 100 + aftermath * 120);
+                _megaSeal.rectTransform.localRotation = Quaternion.Euler(0, 0, -seconds * 55);
+                _megaSeal.color = new Color(1, 1, 1, .45f * charge * (1 - aftermath));
+            }
             _target.localPosition = _targetPosition;
             _group.alpha = 1 - aftermath;
             _caster.localScale = Vector3.Scale(_casterScale, new Vector3(1 + .035f * Mathf.Sin(charge * Mathf.PI),
                 1 - .065f * Mathf.Sin(charge * Mathf.PI), 1));
+            if (_authored != null)
+            {
+                _authored.Sample(seconds);
+                float recoil = Mathf.Sin(aftermath * Mathf.PI) * (_powered ? 1 : .6f);
+                _target.localPosition = _targetPosition + new Vector3(Mathf.Sign(_end.x - _start.x) * 22, 8, 0) * recoil;
+                return;
+            }
             Vector2 head = Vector2.Lerp(_start, _end, release);
             bool flame = Kind == SkillVisualKind.EquationFlame, water = Kind == SkillVisualKind.MakeTenWave;
             Color tint = flame ? Ui.Hex("#ff862e") : water ? Ui.Hex("#54d4db") : Ui.Hex("#a3efff");
-            float strength = _powered ? 1 : .72f;
+            float strength = (_powered ? 1 : .72f) * _styleScale;
             Beam(_ribbon, _start, head, (flame ? 100 : water ? 165 : 55) * strength,
                 tint, release > 0 ? 1 - aftermath : 0);
             Beam(_core, _start, head, (flame ? 32 : water ? 50 : 17) * strength,
@@ -221,7 +268,6 @@ namespace Numeria.Game
 
         public IEnumerator Play(Action impact)
         {
-            bool landed = false;
             var audio = gameObject.AddComponent<AudioSource>();
             audio.spatialBlend = 0;
             if (Sfx.Enabled) audio.PlayOneShot(Sound(Kind), .48f * Sfx.Volume);
@@ -229,13 +275,19 @@ namespace Numeria.Game
             {
                 for (float time = 0; time < Duration; time += Time.deltaTime)
                 {
-                    Sample(time);
-                    if (!landed && time >= ImpactTime) { landed = true; impact(); }
+                    Advance(time, impact);
                     yield return null;
                 }
-                if (!landed) impact();
+                Advance(Duration, impact);
             }
             finally { Cancel(); }
+        }
+
+        /// <summary>One-shot impact gate shared by the coroutine and deterministic regression tests.</summary>
+        public void Advance(float seconds, Action impact)
+        {
+            Sample(seconds);
+            if (!_landed && seconds >= ImpactTime) { _landed = true; impact(); }
         }
 
         public void Cancel()
@@ -257,14 +309,14 @@ namespace Numeria.Game
 
         private void Restore()
         {
-            if (_caster != null) _caster.localScale = _casterScale;
+            if (_caster != null) { _caster.localScale = _casterScale; _caster.localPosition = _casterPosition; }
             if (_target != null) _target.localPosition = _targetPosition;
         }
         private void OnDestroy() => Restore();
 
         private static AudioClip Sound(SkillVisualKind kind)
         {
-            int index = kind == SkillVisualKind.EquationFlame ? 0 : kind == SkillVisualKind.MakeTenWave ? 1 : 2;
+            int index = (int)kind;
             if (Clips[index] != null) return Clips[index];
             const int rate = 22050;
             var data = new float[(int)(Duration * rate)];
@@ -278,9 +330,14 @@ namespace Numeria.Game
                 previous = previous * .9f + noise * .1f;
                 float envelope = Mathf.Sin(Mathf.PI * t / Duration);
                 float impact = Mathf.Exp(-Mathf.Max(0, t - ImpactTime) * 12) * (t >= ImpactTime ? 1 : 0);
-                float value = index == 0 ? noise * .13f + Mathf.Sin(t * 310) * impact * .6f :
-                    index == 1 ? previous * .9f + Mathf.Sin(t * (700 - t * 130)) * .14f :
-                    (Mathf.Sin(t * 2764) + Mathf.Sin(t * 4147)) * .12f;
+                float pitch = 180 + index * 47;
+                bool rock = kind == SkillVisualKind.DoubleBoulder || kind == SkillVisualKind.TallyStone || kind == SkillVisualKind.Physical;
+                bool airy = kind == SkillVisualKind.MakeTenWave || kind == SkillVisualKind.FlyingGust || kind == SkillVisualKind.PatternLeaf;
+                bool bell = kind == SkillVisualKind.FairyGlimmer || kind == SkillVisualKind.SymmetryBeam || kind == SkillVisualKind.GeometryPrism;
+                float value = rock ? previous * .5f + Mathf.Sin(t * 185) * impact * .7f :
+                    airy ? previous * .9f + Mathf.Sin(t * (pitch - t * 90)) * .12f :
+                    bell ? (Mathf.Sin(t * pitch * 4) + Mathf.Sin(t * pitch * 6)) * .1f :
+                    noise * (.07f + .08f * impact) + Mathf.Sin(t * pitch * (1 + t * .12f)) * .16f;
                 data[i] = value * envelope * .6f;
             }
             Clips[index] = AudioClip.Create("NumeriaSpell-" + kind, data.Length, 1, rate, false);

@@ -43,13 +43,9 @@ namespace Numeria.Editor
             camera.clearFlags = CameraClearFlags.SolidColor;
             camera.backgroundColor = Hex(def.CameraBg);
             camera.cullingMask = ~0;
-            if (def.Id == "forest")
-            {
-                var progress = new Numeria.Core.Progress();
-                ForestScene.ApplyPassages(map, progress);
-                ForestScene.Build(root.transform, map, progress);
-            }
-            else PaintedTerrainRenderer.Build(root.transform, map, def.Theme);
+            var progress = new Numeria.Core.Progress();
+            if (def.Id == "forest") ForestScene.ApplyPassages(map, progress);
+            WorldScene.Build(root.transform, map, def, progress);
 
             for (int y = 0; y < map.Height; y++)
                 for (int x = 0; x < map.Width; x++)
@@ -58,8 +54,7 @@ namespace Numeria.Editor
                     int hash = (x * 73856093) ^ (y * 19349663);
                     int variant = ((hash % 97) + 97) % 97;
                     Tile tile = map.At(x, y);
-                    if (def.Id == "forest" && (tile == Tile.Tree || tile == Tile.Bush ||
-                        tile == Tile.Landmark || tile == Tile.Bridge || tile == Tile.Portal)) continue;
+                    if (WorldScene.Covers(tile) || tile == Tile.Portal || tile == Tile.Water) continue;
 
                     switch (tile)
                     {

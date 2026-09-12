@@ -48,6 +48,7 @@ namespace Numeria.Game
         private Transform _avatar;
         private ExplorationHud _explorationHud;
         private ForestScene _forestScene;
+        private WorldScene _worldScene;
         private Transform _routePreview;
         private SpriteRenderer _portalGlow;
         private SpriteRenderer _bossMarker;
@@ -109,8 +110,8 @@ namespace Numeria.Game
         {
             _mapRoot = new GameObject("MapRoot");
             _mapRoot.transform.SetParent(transform, false);
-            if (_def.Id == "forest") _forestScene = ForestScene.Build(_mapRoot.transform, _map, _progress);
-            else PaintedTerrainRenderer.Build(_mapRoot.transform, _map, _def.Theme);
+            _worldScene = WorldScene.Build(_mapRoot.transform, _map, _def, _progress);
+            _forestScene = _worldScene.GetComponentInChildren<ForestScene>();
 
             for (int y = 0; y < _map.Height; y++)
                 for (int x = 0; x < _map.Width; x++)
@@ -119,60 +120,10 @@ namespace Numeria.Game
                     int hash = (x * 73856093) ^ (y * 19349663);
                     int variant = ((hash % 97) + 97) % 97;
                     Tile tile = _map.At(x, y);
+                    if (WorldScene.Covers(tile) || tile == Tile.Water) continue;
 
                     switch (tile)
                     {
-                        case Tile.Water:
-                            if (!MapArt.PaintedReady && _def.Theme == "sky" && variant % 17 == 0)
-                            {
-                                var cloud = AddSprite(MapArt.Prop(_def.Theme, "obstacle", variant),
-                                    world + Vector3.up * .08f, 1, "sky-cloud");
-                                cloud.color = new Color(1f, 1f, 1f, .86f);
-                                ScaleSpriteToHeight(cloud, .58f);
-                            }
-                            break;
-                        case Tile.Cliff:
-                            if (!MapArt.PaintedReady && (_def.Theme == "mountains" || _def.Theme == "desert" ||
-                                _def.Theme == "dark_mines" || _def.Theme == "underground") && variant % 3 == 0)
-                            {
-                                var rock = AddSprite(MapArt.Prop(_def.Theme, "obstacle", variant),
-                                    world + Vector3.up * .06f, SortOrder(world.y), $"{_def.Theme}-rock");
-                                rock.color = MapArt.Tint(_def.Theme, tile, "obstacle");
-                                ScaleSpriteToHeight(rock,
-                                    _def.Theme == "mountains" || _def.Theme == "dark_mines" ? .72f : .62f);
-                            }
-                            break;
-                        case Tile.Tree:
-                            if (_def.Id != "forest" && !MapArt.PaintedReady)
-                            {
-                                var obstacle = AddSprite(MapArt.Prop(_def.Theme, "obstacle", variant),
-                                    world + Vector3.up * .2f, SortOrder(world.y) + 10, $"{_def.Theme}-obstacle");
-                                obstacle.color = MapArt.Tint(_def.Theme, tile, "obstacle");
-                                ScaleSpriteToHeight(obstacle, MapArt.PropHeight(_def.Theme, "obstacle"));
-                            }
-                            break;
-                        case Tile.Bush:
-                            if (_def.Id == "forest") break;
-                            if (!IsEncounterClusterAnchor(x, y)) break;
-                            var encounter = AddSprite(MapArt.Prop(_def.Theme, "encounter", variant),
-                                world + Vector3.up * .08f, SortOrder(world.y) + 12, $"{_def.Theme}-encounter");
-                            encounter.color = MapArt.Tint(_def.Theme, tile, "encounter");
-                            ScaleSpriteToHeight(encounter, MapArt.PropHeight(_def.Theme, "encounter"));
-                            break;
-                        case Tile.Landmark:
-                            if (_def.Id != "forest" && !MapArt.PaintedReady)
-                            {
-                                var landmark = AddSprite(MapArt.Prop(_def.Theme, "landmark", variant),
-                                    world + Vector3.up * .52f, SortOrder(world.y) + 12, $"{_def.Theme}-landmark");
-                                ScaleSpriteToHeight(landmark, MapArt.PropHeight(_def.Theme, "landmark"));
-                            }
-                            break;
-                        case Tile.Bridge:
-                            if (_def.Id == "forest") break;
-                            var bridge = AddSprite(MapArt.Prop(_def.Theme, "bridge", variant), world,
-                                SortOrder(world.y) + 5, $"{_def.Theme}-bridge");
-                            ScaleSpriteToHeight(bridge, MapArt.PropHeight(_def.Theme, "bridge"));
-                            break;
                         case Tile.Chest:
                             bool opened = _progress.OpenedChests.Contains(ChestId(x, y));
                             string treasureKind = opened ? "treasure-opened" : "treasure";
@@ -182,13 +133,6 @@ namespace Numeria.Game
                             _chestRenderers[(x, y)] = treasure;
                             break;
                         case Tile.Portal:
-                            // 主题建筑作为关卡出口，位于角色身后；水沫精灵提供统一的魔法光环。
-                            if (_def.Id != "forest" && !MapArt.PaintedReady)
-                            {
-                                var portal = AddSprite(MapArt.Prop(_def.Theme, "portal", variant),
-                                    world + Vector3.up * .48f, SortOrder(world.y) + 4, $"{_def.Theme}-portal");
-                                ScaleSpriteToHeight(portal, MapArt.PropHeight(_def.Theme, "portal"));
-                            }
                             _portalGlow = AddSprite(MapArt.Prop(_def.Theme, "portal-glow", variant),
                                 world + Vector3.up * .03f, SortOrder(world.y) + 8, "portal-glow");
                             ScaleSpriteToHeight(_portalGlow, MapArt.PropHeight(_def.Theme, "portal-glow"));
@@ -207,7 +151,7 @@ namespace Numeria.Game
             {
                 if (_progress.CollectedDiscoveries.Contains(discovery.Id)) continue;
                 Vector3 world = TileWorld(discovery.X, discovery.Y);
-                var marker = AddSprite(SpriteLib.One(_def.Id == "forest" ? "generated/Story/digit_crystal" : "generated/Economy/numeria_coin"),
+                var marker = AddSprite(SpriteLib.One("generated/Story/digit_crystal"),
                     world + Vector3.up * .22f, SortOrder(world.y) + 25, $"discovery-{discovery.Id}");
                 ScaleSpriteToHeight(marker, .62f);
                 _discoveryRenderers[discovery.Id] = marker;
@@ -277,7 +221,7 @@ namespace Numeria.Game
             }
             cam.orthographic = true;
             // 扩图后保留可读的探索尺度，不再把整张 30+ 列地图缩成一屏。
-            cam.orthographicSize = _def.Id == "forest" ? 5.6f : 7.2f;
+            cam.orthographicSize = 5.6f;
             cam.backgroundColor = Ui.Hex(_def.CameraBg);
             cam.clearFlags = CameraClearFlags.SolidColor;
             _worldCamera = cam;
@@ -1065,6 +1009,11 @@ namespace Numeria.Game
                     yield return _forestScene.Reveal(_progress, discovery.Id);
                     _worldCamera.transform.position = cameraBefore;
                     RefreshPortalState();
+                }
+                else if (_worldScene != null)
+                {
+                    SaveSystem.Save(_progress);
+                    yield return _worldScene.Reveal(_progress, discovery.Id);
                 }
                 Sfx.Play(SfxCue.Chest, .8f);
                 _voice.Say($"You found {discovery.Coins} Numeria coins!");

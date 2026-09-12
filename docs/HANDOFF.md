@@ -5,9 +5,24 @@
 
 ---
 
-## 最新增量：森林表现样板
+## 最新增量：六章地图与全技能表现覆盖
 
-见 [forest-slice.md](forest-slice.md)，这是当前接手优先读的增量说明。
+优先阅读 [world-presentation.md](world-presentation.md)，逐物种清单见
+[skill-animation-coverage.csv](skill-animation-coverage.csv)，生成素材与完整提示词见
+[world-presentation-assets.md](world-presentation-assets.md)。
+
+- 六章探索入口统一为 `WorldScene.Build`，森林委托 `ForestScene`；另外五章有独立地表、地标、植被、桥梁、环境粒子。主地图不再调用 `PaintedTerrainRenderer`。
+- 原 32×18 语义布局、碰撞、寻路、宝箱与发现点 ID 不变。森林保留上一轮事件；其他五章的发现点增加恢复特效，不新增 Boss 门槛。
+- `SpellSequence` + `SpellChoreography` 显式覆盖全部 17 个 `SkillVisualKind`，适用于 141 形态 / 48 家族的普通技能、Mega 和敌方攻击；同家族共享动作语法，不是 141 套独立逐帧动画。
+- 命中统一在 1.22 秒且只结算一次；进化阶段/Mega 增强视觉，不改伤害、捕捉和成长公式。`PuzzleUi.LastSpell` 携带实际解题数据，失败不显示伪造成功算式。
+- 新增 15 张内置 ImageGen 素材；桥梁经视觉检查改为正交俯视，虫系使用咬合素材而非爪印。
+- Unity EditMode **145/145**、Node **15/15**；六章、17 类施法和完整 4:3 战斗 UI 已做离屏检查。未做本轮真机 iPad 性能/触控、听音及完整通关验收。
+- 本轮存档仍为 **v10**，没有修改真实存档。仅回滚本轮提交无需降级存档；不要 Reset/New Game 来验证画面。
+- 下一步重点是手工关卡结构、路径/岸线美术、角色步行动画、真机性能与体验；不要把本轮表现覆盖称为一线 RPG 完成度。
+
+## 上一轮增量：森林表现样板（历史记录）
+
+见 [forest-slice.md](forest-slice.md)。以下记录描述全量铺开之前的基线。
 
 - 森林由 `ForestScene` 绘制人物尺度的手绘环境；其余五章仍用 `PaintedTerrainRenderer`，不要误报为六章全部完成升级。
 - `ExplorationHud` 替换探索信息长条，提供伙伴卡、可朗读目标、WORLD 章节入口；点地面显示路径，UI 点击不穿透地图。
@@ -17,7 +32,7 @@
 - Unity EditMode **140/140**，Node **15/15**。4:3 离屏预览已检查；尚未做本轮真机 iPad 帧率/触控和全流程游玩验收。
 - 新手绘环境例外使用 Bilinear/100 PPU，不能让通用像素导入规则覆盖它们。
 
-以下旧章节记录中的“六章统一 Painted / v9 / 131 tests”是上一阶段基线，以本节及配套增量说明为准。
+以下旧章节记录中的“六章统一 Painted / v9 / 131 tests”是旧基线，以最上方最新增量及配套说明为准。
 
 ## 1. 项目是什么
 
