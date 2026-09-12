@@ -289,7 +289,7 @@ namespace Numeria.Game
                 Row("#.......", "........", "........", ".......#"),
                 Row("########", "########", "########", "########"),
             },
-            Tier = 2, BattleBg = "Art/Backgrounds/mountain-battle", CameraBg = "#4a5a6a", Theme = "mountains",
+            Tier = 2, BattleBg = "generated/Backgrounds/Painted/Silent_Peaks", CameraBg = "#4a5a6a", Theme = "mountains",
             Encounters = new[]
             {
                 E("doublit", 28, 7, -2, 2), E("pebblit", 24, 7, -1, 2),

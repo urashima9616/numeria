@@ -20,7 +20,7 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 | P3 — Full game systems | 🔶 Playable / polishing | Six painterly worlds, 141 Mathmons, evolution, economy, merchants, Lucas story |
 | P4 — iOS delivery | 🔶 Device-ready | Xcode export/build, landscape, app icon and Finder save transfer pass; signing and physical-iPad QA remain |
 
-The current verification baseline compiles all four Unity assemblies and passes **145/145 Unity EditMode tests**
+The current verification baseline compiles all four Unity assemblies and passes **146/146 Unity EditMode tests**
 plus **15/15 Node prototype tests**.
 The save format is currently **schema v10**, with non-destructive migration for older saves.
 
@@ -35,6 +35,9 @@ All **17 skill visual kinds** now have authored 1.9-second timelines, covering *
 normal math skills, Mega skills and enemy attacks. Evolution and Mega add scale and resonance; related creatures
 share choreography, rather than having 141 individually animated moves. Actual puzzle numbers/shapes feed the
 spell where relevant. See [coverage, verification and remaining limitations](docs/world-presentation.md).
+
+Silent Peaks also has a new snow-and-glacier battle panorama, replacing its separate legacy placeholder;
+see [battle-background correction and aspect-ratio previews](docs/silent-peaks-battle.md).
 
 ![Six regions — runtime renderer, 4:3 editor previews](docs/images/worlds-presentation.png)
 

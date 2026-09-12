@@ -8,6 +8,19 @@ namespace Numeria.Game.Tests
     public class WorldCoverageTests
     {
         [Test]
+        public void SilentPeaksUsesImportedPaintedBattleBackgroundInsteadOfPlaceholder()
+        {
+            var path = Maps.Mountains().BattleBg;
+            Assert.AreEqual("generated/Backgrounds/Painted/Silent_Peaks", path);
+            var sprite = Resources.Load<Sprite>(path);
+            Assert.NotNull(sprite);
+            Assert.GreaterOrEqual(sprite.texture.width, 1600);
+            Assert.AreEqual(FilterMode.Bilinear, sprite.texture.filterMode);
+            Assert.That(sprite.rect.width / sprite.rect.height, Is.InRange(1.7f, 1.85f));
+            foreach (var def in Maps.All()) Assert.NotNull(Resources.Load<Sprite>(def.BattleBg), def.Id);
+        }
+
+        [Test]
         public void EverySpeciesNormalAndMegaSkillHasAuthoredPresentation()
         {
             Assert.AreEqual(141, GameData.Roster.Count);

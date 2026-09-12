@@ -5,6 +5,13 @@
 
 ---
 
+## 最新修正：Silent Peaks 战斗背景
+
+见 [silent-peaks-battle.md](silent-peaks-battle.md)。此前探索地图已更新，但雪山战斗仍引用
+`Art/Backgrounds/mountain-battle` 旧占位图；现改为 `generated/Backgrounds/Painted/Silent_Peaks`。
+新增雪峰/冰川/雪松手绘背景，按比例铺满裁切，保留旧图以便回滚。此目录使用 Bilinear/100 PPU。
+`Numeria → Preview Silent Peaks Battle` 用全新内存数据输出 4:3、16:9、宽屏预览，不读写真实进度。
+
 ## 最新增量：六章地图与全技能表现覆盖
 
 优先阅读 [world-presentation.md](world-presentation.md)，逐物种清单见

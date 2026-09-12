@@ -123,6 +123,13 @@ namespace Numeria.Game
 
             var bg = Ui.SpriteImg(_shakeRoot, "Background", SpriteLib.One(_battleBg));
             Ui.Stretch(bg.rectTransform);
+            if (bg.sprite != null && _battleBg.StartsWith("generated/Backgrounds/Painted/"))
+            {
+                // Painted panoramas fill the display by cropping, never by squeezing the mountains on iPad.
+                var fit = bg.gameObject.AddComponent<AspectRatioFitter>();
+                fit.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
+                fit.aspectRatio = bg.sprite.rect.width / bg.sprite.rect.height;
+            }
 
             // 敌方:左上状态牌。目标稿需要足够的纵向空间让名字、等级、HP 与血条各占一行。
             var enemyPlate = BuildStatusPlate("EnemyPlate", new Vector2(0, 1), new Vector2(28, -28), new Vector2(480, 228),

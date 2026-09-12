@@ -39,7 +39,7 @@ namespace Numeria.Editor
             // UI 素材必须 100 PPU:UGUI 切片边框按 Canvas 参考 PPU(100)/精灵 PPU 缩放,
             // 16 PPU 会把 9-slice 边角放大 6.25 倍,面板直接崩坏
             importer.spritePixelsPerUnit = assetPath.Contains("/UI/") ? 100 : 16;
-            if (assetPath.Contains("/Exploration/"))
+            if (assetPath.Contains("/Exploration/") || assetPath.Contains("/Backgrounds/Painted/"))
             {
                 importer.filterMode = FilterMode.Bilinear;
                 importer.spritePixelsPerUnit = 100;

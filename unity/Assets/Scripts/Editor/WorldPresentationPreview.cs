@@ -140,6 +140,37 @@ namespace Numeria.Editor
             finally { Object.DestroyImmediate(root); Voice.Enabled = spoken; }
         }
 
+        [MenuItem("Numeria/Preview Silent Peaks Battle")]
+        public static void SilentPeaksBattle()
+        {
+            Directory.CreateDirectory(Output);
+            bool spoken = Voice.Enabled;
+            Voice.Enabled = false;
+            var root = new GameObject("SilentPeaksBattlePreview");
+            try
+            {
+                var camera = CameraFor(root.transform);
+                // Match the reported species without reading, overwriting or importing a real save.
+                var progress = new Progress { ActiveMonId = "mirrorwyrm" };
+                var growth = progress.EnsureGrowth("mirrorwyrm");
+                growth.Level = 43;
+                growth.Stage = GameData.StageIndex("mirrorwyrm");
+                var map = Maps.Mountains();
+                var battle = root.AddComponent<BattleController>();
+                battle.Init(GameData.CreateWild("pebblit", 43, new Rng(7)), progress, map.Tier, map.BattleBg, _ => { });
+                foreach (var canvas in root.GetComponentsInChildren<Canvas>())
+                {
+                    canvas.renderMode = RenderMode.ScreenSpaceCamera; canvas.worldCamera = camera;
+                    canvas.planeDistance = 1; canvas.sortingOrder = 20000;
+                }
+                Capture(camera, "silent-peaks-battle-4x3", false);
+                Capture(camera, "silent-peaks-battle-16x9", false, 1920, 1080);
+                Capture(camera, "silent-peaks-battle-wide", false, 2048, 992);
+            }
+            finally { Object.DestroyImmediate(root); Voice.Enabled = spoken; }
+            Debug.Log("NUMERIA_SILENT_PEAKS_PREVIEW=" + Output);
+        }
+
         private static void Coverage()
         {
             var rows = new System.Text.StringBuilder("Species,Family,Stage,Skill,VisualKind,Normal,Mega,Enemy\n");
@@ -185,12 +216,13 @@ namespace Numeria.Editor
             finally { Object.DestroyImmediate(root); }
         }
 
-        private static void Capture(Camera camera, string name, bool sheet)
+        private static void Capture(Camera camera, string name, bool sheet, int width = 1440, int height = 1080)
         {
-            var rt = new RenderTexture(1440, 1080, 24); var old = RenderTexture.active;
-            var capture = new Texture2D(1440, 1080, TextureFormat.RGB24, false);
+            camera.aspect = width / (float)height;
+            var rt = new RenderTexture(width, height, 24); var old = RenderTexture.active;
+            var capture = new Texture2D(width, height, TextureFormat.RGB24, false);
             camera.targetTexture = rt; Canvas.ForceUpdateCanvases(); camera.Render(); camera.Render();
-            RenderTexture.active = rt; capture.ReadPixels(new Rect(0, 0, 1440, 1080), 0, 0); capture.Apply();
+            RenderTexture.active = rt; capture.ReadPixels(new Rect(0, 0, width, height), 0, 0); capture.Apply();
             File.WriteAllBytes(Path.Combine(Output, name + ".png"), capture.EncodeToPNG());
             if (sheet)
             {
