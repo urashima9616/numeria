@@ -65,6 +65,11 @@ namespace Numeria.Core
 
         public Tile At(int x, int y) => _tiles[x, y];
 
+        public void SetTile(int x, int y, Tile tile)
+        {
+            if (InBounds(x, y)) _tiles[x, y] = tile;
+        }
+
         public bool InBounds(int x, int y) => x >= 0 && x < Width && y >= 0 && y < Height;
 
         public bool Walkable(int x, int y)

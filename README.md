@@ -20,9 +20,20 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 | P3 — Full game systems | 🔶 Playable / polishing | Six painterly worlds, 141 Mathmons, evolution, economy, merchants, Lucas story |
 | P4 — iOS delivery | 🔶 Device-ready | Xcode export/build, landscape, app icon and Finder save transfer pass; signing and physical-iPad QA remain |
 
-The current verification baseline compiles all four Unity assemblies and passes **131/131 Unity EditMode tests**
+The current verification baseline compiles all four Unity assemblies and passes **140/140 Unity EditMode tests**
 plus **15/15 Node prototype tests**.
-The save format is currently **schema v9**, with non-destructive migration for older saves.
+The save format is currently **schema v10**, with non-destructive migration for older saves.
+
+### Forest presentation refresh — first playable iteration
+
+Mystic Forest now has character-scale painted trees, a landmark oak, continuous ground, living-water accents,
+and a vine bridge restored by solving a world puzzle. Three discoveries unlock its guardian; treasure is optional.
+Exploration has a compact companion card, spoken objective, tap-route markers, and a six-region travel atlas.
+Fire, water, and mirror skills use separate 1.9-second timelines with elemental artwork, sound and the actual
+numbers/shapes from the preceding puzzle. This is a **forest-first slice**, not a finished six-region art overhaul.
+See [implementation, generated assets, verification and remaining work](docs/forest-slice.md).
+
+![Forest bridge restored — Unity 4:3 editor render](docs/images/forest-slice-bridge.png)
 
 ## Design principles
 
@@ -69,12 +80,15 @@ The save format is currently **schema v9**, with non-destructive migration for o
 
 ### Exploration and economy
 
-- Six large, pathfinding-based worlds use the actual square tiles from `Tiles and Hexes: 2D Painted Terrain
+- Five regions still use the actual square tiles from `Tiles and Hexes: 2D Painted Terrain
   Samples`. The renderer normalizes the pack's bottom-anchored 256×384 artwork to the gameplay grid and sorts lower
   screen rows in front, so forests, snowy pines, mountains, castles, cacti, oceans, and volcanoes keep their painted
   depth. Each chapter has its own palette and terrain mix; narrow translucent route overlays keep roads readable
   without replacing the painted ground. Water, cliffs, bridges, landmarks, treasure, and exits remain semantic
   gameplay tiles rather than interchangeable decoration.
+- Mystic Forest uses a separate character-scale renderer and new generated environment assets. Its existing
+  gameplay grid, encounters, shops and rewards remain compatible; a new optional bridge shortcut responds to progress.
+  Painted Terrain also supplies the region illustrations in the new WORLD travel atlas.
 - Four visible math-discovery runes per map. Solving their themed puzzle awards one-time coins and occasional
   battle items; incorrect answers leave the discovery available for another attempt.
 - Ordinary enemies, merchant challenges, and bosses award region-scaled coins.

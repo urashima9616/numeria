@@ -23,6 +23,15 @@ bake() {
   echo "baked: $key.wav"
 }
 
+# ---- Forest journey objectives (also replayed from the exploration HUD) ----
+bake "Wake the firefly lanterns."
+bake "Grow the sleeping vine bridge."
+bake "Restore the mirror grove."
+bake "Meet Numberfly at the ancient tree."
+bake "The mountain path is open!"
+bake "Explore, find treasure, meet Mathmons."
+if [[ "${NUMERIA_FOREST_ONLY:-0}" == "1" ]]; then exit 0; fi
+
 # ---- 固定台词 ----
 bake "A wild Duplirock appeared! It has a number shield!"
 bake "Pick two crystals that make ten!"

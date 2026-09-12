@@ -57,6 +57,9 @@ namespace Numeria.Game
         private CanvasGroup _dockGroup;
         private bool _actionsEnabled = true;
         private int _playerLevel = 1;
+        private int _guardianPhase;
+        private TMP_Text _guardianPhaseText;
+        private TMP_Text _shieldValue;
 
         // 参考图配色(与菜单一致)
         private static readonly Color Cream = Ui.Hex("#f6efdc");
@@ -255,6 +258,12 @@ namespace Numeria.Game
                 34, Ui.ShieldBlue, TextAnchor.MiddleLeft);
             Ui.Place(text.rectTransform, new Vector2(0, 0.5f), new Vector2(40, 0), new Vector2(60, 32));
             _shieldRow = row.gameObject;
+            _shieldValue = text;
+            if (_state.Enemy.IsBoss && _tier == 1)
+            {
+                _guardianPhaseText = Ui.Label(_canvasRoot, "GuardianPhase", "", 27, Ui.Hex("#fff0bd"));
+                Ui.PlaceCentered(_guardianPhaseText.rectTransform, new Vector2(.72f, .78f), Vector2.zero, new Vector2(360, 44));
+            }
         }
 
         /// <summary>我方名牌底部的宝石行:最多展示 3 颗示意图标，数字负责表达准确数量。</summary>
@@ -352,6 +361,12 @@ namespace Numeria.Game
                 : $"{_state.Gems} GEMS";
 
             _shieldRow.SetActive(_state.EnemyShielded);
+            if (_guardianPhaseText != null)
+            {
+                string[] phases = { "FIREFLY WARD", "VINE WARD", "MIRROR WARD" };
+                _guardianPhaseText.text = $"{_guardianPhase + 1}/3   {phases[_guardianPhase]}";
+                _shieldValue.text = _guardianPhase == 0 ? (_state.Enemy.Shield ?? 10).ToString() : "?";
+            }
             int formulaCost = _state.SkillCost(_themeSkill);
             bool formulaReady = _state.Gems >= formulaCost;
             _btnFormula.interactable = _actionsEnabled && formulaReady;
@@ -449,6 +464,23 @@ namespace Numeria.Game
             SetActionsEnabled(false);
             SkillDef skill = _state.Mega.Skill;
             Color color = ThemeColor(skill.Visual);
+            if (SpellSequence.Supports(skill.Visual))
+            {
+                SkillResult megaResult = default;
+                var sequence = SpellSequence.Create(_canvasRoot, _playerSprite, _enemySprite,
+                    skill.Visual, null, true);
+                yield return sequence.Play(() =>
+                {
+                    megaResult = _state.UseSkill(skill.Id);
+                    RecordDamage(megaResult.Damage);
+                    PopDamage(_enemySprite, megaResult.BreakBonusApplied ? $"-{megaResult.Damage}  2X" : $"-{megaResult.Damage}", color);
+                    if (megaResult.BreakBonusApplied) _voice.Say("Double damage!");
+                    RenderAll();
+                });
+                SetLog($"{skill.Name}!", $"MEGA POWER - {megaResult.Damage} DAMAGE");
+                yield return EndPlayerTurn();
+                yield break;
+            }
             yield return Lunge(_playerSprite, new Vector2(75, 38));
             yield return PlayThemeSkill(skill, true);
             yield return RadialBurst(_enemySprite.position, Color.Lerp(color, Color.white, .25f), 16);
@@ -488,7 +520,25 @@ namespace Numeria.Game
         {
             SetActionsEnabled(false);
             bool? correct = null;
-            yield return _puzzles.RunTierPuzzle(v => correct = v, _tier);
+            yield return _puzzles.RunSkillPuzzle(_themeSkill.Visual, v => correct = v, _tier);
+            if (SpellSequence.Supports(_themeSkill.Visual))
+            {
+                SkillResult impactResult = default;
+                var sequence = SpellSequence.Create(_canvasRoot, _playerSprite, _enemySprite,
+                    _themeSkill.Visual, _puzzles.LastSpell, correct.Value);
+                yield return sequence.Play(() =>
+                {
+                    impactResult = _state.UseSkill(_themeSkill.Id, correct.Value);
+                    RecordDamage(impactResult.Damage);
+                    PopDamage(_enemySprite, impactResult.BreakBonusApplied ? $"-{impactResult.Damage}  2X" : $"-{impactResult.Damage}",
+                        ThemeColor(_themeSkill.Visual));
+                    if (impactResult.BreakBonusApplied) _voice.Say("Double damage!");
+                    RenderAll();
+                });
+                SetLog($"{_themeSkill.Name}!", impactResult.Powered ? $"{impactResult.Damage} DAMAGE" : "NICE TRY - YOUR MAGIC STILL WORKS");
+                yield return EndPlayerTurn();
+                yield break;
+            }
             yield return Lunge(_playerSprite, new Vector2(60, 30));
             yield return PlayThemeSkill(_themeSkill, correct.Value);
             var result = _state.UseSkill(_themeSkill.Id, correct.Value);
@@ -511,7 +561,11 @@ namespace Numeria.Game
         {
             SetActionsEnabled(false);
             bool? ok = null;
-            if (_tier >= 3) yield return _puzzles.RunPattern(v => ok = v, _tier);
+            if (_state.Enemy.IsBoss && _tier == 1 && _guardianPhase == 1)
+                yield return _puzzles.RunPattern(v => ok = v, 1);
+            else if (_state.Enemy.IsBoss && _tier == 1 && _guardianPhase == 2)
+                yield return _puzzles.RunSymmetry(v => ok = v, 1, true);
+            else if (_tier >= 3) yield return _puzzles.RunPattern(v => ok = v, _tier);
             else yield return _puzzles.RunMakeTen(v => ok = v,
                 PuzzleGenerator.ClampArithmeticMax(_state.Enemy.Shield ?? 10));
             if (ok.Value)
@@ -519,6 +573,7 @@ namespace Numeria.Game
                 Sfx.Play(SfxCue.ShieldBreak);
                 yield return ShatterShield();
                 _state.BreakShield();
+                if (_guardianPhaseText != null) _guardianPhase = Mathf.Min(2, _guardianPhase + 1);
                 RenderAll();
                 StartCoroutine(Shake());
                 SetLog("Shield broken!", "DOUBLE NEXT HIT - ENEMY STUNNED");

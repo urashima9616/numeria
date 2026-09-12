@@ -46,7 +46,9 @@ namespace Numeria.Game
         private GameObject _hudRoot;
         private RectTransform _hudCanvasRoot;
         private Transform _avatar;
-        private TMP_Text _hudText;
+        private ExplorationHud _explorationHud;
+        private ForestScene _forestScene;
+        private Transform _routePreview;
         private SpriteRenderer _portalGlow;
         private SpriteRenderer _bossMarker;
         private Camera _worldCamera;
@@ -73,6 +75,7 @@ namespace Numeria.Game
             Music.Enabled = _progress.MusicEnabled;
             _def = Maps.Get(_progress.CurrentMap);
             _map = GridMap.Parse(_def.Rows);
+            if (_def.Id == "forest") ForestScene.ApplyPassages(_map, _progress);
             _rng = new Rng((uint)System.Environment.TickCount);
             _voice = gameObject.AddComponent<Voice>();
 
@@ -106,7 +109,8 @@ namespace Numeria.Game
         {
             _mapRoot = new GameObject("MapRoot");
             _mapRoot.transform.SetParent(transform, false);
-            PaintedTerrainRenderer.Build(_mapRoot.transform, _map, _def.Theme);
+            if (_def.Id == "forest") _forestScene = ForestScene.Build(_mapRoot.transform, _map, _progress);
+            else PaintedTerrainRenderer.Build(_mapRoot.transform, _map, _def.Theme);
 
             for (int y = 0; y < _map.Height; y++)
                 for (int x = 0; x < _map.Width; x++)
@@ -139,7 +143,7 @@ namespace Numeria.Game
                             }
                             break;
                         case Tile.Tree:
-                            if (!MapArt.PaintedReady)
+                            if (_def.Id != "forest" && !MapArt.PaintedReady)
                             {
                                 var obstacle = AddSprite(MapArt.Prop(_def.Theme, "obstacle", variant),
                                     world + Vector3.up * .2f, SortOrder(world.y) + 10, $"{_def.Theme}-obstacle");
@@ -148,6 +152,7 @@ namespace Numeria.Game
                             }
                             break;
                         case Tile.Bush:
+                            if (_def.Id == "forest") break;
                             if (!IsEncounterClusterAnchor(x, y)) break;
                             var encounter = AddSprite(MapArt.Prop(_def.Theme, "encounter", variant),
                                 world + Vector3.up * .08f, SortOrder(world.y) + 12, $"{_def.Theme}-encounter");
@@ -155,7 +160,7 @@ namespace Numeria.Game
                             ScaleSpriteToHeight(encounter, MapArt.PropHeight(_def.Theme, "encounter"));
                             break;
                         case Tile.Landmark:
-                            if (!MapArt.PaintedReady)
+                            if (_def.Id != "forest" && !MapArt.PaintedReady)
                             {
                                 var landmark = AddSprite(MapArt.Prop(_def.Theme, "landmark", variant),
                                     world + Vector3.up * .52f, SortOrder(world.y) + 12, $"{_def.Theme}-landmark");
@@ -163,6 +168,7 @@ namespace Numeria.Game
                             }
                             break;
                         case Tile.Bridge:
+                            if (_def.Id == "forest") break;
                             var bridge = AddSprite(MapArt.Prop(_def.Theme, "bridge", variant), world,
                                 SortOrder(world.y) + 5, $"{_def.Theme}-bridge");
                             ScaleSpriteToHeight(bridge, MapArt.PropHeight(_def.Theme, "bridge"));
@@ -177,7 +183,7 @@ namespace Numeria.Game
                             break;
                         case Tile.Portal:
                             // 主题建筑作为关卡出口，位于角色身后；水沫精灵提供统一的魔法光环。
-                            if (!MapArt.PaintedReady)
+                            if (_def.Id != "forest" && !MapArt.PaintedReady)
                             {
                                 var portal = AddSprite(MapArt.Prop(_def.Theme, "portal", variant),
                                     world + Vector3.up * .48f, SortOrder(world.y) + 4, $"{_def.Theme}-portal");
@@ -201,7 +207,7 @@ namespace Numeria.Game
             {
                 if (_progress.CollectedDiscoveries.Contains(discovery.Id)) continue;
                 Vector3 world = TileWorld(discovery.X, discovery.Y);
-                var marker = AddSprite(SpriteLib.One("generated/Economy/numeria_coin"),
+                var marker = AddSprite(SpriteLib.One(_def.Id == "forest" ? "generated/Story/digit_crystal" : "generated/Economy/numeria_coin"),
                     world + Vector3.up * .22f, SortOrder(world.y) + 25, $"discovery-{discovery.Id}");
                 ScaleSpriteToHeight(marker, .62f);
                 _discoveryRenderers[discovery.Id] = marker;
@@ -271,7 +277,7 @@ namespace Numeria.Game
             }
             cam.orthographic = true;
             // 扩图后保留可读的探索尺度，不再把整张 30+ 列地图缩成一屏。
-            cam.orthographicSize = 7.2f;
+            cam.orthographicSize = _def.Id == "forest" ? 5.6f : 7.2f;
             cam.backgroundColor = Ui.Hex(_def.CameraBg);
             cam.clearFlags = CameraClearFlags.SolidColor;
             _worldCamera = cam;
@@ -295,7 +301,7 @@ namespace Numeria.Game
         private void RefreshPortalState()
         {
             bool cleared = _def.GateCleared(_progress);
-            bool bossReady = !cleared && _def.AllChestsOpened(_progress);
+            bool bossReady = !cleared && _def.GuardianReady(_progress);
             if (_portalGlow != null) _portalGlow.gameObject.SetActive(cleared || bossReady);
             if (_bossMarker != null) _bossMarker.gameObject.SetActive(bossReady);
         }
@@ -314,19 +320,20 @@ namespace Numeria.Game
             _hudRoot.AddComponent<GraphicRaycaster>();
             _hudCanvasRoot = (RectTransform)_hudRoot.transform;
 
-            var plate = Ui.Img(_hudCanvasRoot, "HudPlate", Ui.PlateBg);
-            Ui.Place(plate.rectTransform, new Vector2(0, 1), new Vector2(20, -20), new Vector2(850, 54));
-            Ui.AddOutline(plate.gameObject);
-            var coin = Ui.SpriteImg(plate.transform, "Coin", SpriteLib.One("generated/Economy/numeria_coin"));
-            coin.preserveAspect = true;
-            Ui.Place(coin.rectTransform, new Vector2(0, .5f), new Vector2(10, 0), new Vector2(40, 40));
-            _hudText = Ui.Label(plate.transform, "HudText", "", 22, Ui.Ink);
-            Ui.Stretch(_hudText.rectTransform);
-            _hudText.rectTransform.offsetMin = new Vector2(52, 0);
-
-            var menuBtn = Ui.Btn(_hudCanvasRoot, "BtnMenu", "MENU", 24);
-            Ui.Place((RectTransform)menuBtn.transform, new Vector2(1, 1), new Vector2(-20, -20), new Vector2(140, 54));
-            menuBtn.onClick.AddListener(OpenMenu);
+            _explorationHud = new ExplorationHud(_hudCanvasRoot, OpenMenu, () =>
+            {
+                if (!_busy) _voice.Say(_def.Id == "forest" ? ForestJourney.Objective(_progress) : _def.WelcomeLine);
+            }, () =>
+            {
+                if (_busy) return;
+                _busy = true;
+                _explorationHud.OpenAtlas(_progress, id =>
+                {
+                    _progress.CurrentMap = id;
+                    SaveSystem.Save(_progress);
+                    Respawn(_progress);
+                }, () => _busy = false);
+            });
         }
 
         private void OpenMenu()
@@ -373,16 +380,10 @@ namespace Numeria.Game
 
         private void UpdateHud()
         {
-            var growth = _progress.ActiveGrowth;
-            var combatant = _progress.PlayerCombatant(_progress.ActiveMonId);
-            string xp = growth.Level >= GrowthSystem.MaxLevel ? "MAX" : $"{growth.Xp}/{growth.XpToNext}";
-            _hudText.text = $"{_progress.Coins} COINS   {_progress.DigitCrystalCount}/6 CRYSTALS   " +
-                            $"{PlayerName} Lv.{growth.Level}  XP {xp}  " +
-                            $"ATK {combatant.AttackPower + _progress.TotalAttackBonus(_progress.ActiveMonId)}  " +
-                            $"DEF {combatant.DefensePower + _progress.TotalDefenseBonus(_progress.ActiveMonId)}  {_def.DisplayName}";
+            _explorationHud.Refresh(_progress, _def);
         }
 
-        private string ChestId(int x, int y) => $"{_def.Id}-chest-{x}-{y}";
+        private string ChestId(int x, int y) => _def.ChestId(x, y);
 
         // ---------- 输入与移动 ----------
 
@@ -393,19 +394,46 @@ namespace Numeria.Game
             if (pointer == null || !pointer.press.wasReleasedThisFrame) return;
 
             Vector2 screen = pointer.position.ReadValue();
+            var events = UnityEngine.EventSystems.EventSystem.current;
+            if (events != null)
+            {
+                var hits = new System.Collections.Generic.List<UnityEngine.EventSystems.RaycastResult>();
+                events.RaycastAll(new UnityEngine.EventSystems.PointerEventData(events) { position = screen }, hits);
+                if (hits.Count > 0) return;
+            }
             Vector3 world = Camera.main.ScreenToWorldPoint(new Vector3(screen.x, screen.y, 10));
             int x = Mathf.RoundToInt(world.x);
             int yRow = _map.Height - 1 - Mathf.RoundToInt(world.y);
-            if (!_map.Walkable(x, yRow)) return;
+            if (!_map.Walkable(x, yRow))
+            {
+                Sfx.Play(SfxCue.SoftMiss, .25f);
+                return;
+            }
 
             var path = _map.FindPath(_pos, (x, yRow));
-            if (path.Count > 0) StartCoroutine(WalkRoutine(path));
+            if (path.Count > 0)
+            {
+                if (_routePreview != null) Destroy(_routePreview.gameObject);
+                _routePreview = new GameObject("FootstepTrail").transform;
+                _routePreview.SetParent(_mapRoot.transform, false);
+                for (int i = 0; i < path.Count; i++)
+                {
+                    var mark = AddSprite(SpriteLib.One("generated/Story/digit_crystal"), TileWorld(path[i].x, path[i].y),
+                        14000, "DestinationStep");
+                    ScaleSpriteToHeight(mark, i == path.Count - 1 ? .32f : .10f);
+                    mark.color = new Color(1, .91f, .57f, .65f);
+                    mark.transform.SetParent(_routePreview, true);
+                }
+                StartCoroutine(WalkRoutine(path));
+            }
+            else if (_pos == (x, yRow)) HandleTile(x, yRow);
         }
 
         private IEnumerator WalkRoutine(System.Collections.Generic.List<(int x, int y)> path)
         {
             _busy = true;
             var sr = _avatar.GetComponent<SpriteRenderer>();
+            Vector3 scale = _avatar.localScale;
             foreach (var step in path)
             {
                 Vector3 from = TileWorld(_pos.x, _pos.y);
@@ -415,17 +443,27 @@ namespace Numeria.Game
                 while (t < 0.14f)
                 {
                     t += Time.deltaTime;
-                    _avatar.position = Vector3.Lerp(from, to, t / 0.14f);
+                    float phase = Mathf.Clamp01(t / .14f);
+                    _avatar.position = Vector3.Lerp(from, to, phase) + Vector3.up * (Mathf.Sin(phase * Mathf.PI) * .06f);
+                    _avatar.localScale = new Vector3(scale.x * (1 + .025f * Mathf.Sin(phase * Mathf.PI)),
+                        scale.y * (1 - .025f * Mathf.Sin(phase * Mathf.PI)), scale.z);
+                    UpdateCameraPosition();
                     yield return null;
                 }
                 _avatar.position = to;
+                _avatar.localScale = scale;
                 _pos = (step.x, step.y);
                 sr.sortingOrder = SortOrder(to.y) + 10;
                 UpdateCameraPosition();
 
                 bool interrupted = HandleTile(step.x, step.y);
-                if (interrupted) yield break; // 战斗/宝箱协程接管 _busy
+                if (interrupted)
+                {
+                    if (_routePreview != null) Destroy(_routePreview.gameObject);
+                    yield break;
+                }
             }
+            if (_routePreview != null) Destroy(_routePreview.gameObject);
             _busy = false;
         }
 
@@ -462,7 +500,7 @@ namespace Numeria.Game
                 case Tile.Portal:
                     if (!_def.GateCleared(_progress))
                     {
-                        if (!_def.AllChestsOpened(_progress))
+                        if (!_def.GuardianReady(_progress))
                         {
                             StartCoroutine(BossLockedRoutine());
                             return true;
@@ -1004,7 +1042,9 @@ namespace Numeria.Game
 
             bool? solved = null;
             MapPuzzleKind kind = DiscoveryPuzzleKind(discovery, _def.Tier);
-            yield return _puzzles.RunPuzzleKind(kind, value => solved = value, _def.Tier);
+            if (_def.Id == "forest" && discovery.Id == ForestJourney.Mirror)
+                yield return _puzzles.RunSymmetry(value => solved = value, _def.Tier, true);
+            else yield return _puzzles.RunPuzzleKind(kind, value => solved = value, _def.Tier);
             if (solved == true && _progress.CollectDiscovery(discovery.Id))
             {
                 _progress.AddCoins(discovery.Coins);
@@ -1013,6 +1053,19 @@ namespace Numeria.Game
 
                 if (_discoveryRenderers.TryGetValue(discovery.Id, out var marker))
                     marker.gameObject.SetActive(false);
+                if (_forestScene != null && discovery.Id != "forest-rune-4")
+                {
+                    ForestScene.ApplyPassages(_map, _progress);
+                    // Persist the event before playing its cosmetic reveal; closing the app cannot lose it.
+                    SaveSystem.Save(_progress);
+                    Vector3 cameraBefore = _worldCamera.transform.position;
+                    Vector3 focus = discovery.Id == ForestJourney.Bridge ? TileWorld(15, 5) :
+                        discovery.Id == ForestJourney.Lanterns ? TileWorld(6, 7) : TileWorld(23, 10);
+                    _worldCamera.transform.position = new Vector3(focus.x, focus.y, -10);
+                    yield return _forestScene.Reveal(_progress, discovery.Id);
+                    _worldCamera.transform.position = cameraBefore;
+                    RefreshPortalState();
+                }
                 Sfx.Play(SfxCue.Chest, .8f);
                 _voice.Say($"You found {discovery.Coins} Numeria coins!");
                 yield return new WaitForSeconds(1.2f);
@@ -1160,6 +1213,13 @@ namespace Numeria.Game
 
         private IEnumerator BossLockedRoutine()
         {
+            if (_def.Id == "forest")
+            {
+                _voice.Say(ForestJourney.Objective(_progress));
+                yield return new WaitForSeconds(1.6f);
+                _busy = false;
+                yield break;
+            }
             int remaining = 0;
             foreach (string id in _def.ChestIds())
                 if (!_progress.OpenedChests.Contains(id)) remaining++;

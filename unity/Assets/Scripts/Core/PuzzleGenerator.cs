@@ -475,7 +475,7 @@ namespace Numeria.Core
         /// “Match pattern”不再只是找同一个图形：低阶混合精确复制与镜像顺序，高阶还会要求
         /// 忽略颜色只配形状、或忽略形状只配颜色。
         /// </summary>
-        public static PatternMatchPuzzle GeneratePatternMatch(Rng rng, int tier = 1)
+        public static PatternMatchPuzzle GeneratePatternMatch(Rng rng, int tier = 1, PatternMatchRule? requiredRule = null)
         {
             int length = tier >= 3 ? 4 : tier == 2 ? 3 : rng.Pick(2, 3);
             var all = AllPatternTokens();
@@ -487,7 +487,7 @@ namespace Numeria.Core
                     ? new[] { PatternMatchRule.ExactCopy, PatternMatchRule.MirrorOrder,
                         PatternMatchRule.ShapesOnly }
                     : new[] { PatternMatchRule.ExactCopy, PatternMatchRule.MirrorOrder };
-            var rule = rules[rng.Pick(0, rules.Length - 1)];
+            var rule = requiredRule ?? rules[rng.Pick(0, rules.Length - 1)];
             var answer = MatchAnswer(target, rule);
             var candidates = new List<List<PatternToken>> { answer };
             for (int i = 0; i < 3; i++)

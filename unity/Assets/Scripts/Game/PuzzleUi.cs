@@ -40,6 +40,16 @@ namespace Numeria.Game
         }
 
         private void Say(params string[] lines) => _say(lines);
+        public SpellTrace LastSpell { get; private set; }
+
+        public IEnumerator RunSkillPuzzle(SkillVisualKind visual, Action<bool> done, int tier)
+        {
+            LastSpell = null;
+            if (visual == SkillVisualKind.EquationFlame) yield return RunFormula(done, tier);
+            else if (visual == SkillVisualKind.MakeTenWave) yield return RunMakeTen(done, PuzzleGenerator.MaxForTier(tier), false);
+            else if (visual == SkillVisualKind.SymmetryBeam) yield return RunSymmetry(done, tier, true);
+            else yield return RunTierPuzzle(done, tier);
+        }
 
         // ---------- 通用构件 ----------
 
@@ -228,9 +238,11 @@ namespace Numeria.Game
             Complete(done, result.Value);
         }
 
-        public IEnumerator RunSymmetry(Action<bool> done, int tier = 1)
+        public IEnumerator RunSymmetry(Action<bool> done, int tier = 1, bool mirrorOnly = false)
         {
-            var p = PuzzleGenerator.GeneratePatternMatch(_rng, tier);
+            var p = PuzzleGenerator.GeneratePatternMatch(_rng, tier,
+                mirrorOnly ? PatternMatchRule.MirrorOrder : (PatternMatchRule?)null);
+            LastSpell = new SpellTrace { Pattern = p.Target.ToArray() };
             var overlay = BuildOverlay(p.Prompt, out var choiceRow);
             var focus = Ui.Node(overlay, "PatternMatchFocus");
             Ui.Place(focus, new Vector2(0.5f, 0.61f), Vector2.zero, new Vector2(620, 110));
@@ -428,6 +440,10 @@ namespace Numeria.Game
             return button;
         }
 
+        public static Sprite PatternSpriteForSpell(ShapeKind shape) => ShapeSprite(shape);
+        public static Sprite PatternSpriteForSpell(PatternToken token) => PatternSprite(token);
+        public static Color PatternColorForSpell(PatternColor color) => PatternColorValue(color);
+
         private static Sprite ShapeSprite(ShapeKind shape)
         {
             if (ShapeSprites.TryGetValue(shape, out var sprite)) return sprite;
@@ -546,6 +562,8 @@ namespace Numeria.Game
 
         private IEnumerator RunFormulaPuzzle(FormulaPuzzle p, Action<bool> done)
         {
+            LastSpell = new SpellTrace { A = p.A, B = p.SlotIsResult ? p.A : p.Missing,
+                Total = p.Sum, Operation = p.Op };
             var overlay = BuildOverlay(p.Prompt, out var crystalRow);
 
             var eq = Ui.Node(overlay, "Equation");
@@ -793,7 +811,7 @@ namespace Numeria.Game
 
         // ---------- 凑十 ----------
 
-        public IEnumerator RunMakeTen(Action<bool> done, int target = 10)
+        public IEnumerator RunMakeTen(Action<bool> done, int target = 10, bool shield = true)
         {
             var p = PuzzleGenerator.GenerateMakeTen(_rng, target, 4);
             var overlay = BuildOverlay(p.Prompt, out var crystalRow);
@@ -820,8 +838,9 @@ namespace Numeria.Game
                 attempts++;
                 if (PuzzleGenerator.CheckMakeTen(p, picked[0], picked[1]))
                 {
+                    LastSpell = new SpellTrace { A = p.Hand[picked[0]], B = p.Hand[picked[1]], Total = target };
                     Sfx.Play(SfxCue.Correct);
-                    Say("Shield break!");
+                    Say(shield ? "Shield break!" : "Great job!");
                     result = true;
                 }
                 else if (attempts == 1)
@@ -839,7 +858,7 @@ namespace Numeria.Game
                 else
                 {
                     Sfx.Play(SfxCue.SoftMiss, 0.7f);
-                    Say("Nice try! The shield holds for now.");
+                    Say(shield ? "Nice try! The shield holds for now." : "Nice try! Your move still works!");
                     result = false;
                 }
             }
@@ -857,7 +876,7 @@ namespace Numeria.Game
                 crystals.Add(crystal);
                 crystal.OnSubmit = (value, c) =>
                 {
-                    if (result.HasValue || picked.Contains(index)) return;
+                    if (result.HasValue || picked.Count >= 2 || picked.Contains(index)) return;
                     picked.Add(index);
                     c.transform.localScale = Vector3.one * 1.15f;
                     if (picked.Count == 1) slotAText.text = value.ToString();

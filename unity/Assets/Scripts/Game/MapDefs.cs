@@ -79,6 +79,7 @@ namespace Numeria.Game
         public string PortalTargetMap;
         public string NextName;
         public Dictionary<string, ChestRewardDef> ChestRewards;
+        public Dictionary<(int x, int y), string> StableChestIds;
         public DiscoveryDef[] Discoveries;
         public MerchantDef Merchant;
 
@@ -116,9 +117,14 @@ namespace Numeria.Game
             var result = new List<string>();
             for (int y = 0; y < Rows.Length; y++)
                 for (int x = 0; x < Rows[y].Length; x++)
-                    if (Rows[y][x] == 'C') result.Add($"{Id}-chest-{x}-{y}");
+                    if (Rows[y][x] == 'C') result.Add(ChestId(x, y));
             return result;
         }
+
+        public string ChestId(int x, int y) => StableChestIds != null && StableChestIds.TryGetValue((x, y), out var id)
+            ? id : $"{Id}-chest-{x}-{y}";
+        public bool GuardianReady(Progress progress) => Id == "forest"
+            ? ForestJourney.GuardianReady(progress) : AllChestsOpened(progress);
 
         public bool AllChestsOpened(Progress progress)
         {
@@ -223,13 +229,19 @@ namespace Numeria.Game
             GuardianVictoryLine = "You have earned the Forest Digit Crystal. Carry its light wisely.",
             GateCleared = p => p.BossBeaten, ClearGate = p => p.BossBeaten = true,
             PortalTargetMap = "mountains", NextName = "Silent Peaks",
+            StableChestIds = new Dictionary<(int, int), string>
+            {
+                { (21, 2), "forest-cache-riverbank" }, { (24, 4), "forest-cache-canopy" },
+                { (26, 8), "forest-cache-grove" }, { (2, 9), "forest-cache-roots" },
+                { (2, 14), "forest-cache-fireflies" },
+            },
             ChestRewards = new Dictionary<string, ChestRewardDef>
             {
-                { "forest-chest-21-2", R(ChestRewardType.HealthPotion, "Berry Potion", 2) },
-                { "forest-chest-24-4", R(ChestRewardType.GemSnack, "Crystal Cookie", 2) },
-                { "forest-chest-26-8", R(ChestRewardType.HealthPotion, "Forest Tonic", 2) },
-                { "forest-chest-2-9", R(ChestRewardType.AttackCharm, "Power Acorn") },
-                { "forest-chest-2-14", R(ChestRewardType.GemSnack, "Firefly Sugar", 1) },
+                { "forest-cache-riverbank", R(ChestRewardType.HealthPotion, "Berry Potion", 2) },
+                { "forest-cache-canopy", R(ChestRewardType.GemSnack, "Crystal Cookie", 2) },
+                { "forest-cache-grove", R(ChestRewardType.HealthPotion, "Forest Tonic", 2) },
+                { "forest-cache-roots", R(ChestRewardType.AttackCharm, "Power Acorn") },
+                { "forest-cache-fireflies", R(ChestRewardType.GemSnack, "Firefly Sugar", 1) },
             },
             Discoveries = new[]
             {

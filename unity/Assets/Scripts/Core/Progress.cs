@@ -84,7 +84,7 @@ namespace Numeria.Core
     [Serializable]
     public class Progress
     {
-        public const int CurrentSaveVersion = 9;
+        public const int CurrentSaveVersion = 10;
         public const int TeamCapacity = 99;
 
         public int SaveVersion = CurrentSaveVersion;
@@ -212,6 +212,7 @@ namespace Numeria.Core
                     growth.CapturedDefenseOffset = 0;
                 }
             }
+            ForestJourney.Migrate(this);
             SaveVersion = CurrentSaveVersion;
             SyncLegacyFields();
         }
