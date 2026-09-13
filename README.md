@@ -24,12 +24,13 @@ The current verification baseline compiles all four Unity assemblies and passes 
 plus **15/15 Node prototype tests**.
 The save format is currently **schema v11**, with non-destructive migration for older saves.
 
-### Afterstory expansion — local build
+### Afterstory expansion — installed on iPad
 
 Ancient Ruins and Veilmoon Lake add six evolution families, six skill choreographies, math-restored crossings,
 new battle paintings and fixed Lv.58/Lv.66 Bosses. They unlock after the six-crystal story and award two separate
 badges. See [expansion details, save compatibility and iPad acceptance](docs/afterstory-expansion.md).
-The iPad has **not** received this expansion yet. Back up its latest progress before an in-place update.
+Version 1.1.0 (2) was installed in place on September 13. All four saved files matched the fresh device backup
+byte-for-byte before first launch; user gameplay acceptance is pending. Always back up the iPad before updating.
 
 ### World and skill presentation — full-roster rollout
 

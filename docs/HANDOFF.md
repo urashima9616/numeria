@@ -5,7 +5,16 @@
 
 ---
 
-## 最新增量：两张后日谈地图（本地开发，尚未更新 iPad）
+## 最新部署：后日谈 1.1.0 (2) 已原位安装 iPad
+
+2026-09-13 用户确认已保存后，先将设备 Documents 备份到
+`~/Documents/Numeria Save Backups/ipad-before-1.1.0-SirBvdoR/Documents`，再使用 Numeria-6 签名原位安装。
+安装后、首次启动前的四个文件逐字节一致。当前 Slot 2：Scalip 家族 Lv.47、548 金币、41 伙伴、5 水晶、Dark Mines。
+设备显示版本 1.1.0 (2)，已启动；用户对读档画面/声音的确认仍待回复，不等于全流程真机验收。
+签名到期 2026-09-19 20:02 PDT。后续继续先备份设备再原位更新，不能导入旧 Mac 存档或卸载。
+详细记录见 [afterstory-expansion.md](afterstory-expansion.md)。下方“未安装”描述是开发阶段历史状态。
+
+## 开发增量：两张后日谈地图（部署前记录）
 
 见 [afterstory-expansion.md](afterstory-expansion.md) 和 [afterstory-assets.md](afterstory-assets.md)。
 Ancient Ruins / Veilmoon Lake 接在六章主线之后，保留原六水晶结局；三处机关解锁守护者，奖励两枚独立徽章。
