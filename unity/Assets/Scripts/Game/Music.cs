@@ -62,6 +62,8 @@ namespace Numeria.Game
                 case "desert": Play(MusicMood.Desert); break;
                 case "dark_mines": Play(MusicMood.DarkMines); break;
                 case "underground": Play(MusicMood.Underground); break;
+                case "ancient_ruins": Play(MusicMood.Sky); break;
+                case "veilmoon_lake": Play(MusicMood.Mountains); break;
                 default: Play(MusicMood.Forest); break;
             }
         }

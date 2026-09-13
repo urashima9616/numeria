@@ -56,6 +56,12 @@ namespace Numeria.Core
         ElectricBolt,
         GrassBloom,
         FlyingGust,
+        MosaicMarch,
+        BalanceBeam,
+        PatternFlight,
+        LanternCurrent,
+        MirrorWaltz,
+        LotusSequence,
     }
 
     public class SkillDef

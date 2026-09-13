@@ -37,7 +37,7 @@ namespace Numeria.Core
         public ConsumableType PreferredDrop;
     }
 
-    /// <summary>141 个数灵形态、48 条家族线及所有战斗成长的唯一真理源。</summary>
+    /// <summary>159 个数灵形态、54 条家族线及所有战斗成长的唯一真理源。</summary>
     public static class GameData
     {
         private static readonly EvolutionLineDef[] EvolutionLines =
@@ -153,6 +153,19 @@ namespace Numeria.Core
                 new[] { "torchick", "patternix", "sequenix" }, new[] { 42, 55 }),
             Line("glowgecko", "FIRE", "balanced heat", PuzzleAffinity.Symmetry,
                 new[] { "glowgecko", "balablaze", "equiferno" }, new[] { 42, 55 }),
+            // Optional afterstory: six complete original families.
+            Line("tiletot", "ROCK", "shape mosaics", PuzzleAffinity.Symmetry,
+                new[] { "tiletot", "mosaicub", "tessellion" }, new[] { 52, 60 }),
+            Line("abacub", "MIND", "balanced bead totals", PuzzleAffinity.Counting,
+                new[] { "abacub", "beadwarden", "abacoracle" }, new[] { 52, 60 }),
+            Line("coglet", "SKY", "gear patterns", PuzzleAffinity.Pattern,
+                new[] { "coglet", "gearling", "clockondor" }, new[] { 52, 60 }),
+            Line("gliminnow", "WATER", "lantern number bonds", PuzzleAffinity.MakeTen,
+                new[] { "gliminnow", "luminfin", "lanternray" }, new[] { 60, 68 }),
+            Line("wisplet", "FAIRY", "moon mirrors", PuzzleAffinity.Symmetry,
+                new[] { "wisplet", "veilkit", "moonveil" }, new[] { 60, 68 }),
+            Line("lilypadlet", "GRASS", "lotus patterns", PuzzleAffinity.Pattern,
+                new[] { "lilypadlet", "bloomboat", "lotustide" }, new[] { 60, 68 }),
         };
 
         private static readonly SpeciesDef[] Species =
@@ -325,6 +338,24 @@ namespace Numeria.Core
             Mon("glowgecko", "Glowgecko", 12, 5, 4, 10, 5, 5, 11, "Glow Balance", 6, true, .28, ConsumableType.HealthPotion),
             Mon("balablaze", "Balablaze", 20, 9, 7, 12, 6, 6, 16, "Balanced Blaze", 7, true, .35, ConsumableType.HealthPotion),
             Mon("equiferno", "Equiferno", 31, 13, 11, 15, 7, 7, 23, "Equal Inferno", 8, true, .43, ConsumableType.HealthPotion),
+            Mon("tiletot", "Tiletot", 14, 3, 4, 11, 4, 5, 12, "Mosaic March", 6, true, .30, ConsumableType.HealthPotion),
+            Mon("mosaicub", "Mosaicub", 22, 6, 7, 13, 5, 6, 17, "Mosaic March", 7, true, .30, ConsumableType.HealthPotion),
+            Mon("tessellion", "Tessellion", 31, 9, 10, 15, 6, 6, 22, "Mosaic March", 8, true, .30, ConsumableType.HealthPotion),
+            Mon("abacub", "Abacub", 14, 3, 3, 11, 4, 4, 12, "Balance Beam", 6, true, .30, ConsumableType.HealthPotion),
+            Mon("beadwarden", "Beadwarden", 22, 6, 6, 13, 5, 5, 17, "Balance Beam", 7, true, .30, ConsumableType.HealthPotion),
+            Mon("abacoracle", "Abacoracle", 32, 9, 9, 15, 6, 6, 22, "Balance Beam", 8, true, .30, ConsumableType.HealthPotion),
+            Mon("coglet", "Coglet", 12, 4, 2, 10, 5, 3, 12, "Pattern Flight", 6, true, .30, ConsumableType.HealthPotion),
+            Mon("gearling", "Gearling", 20, 7, 5, 12, 6, 4, 17, "Pattern Flight", 7, true, .30, ConsumableType.HealthPotion),
+            Mon("clockondor", "Clockondor", 29, 10, 8, 14, 7, 5, 22, "Pattern Flight", 8, true, .30, ConsumableType.HealthPotion),
+            Mon("gliminnow", "Gliminnow", 14, 3, 3, 12, 4, 4, 12, "Lantern Current", 6, true, .30, ConsumableType.GemSnack),
+            Mon("luminfin", "Luminfin", 22, 6, 6, 14, 5, 5, 17, "Lantern Current", 7, true, .30, ConsumableType.GemSnack),
+            Mon("lanternray", "Lanternray", 32, 9, 9, 16, 6, 6, 22, "Lantern Current", 8, true, .30, ConsumableType.GemSnack),
+            Mon("wisplet", "Wisplet", 12, 4, 2, 10, 5, 3, 12, "Mirror Waltz", 6, true, .30, ConsumableType.HealthPotion),
+            Mon("veilkit", "Veilkit", 21, 7, 5, 12, 6, 4, 17, "Mirror Waltz", 7, true, .30, ConsumableType.HealthPotion),
+            Mon("moonveil", "Moonveil", 30, 10, 8, 14, 7, 5, 22, "Mirror Waltz", 8, true, .30, ConsumableType.HealthPotion),
+            Mon("lilypadlet", "Lilypadlet", 15, 2, 4, 12, 3, 5, 12, "Lotus Sequence", 6, true, .30, ConsumableType.HealthPotion),
+            Mon("bloomboat", "Bloomboat", 24, 5, 7, 14, 4, 6, 17, "Lotus Sequence", 7, true, .30, ConsumableType.HealthPotion),
+            Mon("lotustide", "Lotustide", 34, 8, 10, 16, 5, 7, 22, "Lotus Sequence", 8, true, .30, ConsumableType.HealthPotion),
         };
 
         public static IReadOnlyList<EvolutionLineDef> Lines => EvolutionLines;
@@ -508,6 +539,18 @@ namespace Numeria.Core
             SkillVisualKind visual;
             switch (baseId)
             {
+                case "tiletot":
+                    skillId = "tiletot-magic"; icon = "geometry_prism"; visual = SkillVisualKind.MosaicMarch; break;
+                case "abacub":
+                    skillId = "abacub-magic"; icon = "matching_paws"; visual = SkillVisualKind.BalanceBeam; break;
+                case "coglet":
+                    skillId = "coglet-magic"; icon = "flying_gust"; visual = SkillVisualKind.PatternFlight; break;
+                case "gliminnow":
+                    skillId = "gliminnow-magic"; icon = "make_ten_wave"; visual = SkillVisualKind.LanternCurrent; break;
+                case "wisplet":
+                    skillId = "wisplet-magic"; icon = "symmetry_beam"; visual = SkillVisualKind.MirrorWaltz; break;
+                case "lilypadlet":
+                    skillId = "lilypadlet-magic"; icon = "grass_bloom"; visual = SkillVisualKind.LotusSequence; break;
                 case "tenfin":
                     skillId = "make-ten-wave"; icon = "make_ten_wave"; visual = SkillVisualKind.MakeTenWave; break;
                 case "shapling":

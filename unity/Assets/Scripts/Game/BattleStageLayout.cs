@@ -23,6 +23,8 @@ namespace Numeria.Game
         // UV origin is bottom-left. Each point is a standing surface, not a sprite center.
         public static Vector2 FootUv(string resource, bool enemy)
         {
+            if (resource.Contains("Ancient_Ruins")) return enemy ? new Vector2(.65f, .435f) : new Vector2(.28f, .32f);
+            if (resource.Contains("Veilmoon_Lake")) return enemy ? new Vector2(.65f, .605f) : new Vector2(.28f, .32f);
             if (resource.Contains("Azure_Sky")) return enemy ? new Vector2(.655f, .485f) : new Vector2(.28f, .295f);
             if (resource.Contains("Fever_Desert")) return enemy ? new Vector2(.635f, .505f) : new Vector2(.28f, .325f);
             if (resource.Contains("Dark_Mines")) return enemy ? new Vector2(.64f, .465f) : new Vector2(.28f, .32f);

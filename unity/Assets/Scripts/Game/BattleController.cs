@@ -248,11 +248,11 @@ namespace Numeria.Game
             return plate.rectTransform;
         }
 
-        /// <summary>敌方名牌等级行右侧的护盾徽章。</summary>
+        /// <summary>护盾位于 HP 数字行右侧，避免覆盖后期两位数 ATK/DEF。</summary>
         private void BuildShieldRow(RectTransform plate)
         {
             var row = Ui.Node(plate, "ShieldRow");
-            Ui.Place(row, new Vector2(1, 1), new Vector2(-48, -78), new Vector2(100, 34));
+            Ui.Place(row, new Vector2(1, 1), new Vector2(-48, -122), new Vector2(100, 34));
             var icon = Ui.SpriteImg(row, "Icon", SpriteLib.One("Art/Sprites/shield"));
             Ui.Place(icon.rectTransform, new Vector2(0, 0.5f), Vector2.zero, new Vector2(32, 32));
             var text = Ui.DisplayLabel(row, "Value", _tier >= 3 ? "?" : _state.Enemy.Shield?.ToString() ?? "",

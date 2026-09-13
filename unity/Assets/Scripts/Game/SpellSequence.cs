@@ -31,7 +31,7 @@ namespace Numeria.Game
         private int _groupA;
         private bool _subtract;
         private static Sprite _glow;
-        private static readonly AudioClip[] Clips = new AudioClip[17];
+        private static readonly AudioClip[] Clips = new AudioClip[Enum.GetValues(typeof(SkillVisualKind)).Length];
 
         public static bool Supports(SkillVisualKind visual)
         {
@@ -42,7 +42,9 @@ namespace Numeria.Game
                 case SkillVisualKind.SymmetryBeam: case SkillVisualKind.MatchingPaws: case SkillVisualKind.SubtractionDash:
                 case SkillVisualKind.TallyStone: case SkillVisualKind.GeometryPrism: case SkillVisualKind.SequenceSpark:
                 case SkillVisualKind.FairyGlimmer: case SkillVisualKind.DragonSpiral: case SkillVisualKind.ElectricBolt:
-                case SkillVisualKind.GrassBloom: case SkillVisualKind.FlyingGust: return true;
+                case SkillVisualKind.GrassBloom: case SkillVisualKind.FlyingGust:
+                case SkillVisualKind.MosaicMarch: case SkillVisualKind.BalanceBeam: case SkillVisualKind.PatternFlight:
+                case SkillVisualKind.LanternCurrent: case SkillVisualKind.MirrorWaltz: case SkillVisualKind.LotusSequence: return true;
                 default: return false; // New kinds must be deliberately authored and covered by tests.
             }
         }

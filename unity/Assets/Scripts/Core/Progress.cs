@@ -84,7 +84,8 @@ namespace Numeria.Core
     [Serializable]
     public class Progress
     {
-        public const int CurrentSaveVersion = 10;
+        // v11 adds afterstory map/species identities. Older builds must reject rather than rewrite them.
+        public const int CurrentSaveVersion = 11;
         public const int TeamCapacity = 99;
 
         public int SaveVersion = CurrentSaveVersion;

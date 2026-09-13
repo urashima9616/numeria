@@ -25,7 +25,7 @@ namespace Numeria.Game
             var texture = Resources.Load<Texture2D>("generated/Exploration/" + biome + "_props");
             if (texture == null) return null;
             // Upper sprites on the delivered sky/alpine atlases extend slightly below the halfway line.
-            float split = biome == "mountains" || biome == "sky" ? .44f : .50f;
+            float split = biome == "mountains" || biome == "sky" || biome == "ancient_ruins" || biome == "veilmoon_lake" ? .44f : .50f;
             float bottom = index < 2 ? split : 0;
             float height = index < 2 ? 1 - split : split;
             var rect = new Rect(index % 2 * texture.width / 2, Mathf.Floor(bottom * texture.height),
@@ -37,6 +37,9 @@ namespace Numeria.Game
 
         public static Sprite BridgeSprite(string biome)
         {
+            // Existing orthographic bridge art matches the new stone and timber crossings.
+            if (biome == "ancient_ruins") return BridgeSprite("sky");
+            if (biome == "veilmoon_lake") return BridgeSprite("forest");
             string key = biome + "/TopDownBridge";
             if (Sprites.TryGetValue(key, out var cached) && cached != null) return cached;
             var texture = Resources.Load<Texture2D>("generated/Exploration/world_bridges");
@@ -70,13 +73,16 @@ namespace Numeria.Game
                         else if (t == Tile.Cliff && (x + y) % 2 == 0)
                         {
                             bool landmarkPlant = seed % 3 == 0;
-                            var crown = scene.Add(landmarkPlant ? Prop(def.Id, 0) : def.Id == "mountains" ? Prop(def.Id, 2) :
+                            var crown = scene.Add(landmarkPlant ? Prop(def.Id, 0) : def.Id == "mountains" || def.IsAfterstory ? Prop(def.Id, 2) :
                                 SpellChoreography.Material("impact", 2), p + new Vector3((seed % 3 - 1) * .12f, -.3f, 0),
                                 landmarkPlant ? 2 : .95f + seed * .025f, Sort(p.y), "CliffCrown");
                             if (!landmarkPlant && (def.Id == "dark_mines" || def.Id == "underground")) crown.color = new Color(.55f, .62f, .68f);
                         }
                         else if (t == Tile.Bush && (x + y) % 2 == 0)
                             scene.Add(Prop(def.Id, 2), p + Vector3.down * .3f, 1, Sort(p.y), "EncounterPatch");
+                        else if (t == Tile.Portal && def.IsAfterstory)
+                            scene.Add(Prop(def.Id, 3), p + Vector3.down * .3f, 1.6f,
+                                Sort(p.y) - 12, "AfterstoryPortalAltar");
                         else if (t == Tile.Landmark || t == Tile.Portal)
                             scene.Add(Prop(def.Id, 1), p + Vector3.down * .55f, t == Tile.Portal ? 4 : 3.3f,
                                 Sort(p.y) - 12, "ChapterLandmark");
@@ -86,6 +92,9 @@ namespace Numeria.Game
                 scene.Bridges(map, def.Id);
                 foreach (var discovery in def.Discoveries)
                 {
+                    if (def.IsAfterstory)
+                        scene.Add(Prop(def.Id, 3), new Vector3(discovery.X, map.Height - 1 - discovery.Y - .25f, 0),
+                            1.1f, Sort(map.Height - 1 - discovery.Y) - 25, "MechanismAltar");
                     var node = new GameObject("Restored-" + discovery.Id).transform;
                     node.SetParent(root.transform, false);
                     node.position = new Vector3(discovery.X, map.Height - 1 - discovery.Y, 0);
@@ -121,7 +130,8 @@ namespace Numeria.Game
         }
 
         private Color Accent => Ui.Hex(_biome == "desert" ? "#ffe0a0" : _biome == "underground" ? "#ffa247" :
-            _biome == "dark_mines" ? "#66f0eb" : _biome == "forest" ? "#f9e680" : "#eafaff");
+            _biome == "dark_mines" ? "#66f0eb" : _biome == "ancient_ruins" ? "#72d9ce" :
+            _biome == "veilmoon_lake" ? "#dec4ff" : _biome == "forest" ? "#f9e680" : "#eafaff");
         private static int Sort(float y) => PaintedTerrainRenderer.SortOrder(y);
         private SpriteRenderer Add(Sprite sprite, Vector3 p, float height, int order, string label)
         {
@@ -142,11 +152,11 @@ namespace Numeria.Game
             const int density = 24;
             int width = map.Width * density, height = map.Height * density;
             var pixels = new Color[width * height];
-            Color pathColor = Ui.Hex(_biome == "mountains" ? "#a5b5bd" : _biome == "sky" ? "#d4c698" :
+            Color pathColor = Ui.Hex(_biome == "ancient_ruins" ? "#c9b77f" : _biome == "veilmoon_lake" ? "#a9acbf" : _biome == "mountains" ? "#a5b5bd" : _biome == "sky" ? "#d4c698" :
                 _biome == "desert" ? "#d39b58" : _biome == "dark_mines" ? "#777278" : "#8d7366");
-            Color waterColor = Ui.Hex(_biome == "sky" ? "#82c7e6" : _biome == "underground" ? "#e77829" :
+            Color waterColor = Ui.Hex(_biome == "veilmoon_lake" ? "#344c84" : _biome == "ancient_ruins" ? "#489b98" : _biome == "sky" ? "#82c7e6" : _biome == "underground" ? "#e77829" :
                 _biome == "dark_mines" ? "#163844" : "#328a98");
-            Color cliffColor = Ui.Hex(_biome == "sky" ? "#7f9cae" : _biome == "mountains" ? "#8b9ba7" :
+            Color cliffColor = Ui.Hex(_biome == "ancient_ruins" ? "#b3b199" : _biome == "veilmoon_lake" ? "#60637f" : _biome == "sky" ? "#7f9cae" : _biome == "mountains" ? "#8b9ba7" :
                 _biome == "desert" ? "#b88043" : _biome == "dark_mines" ? "#252a34" : "#302726");
             for (int py = 0; py < height; py++)
                 for (int px = 0; px < width; px++)

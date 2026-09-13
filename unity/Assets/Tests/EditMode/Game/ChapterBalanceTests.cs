@@ -36,8 +36,8 @@ namespace Numeria.Game.Tests
         [Test]
         public void ReturningToAnEarlierChapterDoesNotRaiseWildLevels()
         {
-            int[] floors = { 1, 7, 14, 24, 34, 41 };
-            int[] caps = { 6, 14, 22, 33, 43, 51 };
+            int[] floors = { 1, 7, 14, 24, 34, 41, 50, 58 };
+            int[] caps = { 6, 14, 22, 33, 43, 51, 58, 66 };
             var maps = Maps.All();
             for (int i = 0; i < maps.Length; i++)
                 for (uint seed = 1; seed <= 256; seed++)

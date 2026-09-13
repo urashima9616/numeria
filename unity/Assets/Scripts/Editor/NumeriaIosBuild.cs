@@ -31,8 +31,8 @@ namespace Numeria.Editor
             PlayerSettings.companyName = CompanyName;
             PlayerSettings.productName = ProductName;
             PlayerSettings.SetApplicationIdentifier(NamedBuildTarget.iOS, BundleIdentifier);
-            PlayerSettings.bundleVersion = "1.0.0";
-            PlayerSettings.iOS.buildNumber = "1";
+            PlayerSettings.bundleVersion = "1.1.0";
+            PlayerSettings.iOS.buildNumber = "2";
             PlayerSettings.iOS.targetOSVersionString = MinimumIosVersion;
             PlayerSettings.iOS.targetDevice = iOSTargetDevice.iPhoneAndiPad;
             PlayerSettings.defaultInterfaceOrientation = UIOrientation.AutoRotation;

@@ -1,11 +1,23 @@
 # Numeria 开发交接文档(Handoff Note)
 
-> 日期:2026-09-11。本文档面向接手开发的 agent/工程师,涵盖项目现状、架构约定、踩坑记录与后续路线。
+> 日期:2026-09-13。本文档面向接手开发的 agent/工程师,涵盖项目现状、架构约定、踩坑记录与后续路线。
 > 必读配套:[numeria-game-design.md](numeria-game-design.md)(游戏设计定稿)、[unity-roadmap.md](unity-roadmap.md)(P0–P4 路线图)。
 
 ---
 
-## 最新增量：固定章节敌人等级与 Boss 平衡
+## 最新增量：两张后日谈地图（本地开发，尚未更新 iPad）
+
+见 [afterstory-expansion.md](afterstory-expansion.md) 和 [afterstory-assets.md](afterstory-assets.md)。
+Ancient Ruins / Veilmoon Lake 接在六章主线之后，保留原六水晶结局；三处机关解锁守护者，奖励两枚独立徽章。
+Boss 固定 Lv.58 / 66，野怪 50–58 / 58–66。新增六家族、18 形态及各自 Mega 美术，现为 159 形态 / 54 家族 / 23 类技能动画。
+存档版本 **v11**；自动迁移测试确认 v10 字段除版本号外不变，旧 v10 程序将拒绝新版存档，不要直接降级覆盖。
+Unity **163/163**、Node **15/15**；4:3 新地图、战斗、技能、WORLD 已离屏检查。
+用户说“先开发，稍后再连接”：当前仅本地开发/打包，**未备份或安装 iPad**。连接后先备份设备最新 Documents，再同 bundle ID 原位更新；
+不得使用旧 Mac 存档覆盖，不得卸载。真实触控、性能、音效和存档验收仍待设备连接。
+本地 iOS **1.1.0 (2)** 已导出至 `unity/Builds/iOS/Numeria-6`；Xcode Release arm64 未签名编译成功。
+下次直接使用 Numeria-6，签名后安装；不要使用较早的 Numeria-5。构建/安装步骤见增量文档。
+
+## 上一轮增量：固定章节敌人等级与 Boss 平衡
 
 见 [chapter-balance.md](chapter-balance.md)。主线 Boss 固定为 Lv.5/12/20/32/42/50，
 野怪改为物种固定区间并受章节上限约束，商人战固定等级；三者都不再追随当前伙伴升级。

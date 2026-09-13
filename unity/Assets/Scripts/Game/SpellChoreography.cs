@@ -18,6 +18,7 @@ namespace Numeria.Game
         private readonly float _scale, _sign;
         private readonly bool _mega;
         private readonly SpellTrace _trace;
+        private readonly AfterstorySpell _afterstory;
 
         public static Sprite Material(string atlas, int index)
         {
@@ -36,6 +37,11 @@ namespace Numeria.Game
         {
             _kind = kind; _from = from; _to = to; _scale = scale; _mega = mega; _trace = trace;
             _caster = caster; _casterPosition = caster.localPosition; _sign = Mathf.Sign(to.x - from.x);
+            if (kind >= SkillVisualKind.MosaicMarch && kind <= SkillVisualKind.LotusSequence)
+            {
+                _afterstory = new AfterstorySpell(parent, kind, from, to, trace, scale);
+                return;
+            }
             Sprite art;
             switch (kind)
             {
@@ -104,6 +110,7 @@ namespace Numeria.Game
 
         public void Sample(float seconds)
         {
+            if (_afterstory != null) { _afterstory.Sample(seconds); return; }
             float charge = Mathf.Clamp01(seconds / .65f);
             float release = Mathf.Clamp01((seconds - .65f) / (SpellSequence.ImpactTime - .65f));
             float after = Mathf.Clamp01((seconds - SpellSequence.ImpactTime) / (SpellSequence.Duration - SpellSequence.ImpactTime));

@@ -77,6 +77,7 @@ namespace Numeria.Game
             _def = Maps.Get(_progress.CurrentMap);
             _map = GridMap.Parse(_def.Rows);
             if (_def.Id == "forest") ForestScene.ApplyPassages(_map, _progress);
+            AfterstoryJourney.Apply(_map, _def, _progress);
             _rng = new Rng((uint)System.Environment.TickCount);
             _voice = gameObject.AddComponent<Voice>();
 
@@ -266,7 +267,8 @@ namespace Numeria.Game
 
             _explorationHud = new ExplorationHud(_hudCanvasRoot, OpenMenu, () =>
             {
-                if (!_busy) _voice.Say(_def.Id == "forest" ? ForestJourney.Objective(_progress) : _def.WelcomeLine);
+                if (!_busy) _voice.Say(_def.IsAfterstory ? AfterstoryJourney.Objective(_def, _progress) :
+                    _def.Id == "forest" ? ForestJourney.Objective(_progress) : _def.WelcomeLine);
             }, () =>
             {
                 if (_busy) return;
@@ -712,15 +714,15 @@ namespace Numeria.Game
                         _progress.Records.BossesDefeated++;
                         yield return GateTrialRoutine();
                         _def.ClearGate(_progress);
-                        bool newCrystal = _progress.CollectDigitCrystal(_def.Id);
+                        bool newCrystal = !_def.IsAfterstory && _progress.CollectDigitCrystal(_def.Id);
                         RefreshPortalState();
                         _voice.Say(_def.GateClearLine);
                         yield return new WaitForSeconds(2.5f);
-                        if (newCrystal)
+                        if (newCrystal || _def.IsAfterstory)
                         {
                             yield return DialogueRoutine(_def.GuardianName, _def.GuardianVictoryLine,
                                 SpriteLib.One(_def.GuardianSpriteResource));
-                            if (_progress.DigitCrystalCount == 6)
+                            if (!_def.IsAfterstory && _progress.DigitCrystalCount == 6)
                             {
                                 yield return DialogueRoutine("DIGIT CRYSTALS",
                                     "The six Digit Crystals sing together. The gate home is awake!",
@@ -962,6 +964,7 @@ namespace Numeria.Game
 
         private static MapPuzzleKind DiscoveryPuzzleKind(DiscoveryDef discovery, int tier)
         {
+            if (discovery?.Puzzle != null) return discovery.Puzzle.Value;
             string name = (discovery?.Name ?? "").ToLowerInvariant();
             if (name.Contains("count") || name.Contains("number")) return MapPuzzleKind.Counting;
             if (name.Contains("symmetry") || name.Contains("mirror")) return MapPuzzleKind.Symmetry;
@@ -1013,6 +1016,13 @@ namespace Numeria.Game
                 else if (_worldScene != null)
                 {
                     SaveSystem.Save(_progress);
+                    if (_def.IsAfterstory)
+                    {
+                        AfterstoryJourney.Apply(_map, _def, _progress);
+                        Destroy(_worldScene.gameObject);
+                        _worldScene = WorldScene.Build(_mapRoot.transform, _map, _def, _progress);
+                        RefreshPortalState();
+                    }
                     yield return _worldScene.Reveal(_progress, discovery.Id);
                 }
                 Sfx.Play(SfxCue.Chest, .8f);
@@ -1162,6 +1172,13 @@ namespace Numeria.Game
 
         private IEnumerator BossLockedRoutine()
         {
+            if (_def.IsAfterstory)
+            {
+                _voice.Say(AfterstoryJourney.Objective(_def, _progress));
+                yield return new WaitForSeconds(1.6f);
+                _busy = false;
+                yield break;
+            }
             if (_def.Id == "forest")
             {
                 _voice.Say(ForestJourney.Objective(_progress));

@@ -4,8 +4,8 @@
 are magic. Players befriend original creatures called **Mathmons**, solve Kindergarten-level puzzles to power
 their skills, and help Lucas restore six Digit Crystals so he can reopen the legendary gate home.
 
-> Current state: a playable six-region Unity build with story, exploration, battles, catching, evolution and Mega
-> Evolution, economy, shops, saves, offline narration, and 141 Mathmon forms. Lucas is playing on a physical iPad
+> Current state: a playable eight-region Unity build with story, exploration, battles, catching, evolution and Mega
+> Evolution, economy, shops, saves, offline narration, and 159 Mathmon forms. Lucas is playing on a physical iPad
 > with his transferred progress. New development stays local until the next device update; the iPad save is authoritative.
 
 ![Numeria battle — Addmander casting math magic against Countipillar](docs/images/numeria-readme-cover.png)
@@ -17,28 +17,36 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 | P0 — Project foundation | ✅ Complete | Repository, Unity project, asset pipelines |
 | P1 — Battle core | ✅ Complete | Skills, gems, number shields, ATK/DEF combat, VFX, narration |
 | P2 — Forest vertical slice | ✅ Complete | Exploration, encounters, catching, growth, chests, saving |
-| P3 — Full game systems | 🔶 Playable / polishing | Six painterly worlds, 141 Mathmons, evolution, economy, merchants, Lucas story |
+| P3 — Full game systems | 🔶 Playable / polishing | Eight painterly worlds, 159 Mathmons, evolution, economy, merchants, Lucas story |
 | P4 — iOS delivery | 🔶 On-device / polishing | Signed iPad build and transferred progress confirmed playable; ongoing device QA and save-safe updates |
 
-The current verification baseline compiles all four Unity assemblies and passes **158/158 Unity EditMode tests**
+The current verification baseline compiles all four Unity assemblies and passes **163/163 Unity EditMode tests**
 plus **15/15 Node prototype tests**.
-The save format is currently **schema v10**, with non-destructive migration for older saves.
+The save format is currently **schema v11**, with non-destructive migration for older saves.
+
+### Afterstory expansion — local build
+
+Ancient Ruins and Veilmoon Lake add six evolution families, six skill choreographies, math-restored crossings,
+new battle paintings and fixed Lv.58/Lv.66 Bosses. They unlock after the six-crystal story and award two separate
+badges. See [expansion details, save compatibility and iPad acceptance](docs/afterstory-expansion.md).
+The iPad has **not** received this expansion yet. Back up its latest progress before an in-place update.
 
 ### World and skill presentation — full-roster rollout
 
-All six regions now use character-scale environment rendering with distinct ground, vegetation, landmarks,
+All eight regions now use character-scale environment rendering with distinct ground, vegetation, landmarks,
 bridges and atmospheric accents: woodland, snow, floating marble ruins, desert, crystal mines and lava tunnels.
+The afterstory adds an ivory mosaic observatory and a lantern-lit moon lake with puzzle-restored crossings.
 The existing gameplay layouts and saved progress are retained. Forest keeps its puzzle-restored vine bridge and
 three-discovery guardian unlock; other regions gain visible restoration accents around solved discoveries.
 
-All **17 skill visual kinds** now have authored 1.9-second timelines, covering **141 forms / 48 families**, Tackle,
+All **23 skill visual kinds** now have authored 1.9-second timelines, covering **159 forms / 54 families**, Tackle,
 normal math skills, Mega skills and enemy attacks. Evolution and Mega add scale and resonance; related creatures
-share choreography, rather than having 141 individually animated moves. Actual puzzle numbers/shapes feed the
+share choreography, rather than having 159 individually animated moves. Actual puzzle numbers/shapes feed the
 spell where relevant. See [coverage, verification and remaining limitations](docs/world-presentation.md).
 
 Silent Peaks also has a new snow-and-glacier battle panorama, replacing its separate legacy placeholder;
 see [battle-background correction and aspect-ratio previews](docs/silent-peaks-battle.md).
-All six battle scenes now preserve background proportions and use scene-specific grounded actor placement.
+All eight battle scenes now preserve background proportions and use scene-specific grounded actor placement.
 Forest and underground have new biome-matched paintings; desert platforms are repositioned while preserving
 their original art direction. See [battle-stage correction and generated assets](docs/battle-background-alignment.md).
 
@@ -62,12 +70,12 @@ their original art direction. See [battle-stage correction and generated assets]
 
 ### Battle and Mathmons
 
-- 141 Mathmon forms across 48 evolution families, with independent level, XP, HP, ATK, and DEF growth to Lv. 99.
-  The newest 16 three-stage families add four Electric, four Rock, four Dragon, and four Fire lines.
+- 159 Mathmon forms across 54 evolution families, with independent level, XP, HP, ATK, and DEF growth to Lv. 99.
+  Six new three-stage afterstory families bring mosaics, abacus bears, clockwork birds, lantern fish, moon foxes and lotus turtles.
 - The original eleven families retain distinct skills, while each new elemental group has its own generated icon,
   palette, and battle performance.
 - Number shields, shield-break stun, gems, powered math skills, consumable items, and equippable accessories.
-- Every Mathmon can Mega Evolve in battle after reaching 7 Gems and solving a tier-appropriate math puzzle. All 141
+- Every Mathmon can Mega Evolve in battle after reaching 7 Gems and solving a tier-appropriate math puzzle. All 159
   forms have their own redesigned Mega sprite—not a scaled normal sprite or generic aura/wing overlay—plus a stable
   species-specific 25–35% base-stat boost and a free Nova skill. All skills are free while transformed; one Gem
   drains after every action, Gem Snacks are sealed, and the form ends at zero Gems. Gems can then be rebuilt for
@@ -93,7 +101,7 @@ their original art direction. See [battle-stage correction and generated assets]
 
 ### Exploration and economy
 
-- All six regions use `WorldScene` and generated painted environments; Mystic Forest delegates its authored
+- All eight regions use `WorldScene` and generated painted environments; Mystic Forest delegates its authored
   events to `ForestScene`. Terrain surfaces, row-sorted props, cardinal bridges, landmarks and lightweight
   atmospheric drift share the existing semantic gameplay grid. Water, cliffs, treasure and exits retain their
   gameplay meaning. The WORLD atlas uses the same region landmarks. Older third-party tile renderers are retained
@@ -127,6 +135,8 @@ their original art direction. See [battle-stage correction and generated assets]
 | 🏜️ Fever Desert | 0–20 | Number decomposition, selective shape/color matching, equality balance, advanced mixed patterns | Solar Totalisk |
 | ⛏️ Dark Mines | 0–20 | Multi-step review, grouping, circuit sequences, mirrored routes | Master Voltamper |
 | 🔥 Underground Tunnels | 0–20 | Cumulative review, symmetry, equality, and mixed pattern mastery | Ancient Calcularagon |
+| 🏛️ Ancient Ruins (afterstory) | 0–20 | Mosaic shapes, gear patterns and equality balance | Grand Abacoracle, Lv.58 |
+| 🌙 Veilmoon Lake (afterstory) | 0–20 | Lantern number bonds, mirror matching and lotus patterns | Lady Moonveil, Lv.66 |
 
 Portal trials always include arithmetic, use three different puzzle families, and allow unlimited zero-penalty
 retries.
@@ -163,16 +173,17 @@ from Git. After importing the package at
 zsh tools/install-jukebox-music.sh
 ```
 
-The installer maps nine local tracks to six regions plus battle, boss, and evolution moods. Attribution and
+The installer maps nine local tracks to region, battle, boss, and evolution moods; the two afterstory regions
+reuse Sky/Mountains moods. Attribution and
 the exact track list are documented in [`docs/music-attribution.md`](docs/music-attribution.md).
 
 ### Map art and preview tools
 
-The current six-region presentation uses committed generated resources under
+The current eight-region presentation uses committed generated resources under
 `unity/Assets/Resources/generated/Exploration`. No Asset Store download is needed for these new environment
 layers. See [asset provenance and exact generation prompts](docs/world-presentation-assets.md).
 
-In Unity, run **Numeria → Preview All Worlds and Skills** for six 4:3 map samples, all 17 spell timelines,
+In Unity, run **Numeria → Preview All Worlds and Skills** for eight 4:3 map samples, all 23 spell timelines,
 a full battle-UI sample and a roster coverage CSV in `/tmp/numeria-world-presentation`.
 **Numeria → Export Map Previews** still exports whole-map views to `/tmp/numeria-map-previews`.
 

@@ -1072,6 +1072,20 @@ namespace Numeria.Game
                 undergroundBtn.onClick.AddListener(() => CloseThen(() => _onTravel("underground")));
             });
 
+            ListRow(content, "TravelAfterstoryRow", 66, row =>
+            {
+                FillButtonRow(row);
+                foreach (string id in new[] { "ancient_ruins", "veilmoon_lake" })
+                {
+                    string destination = id;
+                    var def = Maps.Get(id);
+                    bool unlocked = Maps.CanVisit(id, _progress);
+                    var button = Ui.Btn(row, "Travel-" + id, def.DisplayName + (unlocked ? "" : " (locked)"), 22);
+                    button.interactable = unlocked && _progress.CurrentMap != id;
+                    button.onClick.AddListener(() => CloseThen(() => _onTravel(destination)));
+                }
+            });
+
             SectionRow(content, "Game");
             ListRow(content, "GameRow", 66, row =>
             {

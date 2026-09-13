@@ -30,6 +30,7 @@ namespace Numeria.Game
         public int Coins;
         public ConsumableType? BonusConsumable;
         public int BonusAmount;
+        public MapPuzzleKind? Puzzle;
     }
 
     public sealed class MerchantDef
@@ -61,6 +62,7 @@ namespace Numeria.Game
         public string[] Rows;
         public int Tier;
         public int WildMaxLevel;
+        public bool IsAfterstory;
         public string BattleBg;
         public string CameraBg;
         public string Theme;
@@ -126,7 +128,7 @@ namespace Numeria.Game
 
         public string ChestId(int x, int y) => StableChestIds != null && StableChestIds.TryGetValue((x, y), out var id)
             ? id : $"{Id}-chest-{x}-{y}";
-        public bool GuardianReady(Progress progress) => Id == "forest"
+        public bool GuardianReady(Progress progress) => IsAfterstory ? AfterstoryJourney.Ready(this, progress) : Id == "forest"
             ? ForestJourney.GuardianReady(progress) : AllChestsOpened(progress);
 
         public bool AllChestsOpened(Progress progress)
@@ -175,6 +177,8 @@ namespace Numeria.Game
                 case "desert": return Desert();
                 case "dark_mines": return DarkMines();
                 case "underground": return UndergroundTunnels();
+                case "ancient_ruins": return AncientRuins();
+                case "veilmoon_lake": return VeilmoonLake();
                 default: return Forest();
             }
         }
@@ -182,6 +186,7 @@ namespace Numeria.Game
         public static MapDef[] All() => new[]
         {
             Forest(), Mountains(), Sky(), Desert(), DarkMines(), UndergroundTunnels(),
+            AncientRuins(), VeilmoonLake(),
         };
 
         public static MapDef Forest() => new MapDef

@@ -1,0 +1,818 @@
+fileFormatVersion: 2
+guid: 83257aab2816d4ce4b77880887c20404
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7869542938061764544
+    second: ancient_ruins_props_0
+  - first:
+      213: 7825886536203384471
+    second: ancient_ruins_props_1
+  - first:
+      213: -8042843138399604038
+    second: ancient_ruins_props_2
+  - first:
+      213: 2255105493031205916
+    second: ancient_ruins_props_3
+  - first:
+      213: 625626212627760910
+    second: ancient_ruins_props_4
+  - first:
+      213: 272869298819048862
+    second: ancient_ruins_props_5
+  - first:
+      213: 8677312785159064686
+    second: ancient_ruins_props_6
+  - first:
+      213: -5259360621027953541
+    second: ancient_ruins_props_7
+  - first:
+      213: -4181528900799216502
+    second: ancient_ruins_props_8
+  - first:
+      213: -7464522603963508073
+    second: ancient_ruins_props_9
+  - first:
+      213: 5630178769372943863
+    second: ancient_ruins_props_10
+  - first:
+      213: -8292370399255421877
+    second: ancient_ruins_props_11
+  - first:
+      213: -8211024547250859197
+    second: ancient_ruins_props_12
+  - first:
+      213: -2665141561208178235
+    second: ancient_ruins_props_13
+  - first:
+      213: 8982420065736307351
+    second: ancient_ruins_props_14
+  - first:
+      213: -848988313610218990
+    second: ancient_ruins_props_15
+  - first:
+      213: -2367272718378434666
+    second: ancient_ruins_props_16
+  - first:
+      213: -3440403432427728791
+    second: ancient_ruins_props_17
+  - first:
+      213: -3787101013490493758
+    second: ancient_ruins_props_18
+  - first:
+      213: 8453626962274100853
+    second: ancient_ruins_props_19
+  - first:
+      213: 2831319590711080908
+    second: ancient_ruins_props_20
+  - first:
+      213: 5664159021720466426
+    second: ancient_ruins_props_21
+  - first:
+      213: -3592528852533384473
+    second: ancient_ruins_props_22
+  - first:
+      213: -230394785371029912
+    second: ancient_ruins_props_23
+  - first:
+      213: -6360539668609904047
+    second: ancient_ruins_props_24
+  - first:
+      213: -5441323242425578186
+    second: ancient_ruins_props_25
+  - first:
+      213: -2818999152365622388
+    second: ancient_ruins_props_26
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: ancient_ruins_props_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 475
+        width: 614
+        height: 777
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c7fad78b9b363d60800000000000000
+      internalID: 7869542938061764544
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 634
+        height: 490
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7963ae267522b9c60800000000000000
+      internalID: 7825886536203384471
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_2
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 456
+        width: 13
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ab2f08747c4126090800000000000000
+      internalID: -8042843138399604038
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_3
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 471
+        width: 44
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1c38237f7ebb4f10800000000000000
+      internalID: 2255105493031205916
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_4
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 483
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e07c9d5c9bbaea800800000000000000
+      internalID: 625626212627760910
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_5
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 484
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e95283a7e2d69c300800000000000000
+      internalID: 272869298819048862
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_6
+      rect:
+        serializedVersion: 2
+        x: 474
+        y: 508
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6c8c54f0020c6870800000000000000
+      internalID: 8677312785159064686
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_7
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 497
+        width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7473f5616ff207b0800000000000000
+      internalID: -5259360621027953541
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_8
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 481
+        width: 20
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8445d19e9938f5c0800000000000000
+      internalID: -4181528900799216502
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_9
+      rect:
+        serializedVersion: 2
+        x: 561
+        y: 487
+        width: 11
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79a91ec8d30b86890800000000000000
+      internalID: -7464522603963508073
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_10
+      rect:
+        serializedVersion: 2
+        x: 583
+        y: 503
+        width: 21
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f59b62c2c9622e40800000000000000
+      internalID: 5630178769372943863
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_11
+      rect:
+        serializedVersion: 2
+        x: 587
+        y: 462
+        width: 39
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4c9a668e059bec80800000000000000
+      internalID: -8292370399255421877
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_12
+      rect:
+        serializedVersion: 2
+        x: 601
+        y: 576
+        width: 19
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 343991b9da49c0e80800000000000000
+      internalID: -8211024547250859197
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_13
+      rect:
+        serializedVersion: 2
+        x: 617
+        y: 300
+        width: 624
+        height: 954
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c97e00eed3830bd0800000000000000
+      internalID: -2665141561208178235
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_14
+      rect:
+        serializedVersion: 2
+        x: 619
+        y: 391
+        width: 11
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 792bd897577f7ac70800000000000000
+      internalID: 8982420065736307351
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_15
+      rect:
+        serializedVersion: 2
+        x: 625
+        y: 586
+        width: 11
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2121ecc70a9c734f0800000000000000
+      internalID: -848988313610218990
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_16
+      rect:
+        serializedVersion: 2
+        x: 625
+        y: 533
+        width: 27
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 69f74964102c52fd0800000000000000
+      internalID: -2367272718378434666
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_17
+      rect:
+        serializedVersion: 2
+        x: 627
+        y: 513
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9605c166e4b3140d0800000000000000
+      internalID: -3440403432427728791
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_18
+      rect:
+        serializedVersion: 2
+        x: 641
+        y: 303
+        width: 13
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c6906271b3817bc0800000000000000
+      internalID: -3787101013490493758
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_19
+      rect:
+        serializedVersion: 2
+        x: 653
+        y: 427
+        width: 25
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5762306dee0515570800000000000000
+      internalID: 8453626962274100853
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_20
+      rect:
+        serializedVersion: 2
+        x: 661
+        y: 379
+        width: 17
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc730f1ba2eda4720800000000000000
+      internalID: 2831319590711080908
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_21
+      rect:
+        serializedVersion: 2
+        x: 667
+        y: 23
+        width: 526
+        height: 554
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af3f8f8ce922b9e40800000000000000
+      internalID: 5664159021720466426
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_22
+      rect:
+        serializedVersion: 2
+        x: 687
+        y: 383
+        width: 21
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7eae76bea06c42ec0800000000000000
+      internalID: -3592528852533384473
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_23
+      rect:
+        serializedVersion: 2
+        x: 1147
+        y: 467
+        width: 20
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86e7bd3d9297dccf0800000000000000
+      internalID: -230394785371029912
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_24
+      rect:
+        serializedVersion: 2
+        x: 1153
+        y: 391
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 152d9b8fed2dab7a0800000000000000
+      internalID: -6360539668609904047
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_25
+      rect:
+        serializedVersion: 2
+        x: 1155
+        y: 409
+        width: 6
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63d852327598c74b0800000000000000
+      internalID: -5441323242425578186
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ancient_ruins_props_26
+      rect:
+        serializedVersion: 2
+        x: 1214
+        y: 451
+        width: 11
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8bae15e437e0e8d0800000000000000
+      internalID: -2818999152365622388
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    outline: []
+    customData:
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices:
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable: {}
+  mipmapLimitGroupName:
+  pSDRemoveMatte: 0
+  userData:
+  assetBundleName:
+  assetBundleVariant:

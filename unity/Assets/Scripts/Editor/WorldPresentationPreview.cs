@@ -22,10 +22,10 @@ namespace Numeria.Editor
         public static void Export()
         {
             Directory.CreateDirectory(Output);
-            BeginSheet(2, 3);
+            BeginSheet(2, (Maps.All().Length + 1) / 2);
             foreach (var map in Maps.All()) World(map);
             FinishSheet("worlds-contact");
-            BeginSheet(4, 5);
+            BeginSheet(4, (Enum.GetValues(typeof(SkillVisualKind)).Length + 3) / 4);
             foreach (SkillVisualKind kind in Enum.GetValues(typeof(SkillVisualKind))) Spell(kind);
             FinishSheet("skills-contact");
             BattleLayout();
@@ -37,6 +37,55 @@ namespace Numeria.Editor
         {
             _sheetColumns = columns; _sheetRows = rows; _sheetIndex = 0;
             _sheet = new Texture2D(columns * 480, rows * 360, TextureFormat.RGB24, false);
+        }
+
+        [MenuItem("Numeria/Preview Afterstory")]
+        public static void Afterstory()
+        {
+            Directory.CreateDirectory(Output);
+            BeginSheet(2, 1);
+            World(Maps.AncientRuins()); World(Maps.VeilmoonLake());
+            FinishSheet("afterstory-worlds");
+            BeginSheet(3, 2);
+            foreach (SkillVisualKind kind in Enum.GetValues(typeof(SkillVisualKind)))
+                if (kind >= SkillVisualKind.MosaicMarch) Spell(kind);
+            FinishSheet("afterstory-skills");
+            bool spoken = Voice.Enabled; Voice.Enabled = false;
+            try
+            {
+                foreach (var map in Maps.All().Where(m => m.IsAfterstory))
+                {
+                    var root = new GameObject("AfterstoryBattlePreview");
+                    try
+                    {
+                        var camera = CameraFor(root.transform);
+                        var progress = new Progress(); progress.ApplyMigrations();
+                        progress.ActiveGrowth.Level = map.BossMinLevel;
+                        var battle = root.AddComponent<BattleController>();
+                        battle.Init(map.RollBossEncounter(map.BossMinLevel, new Rng(7)),
+                            progress, map.Tier, map.BattleBg, _ => { });
+                        foreach (var canvas in root.GetComponentsInChildren<Canvas>())
+                        {
+                            canvas.renderMode = RenderMode.ScreenSpaceCamera; canvas.worldCamera = camera;
+                            canvas.planeDistance = 1; canvas.sortingOrder = 20000;
+                        }
+                        Capture(camera, "afterstory-battle-" + map.Id, false);
+                    }
+                    finally { Object.DestroyImmediate(root); }
+                }
+                var atlasRoot = new GameObject("AtlasPreview");
+                try
+                {
+                    var camera = CameraFor(atlasRoot.transform); var canvas = CanvasFor(atlasRoot.transform, camera);
+                    var p = new Progress(); p.ApplyMigrations();
+                    foreach (var map in Maps.All()) map.ClearGate(p);
+                    new ExplorationHud(canvas, () => { }, () => { }, () => { }).OpenAtlas(p, _ => { }, () => { });
+                    Capture(camera, "afterstory-atlas-4x3", false);
+                }
+                finally { Object.DestroyImmediate(atlasRoot); }
+                Coverage();
+            }
+            finally { Voice.Enabled = spoken; }
         }
         private static void FinishSheet(string name)
         { _sheet.Apply(); File.WriteAllBytes(Path.Combine(Output, name + ".png"), _sheet.EncodeToPNG()); Object.DestroyImmediate(_sheet); }
@@ -70,6 +119,7 @@ namespace Numeria.Editor
                 var progress = new Progress { Coins = 42, CurrentMap = def.Id };
                 var map = GridMap.Parse(def.Rows);
                 if (def.Id == "forest") ForestScene.ApplyPassages(map, progress);
+                if (def.IsAfterstory) AfterstoryJourney.Apply(map, def, progress);
                 WorldScene.Build(root.transform, map, def, progress);
                 var camera = CameraFor(root.transform);
                 camera.backgroundColor = Ui.Hex(def.CameraBg);
@@ -189,7 +239,7 @@ namespace Numeria.Editor
             Directory.CreateDirectory(Output);
             bool spoken = Voice.Enabled;
             Voice.Enabled = false;
-            BeginSheet(2, 3);
+            BeginSheet(2, (Maps.All().Length + 1) / 2);
             try
             {
                 foreach (var map in Maps.All())
