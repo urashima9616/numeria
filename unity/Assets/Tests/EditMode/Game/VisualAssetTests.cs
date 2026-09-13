@@ -12,6 +12,36 @@ namespace Numeria.Game.Tests
     public class VisualAssetTests
     {
         [Test]
+        public void RuntimeFontShader_IsExplicitlyIncludedInPlayerBuilds()
+        {
+            // Shader.Find succeeding in the Editor does not prove it survives player stripping.
+            var shader = Shader.Find("TextMeshPro/Mobile/Distance Field");
+            Assert.IsNotNull(shader);
+            var graphics = new UnityEditor.SerializedObject(UnityEditor.AssetDatabase.LoadAllAssetsAtPath(
+                "ProjectSettings/GraphicsSettings.asset")[0]);
+            var included = graphics.FindProperty("m_AlwaysIncludedShaders");
+            Assert.IsTrue(Enumerable.Range(0, included.arraySize)
+                .Any(i => included.GetArrayElementAtIndex(i).objectReferenceValue == shader),
+                "Dynamic TMP font shaders must survive player builds, not just Editor Shader.Find.");
+        }
+
+        [Test]
+        public void RuntimeFont_CreatesVisibleTextWithThePackagedShader()
+        {
+            var host = new GameObject("RuntimeFontRegression", typeof(RectTransform), typeof(Canvas));
+            try
+            {
+                var text = Ui.Label(host.transform, "StartupText", "NUMERIA  Lv.43  493 G", 32, Color.white);
+                Assert.IsNotNull(text.font);
+                Assert.AreEqual("TextMeshPro/Mobile/Distance Field", text.font.material.shader.name);
+                text.ForceMeshUpdate(true, true);
+                Assert.Greater(text.textInfo.characterCount, 0);
+                Assert.Greater(text.textInfo.meshInfo[0].vertexCount, 0);
+            }
+            finally { Object.DestroyImmediate(host); }
+        }
+
+        [Test]
         public void EveryFamilyThemeSkill_HasItsOwnImportedIcon()
         {
             var paths = new HashSet<string>();

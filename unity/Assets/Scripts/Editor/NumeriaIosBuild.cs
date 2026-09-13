@@ -78,6 +78,16 @@ namespace Numeria.Editor
         {
             if (report.summary.platform != BuildTarget.iOS) return;
             ConfigureProject();
+            // Runtime-created TMP fonts use Shader.Find; an Editor-only shader would abort
+            // MapController.Awake before the title screen and camera can be initialized.
+            var graphics = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath(
+                "ProjectSettings/GraphicsSettings.asset")[0]);
+            var included = graphics.FindProperty("m_AlwaysIncludedShaders");
+            var textShader = Shader.Find("TextMeshPro/Mobile/Distance Field");
+            bool hasTextShader = textShader != null && Enumerable.Range(0, included.arraySize)
+                .Any(i => included.GetArrayElementAtIndex(i).objectReferenceValue == textShader);
+            if (!hasTextShader)
+                throw new BuildFailedException("Numeria requires TextMeshPro/Mobile/Distance Field in Graphics Settings > Always Included Shaders. Runtime fonts otherwise fail on iPad.");
             if (EditorBuildSettings.scenes.All(scene => !scene.enabled))
                 throw new BuildFailedException("Numeria needs at least one enabled scene before creating the Xcode project.");
         }

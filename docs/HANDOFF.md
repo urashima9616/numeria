@@ -5,6 +5,14 @@
 
 ---
 
+## 最新修正：iPad 启动中断
+
+见 [ipad-startup-fix.md](ipad-startup-fix.md)。iOS 真机曾在第一段 HUD 文字处抛出
+`ArgumentNullException: shader`，导致菜单、角色刷新及相机设置没有执行；不是存档丢失。
+动态 TMP 字体依赖 `TextMeshPro/Mobile/Distance Field`，必须保留在 Graphics Settings 的
+Always Included Shaders 中。已增加 iOS 构建前检查和回归测试；测试基线为 **153/153**。
+不得仅凭 Editor Shader.Find、构建成功或进程启动就判定 iPad 可玩；需检查真机日志和实际画面。
+
 ## 最新修正：全战斗背景比例与站位
 
 见 [battle-background-alignment.md](battle-background-alignment.md)。六章战斗统一由 `BattleStageLayout`
