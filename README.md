@@ -5,8 +5,8 @@ are magic. Players befriend original creatures called **Mathmons**, solve Kinder
 their skills, and help Lucas restore six Digit Crystals so he can reopen the legendary gate home.
 
 > Current state: a playable six-region Unity build with story, exploration, battles, catching, evolution and Mega
-> Evolution, economy, shops, saves, offline narration, and 141 Mathmon forms. The iOS Xcode project and unsigned
-> device build now pass; physical-iPad signing, save import, and 4:3 playtesting are the remaining delivery steps.
+> Evolution, economy, shops, saves, offline narration, and 141 Mathmon forms. Lucas is playing on a physical iPad
+> with his transferred progress. New development stays local until the next device update; the iPad save is authoritative.
 
 ![Numeria battle — Addmander casting math magic against Countipillar](docs/images/numeria-readme-cover.png)
 
@@ -18,9 +18,9 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 | P1 — Battle core | ✅ Complete | Skills, gems, number shields, ATK/DEF combat, VFX, narration |
 | P2 — Forest vertical slice | ✅ Complete | Exploration, encounters, catching, growth, chests, saving |
 | P3 — Full game systems | 🔶 Playable / polishing | Six painterly worlds, 141 Mathmons, evolution, economy, merchants, Lucas story |
-| P4 — iOS delivery | 🔶 Device-ready | Xcode export/build, landscape, app icon and Finder save transfer pass; signing and physical-iPad QA remain |
+| P4 — iOS delivery | 🔶 On-device / polishing | Signed iPad build and transferred progress confirmed playable; ongoing device QA and save-safe updates |
 
-The current verification baseline compiles all four Unity assemblies and passes **151/151 Unity EditMode tests**
+The current verification baseline compiles all four Unity assemblies and passes **158/158 Unity EditMode tests**
 plus **15/15 Node prototype tests**.
 The save format is currently **schema v10**, with non-destructive migration for older saves.
 
@@ -74,7 +74,9 @@ their original art direction. See [battle-stage correction and generated assets]
   another activation in the same battle.
 - Every shield break independently arms one clearly labeled **2× next hit** bonus, including second and later cycles.
 - Damage uses `max(1, ATK - DEF + 1 + [-1, 1])`; enemy HP also has controlled per-encounter variation.
-- Bosses have higher region-scaled HP and number shields without becoming mandatory difficulty walls.
+- Story Bosses have fixed chapter levels **5 / 12 / 20 / 32 / 42 / 50**, number shields, and tuned HP/ATK/DEF;
+  training no longer raises their stats. Wild encounters have chapter-specific level ranges and merchants have fixed
+  levels. See [chapter balance](docs/chapter-balance.md) for exact values, simulation assumptions and save safety.
 
 ### Catching and team management
 

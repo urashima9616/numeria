@@ -432,10 +432,13 @@ namespace Numeria.Core
             var species = SpeciesById(id) ?? Species[10];
             int shield = Math.Max(10, Math.Min(30, tier * 10));
             var result = ToCombatant(species, level, false, shield, false, true);
-            double hpMultiplier = 1.60d + Math.Max(1, tier) * .25d;
+            // Shields already halve ordinary hits. Keep a visible health advantage without
+            // multiplying both HP and defense into a long minimum-damage encounter.
+            int chapter = Math.Max(1, Math.Min(6, tier));
+            double hpMultiplier = 1.40d + chapter * .05d;
             result.MaxHp = Math.Max(result.MaxHp + 8, (int)Math.Round(result.MaxHp * hpMultiplier));
-            result.AttackPower += Math.Max(1, tier);
-            result.DefensePower += Math.Max(0, tier - 1);
+            result.AttackPower = Math.Max(1, (result.AttackPower * 65 + 50) / 100) + Math.Max(1, chapter / 2);
+            result.DefensePower = Math.Max(1, (result.DefensePower * 50 + 50) / 100);
             result.DropChance = 1d;
             if (!string.IsNullOrEmpty(displayName)) result.Name = displayName;
             return result;

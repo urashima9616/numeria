@@ -286,8 +286,9 @@ namespace Numeria.Core.Tests
             Assert.True(s.ConsumeEnemySkipTurn());
             Assert.AreEqual(s.Player.MaxHp, s.PlayerHp);
             int dmg = s.EnemyTurn();
-            Assert.That(dmg, Is.InRange(4, 6));
-            Assert.AreEqual(10 - dmg, s.PlayerHp);
+            int expected = Math.Max(1, s.Enemy.AttackPower - s.EffectivePlayerDefense + 1);
+            Assert.That(dmg, Is.InRange(Math.Max(1, expected - 1), expected + 1));
+            Assert.AreEqual(Math.Max(0, s.Player.MaxHp - dmg), s.PlayerHp);
         }
 
         [Test]
@@ -337,9 +338,12 @@ namespace Numeria.Core.Tests
         {
             var wild = GameData.CreateWild("duplirock", 20, new Rng(5));
             var boss = GameData.CreateBoss("duplirock", 20, 2, new Rng(5));
-            Assert.Greater(boss.MaxHp, wild.MaxHp * 1.7f);
-            Assert.Greater(boss.AttackPower, wild.AttackPower);
-            Assert.Greater(boss.DefensePower, wild.DefensePower);
+            Assert.Greater(boss.MaxHp, wild.MaxHp * 1.3f);
+            Assert.LessOrEqual(boss.MaxHp, wild.MaxHp * 2f);
+            Assert.Greater(boss.AttackPower, 0);
+            Assert.LessOrEqual(boss.AttackPower, wild.AttackPower + 1);
+            Assert.Less(boss.DefensePower, wild.DefensePower,
+                "Boss shields already provide mitigation; do not stack a defense wall on top.");
         }
     }
 }

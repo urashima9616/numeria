@@ -9,8 +9,7 @@ namespace Numeria.Game
         public string SpeciesId;
         public int Weight;
         public int MinimumLevel;
-        public int MinLevelOffset;
-        public int MaxLevelOffset;
+        public int MaximumLevel;
     }
 
     public enum ChestRewardType { HealthPotion, GemSnack, EvolutionStone, AttackCharm, DefenseCharm }
@@ -47,7 +46,8 @@ namespace Numeria.Game
 
         public CombatantDef Opponent(int playerLevel, int tier, Rng rng)
         {
-            int level = Math.Max(MinimumLevel, playerLevel + 1);
+            // Story merchants are fixed milestones. Training must not raise the target.
+            int level = GrowthSystem.ClampLevel(MinimumLevel);
             return GameData.CreateTrainerOpponent(PartnerSpeciesId, level, tier, rng);
         }
     }
@@ -60,6 +60,7 @@ namespace Numeria.Game
         public string WelcomeLine;
         public string[] Rows;
         public int Tier;
+        public int WildMaxLevel;
         public string BattleBg;
         public string CameraBg;
         public string Theme;
@@ -100,15 +101,17 @@ namespace Numeria.Game
                 if (roll <= 0) { selected = entry; break; }
             }
 
-            int min = Math.Max(selected.MinimumLevel, playerLevel + selected.MinLevelOffset);
-            int max = Math.Max(min, playerLevel + selected.MaxLevelOffset);
+            // Keep the legacy playerLevel parameter for callers, but never use it to scale
+            // chapter ecology. A high-level return visit should feel easier.
+            int min = GrowthSystem.ClampLevel(selected.MinimumLevel);
+            int max = Math.Max(min, Math.Min(WildMaxLevel, selected.MaximumLevel));
             return GameData.CreateWild(selected.SpeciesId,
                 GrowthSystem.ClampLevel(rng.Pick(min, max)), rng);
         }
 
         public CombatantDef RollBossEncounter(int playerLevel, Rng rng)
         {
-            int level = Math.Max(BossMinLevel, playerLevel + Tier + 1);
+            int level = BossMinLevel;
             return GameData.CreateBoss(BossSpeciesId, GrowthSystem.ClampLevel(level), Tier, rng, BossDisplayName);
         }
 
@@ -139,11 +142,11 @@ namespace Numeria.Game
         // Four eight-character chunks keep every authored map row visibly locked to 32 tiles.
         private static string Row(string a, string b, string c, string d) => a + b + c + d;
 
-        private static EncounterEntry E(string id, int weight, int minimum, int minOffset, int maxOffset) =>
+        private static EncounterEntry E(string id, int weight, int minimum, int maximum) =>
             new EncounterEntry
             {
                 SpeciesId = id, Weight = weight, MinimumLevel = minimum,
-                MinLevelOffset = minOffset, MaxLevelOffset = maxOffset,
+                MaximumLevel = maximum,
             };
 
         private static ChestRewardDef R(ChestRewardType type, string name, int amount = 1) =>
@@ -205,17 +208,17 @@ namespace Numeria.Game
                 Row("T...TTTT", "TT......", "....TTTT", "TT.....T"),
                 Row("TTTTTTTT", "TTTTTTTT", "TTTTTTTT", "TTTTTTTT"),
             },
-            Tier = 1,
+            Tier = 1, WildMaxLevel = 6,
             BattleBg = "generated/Backgrounds/Painted/Mystic_Forest",
             CameraBg = "#2f4f2f", Theme = "forest",
             Encounters = new[]
             {
-                E("countipillar", 32, 1, -1, 1), E("paircub", 24, 1, -1, 2),
-                E("subunny", 20, 2, 0, 2), E("pebblit", 14, 3, 0, 3),
-                E("numberfly", 10, 5, 1, 3),
-                E("glimlet", 12, 2, 0, 2), E("charmite", 10, 2, 0, 2),
-                E("budsum", 12, 2, 0, 2), E("clovercub", 10, 3, 0, 3),
-                E("mossbit", 8, 3, 0, 3),
+                E("countipillar", 32, 1, 3), E("paircub", 24, 1, 4),
+                E("subunny", 20, 2, 4), E("pebblit", 14, 3, 6),
+                E("numberfly", 10, 5, 7),
+                E("glimlet", 12, 2, 4), E("charmite", 10, 2, 4),
+                E("budsum", 12, 2, 4), E("clovercub", 10, 3, 6),
+                E("mossbit", 8, 3, 6),
             },
             BossSpeciesId = "numberfly", BossMinLevel = 5,
             BossLine = "Numberfly guards the portal!", GateClearLine = "The portal is open! A new world awaits!",
@@ -289,15 +292,15 @@ namespace Numeria.Game
                 Row("#.......", "........", "........", ".......#"),
                 Row("########", "########", "########", "########"),
             },
-            Tier = 2, BattleBg = "generated/Backgrounds/Painted/Silent_Peaks", CameraBg = "#4a5a6a", Theme = "mountains",
+            Tier = 2, WildMaxLevel = 14, BattleBg = "generated/Backgrounds/Painted/Silent_Peaks", CameraBg = "#4a5a6a", Theme = "mountains",
             Encounters = new[]
             {
-                E("doublit", 28, 7, -2, 2), E("pebblit", 24, 7, -1, 2),
-                E("subunny", 16, 7, -1, 2), E("stackstone", 13, 10, 0, 3),
-                E("differhare", 11, 10, 0, 3), E("duplirock", 8, 12, 1, 4),
-                E("addling", 12, 8, -1, 2), E("dracount", 10, 9, 0, 3),
-                E("twinsting", 10, 9, 0, 3), E("shardrake", 8, 10, 0, 3),
-                E("sprouturn", 10, 8, -1, 2),
+                E("doublit", 28, 7, 11), E("pebblit", 24, 7, 10),
+                E("subunny", 16, 7, 10), E("stackstone", 13, 10, 13),
+                E("differhare", 11, 10, 13), E("duplirock", 8, 12, 15),
+                E("addling", 12, 8, 11), E("dracount", 10, 9, 12),
+                E("twinsting", 10, 9, 12), E("shardrake", 8, 10, 13),
+                E("sprouturn", 10, 8, 11),
             },
             BossSpeciesId = "duplirock", BossDisplayName = "Duplirock Elder", BossMinLevel = 12,
             BossLine = "Duplirock guards the portal!", GateClearLine = "The gate is cleared! Azure Sky City awaits!",
@@ -366,20 +369,20 @@ namespace Numeria.Game
                 Row("~~~~~~~.", "....~~~~", "~~~~....", ".......~"),
                 Row("~~~~~~~~", "~~~~~~~~", "~~~~~~~~", "~~~~~~~~"),
             },
-            Tier = 3,
+            Tier = 3, WildMaxLevel = 22,
             BattleBg = "generated/NUMERIA_Unity_Battle_Assets/Backgrounds/Azure_Sky_City_2048x1152",
             CameraBg = "#8ed8f5", Theme = "sky",
             Encounters = new[]
             {
-                E("mirrowl", 25, 14, -2, 2), E("prismouse", 24, 14, -1, 2),
-                E("seqkit", 24, 14, -1, 2), E("polygoncat", 10, 18, 0, 3),
-                E("patternlynx", 10, 18, 0, 3), E("symmetrix", 7, 20, 1, 4),
-                E("voltlet", 10, 15, -1, 2), E("sparkit", 10, 15, -1, 2),
-                E("chargecub", 9, 16, 0, 3), E("flickerfin", 9, 16, 0, 3),
-                E("switchick", 8, 17, 0, 3), E("moonmote", 8, 15, -1, 2),
-                E("wishwink", 8, 16, 0, 3), E("pixipip", 8, 16, 0, 3),
-                E("seedseq", 8, 15, -1, 2), E("numblet", 10, 15, -1, 2),
-                E("tallywing", 5, 18, 0, 3),
+                E("mirrowl", 25, 14, 18), E("prismouse", 24, 14, 17),
+                E("seqkit", 24, 14, 17), E("polygoncat", 10, 18, 21),
+                E("patternlynx", 10, 18, 21), E("symmetrix", 7, 20, 23),
+                E("voltlet", 10, 15, 18), E("sparkit", 10, 15, 18),
+                E("chargecub", 9, 16, 19), E("flickerfin", 9, 16, 19),
+                E("switchick", 8, 17, 20), E("moonmote", 8, 15, 18),
+                E("wishwink", 8, 16, 19), E("pixipip", 8, 16, 19),
+                E("seedseq", 8, 15, 18), E("numblet", 10, 15, 18),
+                E("tallywing", 5, 18, 21),
             },
             BossSpeciesId = "symmetrix", BossMinLevel = 20,
             BossLine = "Symmetrix guards the sky gate!", GateClearLine = "The sky gate shines! Fever Desert awaits!",
@@ -448,24 +451,24 @@ namespace Numeria.Game
                 Row("#.......", "........", "........", ".......#"),
                 Row("########", "########", "########", "########"),
             },
-            Tier = 4,
+            Tier = 4, WildMaxLevel = 33,
             BattleBg = "generated/Backgrounds/Fever_Desert_Battle_v2",
             CameraBg = "#d8aa5c", Theme = "desert",
             Encounters = new[]
             {
-                E("twinkelle", 8, 24, -2, 2), E("lunafae", 8, 24, -2, 2),
-                E("pairabelle", 8, 24, -2, 2), E("starwhisp", 8, 24, -2, 2),
-                E("prismfae", 8, 24, -2, 2),
-                E("sumscale", 8, 26, -1, 3), E("tallywyrm", 8, 26, -1, 3),
-                E("spirake", 8, 26, -1, 3), E("doublescale", 8, 26, -1, 3),
-                E("prismwyrm", 8, 26, -1, 3),
-                E("sumvolt", 8, 24, -2, 2), E("patternzap", 8, 24, -2, 2),
-                E("doublebolt", 8, 24, -2, 2), E("neonray", 8, 24, -2, 2),
-                E("mirrorvolt", 8, 24, -2, 2),
-                E("vineplus", 8, 24, -2, 2), E("fourleaf", 8, 24, -2, 2),
-                E("spiralfern", 8, 24, -2, 2), E("doublmoss", 8, 24, -2, 2),
-                E("patternpod", 8, 24, -2, 2), E("tallywing", 4, 26, -1, 3),
-                E("totalon", 2, 30, 0, 3),
+                E("twinkelle", 8, 24, 28), E("lunafae", 8, 24, 28),
+                E("pairabelle", 8, 24, 28), E("starwhisp", 8, 24, 28),
+                E("prismfae", 8, 24, 28),
+                E("sumscale", 8, 26, 30), E("tallywyrm", 8, 26, 30),
+                E("spirake", 8, 26, 30), E("doublescale", 8, 26, 30),
+                E("prismwyrm", 8, 26, 30),
+                E("sumvolt", 8, 24, 28), E("patternzap", 8, 24, 28),
+                E("doublebolt", 8, 24, 28), E("neonray", 8, 24, 28),
+                E("mirrorvolt", 8, 24, 28),
+                E("vineplus", 8, 24, 28), E("fourleaf", 8, 24, 28),
+                E("spiralfern", 8, 24, 28), E("doublmoss", 8, 24, 28),
+                E("patternpod", 8, 24, 28), E("tallywing", 4, 26, 30),
+                E("totalon", 2, 30, 33),
             },
             BossSpeciesId = "totalisk", BossDisplayName = "Solar Totalisk", BossMinLevel = 32,
             BossLine = "Solar Totalisk guards the desert crystal!",
