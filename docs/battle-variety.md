@@ -1,7 +1,7 @@
 # Battle question variety and Master encounters — 2026-09-22
 
 Local follow-up to installed 1.3.0 (4). Release **1.3.1 (5)** is exported to `unity/Builds/iOS/Numeria-9`;
-signed Xcode build is in progress, **not yet installed on iPad**. Save schema stays v12;
+signed Xcode Release build and strict deep signature verification passed, **not yet installed on iPad**. Save schema stays v12;
 no real save was loaded, modified or imported during development.
 
 ## Changes
@@ -48,6 +48,12 @@ no real save was loaded, modified or imported during development.
 
 The user has now authorized installation. The device is connected; final backup and installation wait
 for confirmation that the latest progress has been saved and play has paused. Never uninstall the app.
+The ready app is `/tmp/numeria-variety-ios-derived/Build/Products/Release-iphoneos/Numeria.app`;
+bundle ID/team remain `com.yuankunxue.numeria` / `7B74WP6AR2`. Profile expires September 27 at 19:12 PDT.
+Initial backup: `~/Documents/Numeria Save Backups/ipad-before-1.3.1-N1VmyQEv/initial-Documents`.
+Slot 2 now has Silent Peaks, Paircub family Lv.10, 2,614 coins and Grade 1 / Random (v12).
+This is newer than the 1.3.0 deployment backup. Take another fresh final backup after user confirmation,
+install in place, copy Documents again and compare all files before launching. No installation has occurred yet.
 
 Revert this feature commit to restore the old local behavior. This is a source-code rollback, not a
 device installation or a save restoration; keep the latest iPad save authoritative.
