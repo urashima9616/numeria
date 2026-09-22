@@ -5,13 +5,14 @@
 
 ---
 
-## 最新打包：1.2.0 (3) 已签名，等待保存确认后安装（2026-09-22）
+## 最新部署：1.2.0 (3) 已原位安装并启动（2026-09-22）
 
 训练师与 K–5 数学新版已导出到 `unity/Builds/iOS/Numeria-7`，Xcode Release 与严格签名校验通过。
 App：`/tmp/numeria-training-ios-derived/Build/Products/Release-iphoneos/Numeria.app`。
-已连接 iPad 并只读备份到 `~/Documents/Numeria Save Backups/ipad-before-1.2.0-xpWaq8oA/initial-Documents`。
-Slot 2 最新为森林、Paircub 家族 Lv.7、2524 金币、50 伙伴、58 宝箱、6 水晶，v11。
-**尚未安装**：等待用户确认已保存并停留主菜单，再取最终备份；原位安装后首次启动前逐文件比较。
+用户确认保存后，最终备份为 `~/Documents/Numeria Save Backups/ipad-before-1.2.0-xpWaq8oA/final-Documents`。
+安装后首次启动前取回同目录 `post-install-Documents`，四个文件逐字节一致；没有卸载或导入 Mac 存档。
+Slot 2 安装前为森林、Paircub 家族 Lv.7、2524 金币、50 伙伴、58 宝箱、6 水晶，v11；新版保存会迁移为 v12。
+设备已确认版本 1.2.0 (3)，启动成功且进程持续运行。等待用户确认 LOAD GAME → SLOT 2 的地图、进度与声音；不等于完整真机验收。
 签名仍有效至 9 月 27 日 19:12 PDT。详情见 [training-and-learning.md](training-and-learning.md)。
 
 ## 最新本地开发：训练师、队伍安全与 K–5 数学（2026-09-21，未部署）

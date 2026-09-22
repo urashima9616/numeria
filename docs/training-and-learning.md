@@ -1,9 +1,9 @@
 # Training, roster safety and grade-based math — 2026-09-21
 
-Version 1.2.0 (3) has been exported and signed locally; installation on Lucas's iPad is **pending**.
+Version 1.2.0 (3) was installed in place on Lucas's iPad on September 22, 2026.
 The device remains the authoritative save. Do not uninstall, reset, or import an older Mac save.
 
-## Deployment preparation — 2026-09-22
+## Deployment record — 2026-09-22
 
 - Unity export: `unity/Builds/iOS/Numeria-7`; signed Release app:
   `/tmp/numeria-training-ios-derived/Build/Products/Release-iphoneos/Numeria.app`.
@@ -15,9 +15,15 @@ The device remains the authoritative save. Do not uninstall, reset, or import an
   All three JSON files parse; active slot selector is 2. Slot 2 is v11, Forest, Paircub family
   Lv.7, 2,524 coins, 50 caught identities, 58 opened chests and six crystals.
   Slot 2 SHA-256: `aed3f9ba887b01623b7fb88691cfe1c95ed27d982463e609563e52669c597b66`.
-- **No installation yet.** Await the user's confirmation that play is saved and the device is at
-  the main menu, then take a fresh final backup immediately before in-place installation.
-  Copy Documents back after installation and compare every file before the first launch.
+- After the user confirmed saving, took another backup in sibling `final-Documents`, then installed
+  in place without uninstalling or importing Mac progress. Read-back `post-install-Documents`
+  contains the same four files, all byte-for-byte identical to the final backup before first launch.
+  Slot 2 retained the SHA-256 and progress listed above.
+- Device inventory confirms 1.2.0 (3). Launch succeeded and process 15215 remained running on a
+  follow-up check. User verification of LOAD GAME → SLOT 2, map/stats/audio and actual gameplay
+  is pending; process launch alone is not visual/gameplay acceptance.
+- Local evidence: `/tmp/numeria-training-install.json`, `/tmp/numeria-training-launch.json`,
+  `/tmp/numeria-training-postinstall-copy.json`, `/tmp/numeria-training-apps-after.json`.
 
 ## Battle
 

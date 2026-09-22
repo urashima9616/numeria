@@ -22,10 +22,11 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 
 The current verification baseline compiles all four Unity assemblies and passes **177/177 Unity EditMode tests**
 plus **15/15 Node prototype tests**.
-The local save format is **schema v12**, with non-destructive migration for older saves. The installed iPad build
-remains v11; this local update has not been deployed.
+The current save format is **schema v12**, with non-destructive migration for older saves. Version **1.2.0 (3)**
+was installed in place on the iPad on September 22. All four saved files matched the fresh device backup
+byte-for-byte before launch. The app launched; user verification of loading, visuals and audio remains pending.
 
-### Local update — trainers, safer team management and K–5 learning
+### Latest update — trainers, safer team management and K–5 learning
 
 Lucas now appears behind his battle partner. Random Master encounters use 20 new trainer portraits and
 20–40% nominal stat bonuses; fixed Boss levels are unchanged. Battle adds **Defend** (half damage for the next
@@ -257,7 +258,7 @@ Unity EditMode tests, with the Unity Editor closed:
 - Move hard-coded species/map balance data into validated JSON.
 - Add adaptive difficulty and transformed retries based on puzzle-family mastery.
 - Add a parent-gated progress dashboard.
-- Sign and run the passing Xcode device build on Lucas's physical iPad, then import the verified migration backup.
+- Finish physical-iPad gameplay QA; preserve its authoritative saves through fresh backups and in-place updates.
 - Profile the current image-heavy Debug build and add iOS texture compression before TestFlight distribution.
 - Complete TestFlight distribution after physical-device QA.
 
