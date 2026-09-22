@@ -22,17 +22,17 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 
 The current verification baseline compiles all four Unity assemblies and passes **188/188 Unity EditMode tests**
 plus **15/15 Node prototype tests**.
-The current save format is **schema v12**, with non-destructive migration for older saves. Version **1.2.0 (3)**
+The current save format is **schema v12**, with non-destructive migration for older saves. Version **1.3.0 (4)**
 was installed in place on the iPad on September 22. All four saved files matched the fresh device backup
 byte-for-byte before launch. The app launched; user verification of loading, visuals and audio remains pending.
 
 ### Latest update — trainers, safer team management and K–5 learning
 
-The next **1.3.0 (4)** build expands the curriculum to explicit grade inventories: 17/19/18/20/22/24 mixed
+The installed **1.3.0 (4)** build expands the curriculum to explicit grade inventories: 17/19/18/20/22/24 mixed
 task families for K/Grades 1–5, with interactive number bonds and ordered paths, balanced equations, visual
 patterns in every grade, stories, arrays, money, fractions, conversions and coordinates. A shuffle bag
 reduces repeated families; charts no longer disclose the quantities being tested. See the
-[actual coverage, limits and validation](docs/curriculum-expansion.md). Device installation is pending.
+[actual coverage, limits and validation](docs/curriculum-expansion.md). Installed in place with all four save files verified unchanged.
 
 Lucas now appears behind his battle partner. Random Master encounters use 20 new trainer portraits and
 20–40% nominal stat bonuses; fixed Boss levels are unchanged. Battle adds **Defend** (half damage for the next
@@ -41,8 +41,8 @@ transfer between partners. SYSTEM selects K–5 and four difficulty modes, progr
 inside the chosen grade/mode. Five new math families add place value, time, fractions, measurement and data.
 See [rules, previews, tests and save/rollback safety](docs/training-and-learning.md).
 
-Local follow-up fix: TEAM keeps its scroll position when selecting partners or refreshing details, with
-safe clamping after removal. This fix is tested but not yet included in the installed 1.2.0 (3) build.
+TEAM keeps its scroll position when selecting partners or refreshing details, with safe clamping after
+removal. This tested fix is included in the installed 1.3.0 (4) build.
 
 ### Afterstory expansion — installed on iPad
 

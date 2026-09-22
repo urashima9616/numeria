@@ -1,6 +1,6 @@
 # Grade-specific puzzle expansion — 2026-09-22
 
-Release target: **1.3.0 (4)**. Save format remains **v12**; no progress or learning-setting migration.
+Installed release: **1.3.0 (4)**. Save format remains **v12**; no progress or learning-setting migration.
 Also includes the separately committed TEAM scroll-position fix (`4b40c10`).
 
 ## Actual coverage
@@ -82,5 +82,24 @@ Active Slot 2: schema v12, Silent Peaks, Paircub family Lv.8, 2,564 coins, 50 ca
 58 opened chests, six crystals, Grade 1 / Challenging. This supersedes the older Lv.7 snapshot.
 Initial Slot 2 SHA-256: `3dcc9346dbbddd338d23e0bebd9c4abbd3783ff9295acfc1eb7e9df342664fcf`.
 
-Installation still pending: take a final device backup, use the same bundle ID and signing team for an
-in-place update, and compare every Documents file before first launch. Never uninstall or import old Mac saves.
+Installed on September 22, 2026 using the Numeria-8 Xcode export and signed Release build at
+`/tmp/numeria-curriculum-ios-derived/Build/Products/Release-iphoneos/Numeria.app`.
+Xcode build and strict deep signature verification passed. Bundle ID `com.yuankunxue.numeria` and team
+`7B74WP6AR2` are unchanged. The device reports 1.3.0 (4), and process launch succeeded.
+
+The fresh `final-Documents` backup and `post-install-Documents` snapshot under the same backup directory
+have identical recursive file inventories and **all four files are byte-for-byte unchanged**, checked before
+first launch. Final Slot 2 remains the Lv.8 / 2,564-coin snapshot above. No uninstall, reset or Mac-save import.
+The unchanged Slot 2 hash is recorded above; other hashes:
+
+| File | SHA-256 |
+|---|---|
+| numeria-active-slot.txt | `d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35` |
+| numeria-save-slot-1.json | `657d723d8e8475e95b8dcb64fc612ac33f56e4c0e3c078e8ed5271d7691ceef5` |
+| numeria-save.json | `1be24b0ee0e177fa956606c6dfbb1395fcde1e03964316d8bbf0134dfe9dd7d7` |
+
+Source is committed as `e9533d3`, plus scroll fix `4b40c10`. Save schema stays v12, but a source revert
+is not authorization to restore an older progress snapshot. Future installs must back up the latest iPad data again.
+Provisioning expires **September 27, 2026 at 19:12 PDT**; this update did not extend the existing profile.
+Actual LOAD GAME → SLOT 2, touch, scrolling and audio acceptance remains pending user confirmation;
+a successful process launch is not a complete on-device gameplay test.
