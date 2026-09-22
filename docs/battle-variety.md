@@ -1,6 +1,7 @@
 # Battle question variety and Master encounters — 2026-09-22
 
-Local follow-up to installed 1.3.0 (4). **Not built or installed on iPad.** Save schema stays v12;
+Local follow-up to installed 1.3.0 (4). Release **1.3.1 (5)** is exported to `unity/Builds/iOS/Numeria-9`;
+signed Xcode build is in progress, **not yet installed on iPad**. Save schema stays v12;
 no real save was loaded, modified or imported during development.
 
 ## Changes
@@ -44,6 +45,9 @@ no real save was loaded, modified or imported during development.
 - Does not change progress, learning preferences, monster stats, saved inventory or save schema.
 - The currently installed iPad remains 1.3.0 (4); these changes require a future save-backed-up in-place
   update. Do not restore September 22's backup over any progress Lucas makes afterward.
+
+The user has now authorized installation. The device is connected; final backup and installation wait
+for confirmation that the latest progress has been saved and play has paused. Never uninstall the app.
 
 Revert this feature commit to restore the old local behavior. This is a source-code rollback, not a
 device installation or a save restoration; keep the latest iPad save authoritative.
