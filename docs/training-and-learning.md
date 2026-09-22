@@ -1,7 +1,23 @@
 # Training, roster safety and grade-based math — 2026-09-21
 
-Local development only. This update has **not** been built for or installed on Lucas's iPad.
+Version 1.2.0 (3) has been exported and signed locally; installation on Lucas's iPad is **pending**.
 The device remains the authoritative save. Do not uninstall, reset, or import an older Mac save.
+
+## Deployment preparation — 2026-09-22
+
+- Unity export: `unity/Builds/iOS/Numeria-7`; signed Release app:
+  `/tmp/numeria-training-ios-derived/Build/Products/Release-iphoneos/Numeria.app`.
+- Xcode build and deep/strict code-sign verification succeeded. Bundle ID remains
+  `com.yuankunxue.numeria`, team `7B74WP6AR2`, with the existing iPad on the profile.
+- Current provisioning expires September 27, 2026 at 19:12 PDT; this build reused the valid profile.
+- Initial read-only device backup:
+  `~/Documents/Numeria Save Backups/ipad-before-1.2.0-xpWaq8oA/initial-Documents`.
+  All three JSON files parse; active slot selector is 2. Slot 2 is v11, Forest, Paircub family
+  Lv.7, 2,524 coins, 50 caught identities, 58 opened chests and six crystals.
+  Slot 2 SHA-256: `aed3f9ba887b01623b7fb88691cfe1c95ed27d982463e609563e52669c597b66`.
+- **No installation yet.** Await the user's confirmation that play is saved and the device is at
+  the main menu, then take a fresh final backup immediately before in-place installation.
+  Copy Documents back after installation and compare every file before the first launch.
 
 ## Battle
 
