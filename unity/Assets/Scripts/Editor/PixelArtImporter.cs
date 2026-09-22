@@ -36,6 +36,11 @@ namespace Numeria.Editor
             importer.textureCompression = TextureImporterCompression.Uncompressed;
             importer.mipmapEnabled = false;
             importer.alphaIsTransparency = true;
+            // Battle actors display at ~220-280 canvas units. Keep original PNGs, but bound
+            // runtime texture memory so meeting all twenty trainers does not retain 100+ MB.
+            if (assetPath.Contains("/generated/Trainers/") || assetPath.EndsWith("/Heroes/lucas_battle.png"))
+                importer.maxTextureSize = 512;
+            if (assetPath.EndsWith("/generated/UI/tackle.png")) importer.maxTextureSize = 256;
             // UI 素材必须 100 PPU:UGUI 切片边框按 Canvas 参考 PPU(100)/精灵 PPU 缩放,
             // 16 PPU 会把 9-slice 边角放大 6.25 倍,面板直接崩坏
             importer.spritePixelsPerUnit = assetPath.Contains("/UI/") ? 100 : 16;

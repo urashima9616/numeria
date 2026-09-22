@@ -12,7 +12,7 @@ namespace Numeria.Game
     /// 谜题遮罩(咒语算式 / 凑十),战斗与地图宝箱共用。
     /// 零惩罚:答错引导重试一次,重试答对同样算成功。
     /// </summary>
-    public class PuzzleUi
+    public partial class PuzzleUi
     {
         private readonly MonoBehaviour _host;
         private readonly RectTransform _canvasRoot;
@@ -24,13 +24,15 @@ namespace Numeria.Game
             new Dictionary<PatternToken, Sprite>();
 
         public PuzzleUi(MonoBehaviour host, RectTransform canvasRoot, Rng rng, Action<string[]> say,
-            Action<bool> onCompleted = null)
+            Action<bool> onCompleted = null, MathSettings math = null, int chapter = 1)
         {
             _host = host;
             _canvasRoot = canvasRoot;
             _rng = rng;
             _say = say;
             _onCompleted = onCompleted;
+            _math = math;
+            _chapter = chapter;
         }
 
         private void Complete(Action<bool> done, bool result)
@@ -45,6 +47,7 @@ namespace Numeria.Game
         public IEnumerator RunSkillPuzzle(SkillVisualKind visual, Action<bool> done, int tier)
         {
             LastSpell = null;
+            if (_math != null && _rng.Next() < .25) { yield return RunLearning(done, null); yield break; }
             if (visual == SkillVisualKind.EquationFlame) yield return RunFormula(done, tier);
             else if (visual == SkillVisualKind.MakeTenWave) yield return RunMakeTen(done, PuzzleGenerator.MaxForTier(tier), false);
             else if (visual == SkillVisualKind.SymmetryBeam) yield return RunSymmetry(done, tier, true);
@@ -122,6 +125,7 @@ namespace Numeria.Game
 
         public IEnumerator RunMapPuzzle(Action<bool> done, int tier)
         {
+            if (_math != null) { yield return RunLearning(done, null); yield break; }
             yield return RunPuzzleKind(PuzzleGenerator.PickMapPuzzleKind(_rng, tier), done, tier);
         }
 
@@ -167,6 +171,8 @@ namespace Numeria.Game
 
         public IEnumerator RunPattern(Action<bool> done, int tier = 1)
         {
+            if (_math != null) tier = LearningPatternTier();
+            if (_math != null && _math.Grade > 0) { yield return RunLearning(done, LearningKind.Pattern); yield break; }
             var p = PuzzleGenerator.GeneratePattern(_rng, tier);
             LastSpell = new SpellTrace { Pattern = p.Sequence.ToArray() };
             var overlay = BuildOverlay(p.Prompt, out var choiceRow);
@@ -250,6 +256,7 @@ namespace Numeria.Game
 
         public IEnumerator RunSymmetry(Action<bool> done, int tier = 1, bool mirrorOnly = false)
         {
+            if (_math != null) tier = LearningPatternTier();
             var p = PuzzleGenerator.GeneratePatternMatch(_rng, tier,
                 mirrorOnly ? PatternMatchRule.MirrorOrder : (PatternMatchRule?)null);
             LastSpell = new SpellTrace { Pattern = p.Target.ToArray() };
@@ -303,6 +310,7 @@ namespace Numeria.Game
 
         public IEnumerator RunBalance(Action<bool> done, int tier = 2)
         {
+            if (_math != null) { yield return RunLearning(done, LearningKind.MissingNumber); yield break; }
             var p = PuzzleGenerator.GenerateBalance(_rng, tier);
             LastSpell = new SpellTrace { A = p.LeftA, B = p.LeftB, Total = p.LeftA + p.LeftB };
             string display = $"{p.LeftA}  +  {p.LeftB}  =  {p.RightKnown}  +  ?";
@@ -312,6 +320,7 @@ namespace Numeria.Game
 
         public IEnumerator RunNumberPath(Action<bool> done, int tier = 1)
         {
+            if (_math != null) { yield return RunLearning(done, LearningKind.Pattern); yield break; }
             var p = PuzzleGenerator.GenerateNumberPath(_rng, tier);
             LastSpell = new SpellTrace { Numbers = p.Sequence.ToArray() };
             var displaySequence = new List<string>();
@@ -324,6 +333,7 @@ namespace Numeria.Game
 
         public IEnumerator RunNumberSequence(Action<bool> done, int tier = 3)
         {
+            if (_math != null) { yield return RunLearning(done, LearningKind.Pattern); yield break; }
             var p = PuzzleGenerator.GenerateNumberSequence(_rng, tier);
             var spellNumbers = new List<int>(p.Sequence) { p.Answer };
             LastSpell = new SpellTrace { Numbers = spellNumbers.ToArray() };
@@ -335,6 +345,7 @@ namespace Numeria.Game
 
         public IEnumerator RunShape(Action<bool> done, int tier = 1)
         {
+            if (_math != null) { yield return RunLearning(done, LearningKind.Geometry); yield break; }
             var p = PuzzleGenerator.GenerateShape(_rng, tier);
             LastSpell = new SpellTrace { Pattern = new[] { new PatternToken(p.Answer, PatternColor.Blue) } };
             var overlay = BuildOverlay(p.Prompt, out var choiceRow);
@@ -567,16 +578,19 @@ namespace Numeria.Game
 
         public IEnumerator RunFormula(Action<bool> done, int tier = 1)
         {
+            if (_math != null) { yield return RunLearning(done, LearningKind.Arithmetic); yield break; }
             yield return RunFormulaPuzzle(PickPuzzle(tier), done);
         }
 
         public IEnumerator RunDouble(Action<bool> done)
         {
+            if (_math != null) { yield return RunLearning(done, LearningKind.Arithmetic); yield break; }
             yield return RunFormulaPuzzle(PuzzleGenerator.GenerateDouble(_rng, 20), done);
         }
 
         private IEnumerator RunFormulaPuzzle(FormulaPuzzle p, Action<bool> done)
         {
+            if (_math != null) { yield return RunLearning(done, LearningKind.Arithmetic); yield break; }
             LastSpell = new SpellTrace { A = p.A, B = p.SlotIsResult ? p.A : p.Missing,
                 Total = p.Sum, Operation = p.Op };
             var overlay = BuildOverlay(p.Prompt, out var crystalRow);
@@ -659,6 +673,7 @@ namespace Numeria.Game
 
         public IEnumerator RunCounting(Action<bool> done, int max = 10)
         {
+            if (_math != null) { yield return RunLearning(done, LearningKind.Data); yield break; }
             var p = PuzzleGenerator.GenerateCounting(_rng, max);
             LastSpell = new SpellTrace { Total = p.Count };
             yield return RunNumberChoice(p.Prompt, null, p.Candidates,
@@ -668,6 +683,7 @@ namespace Numeria.Game
 
         public IEnumerator RunComparison(Action<bool> done, int max = 10)
         {
+            if (_math != null) { yield return RunLearning(done, LearningKind.Comparison); yield break; }
             var p = PuzzleGenerator.GenerateComparison(_rng, max);
             var overlay = BuildOverlay(p.Prompt, out var choiceRow);
             var focus = Ui.Node(overlay, "ComparisonFocus");
@@ -728,6 +744,7 @@ namespace Numeria.Game
 
         public IEnumerator RunChainSum(Action<bool> done, int tier = 2)
         {
+            if (_math != null) { yield return RunLearning(done, LearningKind.Arithmetic); yield break; }
             int termCount = tier >= 3 ? 4 : 3;
             var p = PuzzleGenerator.GenerateChainSum(_rng, PuzzleGenerator.MaxForTier(tier), termCount);
             string display = string.Join("  +  ", p.Terms) + "  =  ?";
@@ -829,6 +846,7 @@ namespace Numeria.Game
 
         public IEnumerator RunMakeTen(Action<bool> done, int target = 10, bool shield = true)
         {
+            if (_math != null) { yield return RunLearning(done, LearningKind.MissingNumber); yield break; }
             var p = PuzzleGenerator.GenerateMakeTen(_rng, target, 4);
             var overlay = BuildOverlay(p.Prompt, out var crystalRow);
 

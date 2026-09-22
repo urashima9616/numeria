@@ -520,7 +520,7 @@ namespace Numeria.Core
                     {
                         new SkillDef { Id = "tackle", Name = "Tackle", Cost = 0, Power = 2,
                             BasePower = 2, Type = SkillType.Basic,
-                            IconResource = "generated/NUMERIA_Unity_Battle_Assets/UI/Icons/Tackle",
+                            IconResource = "generated/UI/tackle",
                             Visual = SkillVisualKind.Physical },
                         themeSkill,
                     }

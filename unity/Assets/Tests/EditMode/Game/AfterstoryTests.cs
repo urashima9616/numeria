@@ -21,7 +21,7 @@ namespace Numeria.Game.Tests
             p.ApplyMigrations(); p.SaveVersion = 10;
             string original = JsonUtility.ToJson(p);
             var loaded = JsonUtility.FromJson<Progress>(original); loaded.ApplyMigrations();
-            Assert.AreEqual(original.Replace("\"SaveVersion\":10", "\"SaveVersion\":11"), JsonUtility.ToJson(loaded));
+            Assert.AreEqual(original.Replace("\"SaveVersion\":10", "\"SaveVersion\":" + Progress.CurrentSaveVersion), JsonUtility.ToJson(loaded));
             Assert.AreEqual(6, loaded.DigitCrystalCount);
             Assert.True(Maps.CanVisit("ancient_ruins", loaded));
         }

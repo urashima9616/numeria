@@ -139,7 +139,7 @@ namespace Numeria.Game
                     _frame[i].rectTransform.anchoredPosition = _start + new Vector2((i % 5 - 2) * 29, 110 + (i / 5) * 27);
                 }
             }
-            if (trace != null && trace.Total > 0 && _powered && Kind != SkillVisualKind.SymmetryBeam)
+            if (trace != null && trace.HasCaption && _powered && Kind != SkillVisualKind.SymmetryBeam)
             {
                 var equation = Ui.Label(transform, "SpellEquation", trace.Equation, 34, Ui.Hex("#fff1be"));
                 equation.rectTransform.anchoredPosition = _start + new Vector2(0, 250);

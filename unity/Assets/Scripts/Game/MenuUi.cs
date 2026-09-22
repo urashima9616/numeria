@@ -13,7 +13,7 @@ namespace Numeria.Game
     /// 左栏:队伍卡片(HP 条 + 等级,空位显示 +);右栏:选中数灵详情
     /// (大立绘、类型徽章、属性表、进化路线、设为出战)。
     /// </summary>
-    public class MenuUi
+    public partial class MenuUi
     {
         private readonly Progress _progress;
         private readonly Action _onClose;
@@ -86,9 +86,7 @@ namespace Numeria.Game
 
         private List<string> TeamIds()
         {
-            var ids = new List<string> { "addmander" };
-            ids.AddRange(_progress.CaughtIds);
-            return ids;
+            return _progress.SortedTeam();
         }
 
         // ---------- 框架 ----------
@@ -186,7 +184,7 @@ namespace Numeria.Game
             TabButton(row, "items", "ITEMS", SpriteLib.Cainos("TX Props", "TX Props Chest"), ShowItems);
             TabButton(row, "records", "RECORDS", SpriteLib.One("Art/Sprites/icon-sword"), ShowRecords);
             TabButton(row, "saves", "SAVES", SpriteLib.Cainos("TX Props", "TX Props Sign"), ShowSaves);
-            TabButton(row, "settings", "SETTINGS", SpriteLib.One("Art/Sprites/shield"), ShowSettings);
+            TabButton(row, "settings", "SYSTEM", SpriteLib.One("Art/Sprites/shield"), ShowSettings);
         }
 
         private void TabButton(RectTransform parent, string key, string label, Sprite icon, Action onClick)
@@ -334,6 +332,17 @@ namespace Numeria.Game
                     new Vector2(24, 24));
             });
 
+            ListRow(list, "TeamSort", 48, row =>
+            {
+                FillButtonRow(row);
+                string[] labels = { "TYPE", "NEW", "LEVEL", "DEF", "ATK" };
+                foreach (TeamSort sort in Enum.GetValues(typeof(TeamSort)))
+                {
+                    var button = Ui.Btn(row, "Sort-" + sort, labels[(int)sort], 16);
+                    button.image.color = _progress.TeamSortOrder == sort ? Amber : Cream;
+                    button.onClick.AddListener(() => { _progress.TeamSortOrder = sort; SaveSystem.Save(_progress); ShowTeam(); });
+                }
+            });
             var team = TeamIds();
             int slots = Math.Max(6, team.Count);
             for (int i = 0; i < slots; i++)
@@ -522,12 +531,12 @@ namespace Numeria.Game
             var coinButton = Ui.Btn(panel.transform, "Coins", $"LET GO FOR {coins} COINS", 22);
             Ui.Place((RectTransform)coinButton.transform, new Vector2(.5f, 0), new Vector2(-190, 96),
                 new Vector2(340, 68));
-            coinButton.onClick.AddListener(() => CompleteConversion(shade, baseId, MathmonConversionReward.Coins));
+            coinButton.onClick.AddListener(() => ConfirmConversion(shade, baseId, MathmonConversionReward.Coins));
 
             var xpButton = Ui.Btn(panel.transform, "Xp", $"LET GO FOR {xp} XP", 22);
             Ui.Place((RectTransform)xpButton.transform, new Vector2(.5f, 0), new Vector2(190, 96),
                 new Vector2(340, 68));
-            xpButton.onClick.AddListener(() => CompleteConversion(shade, baseId, MathmonConversionReward.Experience));
+            xpButton.onClick.AddListener(() => ConfirmConversion(shade, baseId, MathmonConversionReward.Experience));
 
             var cancel = Ui.Btn(panel.transform, "Cancel", "KEEP MATHMON", 22);
             Ui.Place((RectTransform)cancel.transform, new Vector2(.5f, 0), new Vector2(0, 22),
@@ -539,6 +548,7 @@ namespace Numeria.Game
         {
             if (_progress.ConvertCaught(id, reward) <= 0) return;
             _selectedId = _progress.ActiveMonId;
+            SaveSystem.Save(_progress);
             UnityEngine.Object.Destroy(shade.gameObject);
             ShowTeam();
         }
@@ -565,14 +575,13 @@ namespace Numeria.Game
                     string instanceId = item.InstanceId;
                     button.onClick.AddListener(() =>
                     {
-                        _progress.UnequipAccessory(instanceId);
-                        ShowTeam();
+                        ShowAccessoryPicker(id, instanceId);
                     });
                 }
             }
         }
 
-        private void ShowAccessoryPicker(string id)
+        private void ShowAccessoryPicker(string id, string replaceId = null)
         {
             var shade = Ui.Img(_overlay.transform, "AccessoryPicker", new Color(0, 0, 0, .72f));
             Ui.Stretch(shade.rectTransform);
@@ -588,29 +597,44 @@ namespace Numeria.Game
             int choices = 0;
             foreach (var accessory in _progress.Accessories)
             {
-                if (!string.IsNullOrEmpty(accessory.EquippedToBaseId)) continue;
                 choices++;
                 AccessoryItem captured = accessory;
-                ListRow(list, $"Pick-{captured.InstanceId}", 68, row =>
+                string owner = captured.EquippedToBaseId;
+                string ownerName = string.IsNullOrEmpty(owner) ? "AVAILABLE" : GameData.ById(_progress.CurrentFormId(owner)).Name;
+                ListRow(list, $"Pick-{captured.InstanceId}", 86, row =>
                 {
                     var button = Ui.Btn(row, "Button", captured.Name, 23);
                     Ui.Stretch((RectTransform)button.transform);
                     var label = button.GetComponentInChildren<TMP_Text>();
-                    label.text = $"{captured.Name}    {(captured.AttackBonus > 0 ? $"ATK +{captured.AttackBonus}" : $"DEF +{captured.DefenseBonus}")}";
+                    label.text = $"{captured.Name}    ATK +{captured.AttackBonus}  DEF +{captured.DefenseBonus}\n{ownerName}";
+                    button.interactable = owner != GameData.BaseId(id);
                     button.onClick.AddListener(() =>
                     {
-                        _progress.EquipAccessory(captured.InstanceId, id);
-                        UnityEngine.Object.Destroy(shade.gameObject);
-                        ShowTeam();
+                        void Equip()
+                        {
+                            if (!_progress.TransferAccessory(captured.InstanceId, id, owner, replaceId)) return;
+                            SaveSystem.Save(_progress);
+                            UnityEngine.Object.Destroy(shade.gameObject);
+                            ShowTeam();
+                        }
+                        if (string.IsNullOrEmpty(owner)) Equip();
+                        else ConfirmAction("TRANSFER ACCESSORY?", $"Move {captured.Name} from {ownerName}\nto {GameData.ById(_progress.CurrentFormId(id)).Name}?\nThe current owner will lose its bonuses.", "TRANSFER", Equip);
                     });
                 });
             }
             if (choices == 0)
                 ListRow(list, "Empty", 80, row =>
-                    Ui.Stretch(Ui.Label(row, "Text", "No unequipped accessories.", 25, SummaryOrange).rectTransform));
+                    Ui.Stretch(Ui.Label(row, "Text", "No accessories yet.", 25, SummaryOrange).rectTransform));
+
+            if (!string.IsNullOrEmpty(replaceId))
+            {
+                var unequip = Ui.Btn(panel.transform, "Unequip", "UNEQUIP", 22);
+                Ui.Place((RectTransform)unequip.transform, new Vector2(.5f, 0), new Vector2(180, 28), new Vector2(240, 62));
+                unequip.onClick.AddListener(() => { _progress.UnequipAccessory(replaceId); SaveSystem.Save(_progress); UnityEngine.Object.Destroy(shade.gameObject); ShowTeam(); });
+            }
 
             var back = Ui.Btn(panel.transform, "Back", "BACK", 24);
-            Ui.Place((RectTransform)back.transform, new Vector2(.5f, 0), new Vector2(0, 28), new Vector2(260, 62));
+            Ui.Place((RectTransform)back.transform, new Vector2(.5f, 0), new Vector2(replaceId == null ? 0 : -180, 28), new Vector2(260, 62));
             back.onClick.AddListener(() => UnityEngine.Object.Destroy(shade.gameObject));
         }
 
@@ -995,6 +1019,7 @@ namespace Numeria.Game
         {
             SelectTab("settings");
             var content = MakeScrollList(FreshWrap());
+            BuildMathSettings(content);
 
             SectionRow(content, "Sound");
             ListRow(content, "VoiceRow", 66, row =>

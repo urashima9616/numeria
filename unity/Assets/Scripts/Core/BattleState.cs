@@ -86,6 +86,8 @@ namespace Numeria.Core
         public int DefensePower;
         public int BaseXp;
         public bool IsBoss;
+        public string TrainerId;
+        public int TrainerBonusPercent;
         public double DropChance;
         public ConsumableType PreferredDrop;
         public int? Shield;
@@ -189,6 +191,7 @@ namespace Numeria.Core
         public bool EnemyShielded;
         public bool BreakBonusReady;
         public int EnemySkipTurns;
+        public bool Defending { get; private set; }
         public int PlayerAttackBonus;
         public int PlayerDefenseBonus;
         public MegaProfile Mega { get; }
@@ -227,6 +230,7 @@ namespace Numeria.Core
 
         public void StartPlayerTurn()
         {
+            Defending = false;
             // Mega 必须持续净消耗 Gem；否则每回合自动 +2 会令形态永不结束。
             if (!MegaActive) Gems = Math.Min(MaxGems, Gems + 2);
         }
@@ -345,9 +349,18 @@ namespace Numeria.Core
         public int EnemyTurn()
         {
             int dmg = RollDamage(Enemy.AttackPower, EffectivePlayerDefense);
+            if (Defending) dmg = (dmg + 1) / 2;
+            Defending = false;
             PlayerHp = Math.Max(0, PlayerHp - dmg);
             if (PlayerHp == 0) Outcome = BattleOutcome.Lose;
             return dmg;
+        }
+
+        public bool Defend()
+        {
+            if (Outcome != BattleOutcome.None || Defending) return false;
+            Defending = true;
+            return true;
         }
     }
 }

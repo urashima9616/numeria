@@ -9,7 +9,9 @@ namespace Numeria.Game
         public char Operation = '+';
         public PatternToken[] Pattern;
         public int[] Numbers;
+        public string SolvedEquation;
+        public bool HasCaption => !string.IsNullOrEmpty(SolvedEquation) || HasEquation;
         public bool HasEquation => Total > 0 && (Operation == '-' ? A - B == Total : A + B == Total);
-        public string Equation => $"{A} {Operation} {B} = {Total}";
+        public string Equation => SolvedEquation ?? $"{A} {Operation} {B} = {Total}";
     }
 }

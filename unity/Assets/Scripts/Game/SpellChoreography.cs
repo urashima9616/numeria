@@ -82,7 +82,7 @@ namespace Numeria.Game
                 }
             }
             for (int i = 0; i < _lines.Length; i++) _lines[i] = Make(parent, "EnergySegment-" + i, SpellSequence.Glow());
-            if (trace != null && trace.HasEquation)
+            if (trace != null && trace.HasCaption)
             {
                 var equation = Ui.Label(parent, "SolvedEquation", trace.Equation, 32, Ui.Hex("#fff3c9"));
                 equation.rectTransform.sizeDelta = new Vector2(340, 48);

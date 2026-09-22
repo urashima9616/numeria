@@ -82,10 +82,11 @@ namespace Numeria.Core
     /// 纯数据类,可被 JsonUtility 序列化(字段必须 public)。
     /// </summary>
     [Serializable]
-    public class Progress
+    public partial class Progress
     {
-        // v11 adds afterstory map/species identities. Older builds must reject rather than rewrite them.
-        public const int CurrentSaveVersion = 11;
+        // v12 persists per-grade learning preferences and roster ordering. Older builds must reject
+        // rather than silently dropping these fields; adventure/caught-stat data is unchanged.
+        public const int CurrentSaveVersion = 12;
         public const int TeamCapacity = 99;
 
         public int SaveVersion = CurrentSaveVersion;
@@ -214,6 +215,7 @@ namespace Numeria.Core
                 }
             }
             ForestJourney.Migrate(this);
+            NormalizeSystemSettings();
             SaveVersion = CurrentSaveVersion;
             SyncLegacyFields();
         }

@@ -44,6 +44,7 @@ namespace Numeria.Game
         private TMP_Text _logMain;
         private TMP_Text _logSub;
         private Button _btnTackle;
+        private Button _btnDefend;
         private Button _btnFormula;
         private Image _formulaBg;
         private TMP_Text _formulaCostText;
@@ -89,7 +90,7 @@ namespace Numeria.Game
             _voice = gameObject.AddComponent<Voice>();
             BuildUi();
             _puzzles = new PuzzleUi(this, _canvasRoot, _rng, lines => _voice.Say(lines),
-                solved => _progress.RecordPuzzle(solved));
+                solved => _progress.RecordPuzzle(solved), progress.Learning, tier);
             RenderAll();
             string opening = enemy.Shield.HasValue
                 ? _tier >= 3
@@ -98,6 +99,11 @@ namespace Numeria.Game
                 : $"A wild {enemy.Name} appeared!";
             SetLog("Your turn", "+2 GEMS");
             _voice.Say(opening);
+            if (!string.IsNullOrEmpty(enemy.TrainerId))
+            {
+                SetLog("Master battle", TrainerSystem.Name(enemy.TrainerId).ToUpperInvariant() + $"  +{enemy.TrainerBonusPercent}%");
+                _voice.Say("A trainer challenges you!");
+            }
         }
 
         // ---------- UI 构建 ----------
@@ -124,12 +130,26 @@ namespace Numeria.Game
             var bg = Ui.SpriteImg(_shakeRoot, "Background", SpriteLib.One(_battleBg));
             Ui.Stretch(bg.rectTransform);
 
+            var lucas = GroundedBattleImage.Create(_shakeRoot, "Lucas", SpriteLib.One("generated/Heroes/lucas_battle"));
+            lucas.raycastTarget = false;
+            Image trainer = null;
+            if (!string.IsNullOrEmpty(_state.Enemy.TrainerId))
+            {
+                trainer = GroundedBattleImage.Create(_shakeRoot, "Master", SpriteLib.One(TrainerSystem.Portrait(_state.Enemy.TrainerId)));
+                trainer.raycastTarget = false;
+            }
+
             // 敌方:左上状态牌。目标稿需要足够的纵向空间让名字、等级、HP 与血条各占一行。
             var enemyPlate = BuildStatusPlate("EnemyPlate", new Vector2(0, 1), new Vector2(28, -28), new Vector2(480, 228),
                 _state.Enemy.Name,
                 $"Lv. {_state.Enemy.Level}   ATK {_state.Enemy.AttackPower}   DEF {_state.Enemy.DefensePower}",
                 out _enemyHpFill, out _enemyHpText);
             BuildShieldRow(enemyPlate);
+            if (trainer != null)
+            {
+                var badge = Ui.Label(enemyPlate, "TrainerBadge", $"MASTER {TrainerSystem.Name(_state.Enemy.TrainerId).ToUpperInvariant()}  +{_state.Enemy.TrainerBonusPercent}%", 22, TitleGreen);
+                Ui.Place(badge.rectTransform, new Vector2(.5f, 0), new Vector2(0, -30), new Vector2(460, 42));
+            }
             // 敌方立绘落在右上草圈，避开状态牌与回合横幅。
             var enemyImg = GroundedBattleImage.Create(_shakeRoot, "EnemySprite", SpriteLib.EnemyBattleSprite(_state.Enemy.Id));
             enemyImg.preserveAspect = true;
@@ -153,7 +173,7 @@ namespace Numeria.Game
             _playerStatText = playerPlate.Find("Sub").GetComponent<TMP_Text>();
             BuildGemRow(playerPlate);
             BuildMegaButton(playerPlate);
-            BattleStageLayout.Build(_shakeRoot, bg, playerImg, enemyImg, playerPlate, _battleBg);
+            BattleStageLayout.Build(_shakeRoot, bg, playerImg, enemyImg, playerPlate, _battleBg, lucas, trainer);
 
             // 回合横幅只承载短主标题 + 一行结果，避免战斗叙述横穿整个画面。
             var logPlate = Ui.SpriteImg(_shakeRoot, "LogPlate", SpriteLib.Pack("UI/Panels/Turn_Banner"));
@@ -179,22 +199,26 @@ namespace Numeria.Game
             barRt.sizeDelta = new Vector2(-160, 304);
             _dockGroup = dock.gameObject.AddComponent<CanvasGroup>();
             var layout = dock.gameObject.AddComponent<HorizontalLayoutGroup>();
-            layout.padding = new RectOffset(56, 56, 61, 31);
-            layout.spacing = 34;
+            layout.padding = new RectOffset(32, 32, 61, 31);
+            layout.spacing = 16;
             layout.childAlignment = TextAnchor.MiddleCenter;
             layout.childControlWidth = true;
             layout.childControlHeight = true;
             layout.childForceExpandWidth = true;
             layout.childForceExpandHeight = true;
 
-            _btnTackle = ActionButton(dock.rectTransform, SpriteLib.Pack("UI/Icons/Tackle"),
+            _btnTackle = ActionButton(dock.rectTransform, SpriteLib.One("generated/UI/tackle"),
                 "TACKLE", "FREE", Ui.Hex("#5c8a3f"), out _);
             _btnTackle.onClick.AddListener(() => StartCoroutine(TackleRoutine()));
+            _btnTackle.transform.Find("Icon").GetComponent<RectTransform>().sizeDelta = new Vector2(96, 82);
             var themeIcon = SpriteLib.One(_themeSkill.IconResource) ?? SpriteLib.Pack("UI/Icons/Flame_Formula");
             _btnFormula = ActionButton(dock.rectTransform, themeIcon,
                 _themeSkill.Name.ToUpperInvariant(), $"COST {_themeSkill.Cost}", ThemeColor(_themeSkill.Visual), out _formulaBg);
             _formulaCostText = _btnFormula.transform.Find("SubT").GetComponent<TMP_Text>();
             _btnFormula.onClick.AddListener(() => StartCoroutine(FormulaRoutine()));
+            _btnDefend = ActionButton(dock.rectTransform, SpriteLib.One("Art/Sprites/shield"),
+                "DEFEND", "50% LESS DAMAGE", Ui.ShieldBlue, out _);
+            _btnDefend.onClick.AddListener(() => StartCoroutine(DefendRoutine()));
             _btnShield = ActionButton(dock.rectTransform, SpriteLib.One("Art/Sprites/shield"),
                 "BREAK SHIELD", _tier >= 3 ? "FINISH PATTERN" :
                     $"MAKE {PuzzleGenerator.ClampArithmeticMax(_state.Enemy.Shield ?? 10)}",
@@ -291,7 +315,7 @@ namespace Numeria.Game
             var bg = Ui.SpriteImg(parent, $"Btn-{title}", SpriteLib.Pack("UI/Buttons/Button_Normal"));
             bg.type = Image.Type.Sliced;
             var ble = bg.gameObject.AddComponent<LayoutElement>();
-            ble.minWidth = 270;
+            ble.minWidth = 190;
             ble.preferredWidth = 500;
             ble.flexibleWidth = 1;
             bgImage = bg;
@@ -311,7 +335,7 @@ namespace Numeria.Game
             subText.rectTransform.anchorMax = new Vector2(1, 0.32f);
             subText.rectTransform.offsetMin = new Vector2(18, 26);
             subText.rectTransform.offsetMax = new Vector2(-18, 8);
-            FitText(subText, 23, 34);
+            FitText(subText, 18, 30);
 
             var btn = Sfx.WireClick(bg.gameObject.AddComponent<Button>());
             btn.targetGraphic = bg;
@@ -416,6 +440,7 @@ namespace Numeria.Game
         {
             _actionsEnabled = on;
             _btnTackle.interactable = on;
+            _btnDefend.interactable = on;
             _btnFormula.interactable = on;
             _btnShield.interactable = on;
             _btnCatch.interactable = on;
@@ -517,6 +542,20 @@ namespace Numeria.Game
                 ? $"2X SHIELD BREAK - {result.Damage} DAMAGE"
                 : $"{result.Damage} DAMAGE");
             yield return EndPlayerTurn();
+        }
+
+        private IEnumerator DefendRoutine()
+        {
+            if (!_actionsEnabled || !_state.Defend()) yield break;
+            SetActionsEnabled(false);
+            SetLog("Defend!", "NEXT HIT: HALF DAMAGE");
+            _voice.Say("Defend! Take half damage this turn.");
+            var shield = Ui.SpriteImg(_shakeRoot, "GuardShield", SpriteLib.One("Art/Sprites/shield"));
+            shield.raycastTarget = false;
+            Ui.PlaceCentered(shield.rectTransform, new Vector2(.5f, .5f), _playerSprite.anchoredPosition, new Vector2(170, 200));
+            shield.color = new Color(.55f, .85f, 1f, .75f);
+            yield return EndPlayerTurn();
+            Destroy(shield.gameObject);
         }
 
         private IEnumerator FormulaRoutine()
@@ -722,6 +761,7 @@ namespace Numeria.Game
             var enemyForm = GameData.PlayerMon(_state.Enemy.Id, GameData.StageIndex(_state.Enemy.Id), _state.Enemy.Level);
             var enemySkill = System.Array.Find(enemyForm.Skills, skill => skill.Type == SkillType.Formula);
             int dmg = 0;
+            bool guarded = _state.Defending;
             var response = SpellSequence.Create(_canvasRoot, _enemySprite, _playerSprite,
                 enemySkill?.Visual ?? SkillVisualKind.Physical, null, true, _state.Enemy.Id);
             yield return response.Play(() =>
@@ -730,7 +770,7 @@ namespace Numeria.Game
                 PopDamage(_playerSprite, $"-{dmg}", Ui.Hex("#ff6b6b"));
                 RenderAll();
             });
-            SetLog("Ouch!", $"{dmg} DAMAGE");
+            SetLog(guarded ? "Guarded!" : "Ouch!", $"{dmg} DAMAGE");
             if (_state.Outcome != BattleOutcome.None) { ShowOutcome(); yield break; }
             yield return new WaitForSeconds(0.5f);
             _state.StartPlayerTurn();

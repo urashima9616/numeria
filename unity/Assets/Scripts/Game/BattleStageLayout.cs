@@ -9,6 +9,7 @@ namespace Numeria.Game
     {
         private RectTransform _root, _background, _plate;
         private Image _player, _enemy;
+        private Image _lucas, _trainer;
         private RectTransform _playerShadow, _enemyShadow;
         private Vector2 _lastSize;
         private string _resource;
@@ -34,11 +35,12 @@ namespace Numeria.Game
         }
 
         public static BattleStageLayout Build(RectTransform root, Image background, Image player, Image enemy,
-            RectTransform plate, string resource)
+            RectTransform plate, string resource, Image lucas = null, Image trainer = null)
         {
             var layout = root.gameObject.AddComponent<BattleStageLayout>();
             layout._root = root; layout._background = background.rectTransform; layout._plate = plate;
             layout._player = player; layout._enemy = enemy; layout._resource = resource;
+            layout._lucas = lucas; layout._trainer = trainer;
             layout._aspect = background.sprite == null ? 16f / 9 : background.sprite.rect.width / background.sprite.rect.height;
             layout._playerShadow = layout.Shadow("PlayerContactShadow");
             layout._enemyShadow = layout.Shadow("EnemyContactShadow");
@@ -78,6 +80,20 @@ namespace Numeria.Game
             _plate.anchoredPosition = new Vector2(-28, 340);
             Place(_player, _playerShadow, false, size, cover);
             Place(_enemy, _enemyShadow, true, size, cover);
+            PlaceTrainer(_lucas, _player, false, size);
+            PlaceTrainer(_trainer, _enemy, true, size);
+        }
+
+        private void PlaceTrainer(Image actor, Image mon, bool enemy, Vector2 viewport)
+        {
+            if (actor == null) return;
+            float height = enemy ? 220 : 280;
+            float aspect = actor.sprite == null ? .7f : actor.sprite.rect.width / actor.sprite.rect.height;
+            var bounds = new Vector2(height * aspect, height);
+            var foot = mon.rectTransform.anchoredPosition - Vector2.up * mon.rectTransform.sizeDelta.y * .5f;
+            foot += new Vector2(enemy ? 210 : -200, enemy ? 90 : 65);
+            foot.x = Mathf.Clamp(foot.x, -viewport.x / 2 + bounds.x / 2 + 24, viewport.x / 2 - bounds.x / 2 - 24);
+            Ui.PlaceCentered(actor.rectTransform, new Vector2(.5f, .5f), foot + Vector2.up * height / 2, bounds);
         }
 
         private void Place(Image image, RectTransform shadow, bool enemy, Vector2 viewport, Vector2 cover)

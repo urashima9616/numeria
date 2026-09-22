@@ -84,7 +84,7 @@ namespace Numeria.Game
             BuildWorld();
             BuildHud();
             _puzzles = new PuzzleUi(this, _hudCanvasRoot, _rng, lines => _voice.Say(lines),
-                solved => _progress.RecordPuzzle(solved));
+                solved => _progress.RecordPuzzle(solved), _progress.Learning, _def.Tier);
             SetupCamera();
             UpdateHud();
             Music.PlayMap(_def.Id);
@@ -432,7 +432,7 @@ namespace Numeria.Game
                 case Tile.Bush:
                     if (_rng.Next() < EncounterChance)
                     {
-                        StartBattle(_def.RollWildEncounter(_progress.ActiveGrowth.Level, _rng), false);
+                StartBattle(TrainerSystem.Roll(_def.RollWildEncounter(_progress.ActiveGrowth.Level, _rng), _rng), false);
                         return true;
                     }
                     return false;

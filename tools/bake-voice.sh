@@ -23,6 +23,14 @@ bake() {
   echo "baked: $key.wav"
 }
 
+# Grade-based learning: generated finite prompts + composable spoken number tokens.
+if [[ -f tools/learning-voice-lines.txt ]]; then
+  while IFS= read -r line; do
+    [[ -n "$line" ]] && bake "$line"
+  done < tools/learning-voice-lines.txt
+fi
+if [[ "${1:-}" == "--learning-only" ]]; then exit 0; fi
+
 # ---- Afterstory: existing bake() keeps all new narration offline ----
 for coins in 52 58 90 100; do
   bake "You found $coins Numeria coins!"

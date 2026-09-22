@@ -1,7 +1,7 @@
 # Numeria 🔢✨
 
 **A Pokémon-inspired math RPG built for a five-year-old.** In Numeria, numbers, shapes, symmetry, and patterns
-are magic. Players befriend original creatures called **Mathmons**, solve Kindergarten-level puzzles to power
+are magic. Players befriend original creatures called **Mathmons**, solve adjustable K–5 math puzzles to power
 their skills, and help Lucas restore six Digit Crystals so he can reopen the legendary gate home.
 
 > Current state: a playable eight-region Unity build with story, exploration, battles, catching, evolution and Mega
@@ -20,9 +20,19 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 | P3 — Full game systems | 🔶 Playable / polishing | Eight painterly worlds, 159 Mathmons, evolution, economy, merchants, Lucas story |
 | P4 — iOS delivery | 🔶 On-device / polishing | Signed iPad build and transferred progress confirmed playable; ongoing device QA and save-safe updates |
 
-The current verification baseline compiles all four Unity assemblies and passes **163/163 Unity EditMode tests**
+The current verification baseline compiles all four Unity assemblies and passes **177/177 Unity EditMode tests**
 plus **15/15 Node prototype tests**.
-The save format is currently **schema v11**, with non-destructive migration for older saves.
+The local save format is **schema v12**, with non-destructive migration for older saves. The installed iPad build
+remains v11; this local update has not been deployed.
+
+### Local update — trainers, safer team management and K–5 learning
+
+Lucas now appears behind his battle partner. Random Master encounters use 20 new trainer portraits and
+20–40% nominal stat bonuses; fixed Boss levels are unchanged. Battle adds **Defend** (half damage for the next
+enemy attack) and new Tackle art. TEAM adds sorting, two-stage Let Go confirmation, and explicit equipment
+transfer between partners. SYSTEM selects K–5 and four difficulty modes, progressing linearly across chapters
+inside the chosen grade/mode. Five new math families add place value, time, fractions, measurement and data.
+See [rules, previews, tests and save/rollback safety](docs/training-and-learning.md).
 
 ### Afterstory expansion — installed on iPad
 
@@ -122,32 +132,18 @@ their original art direction. See [battle-stage correction and generated assets]
 - Elder Rowan, Keeper Orin, Astronomer Lyra, Sage Solara, Engineer Vesper, and Keeper Echo guard the six Digit Crystals.
 - Guardian conversations appear before and after each boss, leading to a six-crystal ending while leaving free
   exploration available.
-- TEAM, ITEMS, RECORDS, SAVES, and SETTINGS menus; ten independent save slots and a save-aware return-to-menu flow.
+- TEAM, ITEMS, RECORDS, SAVES, and SYSTEM menus; ten independent save slots and a save-aware return-to-menu flow.
 - Unified TextMeshPro/Jersey 10 typography, generated pixel-art characters and icons, ten SFX cues, and nine
   mood-based 8-bit music tracks with crossfading and narration ducking.
 
-## Kindergarten math progression
+## Grade-based math progression
 
-| Region | Number range | Puzzle progression | Boss |
-|---|---:|---|---|
-| 🌲 Mystic Forest | 0–10 | Core addition/subtraction, counting, comparison, shapes, colored AB patterns, number paths | Numberfly |
-| ⛰️ Silent Peaks | 0–20 | Gentle stretch arithmetic, make-target, three-term sums, equality balance, pattern gaps | Duplirock Elder |
-| ☁️ Azure Sky City | 0–20 | Four-term sums with small addends, geometry, mirror-order matching, number paths, mixed patterns | Symmetrix |
-| 🏜️ Fever Desert | 0–20 | Number decomposition, selective shape/color matching, equality balance, advanced mixed patterns | Solar Totalisk |
-| ⛏️ Dark Mines | 0–20 | Multi-step review, grouping, circuit sequences, mirrored routes | Master Voltamper |
-| 🔥 Underground Tunnels | 0–20 | Cumulative review, symmetry, equality, and mixed pattern mastery | Ancient Calcularagon |
-| 🏛️ Ancient Ruins (afterstory) | 0–20 | Mosaic shapes, gear patterns and equality balance | Grand Abacoracle, Lv.58 |
-| 🌙 Veilmoon Lake (afterstory) | 0–20 | Lantern number bonds, mirror matching and lotus patterns | Lady Moonveil, Lv.66 |
-
-Portal trials always include arithmetic, use three different puzzle families, and allow unlimited zero-penalty
-retries.
-
-[Common Core Kindergarten mathematics](https://corestandards.org/wp-content/uploads/2023/09/ADA-Compliant-Math-Standards.pdf)
-treats addition and subtraction within 10 as the core expectation. Numeria keeps the first region inside that
-boundary, then uses the requested within-20 range as a scaffolded stretch goal. Later chapters increase reasoning
-complexity instead of introducing 30- or 40-sized arithmetic. Teen-number facts use `10 + ones`, counting on by
-at most five, returning to 10, or counting back by at most five; every arithmetic generator also enforces 20 as a
-hard ceiling even if a future caller requests a larger range.
+Choose **Kindergarten or Grade 1–5** in SYSTEM, then **Normal / Feel Good / Challenging / Random**.
+Each grade remembers its own mode. Chapters 1–8 linearly raise the allowed difficulty inside that selection,
+never automatically crossing into the next grade. Kindergarten arithmetic stays within 10; Grade 1 stays
+within 20. Later grades add multi-digit work, multiplication/division, fractions, decimals and measurement.
+Visual patterns and symmetry remain alongside the five new families. Mistakes still receive hints and a retry.
+This is a curated practice set, not a complete K–5 curriculum; see the [grade table and exact rules](docs/training-and-learning.md).
 
 ## Run the Unity game
 

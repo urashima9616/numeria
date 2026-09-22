@@ -1,0 +1,139 @@
+{
+  "generator": "OpenAI imagegen built-in",
+  "date": "2026-09-21",
+  "styleReference": "unity/Assets/Resources/generated/Heroes/lucas_explorer.png",
+  "assets": [
+    {
+      "id": "fern",
+      "resource": "generated/Trainers/fern",
+      "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-61b4b104-2bd2-47a1-87af-da58e34b71dc.png",
+      "prompt": "Use case: stylized-concept. Asset type: one production Numeria enemy Mathmon trainer sprite. Input image is STYLE reference only, do not copy its character. Subject: young woman forest ranger, dark braided hair, green cloak, seed pouch and walking staff. Full body original friendly fantasy trainer, ready for a friendly creature battle, 3/4 front view facing LEFT, four-head-tall RPG proportions. Match reference pixel-inspired crisp shaded clusters, dark warm outline, readable expressive face, light from upper left. ONE person only, isolated, genuinely transparent alpha background, feet and equipment fully inside canvas with generous 12 percent margin, no shadows, no scenery, no text, no border, no creature, no weapons."
+    },
+    {
+      "id": "flint",
+      "resource": "generated/Trainers/flint",
+      "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-2e5b2681-2fa1-4856-81a3-ea15f5bc796a.png",
+      "prompt": "Use case: stylized-concept. Asset type: one production Numeria enemy Mathmon trainer sprite. Input image is STYLE reference only, do not copy its character. Subject: stocky older mountain climber, grey beard, orange scarf, blue climbing jacket and rope. Full body original friendly fantasy trainer, ready for a friendly creature battle, 3/4 front view facing LEFT, four-head-tall RPG proportions. Match reference pixel-inspired crisp shaded clusters, dark warm outline, readable expressive face, light from upper left. ONE person only, isolated, genuinely transparent alpha background, feet and equipment fully inside canvas with generous 12 percent margin, no shadows, no scenery, no text, no border, no creature, no weapons."
+    },
+    {
+      "id": "aster",
+      "resource": "generated/Trainers/aster",
+      "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-dc6b0ee8-6629-4c2b-b719-107ef85751a7.png",
+      "prompt": "Use case: stylized-concept. Asset type: one production Numeria enemy Mathmon trainer sprite. Input image is STYLE reference only, do not copy its character. Subject: young Black woman astronomer, navy star-pattern cape, brass telescope, round glasses. Full body original friendly fantasy trainer, ready for a friendly creature battle, 3/4 front view facing LEFT, four-head-tall RPG proportions. Match reference pixel-inspired crisp shaded clusters, dark warm outline, readable expressive face, light from upper left. ONE person only, isolated, genuinely transparent alpha background, feet and equipment fully inside canvas with generous 12 percent margin, no shadows, no scenery, no text, no border, no creature, no weapons."
+    },
+    {
+      "id": "dune",
+      "resource": "generated/Trainers/dune",
+      "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-5ed2d423-0f96-450e-9241-89d38ee7c574.png",
+      "prompt": "Use case: stylized-concept. Asset type: one production Numeria enemy Mathmon trainer sprite. Input image is STYLE reference only, do not copy its character. Subject: brown-skinned desert explorer man, cream head scarf, turquoise waistcoat, rolled map. Full body original friendly fantasy trainer, ready for a friendly creature battle, 3/4 front view facing LEFT, four-head-tall RPG proportions. Match reference pixel-inspired crisp shaded clusters, dark warm outline, readable expressive face, light from upper left. ONE person only, isolated, genuinely transparent alpha background, feet and equipment fully inside canvas with generous 12 percent margin, no shadows, no scenery, no text, no border, no creature, no weapons."
+    },
+    {
+      "id": "mica",
+      "resource": "generated/Trainers/mica",
+      "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-540f0a3e-ca45-43ee-bf72-a2a7b6b1228d.png",
+      "prompt": "Use case: stylized-concept. One production Numeria enemy trainer sprite. Input is STYLE reference only, not its character. Subject: woman cave geologist, short silver hair, amber headlamp, purple work overalls and crystal pouch. Full body original friendly fantasy trainer ready for a creature battle, 3/4 front facing LEFT, four-head-tall RPG proportions. Match pixel-inspired crisp shaded clusters, dark warm outline, expressive face, upper-left light. ONE person only, transparent alpha background, feet and equipment fully inside with 12 percent margin. No shadow, scenery, text, border, creature or weapons."
+    },
+    {
+      "id": "ember",
+      "resource": "generated/Trainers/ember",
+      "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-6ac5514f-9261-4d9d-907d-7ef0f49b0f41.png",
+      "prompt": "Use case: stylized-concept. One production Numeria enemy trainer sprite. Input is STYLE reference only, not its character. Subject: young man forge apprentice, curly red hair, leather apron, charcoal trousers and copper gloves. Full body original friendly fantasy trainer ready for a creature battle, 3/4 front facing LEFT, four-head-tall RPG proportions. Match pixel-inspired crisp shaded clusters, dark warm outline, expressive face, upper-left light. ONE person only, transparent alpha background, feet and equipment fully inside with 12 percent margin. No shadow, scenery, text, border, creature or weapons."
+    },
+    {
+      "id": "clio",
+      "resource": "generated/Trainers/clio",
+      "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-bff7889c-c525-4728-bda5-90fc87819071.png",
+      "prompt": "Use case: stylized-concept. One production Numeria enemy trainer sprite. Input is STYLE reference only, not its character. Subject: older woman ruin archaeologist, tan expedition hat, teal vest, bronze compass and notebook. Full body original friendly fantasy trainer ready for a creature battle, 3/4 front facing LEFT, four-head-tall RPG proportions. Match pixel-inspired crisp shaded clusters, dark warm outline, expressive face, upper-left light. ONE person only, transparent alpha background, feet and equipment fully inside with 12 percent margin. No shadow, scenery, text, border, creature or weapons."
+    },
+    {
+      "id": "luna",
+      "resource": "generated/Trainers/luna",
+      "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-9a2afa95-637a-4b98-876a-4c329a3fab40.png",
+      "prompt": "Use case: stylized-concept. One production Numeria enemy trainer sprite. Input is STYLE reference only, not its character. Subject: East Asian woman lakeside lantern keeper, violet robe, silver hairpin, small gold lantern. Full body original friendly fantasy trainer ready for a creature battle, 3/4 front facing LEFT, four-head-tall RPG proportions. Match pixel-inspired crisp shaded clusters, dark warm outline, expressive face, upper-left light. ONE person only, transparent alpha background, feet and equipment fully inside with 12 percent margin. No shadow, scenery, text, border, creature or weapons."
+    },
+    {
+      "id": "reed",
+      "resource": "generated/Trainers/reed",
+      "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-ec452ad6-5875-44fe-8a02-f02ef17c81e0.png",
+      "prompt": "One Numeria trainer battle sprite. STYLE reference only. cheerful teenage boy angler, straw hat, blue vest, green boots, compact fishing rod. Friendly original fantasy person, full body 3/4 view facing LEFT, four-head-tall RPG proportions, same crisp pixel-inspired shaded clusters, warm dark outlines as reference. Transparent alpha background, NO backdrop, no shadow, no text or border. Entire feet/equipment visible, 12% margin. One person, no creatures or weapons."
+    },
+    {
+      "id": "iris",
+      "resource": "generated/Trainers/iris",
+      "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-2dced5c3-9413-429d-8fb2-2009e2dad9e6.png",
+      "prompt": "One Numeria trainer battle sprite. STYLE reference only. young woman gardener, dark skin, pink headband, moss-green dress, small watering can. Friendly original fantasy person, full body 3/4 view facing LEFT, four-head-tall RPG proportions, same crisp pixel-inspired shaded clusters, warm dark outlines as reference. Transparent alpha background, NO backdrop, no shadow, no text or border. Entire feet/equipment visible, 12% margin. One person, no creatures or weapons."
+    },
+    {
+      "id": "pip",
+      "resource": "generated/Trainers/pip",
+      "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-69389e71-a068-47b6-8d9c-6886cdac1c44.png",
+      "prompt": "One Numeria trainer battle sprite. STYLE reference only. small adventurous boy bug observer, freckles, huge green explorer hat, magnifying glass. Friendly original fantasy person, full body 3/4 view facing LEFT, four-head-tall RPG proportions, same crisp pixel-inspired shaded clusters, warm dark outlines as reference. Transparent alpha background, NO backdrop, no shadow, no text or border. Entire feet/equipment visible, 12% margin. One person, no creatures or weapons."
+    },
+    {
+      "id": "sage",
+      "resource": "generated/Trainers/sage",
+      "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-a786abcc-c515-49de-960f-90c77c563a4d.png",
+      "prompt": "One Numeria trainer battle sprite. STYLE reference only. elderly East Asian man number scholar, white beard, jade coat, abacus at waist. Friendly original fantasy person, full body 3/4 view facing LEFT, four-head-tall RPG proportions, same crisp pixel-inspired shaded clusters, warm dark outlines as reference. Transparent alpha background, NO backdrop, no shadow, no text or border. Entire feet/equipment visible, 12% margin. One person, no creatures or weapons."
+    },
+    {
+      "id": "nora",
+      "resource": "generated/Trainers/nora",
+      "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-6b701b8e-9df9-4e5c-b1e9-7e204f21158b.png",
+      "prompt": "One Numeria trainer battle sprite. STYLE reference only. athletic girl snow scout, braided blond hair, lavender winter parka, snow goggles. Friendly original fantasy person, full body 3/4 view facing LEFT, four-head-tall RPG proportions, same crisp pixel-inspired shaded clusters, warm dark outlines as reference. Transparent alpha background, NO backdrop, no shadow, no text or border. Entire feet/equipment visible, 12% margin. One person, no creatures or weapons."
+    },
+    {
+      "id": "atlas",
+      "resource": "generated/Trainers/atlas",
+      "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-2c755903-85a1-4189-be80-c04d5e64c24e.png",
+      "prompt": "One Numeria trainer battle sprite. STYLE reference only. broad-shouldered Black man sky courier, white flight jacket, blue scarf, leather messenger bag. Friendly original fantasy person, full body 3/4 view facing LEFT, four-head-tall RPG proportions, same crisp pixel-inspired shaded clusters, warm dark outlines as reference. Transparent alpha background, NO backdrop, no shadow, no text or border. Entire feet/equipment visible, 12% margin. One person, no creatures or weapons."
+    },
+    {
+      "id": "opal",
+      "resource": "generated/Trainers/opal",
+      "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-8f0ce633-b1ae-4066-8dee-059a39f25891.png",
+      "prompt": "One Numeria trainer battle sprite. STYLE reference only. woman jewel artisan, auburn bun, burgundy tunic, ornate belt and turquoise gem. Friendly original fantasy person, full body 3/4 view facing LEFT, four-head-tall RPG proportions, same crisp pixel-inspired shaded clusters, warm dark outlines as reference. Transparent alpha background, NO backdrop, no shadow, no text or border. Entire feet/equipment visible, 12% margin. One person, no creatures or weapons."
+    },
+    {
+      "id": "cove",
+      "resource": "generated/Trainers/cove",
+      "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-eb284afa-7e9b-4752-8e1c-84c09d007022.png",
+      "prompt": "One Numeria trainer battle sprite. STYLE reference only. older seaside captain woman, weathered friendly face, navy coat, white cap and brass whistle. Friendly original fantasy person, full body 3/4 view facing LEFT, four-head-tall RPG proportions, same crisp pixel-inspired shaded clusters, warm dark outlines as reference. Transparent alpha background, NO backdrop, no shadow, no text or border. Entire feet/equipment visible, 12% margin. One person, no creatures or weapons."
+    },
+    {
+      "id": "basil",
+      "resource": "generated/Trainers/basil",
+      "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-aa5bd1f8-9cf1-4d67-a608-d0127a2903ae.png",
+      "prompt": "One Numeria trainer battle sprite. STYLE reference only. young man travelling cook, brown skin, chef bandana, cream shirt, green apron and ladle. Friendly original fantasy person, full body 3/4 view facing LEFT, four-head-tall RPG proportions, same crisp pixel-inspired shaded clusters, warm dark outlines as reference. Transparent alpha background, NO backdrop, no shadow, no text or border. Entire feet/equipment visible, 12% margin. One person, no creatures or weapons."
+    },
+    {
+      "id": "nova",
+      "resource": "generated/Trainers/nova",
+      "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-5f951a0e-d2cf-41e2-a964-d4a211b4f6f0.png",
+      "prompt": "One Numeria trainer battle sprite. STYLE reference only. teen girl inventor, black bob hair, copper goggles, yellow jacket and mechanical gauntlet. Friendly original fantasy person, full body 3/4 view facing LEFT, four-head-tall RPG proportions, same crisp pixel-inspired shaded clusters, warm dark outlines as reference. Transparent alpha background, NO backdrop, no shadow, no text or border. Entire feet/equipment visible, 12% margin. One person, no creatures or weapons."
+    },
+    {
+      "id": "wren",
+      "resource": "generated/Trainers/wren",
+      "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-8f7404d9-8475-4306-8c22-3a6806632541.png",
+      "prompt": "One Numeria trainer battle sprite. STYLE reference only. androgynous young musician with wavy brown hair, teal cape, small wooden flute and satchel. Friendly original fantasy person, full body 3/4 view facing LEFT, four-head-tall RPG proportions, same crisp pixel-inspired shaded clusters, warm dark outlines as reference. Transparent alpha background, NO backdrop, no shadow, no text or border. Entire feet/equipment visible, 12% margin. One person, no creatures or weapons."
+    },
+    {
+      "id": "sol",
+      "resource": "generated/Trainers/sol",
+      "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-f32d2a56-5dfe-4268-a493-f3afc12f8605.png",
+      "prompt": "One Numeria trainer battle sprite. STYLE reference only. kind older sun guardian man, golden-brown skin, white hair, ivory and gold robes, sun medallion. Friendly original fantasy person, full body 3/4 view facing LEFT, four-head-tall RPG proportions, same crisp pixel-inspired shaded clusters, warm dark outlines as reference. Transparent alpha background, NO backdrop, no shadow, no text or border. Entire feet/equipment visible, 12% margin. One person, no creatures or weapons."
+    },
+    {
+      "id": "lucas_battle",
+      "resource": "generated/Heroes/lucas_battle",
+      "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-448fdc6b-5985-4eaf-90c4-a429bfe9c0a2.png",
+      "prompt": "Character continuity edit: the SAME Lucas boy in input reference, same black short hair, cyan T-shirt, dark shorts, blue yellow sneakers, navy backpack. Full body REAR THREE-QUARTER view facing RIGHT toward his creature in battle, supportive confident pose, head slightly turned right with just small profile visible. Back and backpack prominent; NOT front facing. Match crisp pixel-inspired RPG sprite styling and proportions of reference. One boy only, genuine transparent alpha background, feet fully inside 12% canvas margin. No scenery, ground, shadow, text or creatures."
+    },
+    {
+      "id": "tackle",
+      "resource": "generated/UI/tackle",
+      "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-09028ad0-064b-4b76-b4b1-8ade4554198b.png",
+      "prompt": "Create one production Numeria RPG TACKLE skill icon matching the reference's crisp pixel-inspired dark outlined shading and warm palette. A bold rounded orange creature shoulder/paw charging RIGHT into a cream and golden star-shaped physical impact burst, three short cyan speed marks behind it. Simple strong silhouette readable at 64px, rich polished highlights but no tiny detail. No sword or weapon. No text, no frame, no circle badge, no backdrop. Genuine transparent alpha background, centered with 15% empty margin. The reference is art STYLE only, do not include its boy."
+    }
+  ]
+}
