@@ -1,106 +1,239 @@
 a
+A factor divides exactly. A multiple is made by multiplying.
+A nickel is five cents. A dime is ten cents.
 A trainer challenges you!
 Add the fractions.
-Add the fractions. Use the common denominator.
-Add the values of all three bars.
-Area = length x width.
+an
+and
+area
+Area counts square units. Multiply length by width.
+away
 b
+bag
+bags
+Balance both sides of the scale.
+block
 blue
+Both sides must have the same total.
 Both start at the same place. Look at the far ends.
-Bottom number: all equal parts. Top number: shaded parts.
+Break the number into the value of each place.
 Break the numbers into friendly parts.
+Build the number from its parts.
+Build the path from greatest to least.
+Build the path from least to greatest.
+by
 centimeters
+cents
+change
 Choose the sign that makes this true.
+Choose two crystals to make the target.
+circle
+clock
 close parenthesis
+compare
+Compare the fractions.
 Compare the greatest place first. The open side faces the greater number.
+Complete the mirror image.
+Complete the spell.
 Continue the number pattern.
+Convert the measurement.
+costing
 Count back, or use addition to check.
+Count blocks, then use the value of each block.
+Count equal spaces from zero, not tick marks.
+Count only the matching shapes.
+Count the value of the coins.
+crystals
+Decide what joins, leaves, or is missing. Then choose an operation.
 Defend! Take half damage this turn.
 digit
+dimes
+Divide using equal parts.
 divided by
+does
+each
+Each row is an equal group. Count groups and items in each group.
+earlier
 eight
 eighteen
 eighty
 eleven
 equals
+every
+factor
 fifteen
 fifty
+find
+Find an equivalent fraction.
 Find how much changes at each step.
 Find the area in square units.
+Find the area of the rectangle.
+Find the missing measurement.
 Find the missing number.
+Find the missing part of the number.
 Find the missing width of the rectangle.
 Find the perimeter of the rectangle.
-Find the volume of this box in cubic units.
+Find the small group that repeats.
+Find the two neighboring multiples. Halfway rounds up.
+Find the volume in cubic units.
+finds
 five
+for
 forty
 four
 fourteen
-gold
+friend
+friends
+gems
+get
+gives
+grams
 Great job!
+grid
+groups
+has
+have
+he
 height
-How many sides does this shape have?
+holds
+hours
+how
+How many crystals are in each row?
+How many crystals are in this array?
+How many crystals are there?
+How many equal parts make this whole?
+How many full bags and how many left over?
+How many full bags can Lucas make?
+How many gold crystals are there?
+How many more votes does the larger group have?
+How many straight sides does this shape have?
 How many voted for RED?
 How many votes are there altogether?
+How much change should Lucas receive?
 How much longer is the longer ribbon?
 hundred
 hundreds
+hundredths
+Ignore other shapes. Count the matching group.
 in
+is
+item
+keep
+kilograms
+later
 length
+lengths
 Let's try again!
 Line up the decimal points. Work with hundredths.
+Look at the outside edge of the joined pieces.
+Look at the straight sides and corners.
+lucas
+many
+Match shapes the same distance from the mirror.
+meters
 minus
-Multiply the digit by the value of its place.
+minutes
+more
+move
+multiple
+Multiply the fraction by a whole number.
+Multiply the fractions.
+Name this shape.
+nearest
+need
+needs
+nickels
 nine
 nineteen
 ninety
+now
+of
 one
+One hour is sixty minutes.
+One kilogram is one thousand grams.
+One meter is one hundred centimeters.
 One ten and how many ones?
 ones
 open parenthesis
+order
 over
+pack
+pays
 perimeter
-Perimeter is the distance around all four sides.
+Perimeter counts the outside edge. Add all four sides.
+Pick one part, then count what is still needed.
 place
 plus
 point
-Read the length of the RED bar.
+read
+Read across first, then up. Coordinates are written x, then y.
+Read the coordinates of the crystal.
+Read the short hand for hours and the long hand for minutes.
 red
+remain
+right
+round
+Round to the nearest marked place.
+same
 seven
 seventeen
 seventy
-Short hand: hours. Long hand: minutes. Each number marks five minutes.
+Share the crystals equally.
+shared
 six
 sixteen
 sixty
+Solve the adventure story.
+Solve the decimal spell.
 Solve the number spell.
-Start at one corner. Count each straight edge once.
+spaces
+square
+Start with the greatest number.
+Start with the smallest number.
+stones
+Subtract the fractions.
 Subtract the shorter length from the longer length.
+tap
+target
 ten
 tens
+tenths
 the
 The full frame is ten. Count the extra dots.
+Think in hundredths. Keep the place values aligned.
 thirteen
 thirty
 thousand
 thousands
 three
 times
+to
+Touch each crystal once as you count.
+triangle
 twelve
 twenty
 two
 Use equal groups. Multiplication and division undo each other.
-Use equal-sized parts. Then add the numerators.
-Volume = length x width x height.
+Use equal-sized parts of the same whole.
+Use the numbers in the spell. Check each step.
+uses
+volume
+Volume counts unit cubes. Multiply length, width, and height.
+vote
+votes
 what
+What fraction is marked on the number line?
 What fraction is shaded?
 What is the value of the indicated digit?
+What shape do these pieces make together?
 What time does the clock show?
-What time will it be in 10 minutes?
-What time will it be in 15 minutes?
-What time will it be in 20 minutes?
-What time will it be in 25 minutes?
-What time will it be in 30 minutes?
-What time will it be in 5 minutes?
+What time was it earlier?
+What time will it be later?
+Where is the crystal after the move?
+Which number is a factor?
+Which number is a multiple?
 Which ribbon is longer?
+Which shape completes the repeating pattern?
 width
+with
 zero

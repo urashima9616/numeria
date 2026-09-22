@@ -6,7 +6,11 @@ using System.Linq;
 namespace Numeria.Core
 {
     public enum MathMode { Normal, FeelGood, Challenging, Random }
-    public enum LearningKind { Arithmetic, MissingNumber, Comparison, Pattern, Geometry, PlaceValue, Time, Fractions, Measurement, Data }
+    public enum LearningKind { Arithmetic, MissingNumber, Comparison, Pattern, Geometry, PlaceValue, Time, Fractions, Measurement, Data,
+        Counting, Bonds, Balance, NumberPath, VisualPattern, Symmetry, Sorting, ShapeCompose, WordProblem,
+        EqualGroups, Money, Rounding, FractionLine, Units, Coordinates, DecimalOps, Factors,
+        Double, Subtraction, ChainSum }
+    public enum LearningInteraction { Choice, Pair, Order }
 
     [Serializable]
     public class MathSettings
@@ -43,13 +47,18 @@ namespace Numeria.Core
         public string Diagram;
         public int[] Values;
         public string[] Labels;
+        public string Template;
+        public LearningInteraction Interaction;
+        public string[] Tokens;
+        public int[] Expected;
+        public bool HideValues;
+        public string[] Speech;
     }
 
-    public static class MathCurriculum
+    public static partial class MathCurriculum
     {
         private static string S(decimal n) => n.ToString("0.###", CultureInfo.InvariantCulture);
-        public static LearningKind[] Available(int grade) => Enum.GetValues(typeof(LearningKind)).Cast<LearningKind>()
-            .Where(k => grade > 0 || (k != LearningKind.Time && k != LearningKind.Fractions)).ToArray();
+        public static LearningKind[] Available(int grade) => GradePool(Math.Max(0, Math.Min(5, grade)));
 
         public static int ChapterLimit(int grade, MathMode mode, int chapter)
         {
@@ -69,10 +78,12 @@ namespace Numeria.Core
             if (mode == MathMode.Random) mode = (MathMode)rng.Pick(0, 2);
             int difficulty = mode == MathMode.FeelGood ? 0 : mode == MathMode.Challenging ? 2 : 1;
             var pool = Available(g);
-            var kind = requested.HasValue && pool.Contains(requested.Value) ? requested.Value : pool[rng.Pick(0, pool.Length - 1)];
+            var kind = requested.HasValue && Supports(g, requested.Value) ? requested.Value : pool[rng.Pick(0, pool.Length - 1)];
             var q = new LearningQuestion { Kind = kind, Grade = g, Difficulty = mode };
             int cap = ChapterLimit(g, mode, chapter);
             int facts = ChapterSteps(difficulty == 0 ? 3 : 5, difficulty == 0 ? 5 : 10, chapter);
+            if (Expand(q, rng, chapter, cap, facts)) return q;
+            q.Template = kind.ToString();
             var wrong = new List<string>();
             void Numeric(decimal answer, decimal step = 1)
             {
@@ -87,24 +98,29 @@ namespace Numeria.Core
                 case LearningKind.MissingNumber:
                 {
                     bool missing = kind == LearningKind.MissingNumber;
-                    int a = rng.Pick(1, cap - 1), b = rng.Pick(1, cap - a);
+                    int a = rng.Pick(0, cap - 1), b = rng.Pick(0, cap - a);
                     bool subtract = rng.Next() < .5;
                     q.Prompt = missing ? "Find the missing number." : "Solve the number spell.";
                     q.Hint = subtract ? "Count back, or use addition to check." : "Break the numbers into friendly parts.";
-                    if (g >= 3 && rng.Next() < .55)
+                    if (!missing && g >= 3 && rng.Next() < .55)
                     {
                         a = rng.Pick(2, facts); b = rng.Pick(2, facts);
-                        if (g >= 4 && difficulty > 0) a = rng.Pick(11, ChapterSteps(12, g == 5 ? 99 : 40, chapter));
+                        if (g >= 4 && difficulty > 0)
+                        {
+                            a = rng.Pick(11, ChapterSteps(20, subtract ? 999 : g == 5 ? 999 : 99, chapter));
+                            b = subtract ? rng.Pick(2, g == 5 ? ChapterSteps(9, 99, chapter) : 9)
+                                : rng.Pick(11, ChapterSteps(12, 99, chapter));
+                        }
                         q.Display = subtract ? $"{a * b} / {b} = ?" : $"{a} x {b} = ?";
                         q.Hint = "Use equal groups. Multiplication and division undo each other.";
                         Numeric(subtract ? a : a * b);
                     }
-                    else if (g == 5)
+                    else if (g == 5 && !missing)
                     {
                         decimal x = a / 100m, y = b / 100m;
                         if (difficulty == 2)
                         {
-                            decimal z = rng.Pick(1, b) / 100m;
+                            decimal z = rng.Pick(0, b) / 100m;
                             q.Display = $"({S(x)} + {S(y)}) - {S(z)} = ?";
                             Numeric(x + y - z, .01m);
                         }
@@ -122,7 +138,7 @@ namespace Numeria.Core
                     }
                     else if (difficulty == 2 && g >= 2)
                     {
-                        int c = rng.Pick(1, b); q.Display = $"({a} + {b}) - {c} = ?"; Numeric(a + b - c);
+                        int c = rng.Pick(0, b); q.Display = $"({a} + {b}) - {c} = ?"; Numeric(a + b - c);
                     }
                     else { q.Display = subtract ? $"{a + b} - {b} = ?" : $"{a} + {b} = ?"; Numeric(subtract ? a : a + b); }
                     break;
@@ -235,6 +251,7 @@ namespace Numeria.Core
                     q.Diagram = "bars"; q.Values = new[] { a, b }; q.Labels = new[] { "A", "B" };
                     if (g == 0)
                     {
+                        q.HideValues = true;
                         if (a == b) b = a == 8 ? 7 : a + 1; q.Values[1] = b;
                         q.Prompt = "Which ribbon is longer?"; q.Display = "COMPARE LENGTHS"; q.Answer = a > b ? "A" : "B";
                         wrong.Add(a > b ? "B" : "A"); q.Hint = "Both start at the same place. Look at the far ends.";

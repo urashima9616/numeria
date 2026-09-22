@@ -110,12 +110,36 @@ namespace Numeria.Editor
             var lines=new HashSet<string> {"A trainer challenges you!","Defend! Take half damage this turn.","Great job!","Let's try again!"};
             var rng=new Rng(731);
             for(int grade=0;grade<6;grade++) for(int mode=0;mode<3;mode++) for(int chapter=1;chapter<=8;chapter++)
-            foreach(var kind in MathCurriculum.Available(grade)) for(int i=0;i<60;i++)
+            foreach(var kind in MathCurriculum.Available(grade).Concat(new[]{LearningKind.Double,LearningKind.Subtraction,LearningKind.ChainSum})) for(int i=0;i<60;i++)
             {
                 var s=new MathSettings {Grade=grade}; s.Mode=(MathMode)mode; var q=MathCurriculum.Generate(s,rng,kind,chapter);
                 lines.Add(q.Prompt); lines.Add(q.Hint); foreach(var line in LearningSpeech.Lines(q)) lines.Add(line);
             }
             File.WriteAllLines(Path.GetFullPath(Path.Combine(Application.dataPath,"../../tools/learning-voice-lines.txt")),lines.OrderBy(s=>s));
+        }
+
+        public static void ExportCurriculum()
+        {
+            Directory.CreateDirectory(Output); ExportSpeech();
+            bool voice=Voice.Enabled,sound=Sfx.Enabled;
+            try
+            {
+                Voice.Enabled=false;Sfx.Enabled=false;
+                for(int grade=0;grade<6;grade++) foreach(var kind in MathCurriculum.Available(grade))
+                {
+                    var settings=new MathSettings {Grade=grade};settings.Mode=MathMode.Challenging;
+                    var question=MathCurriculum.Generate(settings,new Rng((uint)(13+grade*71+(int)kind*3)),kind,8);
+                    foreach(var size in grade==0||grade==5?new[]{new Vector2Int(1440,1080),new Vector2Int(1920,1080)}:new[]{new Vector2Int(1440,1080)})
+                    Scene("grade-"+grade+"-"+kind+(size.x==1920?"-wide":""),size,(root,canvas)=>
+                    {
+                        var puzzles=new PuzzleUi(root.AddComponent<PreviewHost>(),canvas,new Rng(7),_=>{},null,settings,8);
+                        var routine=(IEnumerator)typeof(PuzzleUi).GetMethod("RunLearningQuestion",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(puzzles,new object[]{question,new Action<bool>(_=>{})});
+                        routine.MoveNext();
+                    });
+                }
+            }
+            finally {Voice.Enabled=voice;Sfx.Enabled=sound;}
+            Debug.Log("CURRICULUM_PREVIEW="+Output);
         }
     }
     public sealed class PreviewHost : MonoBehaviour { }

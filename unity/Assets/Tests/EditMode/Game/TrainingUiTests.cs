@@ -36,6 +36,45 @@ namespace Numeria.Game.Tests
         }
         private static object Call(object obj,string name,params object[] args)=>obj.GetType().GetMethod(name,BindingFlags.Instance|BindingFlags.NonPublic).Invoke(obj,args);
 
+        [Test] public void InteractiveBondsRequireTwoDifferentTilesAndSupportClearing()
+        {
+            var settings=new MathSettings();var q=MathCurriculum.Generate(settings,new Rng(21),LearningKind.Bonds,8);
+            var puzzles=new PuzzleUi(null,(RectTransform)_root.transform,new Rng(1),_=>{},null,settings,8);
+            var routine=(IEnumerator)Call(puzzles,"RunLearningQuestion",q,new Action<bool>(_=>{}));Assert.True(routine.MoveNext());
+            Button Button(string name)=>_root.GetComponentsInChildren<Button>().Single(b=>b.name==name);
+            Button("Answer0").onClick.Invoke();Assert.False(Button("Answer0").interactable);
+            Button("Check").onClick.Invoke();Assert.IsNull(puzzles.LastSpell,"A single tile must not submit.");
+            Button("Clear").onClick.Invoke();Assert.True(Button("Answer0").interactable);
+            var pair=(from i in Enumerable.Range(0,4) from j in Enumerable.Range(i+1,3-i) where MathCurriculum.CheckSelection(q,new[]{i,j}) select new[]{i,j}).First();
+            foreach(int i in pair)Button("Answer"+i).onClick.Invoke();Button("Check").onClick.Invoke();
+            Assert.NotNull(puzzles.LastSpell);Assert.AreEqual(q.Values[0],puzzles.LastSpell.Total);
+        }
+
+        [Test] public void ChartReadingDoesNotPrintOrSpeakTheBarValues()
+        {
+            var settings=new MathSettings();var q=MathCurriculum.Generate(settings,new Rng(2),LearningKind.Data,8);
+            string[] spoken=null;var puzzles=new PuzzleUi(null,(RectTransform)_root.transform,new Rng(1),lines=>spoken=lines,null,settings,8);
+            var routine=(IEnumerator)Call(puzzles,"RunLearningQuestion",q,new Action<bool>(_=>{}));routine.MoveNext();
+            var labels=_root.GetComponentsInChildren<TMP_Text>().Where(t=>t.name.StartsWith("BarLabel")).Select(t=>t.text).ToArray();
+            CollectionAssert.AreEqual(new[]{"RED","BLUE"},labels);
+            CollectionAssert.AreEqual(LearningSpeech.Lines(q),spoken);
+            Assert.False(spoken.Contains("red"),"Narration may read the scale, not a RED/value pair.");
+        }
+
+        [Test] public void NewDiagramsRenderAndEveryGradeHasVisibleQuestions()
+        {
+            var seen=new System.Collections.Generic.HashSet<string>();
+            for(int g=0;g<6;g++)foreach(var kind in MathCurriculum.Available(g))for(uint seed=1;seed<12;seed++)
+            {
+                var s=new MathSettings{Grade=g};s.Mode=MathMode.Challenging;var q=MathCurriculum.Generate(s,new Rng(seed),kind,8);
+                if(q.Diagram==null || !seen.Add(q.Diagram))continue;
+                var node=Ui.Node(_root.transform,"Diagram");var diagram=node.gameObject.AddComponent<LearningDiagram>();diagram.Question=q;
+                using(var helper=new VertexHelper())
+                {typeof(LearningDiagram).GetMethod("OnPopulateMesh",BindingFlags.Instance|BindingFlags.NonPublic|BindingFlags.DeclaredOnly).Invoke(diagram,new object[]{helper});Assert.Greater(helper.currentVertCount,0,q.Diagram);}
+            }
+            foreach(string diagram in new[]{"dots","array","collection","compose","sequence","mirror","balance","fractionline","coordinate","box"})CollectionAssert.Contains(seen,diagram);
+        }
+
         [TestCase(0f)]
         [TestCase(.37f)]
         [TestCase(1f)]

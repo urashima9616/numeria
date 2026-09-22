@@ -17,9 +17,11 @@ namespace Numeria.Core
         public static string[] Lines(LearningQuestion q)
         {
             var lines = new List<string> { q.Prompt };
+            if(q.Speech!=null) {lines.AddRange(q.Speech);return lines.ToArray();}
             // Reading a clock/fraction must not speak its answer. Visible bar labels may be read.
-            if (q.Diagram == "clock" || q.Diagram == "fraction" || q.Diagram == "polygon") return lines.ToArray();
-            if (q.Diagram == "bars")
+            if (q.Diagram == "fraction" || q.Diagram == "polygon" || q.Diagram == "shape" ||
+                q.Diagram=="dots" || q.Diagram=="array" || q.Diagram=="compose" || q.Diagram=="sequence" || q.Diagram=="mirror" || q.Diagram=="fractionline") return lines.ToArray();
+            if (q.Diagram == "bars" && !q.HideValues)
             {
                 for (int i = 0; i < q.Values.Length; i++) { lines.Add(q.Labels[i].ToLowerInvariant()); lines.AddRange(Number(q.Values[i])); }
                 return lines.ToArray();

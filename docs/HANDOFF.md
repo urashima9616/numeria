@@ -5,6 +5,17 @@
 
 ---
 
+## 最新开发：分年级多题型扩展，准备 1.3.0 (4)（2026-09-22）
+
+详见 [curriculum-expansion.md](curriculum-expansion.md)。K/G1/G2/G3/G4/G5 混合题池分别为
+17/19/18/20/22/24 个任务族，新增真实双选凑数和点选数字路径、天平等式、所有年级视觉规律、
+故事题、数组/平均分、货币、分数数轴/运算、单位换算和坐标。按年级范围/模式/章节递进，
+同一冒险内 shuffle bag 防频繁重复。图表不显示/朗读被考查数值；图形选项有图标。
+Unity 188/188、Node 15/15，通过纯代码图示和离线语音验证；存档仍 v12，无进度迁移。
+用户已授权完成后安装且确认保存；设备初始备份为 `~/Documents/Numeria Save Backups/ipad-before-1.3.0-yMjQUYkJ/initial-Documents`。
+最新 Slot 2 为 Silent Peaks、Paircub 家族 Lv.8、2564 金币、50 伙伴、58 宝箱、6 水晶，Grade 1 / Challenging。
+本节写入时尚未安装；打包后再取最终设备备份、原位更新并逐字节比较。不能导入旧 Mac 进度。
+
 ## 最新本地修复：TEAM 列表保留滚动位置（2026-09-22，尚未部署）
 
 点击伙伴以前会通过 `ShowTeam()` 重建 ScrollRect，丢失滚动位置。现在在清理面板前记录像素偏移，
