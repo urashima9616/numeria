@@ -36,6 +36,42 @@ namespace Numeria.Game.Tests
         }
         private static object Call(object obj,string name,params object[] args)=>obj.GetType().GetMethod(name,BindingFlags.Instance|BindingFlags.NonPublic).Invoke(obj,args);
 
+        [Test] public void EverySkillDispatchesExactlyOneQuestionFromTheSharedGradePool()
+        {
+            var settings=new MathSettings{Grade=1};var seen=new System.Collections.Generic.HashSet<LearningKind>();
+            var mirrorSettings=new MathSettings{Grade=1};var mirror=new LearningSession();
+            var visuals=Enum.GetValues(typeof(SkillVisualKind)).Cast<SkillVisualKind>().ToArray();
+            // Fresh PuzzleUi/Rng instances model separate battles, retaining only adventure settings.
+            for(int i=0;i<MathCurriculum.Available(1).Length;i++)
+            {
+                uint seed=(uint)(400+i);var expected=mirror.Next(mirrorSettings,new Rng(seed),2);
+                var puzzles=new PuzzleUi(null,(RectTransform)_root.transform,new Rng(seed),_=>{},null,settings,2);
+                foreach(var visual in visuals)
+                {
+                    // Independent settings for each visual prove that no move consumes an extra
+                    // random draw or routes to a fixed family before asking its single question.
+                    var standalone=new MathSettings{Grade=1};var expectedFirst=new LearningSession().Next(standalone,new Rng(seed),2);
+                    var instance=new PuzzleUi(null,(RectTransform)_root.transform,new Rng(seed),_=>{},null,standalone,2);
+                    var route=instance.RunSkillPuzzle(visual,_=>{},2);Assert.True(route.MoveNext());
+                    var question=route.Current.GetType().GetField("q",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).GetValue(route.Current) as LearningQuestion;
+                    Assert.AreEqual(expectedFirst.Kind,question.Kind,visual.ToString());Assert.AreEqual(expectedFirst.Display,question.Display);
+                    Assert.False(route.MoveNext(),visual+" must not dispatch a second question");
+                }
+                var shared=puzzles.RunSkillPuzzle(visuals[i%visuals.Length],_=>{},2);Assert.True(shared.MoveNext());
+                var q=(LearningQuestion)shared.Current.GetType().GetField("q",BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).GetValue(shared.Current);
+                Assert.AreEqual(expected.Kind,q.Kind);Assert.True(seen.Add(q.Kind));Assert.False(shared.MoveNext());
+            }
+            CollectionAssert.AreEquivalent(MathCurriculum.Available(1),seen);
+        }
+
+        [Test] public void BusyBattleRejectsAnAdditionalSkillActivation()
+        {
+            var battle=_root.AddComponent<BattleController>();
+            typeof(BattleController).GetField("_actionsEnabled",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(battle,false);
+            Assert.False(((IEnumerator)Call(battle,"FormulaRoutine")).MoveNext());
+            Assert.False(_root.GetComponentsInChildren<Transform>().Any(t=>t.name=="LearningSpell"));
+        }
+
         [Test] public void InteractiveBondsRequireTwoDifferentTilesAndSupportClearing()
         {
             var settings=new MathSettings();var q=MathCurriculum.Generate(settings,new Rng(21),LearningKind.Bonds,8);

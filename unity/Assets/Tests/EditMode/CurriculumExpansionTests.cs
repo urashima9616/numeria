@@ -114,5 +114,41 @@ namespace Numeria.Core.Tests
             }
             Assert.True(zeroOperand&&zeroAnswer);
         }
+
+        [Test] public void BalanceUsesBoundedPositivePartsAndControlledZeroReview()
+        {
+            for(int g=0;g<6;g++)for(int mode=0;mode<3;mode++)for(int chapter=1;chapter<=8;chapter++)
+            {
+                var settings=new MathSettings{Grade=g};settings.Mode=(MathMode)mode;
+                var rng=new Rng((uint)(700+g*100+mode*10+chapter));int zeros=0;
+                var templates=new HashSet<string>();
+                for(int i=0;i<1000;i++)
+                {
+                    var q=MathCurriculum.Generate(settings,rng,LearningKind.Balance,chapter);
+                    templates.Add(q.Template);
+                    int cap=MathCurriculum.ChapterLimit(g,settings.Mode,chapter);
+                    var nums=Regex.Matches(q.Display.Replace("?",q.Answer),@"\d+").Cast<Match>().Select(m=>int.Parse(m.Value)).ToArray();
+                    Assert.True(nums.All(n=>n>=0&&n<=cap),q.Display);
+                    if(nums.Contains(0))zeros++;
+                    Assert.AreEqual(q.Template.Contains("zero"),nums.Contains(0));
+                    var equation=q.Display.Replace("?",q.Answer).Split('=');Assert.AreEqual(Value(equation[0]),Value(equation[1]),q.Display);
+                }
+                if(mode==(int)MathMode.Challenging){Assert.AreEqual(0,zeros);Assert.AreEqual(6,templates.Count);}
+                else Assert.That(zeros,Is.InRange(50,115),$"grade {g}, mode {mode}, chapter {chapter}");
+            }
+        }
+
+        [Test] public void ForcedExplorationQuestionsDoNotForceRecentBattleRepeats()
+        {
+            var settings=new MathSettings{Grade=1};var rng=new Rng(412);var session=new LearningSession();
+            var recent=new Queue<LearningKind>();
+            for(int i=0;i<1000;i++)
+            {
+                bool forced=i%3==0;
+                var q=session.Next(settings,rng,2,forced?(LearningKind?)LearningKind.Balance:null);
+                if(!forced)CollectionAssert.DoesNotContain(recent,q.Kind);
+                recent.Enqueue(q.Kind);if(recent.Count>3)recent.Dequeue();
+            }
+        }
     }
 }

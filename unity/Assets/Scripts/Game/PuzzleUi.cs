@@ -47,7 +47,9 @@ namespace Numeria.Game
         public IEnumerator RunSkillPuzzle(SkillVisualKind visual, Action<bool> done, int tier)
         {
             LastSpell = null;
-            if (_math != null && _rng.Next() < .25) { yield return RunLearning(done, null); yield break; }
+            // Battle questions share the grade's rotating pool across partners and battles.
+            // The move determines choreography, not a forced/repetitive question family.
+            if (_math != null) { yield return RunLearning(done, null); yield break; }
             if (visual == SkillVisualKind.EquationFlame) yield return RunFormula(done, tier);
             else if (visual == SkillVisualKind.MakeTenWave) yield return RunMakeTen(done, PuzzleGenerator.MaxForTier(tier), false);
             else if (visual == SkillVisualKind.SymmetryBeam) yield return RunSymmetry(done, tier, true);

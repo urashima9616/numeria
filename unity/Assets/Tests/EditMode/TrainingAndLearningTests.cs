@@ -42,8 +42,30 @@ namespace Numeria.Core.Tests
             Assert.AreEqual(hp, wild.MaxHp); Assert.True(wild.Catchable);
             var rng = new Rng(71); int encounters = 0;
             for (int i = 0; i < 10000; i++) if (TrainerSystem.Roll(wild,rng).TrainerId != null) encounters++;
-            Assert.That(encounters, Is.InRange(1800,2200));
+            Assert.That(encounters, Is.InRange(2800,3200));
             wild.IsBoss = true; Assert.AreSame(wild, TrainerSystem.Roll(wild,rng));
+        }
+
+        [Test]
+        public void MasterDroughtProtectionIsSharedByAdventureAndExcludesScriptedFights()
+        {
+            var progress=new Progress();var session=TrainerSystem.For(progress);
+            Assert.AreSame(session,TrainerSystem.For(progress));Assert.AreNotSame(session,TrainerSystem.For(new Progress()));
+            var rng=new Rng(77);var wild=GameData.CreateWild("countipillar",8,rng);
+            var boss=GameData.CreateBoss("duplirock",12,2,rng);
+            var master=TrainerSystem.Boost(wild,"fern",20);
+            int count=0,longest=0;
+            for(int i=0;i<10000;i++)
+            {
+                int before=session.OrdinaryStreak;
+                Assert.AreSame(boss,session.Roll(boss,rng));Assert.AreSame(master,session.Roll(master,rng));
+                Assert.AreEqual(before,session.OrdinaryStreak);
+                var encounter=TrainerSystem.For(progress).Roll(wild,rng);
+                if(before==4)Assert.IsNotNull(encounter.TrainerId);
+                if(encounter.TrainerId!=null){count++;Assert.AreEqual(0,session.OrdinaryStreak);}
+                longest=Math.Max(longest,session.OrdinaryStreak);Assert.LessOrEqual(session.OrdinaryStreak,4);
+            }
+            Assert.AreEqual(4,longest);Assert.That(count,Is.InRange(3400,3850));
         }
 
         [Test]

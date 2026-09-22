@@ -560,6 +560,8 @@ namespace Numeria.Game
 
         private IEnumerator FormulaRoutine()
         {
+            // Reject a second queued activation while the first question/animation is active.
+            if (!_actionsEnabled) yield break;
             SetActionsEnabled(false);
             bool? correct = null;
             yield return _puzzles.RunSkillPuzzle(_themeSkill.Visual, v => correct = v, _tier);

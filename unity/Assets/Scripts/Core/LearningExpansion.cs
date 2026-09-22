@@ -95,12 +95,35 @@ namespace Numeria.Core
                 }
                 case LearningKind.Balance:
                 {
-                    int total=rng.Pick(2,cap), a=rng.Pick(0,total), b=rng.Pick(0,total);
                     q.Prompt="Balance both sides of the scale."; q.Hint="Both sides must have the same total.";
-                    q.Diagram="balance"; q.Values=new[]{a,total-a,b};
-                    q.Display=v==0?$"{a} + {total-a} = {b} + ?":$"{total} - {a} = ? + {rng.Pick(0,total-a)}";
-                    if(v==0) Num(total-b,1,cap);
-                    else { int c=int.Parse(q.Display.Substring(q.Display.LastIndexOf(' ')+1)); Num(total-a-c,1,cap); }
+                    q.Diagram="balance";
+                    // Zero is an explicit occasional review, not a side effect of repeatedly
+                    // sampling shrinking inclusive ranges. Challenging uses positive parts only.
+                    bool zeroReview=d!=2 && rng.Next()<.08;
+                    int total=rng.Pick(3,cap);
+                    if(zeroReview)
+                    {
+                        int review=rng.Pick(0,2); q.Template="Balance-zero-"+review;
+                        q.Values=new[]{total,0};
+                        q.Display=review==0?$"{total} + 0 = ?":review==1?$"{total} - ? = {total}":$"? + {total} = {total}";
+                        Num(review==0?total:0,1,cap); break;
+                    }
+                    int template=rng.Pick(0,d==0?1:d==1?3:5);
+                    int a=rng.Pick(1,total-2), remainder=total-a;
+                    int c=rng.Pick(1,remainder-1), other=rng.Pick(1,total-1);
+                    // Avoid identical/swapped decompositions whenever the range permits it.
+                    var alternatives=Enumerable.Range(1,total-1).Where(n=>n!=a&&n!=remainder).ToArray();
+                    if(alternatives.Length>0)other=alternatives[rng.Pick(0,alternatives.Length-1)];
+                    q.Template="Balance-positive-"+template; q.Values=new[]{a,remainder,other};
+                    switch(template)
+                    {
+                        case 0:q.Display=$"{a} + {remainder} = {other} + ?";Num(total-other,1,cap);break;
+                        case 1:q.Display=$"? + {other} = {a} + {remainder}";Num(total-other,1,cap);break;
+                        case 2:q.Display=$"{total} - {a} = ? + {c}";Num(remainder-c,1,cap);break;
+                        case 3:q.Display=$"? - {a} = {remainder}";Num(total,1,cap);break;
+                        case 4:q.Display=$"{total} - ? = {c} + {remainder-c}";Num(a,1,cap);break;
+                        default:q.Display=$"{a} + ? = {total} - {c}";Num(remainder-c,1,cap);break;
+                    }
                     break;
                 }
                 case LearningKind.NumberPath:
@@ -362,7 +385,9 @@ namespace Numeria.Core
             {
                 if(_bag.Count==0)_bag.AddRange(kinds);
                 var choices=_bag.Where(k=>!_recentKinds.Contains(k)).ToArray();
-                if(choices.Length==0)choices=_bag.ToArray();
+                // A forced exploration task can leave only recent families in the bag.
+                // Defer those entries rather than repeating them in the next battle.
+                if(choices.Length==0)choices=kinds.Where(k=>!_recentKinds.Contains(k)).ToArray();
                 kind=choices[rng.Pick(0,choices.Length-1)];_bag.Remove(kind);
             }
             LearningQuestion q=null;

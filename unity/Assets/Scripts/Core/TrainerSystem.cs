@@ -1,10 +1,14 @@
 using System;
+using System.Runtime.CompilerServices;
 
 namespace Numeria.Core
 {
     public static class TrainerSystem
     {
-        public const double EncounterChance = .20;
+        public const double EncounterChance = .30;
+        private static readonly ConditionalWeakTable<Progress, TrainerEncounterSession> Sessions =
+            new ConditionalWeakTable<Progress, TrainerEncounterSession>();
+        public static TrainerEncounterSession For(Progress progress) => Sessions.GetValue(progress, _ => new TrainerEncounterSession());
         public static readonly string[] Ids = { "fern", "flint", "aster", "dune", "mica", "ember", "clio", "luna",
             "reed", "iris", "pip", "sage", "nora", "atlas", "opal", "cove", "basil", "nova", "wren", "sol" };
         public static string Name(string id) => string.IsNullOrEmpty(id) ? "Master" : char.ToUpperInvariant(id[0]) + id.Substring(1);
@@ -26,6 +30,24 @@ namespace Numeria.Core
                 BaseXp = Stat(wild.BaseXp), DropChance = wild.DropChance, PreferredDrop = wild.PreferredDrop,
                 Skills = wild.Skills, Catchable = false, IsBoss = false, Shield = null,
                 TrainerId = trainerId, TrainerBonusPercent = bonus };
+        }
+    }
+
+    /// <summary>Per-adventure drought protection, shared across maps; not serialized into saves.</summary>
+    public sealed class TrainerEncounterSession
+    {
+        public const int MaximumOrdinaryStreak = 4;
+        public int OrdinaryStreak { get; private set; }
+
+        public CombatantDef Roll(CombatantDef wild, Rng rng)
+        {
+            // Scripted encounters neither consume nor reset the random-encounter streak.
+            if (wild.IsBoss || !wild.Catchable) return wild;
+            var result = OrdinaryStreak >= MaximumOrdinaryStreak
+                ? TrainerSystem.Boost(wild, TrainerSystem.Ids[rng.Pick(0, TrainerSystem.Ids.Length - 1)], rng.Pick(20, 40))
+                : TrainerSystem.Roll(wild, rng);
+            OrdinaryStreak = string.IsNullOrEmpty(result.TrainerId) ? OrdinaryStreak + 1 : 0;
+            return result;
         }
     }
 }

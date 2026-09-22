@@ -20,13 +20,18 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 | P3 — Full game systems | 🔶 Playable / polishing | Eight painterly worlds, 159 Mathmons, evolution, economy, merchants, Lucas story |
 | P4 — iOS delivery | 🔶 On-device / polishing | Signed iPad build and transferred progress confirmed playable; ongoing device QA and save-safe updates |
 
-The current verification baseline compiles all four Unity assemblies and passes **188/188 Unity EditMode tests**
+The current verification baseline compiles all four Unity assemblies and passes **193/193 Unity EditMode tests**
 plus **15/15 Node prototype tests**.
 The current save format is **schema v12**, with non-destructive migration for older saves. Version **1.3.0 (4)**
 was installed in place on the iPad on September 22. All four saved files matched the fresh device backup
 byte-for-byte before launch. The app launched; user verification of loading, visuals and audio remains pending.
 
 ### Latest update — trainers, safer team management and K–5 learning
+
+Local follow-up (not yet installed): battle skills now rotate through the full grade pool instead of
+forcing one family 75% of the time. Balance questions control zero frequency and add six Challenging
+equation templates. Master encounters use a 30% base chance with a guarantee after four ordinary
+encounters. See [behavior, tests and remaining device checks](docs/battle-variety.md).
 
 The installed **1.3.0 (4)** build expands the curriculum to explicit grade inventories: 17/19/18/20/22/24 mixed
 task families for K/Grades 1–5, with interactive number bonds and ordered paths, balanced equations, visual
