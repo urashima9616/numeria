@@ -36,6 +36,55 @@ namespace Numeria.Game.Tests
         }
         private static object Call(object obj,string name,params object[] args)=>obj.GetType().GetMethod(name,BindingFlags.Instance|BindingFlags.NonPublic).Invoke(obj,args);
 
+        [TestCase(0f)]
+        [TestCase(.37f)]
+        [TestCase(1f)]
+        public void SelectingTeammatesPreservesScrollPosition(float position)
+        {
+            var p=new Progress();
+            foreach(var line in GameData.Lines.Take(30)) if(line.BaseId!="addmander") p.Catch(line.BaseId);
+            var menu=Menu(p); Call(menu,"Build"); Canvas.ForceUpdateCanvases();
+            var scroll=_root.GetComponentsInChildren<ScrollRect>().Single(s=>s.name=="LeftCol");
+            Assert.Greater(scroll.content.rect.height,scroll.viewport.rect.height+1000);
+            scroll.verticalNormalizedPosition=position;
+            float offset=scroll.content.anchoredPosition.y;
+            var history=p.CaughtIds.ToArray(); string active=p.ActiveMonId;
+            foreach(string id in p.SortedTeam().Skip(12).Take(3))
+            {
+                _root.GetComponentsInChildren<Button>().Single(b=>b.name=="Mon-"+id).onClick.Invoke();
+                Canvas.ForceUpdateCanvases();
+                scroll=_root.GetComponentsInChildren<ScrollRect>().Single(s=>s.name=="LeftCol");
+                Assert.AreEqual(offset,scroll.content.anchoredPosition.y,.5f,"Selection must not move the list.");
+                var detail=_root.GetComponentsInChildren<TMP_Text>().Single(t=>t.name=="Name" && t.transform.parent.name=="IdentityPanel");
+                Assert.AreEqual(p.PlayerCombatant(id).Name.ToUpperInvariant(),detail.text);
+            }
+            CollectionAssert.AreEqual(history,p.CaughtIds); Assert.AreEqual(active,p.ActiveMonId);
+        }
+
+        [Test] public void TeamRefreshAndTabRoundTripPreserveOffsetAndClampAfterRemoval()
+        {
+            var p=new Progress();
+            foreach(var line in GameData.Lines.Take(30)) if(line.BaseId!="addmander") p.Catch(line.BaseId);
+            var menu=Menu(p); Call(menu,"Build");
+            ScrollRect TeamScroll()=>_root.GetComponentsInChildren<ScrollRect>().Single(s=>s.name=="LeftCol");
+            TeamScroll().verticalNormalizedPosition=.23f;
+            float offset=TeamScroll().content.anchoredPosition.y;
+            string id=p.SortedTeam()[10];
+            _root.GetComponentsInChildren<Button>().Single(b=>b.name=="Mon-"+id).onClick.Invoke();
+            _root.GetComponentsInChildren<Button>().Single(b=>b.name=="BtnPick").onClick.Invoke();
+            Assert.AreEqual(id,p.ActiveMonId);
+            Assert.AreEqual(offset,TeamScroll().content.anchoredPosition.y,.5f);
+            Call(menu,"ShowSettings"); Call(menu,"ShowTeam");
+            Assert.AreEqual(offset,TeamScroll().content.anchoredPosition.y,.5f);
+            // Same refresh path used after release/equipment changes; a shorter list must
+            // clamp to its new bottom, not leave empty space or jump all the way to its top.
+            p.CaughtIds.RemoveRange(0,p.CaughtIds.Count-6); Call(menu,"ShowTeam");
+            var scroll=TeamScroll(); float max=Mathf.Max(0,scroll.content.rect.height-scroll.viewport.rect.height);
+            Assert.Greater(max,0); Assert.Less(max,offset);
+            Assert.AreEqual(max,scroll.content.anchoredPosition.y,.5f);
+            Assert.AreEqual(Vector2.zero,scroll.velocity);
+        }
+
         [Test] public void LearningDiagramsProduceVisibleMeshes()
         {
             foreach(var kind in new[] {LearningKind.Time,LearningKind.Fractions,LearningKind.Measurement,LearningKind.Data,LearningKind.Geometry,LearningKind.PlaceValue})

@@ -20,7 +20,7 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 | P3 — Full game systems | 🔶 Playable / polishing | Eight painterly worlds, 159 Mathmons, evolution, economy, merchants, Lucas story |
 | P4 — iOS delivery | 🔶 On-device / polishing | Signed iPad build and transferred progress confirmed playable; ongoing device QA and save-safe updates |
 
-The current verification baseline compiles all four Unity assemblies and passes **177/177 Unity EditMode tests**
+The current verification baseline compiles all four Unity assemblies and passes **181/181 Unity EditMode tests**
 plus **15/15 Node prototype tests**.
 The current save format is **schema v12**, with non-destructive migration for older saves. Version **1.2.0 (3)**
 was installed in place on the iPad on September 22. All four saved files matched the fresh device backup
@@ -34,6 +34,9 @@ enemy attack) and new Tackle art. TEAM adds sorting, two-stage Let Go confirmati
 transfer between partners. SYSTEM selects K–5 and four difficulty modes, progressing linearly across chapters
 inside the chosen grade/mode. Five new math families add place value, time, fractions, measurement and data.
 See [rules, previews, tests and save/rollback safety](docs/training-and-learning.md).
+
+Local follow-up fix: TEAM keeps its scroll position when selecting partners or refreshing details, with
+safe clamping after removal. This fix is tested but not yet included in the installed 1.2.0 (3) build.
 
 ### Afterstory expansion — installed on iPad
 

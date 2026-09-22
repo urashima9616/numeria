@@ -27,6 +27,8 @@ namespace Numeria.Game
         private readonly Dictionary<string, Image> _tabImages = new Dictionary<string, Image>();
         private readonly Dictionary<string, Image> _tabBars = new Dictionary<string, Image>();
         private string _selectedId;
+        private ScrollRect _teamScroll;
+        private float _teamScrollOffset;
 
         // 参考图配色
         private static readonly Color Cream = Ui.Hex("#f6efdc");
@@ -220,9 +222,20 @@ namespace Numeria.Game
 
         private void ClearContent()
         {
+            // Keep UI-only state across selection, equipment and tab refreshes. Do not save
+            // a normalized fraction: removing a row would shift the remaining visible cards.
+            if (_teamScroll != null)
+            {
+                _teamScrollOffset = Mathf.Max(0, _teamScroll.content.anchoredPosition.y);
+                _teamScroll = null;
+            }
             foreach (Transform child in _contentArea)
             {
-                if (Application.isPlaying) UnityEngine.Object.Destroy(child.gameObject);
+                if (Application.isPlaying)
+                {
+                    child.gameObject.SetActive(false); // Destroy is deferred; exclude old layout this frame.
+                    UnityEngine.Object.Destroy(child.gameObject);
+                }
                 else UnityEngine.Object.DestroyImmediate(child.gameObject);
             }
         }
@@ -310,6 +323,16 @@ namespace Numeria.Game
             rle.minWidth = 650;
             rle.flexibleWidth = 1;
             BuildMonDetail(right, _selectedId);
+
+            // ContentSizeFitter needs the final viewport/content sizes before restoring the
+            // pixel offset. Clamp when the roster shrinks; never carry old scroll inertia.
+            Canvas.ForceUpdateCanvases();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(_teamScroll.content);
+            _teamScroll.StopMovement();
+            var position = _teamScroll.content.anchoredPosition;
+            position.y = Mathf.Clamp(_teamScrollOffset, 0,
+                Mathf.Max(0, _teamScroll.content.rect.height - _teamScroll.viewport.rect.height));
+            _teamScroll.content.anchoredPosition = position;
         }
 
         private void BuildTeamList(RectTransform parent)
@@ -317,6 +340,7 @@ namespace Numeria.Game
             // 30 只生态下固定六格会让第七个以后收服的家族无法选择；
             // 左栏改为完整可滚动图鉴，未满六只时仍保留空位提示。
             var list = MakeScrollList(parent);
+            _teamScroll = parent.GetComponent<ScrollRect>();
 
             ListRow(list, "TeamHeader", 42, row =>
             {
