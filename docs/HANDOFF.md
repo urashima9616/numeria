@@ -5,7 +5,16 @@
 
 ---
 
-## 最新部署：后日谈 1.1.0 (2) 已原位安装 iPad
+## 最新续签：2026-09-20 已原位安装，设备启动验证待完成
+
+同版本 1.1.0 (2) 已续签安装，不改游戏代码；安装前最新备份为
+`~/Documents/Numeria Save Backups/ipad-before-renew-20260920-iSb2dEbm/Documents`。
+安装后四个存档文件逐字节一致。最新 Slot 2：v11、Silent Peaks、当前 Paircub Lv.4、2228 金币、50 伙伴、58 宝箱、6 水晶。
+签名有效至 **2026-09-27 19:12 PDT**。设备启动首次遭安全/开发者信任提示拒绝，后一次连接中断；本地签名、entitlements、设备白名单已核对正确。
+等待用户反馈 iPad 提示并确认信任/联网，不能声称已经恢复可玩。勿卸载、重置或恢复上周旧备份。
+详细记录见 [afterstory-expansion.md](afterstory-expansion.md)。
+
+## 上次部署：后日谈 1.1.0 (2) 已原位安装 iPad
 
 2026-09-13 用户确认已保存后，先将设备 Documents 备份到
 `~/Documents/Numeria Save Backups/ipad-before-1.1.0-SirBvdoR/Documents`，再使用 Numeria-6 签名原位安装。

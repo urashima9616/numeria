@@ -4,6 +4,19 @@ Expansion installed in place on the physical iPad on 2026-09-13. Lucas's iPad pr
 
 ## Deployment record — 2026-09-13
 
+### Signing renewal — 2026-09-20
+
+- Renewed the same 1.1.0 (2) Numeria-6 build; no gameplay/code/save-format changes.
+- Backed up current device Documents to `~/Documents/Numeria Save Backups/ipad-before-renew-20260920-iSb2dEbm/Documents`.
+- Latest Slot 2 is v11: Silent Peaks (`mountains`), Paircub active at Lv.4, 2,228 coins, 50 companions, 58 opened chests, six crystals. This supersedes the September 13 baseline below; never restore that older backup over current play.
+- Xcode's first renewal build referenced the removed expired provisioning profile; a second build selected the renewed profile and succeeded. Deep/strict signature verification passed; app and profile team/application identifiers match, and the iPad UDID is included.
+- In-place installation succeeded. Before launch, all four files read back into sibling `post-install-Documents` matched the fresh backup byte-for-byte. Slot 2 SHA-256: `65b55115ad8e6d0da6a5b470265a2bfd982c65eb45949100f6b69079180b1941`.
+- New profile expires `2026-09-28T02:12:33Z` (September 27, 19:12 PDT).
+- Launch is NOT yet verified: first attempt was denied by iPad security (signature/entitlement/developer-trust message); local entitlement/profile checks passed. A later attempt lost the device connection. Await user device prompt/trust/network confirmation; do not uninstall, revoke the certificate, or reset progress to troubleshoot.
+- Local logs: `/tmp/numeria-renew-20260920-retry.log`, `/tmp/numeria-renew-install.json`, `/tmp/numeria-renew-launch.json`.
+
+### Original expansion installation
+
 - User confirmed saving and leaving the connected/unlocked iPad at the main menu.
 - Fresh pre-install Documents backup: `~/Documents/Numeria Save Backups/ipad-before-1.1.0-SirBvdoR/Documents`.
 - Active Slot 2: schema v10, Dark Mines, active family Scalip Lv.47, 548 coins, 41 companions, 43 opened chests, five crystals.
