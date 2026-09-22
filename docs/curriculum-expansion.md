@@ -3,7 +3,7 @@
 Installed release: **1.3.0 (4)**. Save format remains **v12**; no progress or learning-setting migration.
 Also includes the separately committed TEAM scroll-position fix (`4b40c10`).
 
-This describes the installed release. The newer, not-yet-deployed [battle-variety follow-up](battle-variety.md)
+This describes the 1.3.0 release. The newer, installed 1.3.1 [battle-variety follow-up](battle-variety.md)
 supersedes its 25% mixed-skill rule, balance templates and recent-family fallback behavior.
 
 ## Actual coverage

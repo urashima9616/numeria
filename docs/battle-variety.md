@@ -1,7 +1,7 @@
 # Battle question variety and Master encounters — 2026-09-22
 
-Local follow-up to installed 1.3.0 (4). Release **1.3.1 (5)** is exported to `unity/Builds/iOS/Numeria-9`;
-signed Xcode Release build and strict deep signature verification passed, **not yet installed on iPad**. Save schema stays v12;
+Follow-up to 1.3.0 (4). Release **1.3.1 (5)** is exported to `unity/Builds/iOS/Numeria-9`;
+signed Xcode Release build and strict deep signature verification passed, **installed and launched on iPad**. Save schema stays v12;
 no real save was loaded, modified or imported during development.
 
 ## Changes
@@ -43,17 +43,27 @@ no real save was loaded, modified or imported during development.
 - Regenerated curriculum previews and visually checked Grade 1's mixed-operation balance layout.
   The offline narration manifest is unchanged; existing voice tokens cover the new equations.
 - Does not change progress, learning preferences, monster stats, saved inventory or save schema.
-- The currently installed iPad remains 1.3.0 (4); these changes require a future save-backed-up in-place
-  update. Do not restore September 22's backup over any progress Lucas makes afterward.
+- The iPad now reports 1.3.1 (5). Do not restore September 22's backup over any progress Lucas makes afterward.
 
-The user has now authorized installation. The device is connected; final backup and installation wait
-for confirmation that the latest progress has been saved and play has paused. Never uninstall the app.
+The user confirmed installation after the save/pause request. A fresh final backup was taken, then the
+app was installed in place without uninstalling or importing a Mac save.
 The ready app is `/tmp/numeria-variety-ios-derived/Build/Products/Release-iphoneos/Numeria.app`;
 bundle ID/team remain `com.yuankunxue.numeria` / `7B74WP6AR2`. Profile expires September 27 at 19:12 PDT.
 Initial backup: `~/Documents/Numeria Save Backups/ipad-before-1.3.1-N1VmyQEv/initial-Documents`.
 Slot 2 now has Silent Peaks, Paircub family Lv.10, 2,614 coins and Grade 1 / Random (v12).
-This is newer than the 1.3.0 deployment backup. Take another fresh final backup after user confirmation,
-install in place, copy Documents again and compare all files before launching. No installation has occurred yet.
+The same directory's `final-Documents` and `post-install-Documents` have identical recursive file inventories
+and **all four files are byte-for-byte unchanged**, verified before first launch. Final Slot 2 is still
+Lv.10 / 2,614 coins / Grade 1 Random. Hashes:
+
+| File | SHA-256 |
+|---|---|
+| numeria-active-slot.txt | `d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35` |
+| numeria-save-slot-1.json | `657d723d8e8475e95b8dcb64fc612ac33f56e4c0e3c078e8ed5271d7691ceef5` |
+| numeria-save-slot-2.json | `d3f38b9b6b7d2f42d35fb8e5d5d1b0b2516348c6db69e73c30a8fb4671995865` |
+| numeria-save.json | `1be24b0ee0e177fa956606c6dfbb1395fcde1e03964316d8bbf0134dfe9dd7d7` |
+
+Version inventory and launch both succeeded. Physical-device LOAD GAME → SLOT 2, sound and gameplay
+acceptance remain pending user confirmation; process launch is not a full gameplay test.
 
 Revert this feature commit to restore the old local behavior. This is a source-code rollback, not a
 device installation or a save restoration; keep the latest iPad save authoritative.
