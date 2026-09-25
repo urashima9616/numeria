@@ -93,17 +93,47 @@ namespace Numeria.Game
 
         public bool MerchantAt(int x, int y) => Merchant != null && Merchant.X == x && Merchant.Y == y;
 
-        public CombatantDef RollWildEncounter(int playerLevel, Rng rng)
+        public const double CollectionPriorityShare = .60;
+
+        /// <summary>
+        /// Mix 60% local missing-form ecology with 40% original ecology. Total weight
+        /// and relative rarity inside each group are preserved. Collection is historical,
+        /// not current team ownership: releasing a friend cannot renew the bonus.
+        /// </summary>
+        public double[] WildEncounterWeights(Progress progress = null)
         {
-            int total = 0;
-            foreach (var entry in Encounters) total += Math.Max(0, entry.Weight);
-            int roll = rng.Pick(1, Math.Max(1, total));
-            EncounterEntry selected = Encounters[0];
-            foreach (var entry in Encounters)
+            if (Encounters == null || Encounters.Length == 0)
+                throw new InvalidOperationException("Map has no wild encounter entries: " + Id);
+            var weights = new double[Encounters.Length];
+            double total = 0, missing = 0;
+            for (int i = 0; i < Encounters.Length; i++)
             {
-                roll -= Math.Max(0, entry.Weight);
-                if (roll <= 0) { selected = entry; break; }
+                weights[i] = Math.Max(0, Encounters[i].Weight);
+                total += weights[i];
+                if (progress != null && !progress.HasCollected(Encounters[i].SpeciesId)) missing += weights[i];
             }
+            if (total <= 0) throw new InvalidOperationException("Map has no positive wild encounter weights: " + Id);
+            // No missing forms (or all missing) means exactly the original ecology.
+            if (missing > 0 && missing < total)
+                for (int i = 0; i < weights.Length; i++)
+                    weights[i] *= 1 - CollectionPriorityShare +
+                        (progress.HasCollected(Encounters[i].SpeciesId) ? 0 : CollectionPriorityShare * total / missing);
+            return weights;
+        }
+
+        public CombatantDef RollWildEncounter(int playerLevel, Rng rng, Progress progress = null)
+        {
+            var weights = WildEncounterWeights(progress);
+            double total = 0;
+            foreach (double weight in weights) total += weight;
+            double roll = rng.Next() * total;
+            int chosen = Array.FindLastIndex(weights, weight => weight > 0);
+            for (int i = 0; i < weights.Length; i++)
+            {
+                roll -= weights[i];
+                if (roll < 0) { chosen = i; break; }
+            }
+            var selected = Encounters[chosen];
 
             // Keep the legacy playerLevel parameter for callers, but never use it to scale
             // chapter ecology. A high-level return visit should feel easier.
@@ -111,6 +141,16 @@ namespace Numeria.Game
             int max = Math.Max(min, Math.Min(WildMaxLevel, selected.MaximumLevel));
             return GameData.CreateWild(selected.SpeciesId,
                 GrowthSystem.ClampLevel(rng.Pick(min, max)), rng);
+        }
+
+        public CombatantDef RollRandomEncounter(Progress progress, Rng rng)
+        {
+            // Decide Master using the original ecology and existing drought protection.
+            // Only catchable wild encounters receive collection assistance; never tease
+            // a missing form by preferentially handing it to an uncatchable trainer.
+            var encounter = TrainerSystem.For(progress).Roll(RollWildEncounter(progress.ActiveGrowth.Level, rng), rng);
+            return string.IsNullOrEmpty(encounter.TrainerId)
+                ? RollWildEncounter(progress.ActiveGrowth.Level, rng, progress) : encounter;
         }
 
         public CombatantDef RollBossEncounter(int playerLevel, Rng rng)

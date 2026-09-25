@@ -439,7 +439,7 @@ namespace Numeria.Game
                 case Tile.Bush:
                     if (_rng.Next() < EncounterChance)
                     {
-                        StartBattle(TrainerSystem.For(_progress).Roll(_def.RollWildEncounter(_progress.ActiveGrowth.Level, _rng), _rng), false);
+                        StartBattle(_def.RollRandomEncounter(_progress, _rng), false);
                         return true;
                     }
                     return false;

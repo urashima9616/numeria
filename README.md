@@ -21,7 +21,7 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 | P3 — Full game systems | 🔶 Playable / polishing | Eight main worlds + eight optional depths, 247 forms, collection guide, evolution, economy, Lucas story |
 | P4 — iOS delivery | 🔶 On-device / polishing | Signed iPad build and transferred progress confirmed playable; ongoing device QA and save-safe updates |
 
-The local expansion passes **204/204 Unity EditMode tests** plus **15/15 Node prototype tests**;
+The local expansion passes **212/212 Unity EditMode tests** plus **15/15 Node prototype tests**;
 coverage and remaining device checks are tracked in [Eight Depths](docs/eight-depths.md).
 Local saves now use **schema v13**, adding collection and giant-reward history without resetting previous fields.
 The installed release uses **schema v12**. Version **1.3.1 (5)**
@@ -33,6 +33,10 @@ byte-for-byte before launch. The app launched; user verification of loading, vis
 MENU → DEX lists every form, with unknown pictures/names hidden, introductions and offline narration,
 collection filters and stable pagination. Catching and evolution permanently register a form; releasing a
 partner does not erase its record. Older saves seed only the current owned forms they can prove, not invented history.
+
+Wild encounters favor missing local forms: 60% collection-priority ecology + 40% original ecology,
+returning to normal after the local collection is complete. Releasing a partner does not renew its bonus.
+Master probability, level ranges and giant challenges are unchanged. See [encounter rules](docs/collection-encounters.md).
 
 Each main-world guardian unlocks a nearby portal into a new layer: Verdant Vault, Rime Gallery, Zephyr Gardens,
 Dusk Oasis, Resonant Foundry, Ember Reservoir, Chronicle Archive and Moonwell Depths. Every layer contains ten
