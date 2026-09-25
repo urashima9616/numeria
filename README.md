@@ -6,8 +6,7 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 
 > Current development: eight main worlds plus eight optional depths, a lifetime collection guide, and
 > **247 Mathmon forms / 142 families** (159 existing forms + 80 new ordinary species + 8 giants; Mega not counted).
-> The installed iPad build still has 159 forms. This expansion stays local until a save-safe device update;
-> **Lucas's iPad save is authoritative**.
+> Installed on iPad as **1.4.0 (6)** on September 25; **Lucas's iPad save is authoritative**.
 
 ![Numeria battle — Addmander casting math magic against Countipillar](docs/images/numeria-readme-cover.png)
 
@@ -21,14 +20,14 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 | P3 — Full game systems | 🔶 Playable / polishing | Eight main worlds + eight optional depths, 247 forms, collection guide, evolution, economy, Lucas story |
 | P4 — iOS delivery | 🔶 On-device / polishing | Signed iPad build and transferred progress confirmed playable; ongoing device QA and save-safe updates |
 
-The local expansion passes **212/212 Unity EditMode tests** plus **15/15 Node prototype tests**;
+The expansion passes **212/212 Unity EditMode tests** plus **15/15 Node prototype tests**;
 coverage and remaining device checks are tracked in [Eight Depths](docs/eight-depths.md).
-Local saves now use **schema v13**, adding collection and giant-reward history without resetting previous fields.
-The installed release uses **schema v12**. Version **1.3.1 (5)**
-was installed in place on the iPad on September 22. All four saved files matched the fresh device backup
-byte-for-byte before launch. The app launched; user verification of loading, visuals and audio remains pending.
+Saves now use **schema v13**, adding collection and giant-reward history without resetting previous fields.
+Version **1.4.0 (6)** was installed in place on September 25. All four saved files matched the fresh device
+backup byte-for-byte before launch. The user confirmed saved progress, DEX, visuals and sound work on the iPad.
+See [release and save-preservation evidence](docs/ipad-1.4.0.md). The reused signing profile expires September 27.
 
-### Local expansion — Field Guide and Eight Depths (not installed)
+### Installed expansion — Field Guide and Eight Depths
 
 MENU → DEX lists every form, with unknown pictures/names hidden, introductions and offline narration,
 collection filters and stable pagination. Catching and evolution permanently register a form; releasing a

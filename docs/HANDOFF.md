@@ -5,7 +5,18 @@
 
 ---
 
-## 最新本地开发：未收集伙伴遭遇加成（2026-09-25，未安装）
+## 最新部署：图鉴、八扩展层与收集遭遇加成 1.4.0 (6)（2026-09-25）
+
+详见 [ipad-1.4.0.md](ipad-1.4.0.md)。用户确认保存后，已同 bundle ID/签名团队原位安装并启动，未卸载/导入 Mac 存档。
+Unity 导出 `Numeria-10`、Xcode Release 与严格签名验证通过；功能回归 Unity 212/212、Node 15/15。
+最新备份：`~/Documents/Numeria Save Backups/ipad-before-1.4.0-PRd9wUPJ/`，包含 initial/final/post-install-Documents。
+首次启动前 final 与 post-install 文件清单及四文件逐字节一致。Slot 2：森林、3264 金币、Addmander 家族
+stage 1 / Lv.8 / XP 8、50 caught + starter、Grade 1 / Random，安装前 v12。新版正常读写会迁移至 v13。
+用户已确认真机进度、DEX、画面和声音正常；长期性能、触控与扩展关卡平衡仍需实际游玩。
+Xcode 沿用原签名，仍于 **9 月 27 日 19:12 PDT** 到期，未延长。
+后续进度以设备为准，勿用本次或更早快照覆盖。以下“未安装”段落为本次安装前的历史开发记录。
+
+## 最新本地开发：未收集伙伴遭遇加成（2026-09-25，现已随 1.4.0 安装）
 
 详见 [collection-encounters.md](collection-encounters.md)。全部 16 张地图普通野生遭遇采用
 60% 本地图未收集形态池 + 40% 原生态池，池内保留原稀有度；原本 10% 的缺失总概率提升至 64%。

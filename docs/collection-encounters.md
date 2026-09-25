@@ -1,6 +1,6 @@
 # Collection-aware wild encounters
 
-Local update, 2026-09-25; not installed on iPad.
+Installed on iPad in **1.4.0 (6)** on 2026-09-25; see [deployment verification](ipad-1.4.0.md).
 
 ## Rule
 
@@ -40,7 +40,8 @@ probability improvement, not a guaranteed encounter after a fixed number of batt
 - No new save fields or schema migration: this uses the existing v13 `CollectedForms`.
   Old-save history limitations still apply: a previously released form absent from historical
   data cannot be inferred as collected.
-- No real player save access, iPad build or installation was performed for this update.
+- Feature development did not access real player saves. Subsequent authorized installation backed up
+  device saves and verified them byte-for-byte before first launch; see the deployment record above.
 
 ## Verification
 
