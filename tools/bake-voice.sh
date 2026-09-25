@@ -23,6 +23,14 @@ bake() {
   echo "baked: $key.wav"
 }
 
+# Optional collection / depth narration can be baked independently of the large learning bank.
+if [[ -f tools/depth-voice-lines.txt ]]; then
+  while IFS= read -r line; do
+    [[ -n "$line" ]] && bake "$line"
+  done < tools/depth-voice-lines.txt
+fi
+if [[ "${1:-}" == "--depth-only" ]]; then exit 0; fi
+
 # Grade-based learning: generated finite prompts + composable spoken number tokens.
 if [[ -f tools/learning-voice-lines.txt ]]; then
   while IFS= read -r line; do

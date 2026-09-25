@@ -45,10 +45,11 @@ namespace Numeria.Game.Tests
         public void AllNewFamiliesAreEncounterableAcrossTheSixChapters()
         {
             var encounteredBases = new HashSet<string>();
-            foreach (var map in Maps.All())
+foreach (var map in Maps.AllPlayable())
                 foreach (var entry in map.Encounters)
                     encounteredBases.Add(GameData.BaseId(entry.SpeciesId));
 
+            foreach (var world in DepthCatalog.Worlds) encounteredBases.Add(world.Giant.Id);
             foreach (var line in GameData.Lines)
             {
                 if (line.Element == "FAIRY" || line.Element == "DRAGON" ||

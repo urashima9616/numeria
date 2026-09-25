@@ -105,8 +105,8 @@ namespace Numeria.Core
     }
 
     /// <summary>
-    /// 每个 Mathmon 都由物种 ID 稳定派生一份 Mega 配置。无需逐个维护 141 份数据，
-    /// 新增物种也会自动获得 25–35% 增幅和专属强力技能；外形由独立 Mega 精灵资源提供。
+    /// Mega 配置由物种 ID 稳定派生；是否开放由 MegaSystem.Supports 单独决定。
+    /// 支持的物种获得 25–35% 增幅和强力技能，外形由独立 Mega 精灵资源提供。
     /// </summary>
     public sealed class MegaProfile
     {
@@ -116,6 +116,9 @@ namespace Numeria.Core
 
     public static class MegaSystem
     {
+        // Depth creatures launch as single-stage collectibles. Their separate Mega designs
+        // are deliberately not substituted with a recolored/reused base portrait.
+        public static bool Supports(string id) => GameData.SpeciesById(id) != null && DepthCatalog.Species(id) == null;
         public const int RequiredGems = 7;
         public const int MinimumBonusPercent = 25;
         public const int MaximumBonusPercent = 35;
@@ -223,7 +226,7 @@ namespace Numeria.Core
             (MegaActive ? MegaSystem.BoostedStat(Player.DefensePower, Mega.BonusPercent) : Player.DefensePower) +
             PlayerDefenseBonus;
 
-        public bool CanMegaEvolve => Outcome == BattleOutcome.None && !MegaActive && Gems >= MegaSystem.RequiredGems;
+        public bool CanMegaEvolve => MegaSystem.Supports(Player.Id) && Outcome == BattleOutcome.None && !MegaActive && Gems >= MegaSystem.RequiredGems;
         public bool CanRestoreGems => !MegaActive;
 
         public int SkillCost(SkillDef skill) => MegaActive ? 0 : Math.Max(0, skill?.Cost ?? 0);

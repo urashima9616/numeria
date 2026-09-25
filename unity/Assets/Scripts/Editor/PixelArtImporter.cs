@@ -41,6 +41,10 @@ namespace Numeria.Editor
             if (assetPath.Contains("/generated/Trainers/") || assetPath.EndsWith("/Heroes/lucas_battle.png"))
                 importer.maxTextureSize = 512;
             if (assetPath.EndsWith("/generated/UI/tackle.png")) importer.maxTextureSize = 256;
+            if (assetPath.EndsWith("/generated/UI/field_guide.png")) importer.maxTextureSize = 128;
+            string stem = Path.GetFileNameWithoutExtension(assetPath);
+            string monId = stem.Replace("_large_icon", "").Replace("_mega_icon", "");
+            if (Numeria.Core.DepthCatalog.Species(monId) != null) importer.maxTextureSize = 512;
             // UI 素材必须 100 PPU:UGUI 切片边框按 Canvas 参考 PPU(100)/精灵 PPU 缩放,
             // 16 PPU 会把 9-slice 边角放大 6.25 倍,面板直接崩坏
             importer.spritePixelsPerUnit = assetPath.Contains("/UI/") ? 100 : 16;

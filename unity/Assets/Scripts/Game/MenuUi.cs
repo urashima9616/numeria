@@ -184,8 +184,9 @@ namespace Numeria.Game
 
             TabButton(row, "team", "TEAM", SpriteLib.One($"Art/Sprites/{DisplaySpriteId("addmander")}"), ShowTeam);
             TabButton(row, "items", "ITEMS", SpriteLib.Cainos("TX Props", "TX Props Chest"), ShowItems);
+            TabButton(row, "collection", "DEX", SpriteLib.One("generated/UI/field_guide"), ShowCollection);
             TabButton(row, "records", "RECORDS", SpriteLib.One("Art/Sprites/icon-sword"), ShowRecords);
-            TabButton(row, "saves", "SAVES", SpriteLib.Cainos("TX Props", "TX Props Sign"), ShowSaves);
+            TabButton(row, "saves", "SAVES", SpriteLib.Cainos("TX Props", "TX Props Road Sign E"), ShowSaves);
             TabButton(row, "settings", "SYSTEM", SpriteLib.One("Art/Sprites/shield"), ShowSettings);
         }
 
@@ -197,8 +198,8 @@ namespace Numeria.Game
 
             var icImg = Ui.SpriteImg(tab.transform, "Icon", icon);
             Ui.Place(icImg.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(-62, 2), new Vector2(40, 40));
-            var text = Ui.Label(tab.transform, "Label", label, 26, TitleGreen);
-            Ui.Place(text.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(24, 0), new Vector2(180, 40));
+            var text = Ui.Label(tab.transform, "Label", label, 23, TitleGreen);
+            Ui.Place(text.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(22, 0), new Vector2(112, 40));
 
             var activeBar = Ui.Img(tab.transform, "ActiveBar", TabActive);
             activeBar.rectTransform.anchorMin = Vector2.zero;
@@ -723,11 +724,11 @@ namespace Numeria.Game
             int count = line.StageIds.Length;
             for (int i = 0; i < count; i++)
             {
-                float x = count == 2 ? (i == 0 ? 0.33f : 0.67f) : 0.18f + 0.32f * i;
+                float x = count == 1 ? .5f : count == 2 ? (i == 0 ? 0.33f : 0.67f) : 0.18f + 0.32f * i;
                 EvoIconAt(parent, line.StageIds[i], new Vector2(x, 0.64f), i == growth.Stage);
 
                 var species = GameData.SpeciesById(line.StageIds[i]);
-                string level = i == 0 ? "START" : $"LV. {line.EvolutionLevels[i - 1]}";
+                string level = count == 1 ? "" : i == 0 ? "START" : $"LV. {line.EvolutionLevels[i - 1]}";
                 var label = Ui.Label(parent, $"StageLabel{i}", $"{species.Name.ToUpperInvariant()}  {level}",
                     17, i == growth.Stage ? SummaryOrange : TitleGreen);
                 Ui.PlaceCentered(label.rectTransform, new Vector2(x, 0.41f), Vector2.zero, new Vector2(190, 28));
@@ -744,14 +745,14 @@ namespace Numeria.Game
             bool complete = growth.Stage >= count - 1;
             int required = complete ? 0 : line.EvolutionLevels[growth.Stage];
             int requiredStones = growth.Stage + 1;
-            string stoneText = complete
+            string stoneText = count == 1 ? "This friend has one natural form" : complete
                 ? "Evolution path complete"
                 : $"Evolution Stones: {_progress.EvolutionStones}/{requiredStones}   Lv. {growth.Level}/{required}";
             RequirementRow(parent, "Stone", SpriteLib.Cainos("TX Props", "TX Props - Stone 01"),
                 stoneText, 68, complete || _progress.EvolutionStones >= requiredStones
                     ? Ui.Hex("#4f7e3d") : Ui.Ink);
             RequirementRow(parent, "Trial", SpriteLib.Cainos("TX Props", "TX Props Altar"),
-                complete ? $"Mastered {line.AffinityLabel}" : $"Trial: 3 {line.AffinityLabel} puzzles",
+                count == 1 ? "Keep training to grow stronger" : complete ? $"Mastered {line.AffinityLabel}" : $"Trial: 3 {line.AffinityLabel} puzzles",
                 36, complete ? Ui.Hex("#4f7e3d") : SummaryOrange);
         }
 

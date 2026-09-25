@@ -12,7 +12,7 @@ namespace Numeria.Game
     /// 地图控制器:按 MapDef 构建世界(ASCII 网格 + 邻接感知的主题像素美术),
     /// 点触寻路、草丛遇敌、数学宝箱、Boss 守门传送、进化试炼。
     /// </summary>
-    public class MapController : MonoBehaviour
+    public partial class MapController : MonoBehaviour
     {
         private const double EncounterChance = 0.35;
 
@@ -78,6 +78,7 @@ namespace Numeria.Game
             _map = GridMap.Parse(_def.Rows);
             if (_def.Id == "forest") ForestScene.ApplyPassages(_map, _progress);
             AfterstoryJourney.Apply(_map, _def, _progress);
+            DepthJourney.Apply(_map, _def, _progress);
             _rng = new Rng((uint)System.Environment.TickCount);
             _voice = gameObject.AddComponent<Voice>();
 
@@ -87,7 +88,7 @@ namespace Numeria.Game
                 solved => _progress.RecordPuzzle(solved), _progress.Learning, _def.Tier);
             SetupCamera();
             UpdateHud();
-            Music.PlayMap(_def.Id);
+            Music.PlayMap(_def.ParentWorld ?? _def.Id);
             if (bootMode == BootMode.Title)
             {
                 _busy = true;
@@ -141,7 +142,7 @@ namespace Numeria.Game
                                 world + new Vector3(0, .28f, 0), SortOrder(world.y) + 24, "boss-marker");
                             if (_bossMarker.sprite != null)
                             {
-                                float markerScale = .9f / Mathf.Max(.01f, _bossMarker.sprite.bounds.size.y);
+                                float markerScale = (_def.IsDepth ? 2f : .9f) / Mathf.Max(.01f, _bossMarker.sprite.bounds.size.y);
                                 _bossMarker.transform.localScale = Vector3.one * markerScale;
                             }
                             break;
@@ -167,6 +168,7 @@ namespace Numeria.Game
             }
 
             _pos = _map.Spawn;
+            BuildDepthEntrance();
             var avatarGo = new GameObject("Avatar");
             avatarGo.transform.SetParent(_mapRoot.transform, false);
             var sr = avatarGo.AddComponent<SpriteRenderer>();
@@ -415,6 +417,11 @@ namespace Numeria.Game
 
         private bool HandleTile(int x, int y)
         {
+            if (DepthJourney.Entrance(_def) == (x, y))
+            {
+                StartCoroutine(DepthEntranceRoutine());
+                return true;
+            }
             DiscoveryDef discovery = _def.DiscoveryAt(x, y);
             if (discovery != null && !_progress.CollectedDiscoveries.Contains(discovery.Id))
             {
@@ -690,7 +697,7 @@ namespace Numeria.Game
             _mapRoot.SetActive(true);
             _hudRoot.SetActive(true);
             SetupCamera();
-            Music.PlayMap(_def.Id);
+            Music.PlayMap(_def.ParentWorld ?? _def.Id);
 
             int levelUps = 0;
             int xpReward = GrowthSystem.VictoryXp(enemy.BaseXp, enemy.Level,
@@ -712,6 +719,17 @@ namespace Numeria.Game
                     else if (isBoss && !_def.GateCleared(_progress))
                     {
                         _progress.Records.BossesDefeated++;
+                        if (_def.IsDepth)
+                        {
+                            _def.ClearGate(_progress);
+                            SaveSystem.Save(_progress);
+                            RefreshPortalState();
+                            yield return DialogueRoutine(_def.BossDisplayName,
+                                _progress.PendingGiants.Contains(enemy.Id)
+                                    ? "Your giant friend is waiting in the Field Guide. Make room in your team to claim it!"
+                                    : _def.GateClearLine, SpriteLib.EnemyBattleSprite(_def.BossSpeciesId));
+                            break;
+                        }
                         yield return GateTrialRoutine();
                         _def.ClearGate(_progress);
                         bool newCrystal = !_def.IsAfterstory && _progress.CollectDigitCrystal(_def.Id);
@@ -983,6 +1001,11 @@ namespace Numeria.Game
         /// </summary>
         private IEnumerator DiscoveryRoutine(DiscoveryDef discovery)
         {
+            if (_def.IsDepth)
+            {
+                yield return DepthMechanismRoutine(discovery);
+                yield break;
+            }
             _busy = true;
             _voice.Say("A number rune is glowing! Solve its math magic!");
             yield return new WaitForSeconds(1.2f);
@@ -1172,6 +1195,14 @@ namespace Numeria.Game
 
         private IEnumerator BossLockedRoutine()
         {
+            if (_def.IsDepth)
+            {
+                _busy = true;
+                yield return DialogueRoutine(_def.DisplayName, DepthCatalog.Find(_def.Id).Objective,
+                    SpriteLib.EnemyBattleSprite(_def.BossSpeciesId));
+                _busy = false;
+                yield break;
+            }
             if (_def.IsAfterstory)
             {
                 _voice.Say(AfterstoryJourney.Objective(_def, _progress));

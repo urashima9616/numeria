@@ -67,7 +67,7 @@ namespace Numeria.Game
             _name.fontSize = 23;
             _coins.text = $"{p.Coins} G";
             _region.text = map.DisplayName;
-            _objective.text = map.IsAfterstory ? AfterstoryJourney.Objective(map, p) : map.Id == "forest" ? ForestJourney.Objective(p) :
+            _objective.text = map.IsDepth ? (map.GateCleared(p) ? "Your giant friend awaits new adventures!" : DepthCatalog.Find(map.Id).Objective) : map.IsAfterstory ? AfterstoryJourney.Objective(map, p) : map.Id == "forest" ? ForestJourney.Objective(p) :
                 map.GateCleared(p) ? "The portal is open! A new world awaits!" : "Explore, find treasure, meet Mathmons.";
             _xp.rectTransform.anchorMax = new Vector2(Mathf.Clamp01(p.ActiveGrowth.Xp / (float)p.ActiveGrowth.XpToNext), 1);
         }

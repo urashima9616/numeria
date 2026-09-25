@@ -14,11 +14,13 @@ namespace Numeria.Game
         private Texture2D _surfaceTexture;
         private Sprite _surface;
         private string _biome;
+        private bool _depth;
         public static bool Covers(Tile t) => t == Tile.Tree || t == Tile.Cliff || t == Tile.Bush ||
             t == Tile.Landmark || t == Tile.Bridge;
 
         public static Sprite Prop(string biome, int index)
         {
+            biome = DepthCatalog.Find(biome)?.ParentId ?? biome;
             if (biome == "forest") return ForestScene.Prop(index);
             string key = biome + "/" + index;
             if (Sprites.TryGetValue(key, out var cached) && cached != null) return cached;
@@ -37,6 +39,7 @@ namespace Numeria.Game
 
         public static Sprite BridgeSprite(string biome)
         {
+            biome = DepthCatalog.Find(biome)?.ParentId ?? biome;
             // Existing orthographic bridge art matches the new stone and timber crossings.
             if (biome == "ancient_ruins") return BridgeSprite("sky");
             if (biome == "veilmoon_lake") return BridgeSprite("forest");
@@ -57,7 +60,8 @@ namespace Numeria.Game
             var root = new GameObject("World-" + def.Id);
             root.transform.SetParent(parent, false);
             var scene = root.AddComponent<WorldScene>();
-            scene._biome = def.Id;
+            scene._biome = def.ParentWorld ?? def.Id;
+            scene._depth = def.IsDepth;
             if (def.Id == "forest") ForestScene.Build(root.transform, map, progress);
             else
             {
@@ -164,7 +168,7 @@ namespace Numeria.Game
                     float x = px / (float)density - .5f, y = map.Height - .5f - py / (float)density;
                     int cx = Mathf.Clamp(Mathf.RoundToInt(x), 0, map.Width - 1), cy = Mathf.Clamp(Mathf.RoundToInt(y), 0, map.Height - 1);
                     bool inside = Wet(map.At(cx, cy));
-                    float water = 9, land = 9, path = 9, cliff = 9;
+                    float water = 9, land = 9, path = 9, cliff = 9, river = 9;
                     for (int dy = -2; dy <= 2; dy++)
                         for (int dx = -2; dx <= 2; dx++)
                         {
@@ -174,6 +178,17 @@ namespace Numeria.Game
                             var q = new Vector2(Mathf.Abs(x - tx), Mathf.Abs(y - ty));
                             float box = new Vector2(Mathf.Max(0, q.x - .5f), Mathf.Max(0, q.y - .5f)).magnitude;
                             if (Wet(t)) water = Mathf.Min(water, box); else land = Mathf.Min(land, box);
+                            if (_depth && Wet(t))
+                            {
+                                river = Mathf.Min(river,q.magnitude-.52f);
+                                for(int nx=-1;nx<=1;nx++)for(int ny=0;ny<=1;ny++)
+                                {
+                                    if(nx==0&&ny==0||!map.InBounds(tx+nx,ty+ny)||!Wet(map.At(tx+nx,ty+ny)))continue;
+                                    var start=new Vector2(tx,ty);var delta=new Vector2(nx,ny);
+                                    float along=Mathf.Clamp01(Vector2.Dot(new Vector2(x,y)-start,delta)/delta.sqrMagnitude);
+                                    river=Mathf.Min(river,Vector2.Distance(new Vector2(x,y),start+delta*along)-.52f);
+                                }
+                            }
                             if (t == Tile.Cliff) cliff = Mathf.Min(cliff,
                                 new Vector2(Mathf.Max(0, q.x - .32f), Mathf.Max(0, q.y - .32f)).magnitude - .23f);
                             if (t != Tile.Path) continue;
@@ -197,6 +212,7 @@ namespace Numeria.Game
                         color.a = .42f * (1 - Mathf.SmoothStep(0, 1, cliff / .10f));
                     }
                     water = inside ? -land : water;
+                    if (_depth) water=river;
                     water += Mathf.Sin(y * 2.1f) * .035f;
                     if (water < .15f)
                     {

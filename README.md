@@ -4,9 +4,10 @@
 are magic. Players befriend original creatures called **Mathmons**, solve adjustable K–5 math puzzles to power
 their skills, and help Lucas restore six Digit Crystals so he can reopen the legendary gate home.
 
-> Current state: a playable eight-region Unity build with story, exploration, battles, catching, evolution and Mega
-> Evolution, economy, shops, saves, offline narration, and 159 Mathmon forms. Lucas is playing on a physical iPad
-> with his transferred progress. New development stays local until the next device update; the iPad save is authoritative.
+> Current development: eight main worlds plus eight optional depths, a lifetime collection guide, and
+> **247 Mathmon forms / 142 families** (159 existing forms + 80 new ordinary species + 8 giants; Mega not counted).
+> The installed iPad build still has 159 forms. This expansion stays local until a save-safe device update;
+> **Lucas's iPad save is authoritative**.
 
 ![Numeria battle — Addmander casting math magic against Countipillar](docs/images/numeria-readme-cover.png)
 
@@ -17,16 +18,30 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 | P0 — Project foundation | ✅ Complete | Repository, Unity project, asset pipelines |
 | P1 — Battle core | ✅ Complete | Skills, gems, number shields, ATK/DEF combat, VFX, narration |
 | P2 — Forest vertical slice | ✅ Complete | Exploration, encounters, catching, growth, chests, saving |
-| P3 — Full game systems | 🔶 Playable / polishing | Eight painterly worlds, 159 Mathmons, evolution, economy, merchants, Lucas story |
+| P3 — Full game systems | 🔶 Playable / polishing | Eight main worlds + eight optional depths, 247 forms, collection guide, evolution, economy, Lucas story |
 | P4 — iOS delivery | 🔶 On-device / polishing | Signed iPad build and transferred progress confirmed playable; ongoing device QA and save-safe updates |
 
-The current verification baseline compiles all four Unity assemblies and passes **193/193 Unity EditMode tests**
-plus **15/15 Node prototype tests**.
-The current save format is **schema v12**, with non-destructive migration for older saves. Version **1.3.1 (5)**
+The local expansion passes **204/204 Unity EditMode tests** plus **15/15 Node prototype tests**;
+coverage and remaining device checks are tracked in [Eight Depths](docs/eight-depths.md).
+Local saves now use **schema v13**, adding collection and giant-reward history without resetting previous fields.
+The installed release uses **schema v12**. Version **1.3.1 (5)**
 was installed in place on the iPad on September 22. All four saved files matched the fresh device backup
 byte-for-byte before launch. The app launched; user verification of loading, visuals and audio remains pending.
 
-### Latest update — trainers, safer team management and K–5 learning
+### Local expansion — Field Guide and Eight Depths (not installed)
+
+MENU → DEX lists every form, with unknown pictures/names hidden, introductions and offline narration,
+collection filters and stable pagination. Catching and evolution permanently register a form; releasing a
+partner does not erase its record. Older saves seed only the current owned forms they can prove, not invented history.
+
+Each main-world guardian unlocks a nearby portal into a new layer: Verdant Vault, Rime Gallery, Zephyr Gardens,
+Dusk Oasis, Resonant Foundry, Ember Reservoir, Chronicle Archive and Moonwell Depths. Every layer contains ten
+ordinary species, three untimed environmental mechanisms and one fixed-level giant challenge. Winning befriends
+the giant directly; a full 99-partner team can claim it later through DEX. Return portals are always available.
+These 88 new species are single-stage; their separate Mega designs are deferred. Existing 159 Mega forms remain unchanged.
+See [the full roster, access rules, safeguards and validation](docs/eight-depths.md).
+
+### Installed update — trainers, safer team management and K–5 learning
 
 Installed in 1.3.1 (5): battle skills now rotate through the full grade pool instead of
 forcing one family 75% of the time. Balance questions control zero frequency and add six Challenging
@@ -65,9 +80,9 @@ The afterstory adds an ivory mosaic observatory and a lantern-lit moon lake with
 The existing gameplay layouts and saved progress are retained. Forest keeps its puzzle-restored vine bridge and
 three-discovery guardian unlock; other regions gain visible restoration accents around solved discoveries.
 
-All **23 skill visual kinds** now have authored 1.9-second timelines, covering **159 forms / 54 families**, Tackle,
-normal math skills, Mega skills and enemy attacks. Evolution and Mega add scale and resonance; related creatures
-share choreography, rather than having 159 individually animated moves. Actual puzzle numbers/shapes feed the
+All **23 skill visual kinds** have authored 1.9-second timelines, reused across **247 forms / 142 families**, Tackle,
+normal math skills, supported Mega skills and enemy attacks. Evolution and Mega add scale and resonance; related creatures
+share choreography, rather than having 247 individually animated moves. Actual puzzle numbers/shapes feed the
 spell where relevant. See [coverage, verification and remaining limitations](docs/world-presentation.md).
 
 Silent Peaks also has a new snow-and-glacier battle panorama, replacing its separate legacy placeholder;
@@ -96,12 +111,13 @@ their original art direction. See [battle-stage correction and generated assets]
 
 ### Battle and Mathmons
 
-- 159 Mathmon forms across 54 evolution families, with independent level, XP, HP, ATK, and DEF growth to Lv. 99.
+- 247 Mathmon forms across 142 families, with independent level, XP, HP, ATK, and DEF growth to Lv. 99.
+  The optional depths add 88 independent single-stage species to the previous 159 forms / 54 families.
   Six new three-stage afterstory families bring mosaics, abacus bears, clockwork birds, lantern fish, moon foxes and lotus turtles.
 - The original eleven families retain distinct skills, while each new elemental group has its own generated icon,
   palette, and battle performance.
 - Number shields, shield-break stun, gems, powered math skills, consumable items, and equippable accessories.
-- Every Mathmon can Mega Evolve in battle after reaching 7 Gems and solving a tier-appropriate math puzzle. All 159
+- The 159 original Mathmon forms can Mega Evolve after reaching 7 Gems and solving a tier-appropriate math puzzle. All 159
   forms have their own redesigned Mega sprite—not a scaled normal sprite or generic aura/wing overlay—plus a stable
   species-specific 25–35% base-stat boost and a free Nova skill. All skills are free while transformed; one Gem
   drains after every action, Gem Snacks are sealed, and the form ends at zero Gems. Gems can then be rebuilt for

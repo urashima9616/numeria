@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Numeria.Core
 {
@@ -37,9 +38,14 @@ namespace Numeria.Core
         public ConsumableType PreferredDrop;
     }
 
-    /// <summary>159 个数灵形态、54 条家族线及所有战斗成长的唯一真理源。</summary>
+    /// <summary>247 个数灵形态、142 条家族线及所有战斗成长的唯一真理源。</summary>
     public static class GameData
     {
+        static GameData()
+        {
+            EvolutionLines=EvolutionLines.Concat(DepthCatalog.Lines()).ToArray();
+            Species=Species.Concat(DepthCatalog.Roster()).ToArray();
+        }
         private static readonly EvolutionLineDef[] EvolutionLines =
         {
             Line("addmander", "FIRE", "equations", PuzzleAffinity.Formula,
@@ -602,6 +608,26 @@ namespace Numeria.Core
                     {
                         skillId = $"{baseId}-rock-magic"; icon = "double_boulder";
                         visual = SkillVisualKind.DoubleBoulder;
+                    }
+                    else if (element == "WATER")
+                    {
+                        skillId = $"{baseId}-water-magic"; icon = "make_ten_wave";
+                        visual = SkillVisualKind.MakeTenWave;
+                    }
+                    else if (element == "BUG")
+                    {
+                        skillId = $"{baseId}-bug-magic"; icon = "count_crunch";
+                        visual = SkillVisualKind.CountCrunch;
+                    }
+                    else if (element == "EARTH")
+                    {
+                        skillId = $"{baseId}-earth-magic"; icon = "tally_stone";
+                        visual = SkillVisualKind.TallyStone;
+                    }
+                    else if (element == "SKY" || element == "MIND")
+                    {
+                        skillId = $"{baseId}-echo-magic"; icon = "symmetry_beam";
+                        visual = SkillVisualKind.SymmetryBeam;
                     }
                     else
                     {

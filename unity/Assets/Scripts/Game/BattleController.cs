@@ -173,7 +173,9 @@ namespace Numeria.Game
             _playerStatText = playerPlate.Find("Sub").GetComponent<TMP_Text>();
             BuildGemRow(playerPlate);
             BuildMegaButton(playerPlate);
-            BattleStageLayout.Build(_shakeRoot, bg, playerImg, enemyImg, playerPlate, _battleBg, lucas, trainer);
+            BattleStageLayout.Build(_shakeRoot, bg, playerImg, enemyImg, playerPlate, _battleBg, lucas, trainer,
+                DepthCatalog.Species(_state.Player.Id)?.Giant == true,
+                DepthCatalog.Species(_state.Enemy.Id)?.Giant == true);
 
             // 回合横幅只承载短主标题 + 一行结果，避免战斗叙述横穿整个画面。
             var logPlate = Ui.SpriteImg(_shakeRoot, "LogPlate", SpriteLib.Pack("UI/Panels/Turn_Banner"));
@@ -236,6 +238,7 @@ namespace Numeria.Game
         private void BuildMegaButton(RectTransform playerPlate)
         {
             _btnMega = Ui.Btn(playerPlate, "BtnMega", "MEGA EVOLVE — 7+ GEMS", 22);
+            _btnMega.gameObject.SetActive(MegaSystem.Supports(_state.Player.Id));
             Ui.Place((RectTransform)_btnMega.transform, new Vector2(1, 0), new Vector2(-28, 12), new Vector2(268, 56));
             _megaButtonLabel = _btnMega.transform.Find("Label").GetComponent<TMP_Text>();
             FitText(_megaButtonLabel, 17, 22);

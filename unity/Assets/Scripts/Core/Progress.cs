@@ -84,9 +84,9 @@ namespace Numeria.Core
     [Serializable]
     public partial class Progress
     {
-        // v12 persists per-grade learning preferences and roster ordering. Older builds must reject
-        // rather than silently dropping these fields; adventure/caught-stat data is unchanged.
-        public const int CurrentSaveVersion = 12;
+        // v13 adds lifetime collection and durable giant rewards; earlier adventure fields are preserved.
+        // Older builds must reject rather than silently dropping new progression fields.
+        public const int CurrentSaveVersion = 13;
         public const int TeamCapacity = 99;
 
         public int SaveVersion = CurrentSaveVersion;
@@ -216,6 +216,7 @@ namespace Numeria.Core
             }
             ForestJourney.Migrate(this);
             NormalizeSystemSettings();
+            MigrateCollection();
             SaveVersion = CurrentSaveVersion;
             SyncLegacyFields();
         }
@@ -301,6 +302,7 @@ namespace Numeria.Core
             if (!CanEvolve(id)) return false;
             var growth = EnsureGrowth(id);
             growth.Stage++;
+            RecordCollected(GameData.FormId(growth.BaseId,growth.Stage));
             SyncLegacyFields();
             return true;
         }
@@ -431,6 +433,7 @@ namespace Numeria.Core
 
         private CatchRosterResult AddCaught(string mathmonId, int capturedLevel, CombatantDef captured)
         {
+            RecordCollected(mathmonId); // A successful catch counts even if the roster is full.
             string baseId = GameData.BaseId(mathmonId);
             int capturedStage = Math.Max(0, GameData.StageIndex(mathmonId));
             if (Owns(baseId))
@@ -470,6 +473,7 @@ namespace Numeria.Core
             var growth = EnsureGrowth(baseId);
             if (capturedLevel <= growth.Level && capturedStage <= growth.Stage) return false;
             ApplyCapturedGrowth(growth, mathmonId, capturedLevel, capturedStage, captured, true);
+            RecordCollected(mathmonId);
             SyncLegacyFields();
             return true;
         }
@@ -498,6 +502,7 @@ namespace Numeria.Core
                 if (accessory.EquippedToBaseId == released) accessory.EquippedToBaseId = "";
             MonGrowth.RemoveAll(growth => growth.BaseId == released);
             CaughtIds[index] = newcomer;
+            RecordCollected(newMathmonId);
             ApplyCapturedGrowth(EnsureGrowth(newcomer), newMathmonId, capturedLevel,
                 Math.Max(0, GameData.StageIndex(newMathmonId)), captured, false);
             if (GameData.BaseId(ActiveMonId) == released) ActiveMonId = newcomer;

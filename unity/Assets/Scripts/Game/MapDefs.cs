@@ -63,6 +63,8 @@ namespace Numeria.Game
         public int Tier;
         public int WildMaxLevel;
         public bool IsAfterstory;
+        public string ParentWorld;
+        public bool IsDepth => ParentWorld != null;
         public string BattleBg;
         public string CameraBg;
         public string Theme;
@@ -128,7 +130,7 @@ namespace Numeria.Game
 
         public string ChestId(int x, int y) => StableChestIds != null && StableChestIds.TryGetValue((x, y), out var id)
             ? id : $"{Id}-chest-{x}-{y}";
-        public bool GuardianReady(Progress progress) => IsAfterstory ? AfterstoryJourney.Ready(this, progress) : Id == "forest"
+        public bool GuardianReady(Progress progress) => IsDepth ? DepthJourney.Ready(this, progress) : IsAfterstory ? AfterstoryJourney.Ready(this, progress) : Id == "forest"
             ? ForestJourney.GuardianReady(progress) : AllChestsOpened(progress);
 
         public bool AllChestsOpened(Progress progress)
@@ -170,6 +172,8 @@ namespace Numeria.Game
 
         public static MapDef Get(string id)
         {
+            var depth = DepthCatalog.Find(id);
+            if (depth != null) return Expansion(depth);
             switch (id)
             {
                 case "mountains": return Mountains();

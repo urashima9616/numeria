@@ -76,17 +76,37 @@ namespace Numeria.Game.Tests
         }
 
         [Test]
-        public void EveryMathmonHasAnIndependentTransparentMegaSprite()
+        public void EveryMegaEligibleMathmonHasAnIndependentTransparentMegaSprite()
         {
-            Assert.AreEqual(159, GameData.Roster.Count);
+            Assert.AreEqual(247, GameData.Roster.Count);
+            Assert.AreEqual(159, GameData.Roster.Count(s => MegaSystem.Supports(s.Id)));
             foreach (var species in GameData.Roster)
             {
+                if (!MegaSystem.Supports(species.Id)) continue;
                 var mega = Resources.Load<Sprite>($"generated/{species.Id}_mega_icon");
                 Assert.IsNotNull(mega, $"Missing Mega sprite for {species.Id}");
                 Assert.AreEqual(512, mega.texture.width, species.Id);
                 Assert.AreEqual(512, mega.texture.height, species.Id);
                 Assert.AreNotSame(SpriteLib.LargeIcon(species.Id), mega, species.Id);
             }
+        }
+
+        [Test]
+        public void DepthPortraitsAndFieldGuideHaveDedicatedMemoryBoundedSprites()
+        {
+            var seen = new System.Collections.Generic.HashSet<Sprite>();
+            foreach (var world in DepthCatalog.Worlds)
+                foreach (var mon in world.Species)
+                {
+                    var sprite = Resources.Load<Sprite>($"generated/{mon.Id}_large_icon");
+                    Assert.IsNotNull(sprite, mon.Id);
+                    Assert.LessOrEqual(sprite.texture.width,512,mon.Id);
+                    Assert.LessOrEqual(sprite.texture.height,512,mon.Id);
+                    Assert.True(seen.Add(sprite),"A creature must not reuse another creature's portrait: "+mon.Id);
+                }
+            Assert.AreEqual(88,seen.Count);
+            var guide=Resources.Load<Sprite>("generated/UI/field_guide");
+            Assert.IsNotNull(guide);Assert.LessOrEqual(guide.texture.width,128);
         }
 
         [Test]

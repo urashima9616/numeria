@@ -238,8 +238,8 @@ namespace Numeria.Core.Tests
         [Test]
         public void ExpandedRoster_HasOneHundredFortyOneUniqueSpeciesAcrossFortyEightLines()
         {
-            Assert.AreEqual(159, GameData.Roster.Count);
-            Assert.AreEqual(54, GameData.Lines.Count);
+Assert.AreEqual(247, GameData.Roster.Count);
+Assert.AreEqual(142, GameData.Lines.Count);
 
             var ids = new HashSet<string>();
             int stageCount = 0;
@@ -254,7 +254,7 @@ namespace Numeria.Core.Tests
                     Assert.AreEqual(line.BaseId, GameData.BaseId(id));
                 }
             }
-            Assert.AreEqual(159, stageCount);
+Assert.AreEqual(247, stageCount);
         }
 
         [Test]

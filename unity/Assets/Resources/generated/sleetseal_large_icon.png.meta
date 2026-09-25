@@ -1,0 +1,1968 @@
+fileFormatVersion: 2
+guid: f63128b3ac2d9464fad475aeeecc0883
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2731221922002444732
+    second: sleetseal_large_icon_0
+  - first:
+      213: 7621759109539588495
+    second: sleetseal_large_icon_1
+  - first:
+      213: -8279040084639986834
+    second: sleetseal_large_icon_2
+  - first:
+      213: -7907718527395918373
+    second: sleetseal_large_icon_3
+  - first:
+      213: -6788162952616739354
+    second: sleetseal_large_icon_4
+  - first:
+      213: 2613531313783217943
+    second: sleetseal_large_icon_5
+  - first:
+      213: -7552056240873615107
+    second: sleetseal_large_icon_6
+  - first:
+      213: 1168415448076665074
+    second: sleetseal_large_icon_7
+  - first:
+      213: 5376342088766492457
+    second: sleetseal_large_icon_8
+  - first:
+      213: 1853851019686132369
+    second: sleetseal_large_icon_9
+  - first:
+      213: 5841476676529651236
+    second: sleetseal_large_icon_10
+  - first:
+      213: -6558176610134623800
+    second: sleetseal_large_icon_11
+  - first:
+      213: 5748709266479040568
+    second: sleetseal_large_icon_12
+  - first:
+      213: -8337396528303450681
+    second: sleetseal_large_icon_13
+  - first:
+      213: 9189179942270240919
+    second: sleetseal_large_icon_14
+  - first:
+      213: -525547900750182761
+    second: sleetseal_large_icon_15
+  - first:
+      213: 7249147643911696757
+    second: sleetseal_large_icon_16
+  - first:
+      213: -9061110559097523968
+    second: sleetseal_large_icon_17
+  - first:
+      213: -8280566466199094211
+    second: sleetseal_large_icon_18
+  - first:
+      213: -8471567881119539274
+    second: sleetseal_large_icon_19
+  - first:
+      213: -5065815141214874800
+    second: sleetseal_large_icon_20
+  - first:
+      213: -1037247831392999659
+    second: sleetseal_large_icon_21
+  - first:
+      213: 4078086409710878338
+    second: sleetseal_large_icon_22
+  - first:
+      213: 4237686818048283961
+    second: sleetseal_large_icon_23
+  - first:
+      213: 6966227748362177802
+    second: sleetseal_large_icon_24
+  - first:
+      213: -2505028644134455794
+    second: sleetseal_large_icon_25
+  - first:
+      213: -7792372687100474768
+    second: sleetseal_large_icon_26
+  - first:
+      213: 28224172602128042
+    second: sleetseal_large_icon_27
+  - first:
+      213: -4664811467885771665
+    second: sleetseal_large_icon_28
+  - first:
+      213: 8213764350122910809
+    second: sleetseal_large_icon_29
+  - first:
+      213: 7102027741652854407
+    second: sleetseal_large_icon_30
+  - first:
+      213: 6806793075550333410
+    second: sleetseal_large_icon_31
+  - first:
+      213: -3273762009825786522
+    second: sleetseal_large_icon_32
+  - first:
+      213: -7224557089133667772
+    second: sleetseal_large_icon_33
+  - first:
+      213: 8093599462982198342
+    second: sleetseal_large_icon_34
+  - first:
+      213: -1108002426290852701
+    second: sleetseal_large_icon_35
+  - first:
+      213: -8909333869995427738
+    second: sleetseal_large_icon_36
+  - first:
+      213: -980434861210781615
+    second: sleetseal_large_icon_37
+  - first:
+      213: -5307526990503562852
+    second: sleetseal_large_icon_38
+  - first:
+      213: 5136753208985372983
+    second: sleetseal_large_icon_39
+  - first:
+      213: -102726527572261357
+    second: sleetseal_large_icon_40
+  - first:
+      213: 5297615892809619493
+    second: sleetseal_large_icon_41
+  - first:
+      213: 9070178977507054214
+    second: sleetseal_large_icon_42
+  - first:
+      213: -1479397883749977963
+    second: sleetseal_large_icon_43
+  - first:
+      213: 7169923028152777318
+    second: sleetseal_large_icon_44
+  - first:
+      213: -4728801561454837415
+    second: sleetseal_large_icon_45
+  - first:
+      213: -4505911895713339727
+    second: sleetseal_large_icon_46
+  - first:
+      213: -1166339706719827387
+    second: sleetseal_large_icon_47
+  - first:
+      213: 1906414396376594798
+    second: sleetseal_large_icon_48
+  - first:
+      213: -1907082854663576921
+    second: sleetseal_large_icon_49
+  - first:
+      213: -8069592809613578676
+    second: sleetseal_large_icon_50
+  - first:
+      213: -3796360583289260417
+    second: sleetseal_large_icon_51
+  - first:
+      213: -382578328779879859
+    second: sleetseal_large_icon_52
+  - first:
+      213: -9204391622831560721
+    second: sleetseal_large_icon_53
+  - first:
+      213: 7979839261191497561
+    second: sleetseal_large_icon_54
+  - first:
+      213: 4501690526755559454
+    second: sleetseal_large_icon_55
+  - first:
+      213: -9147425951012056000
+    second: sleetseal_large_icon_56
+  - first:
+      213: 7667556627193508313
+    second: sleetseal_large_icon_57
+  - first:
+      213: -7849631038421775189
+    second: sleetseal_large_icon_58
+  - first:
+      213: -9187792554947270670
+    second: sleetseal_large_icon_59
+  - first:
+      213: -1205840330063462289
+    second: sleetseal_large_icon_60
+  - first:
+      213: 4808708195963260047
+    second: sleetseal_large_icon_61
+  - first:
+      213: 4447471431421578115
+    second: sleetseal_large_icon_62
+  - first:
+      213: -2092513057997986761
+    second: sleetseal_large_icon_63
+  - first:
+      213: 4021825242570626717
+    second: sleetseal_large_icon_64
+  - first:
+      213: -2598018248766372701
+    second: sleetseal_large_icon_65
+  - first:
+      213: 5254616798375312017
+    second: sleetseal_large_icon_66
+  - first:
+      213: -7473797487898651924
+    second: sleetseal_large_icon_67
+  - first:
+      213: 3216425610566285048
+    second: sleetseal_large_icon_68
+  - first:
+      213: 1585397395154762289
+    second: sleetseal_large_icon_69
+  - first:
+      213: -6701924877778485539
+    second: sleetseal_large_icon_70
+  - first:
+      213: -4547630651067950152
+    second: sleetseal_large_icon_71
+  - first:
+      213: -1253672456754101967
+    second: sleetseal_large_icon_72
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 512
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: sleetseal_large_icon_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1249
+        height: 1234
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb127bf0edf37e520800000000000000
+      internalID: 2731221922002444732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_1
+      rect:
+        serializedVersion: 2
+        x: 474
+        y: 1205
+        width: 15
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8964bf378de5c960800000000000000
+      internalID: 7621759109539588495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_2
+      rect:
+        serializedVersion: 2
+        x: 665
+        y: 1197
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6b40d148e0fa1d80800000000000000
+      internalID: -8279040084639986834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_3
+      rect:
+        serializedVersion: 2
+        x: 297
+        y: 1189
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bdd8ace65e3224290800000000000000
+      internalID: -7907718527395918373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_4
+      rect:
+        serializedVersion: 2
+        x: 430
+        y: 1137
+        width: 71
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6edffc382c99bc1a0800000000000000
+      internalID: -6788162952616739354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_5
+      rect:
+        serializedVersion: 2
+        x: 522
+        y: 1175
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71f986ff1e0254420800000000000000
+      internalID: 2613531313783217943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_6
+      rect:
+        serializedVersion: 2
+        x: 429
+        y: 1163
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df0d4f68cd4b13790800000000000000
+      internalID: -7552056240873615107
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_7
+      rect:
+        serializedVersion: 2
+        x: 496
+        y: 1124
+        width: 21
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f040b4d8ab073010800000000000000
+      internalID: 1168415448076665074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_8
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 1124
+        width: 18
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 92f88e705aa9c9a40800000000000000
+      internalID: 5376342088766492457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_9
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 1140
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19a33e62ea33ab910800000000000000
+      internalID: 1853851019686132369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_10
+      rect:
+        serializedVersion: 2
+        x: 733
+        y: 1134
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42e774c7618111150800000000000000
+      internalID: 5841476676529651236
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_11
+      rect:
+        serializedVersion: 2
+        x: 474
+        y: 1128
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c976aaae1dacf4a0800000000000000
+      internalID: -6558176610134623800
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_12
+      rect:
+        serializedVersion: 2
+        x: 488
+        y: 1108
+        width: 18
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 838ca71be9487cf40800000000000000
+      internalID: 5748709266479040568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_13
+      rect:
+        serializedVersion: 2
+        x: 529
+        y: 1124
+        width: 9
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c5d5eae70e9b4c80800000000000000
+      internalID: -8337396528303450681
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_14
+      rect:
+        serializedVersion: 2
+        x: 474
+        y: 1108
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 798892c9876868f70800000000000000
+      internalID: 9189179942270240919
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_15
+      rect:
+        serializedVersion: 2
+        x: 506
+        y: 1099
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 796455ff7f0e4b8f0800000000000000
+      internalID: -525547900750182761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_16
+      rect:
+        serializedVersion: 2
+        x: 504
+        y: 1075
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57177bfdf552a9460800000000000000
+      internalID: 7249147643911696757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_17
+      rect:
+        serializedVersion: 2
+        x: 547
+        y: 1075
+        width: 15
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 001737e44f7704280800000000000000
+      internalID: -9061110559097523968
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_18
+      rect:
+        serializedVersion: 2
+        x: 1188
+        y: 884
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3cf03bdba4851d80800000000000000
+      internalID: -8280566466199094211
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_19
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 834
+        width: 16
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6bfd24b75e1fe6a80800000000000000
+      internalID: -8471567881119539274
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_20
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 836
+        width: 11
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 053971a08fb92b9b0800000000000000
+      internalID: -5065815141214874800
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_21
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 789
+        width: 33
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 517a6c9c794fa91f0800000000000000
+      internalID: -1037247831392999659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_22
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 614
+        width: 5
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 28e3a26abf5489830800000000000000
+      internalID: 4078086409710878338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_23
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 527
+        width: 49
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9359f1375b94fca30800000000000000
+      internalID: 4237686818048283961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_24
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 533
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0dc89d7a330da060800000000000000
+      internalID: 6966227748362177802
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_25
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 358
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e06ff2a68b95c3dd0800000000000000
+      internalID: -2505028644134455794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_26
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 353
+        width: 17
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07a8beba35eebd390800000000000000
+      internalID: -7792372687100474768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_27
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 337
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa677064cb5446000800000000000000
+      internalID: 28224172602128042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_28
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 316
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6400886fa2434fb0800000000000000
+      internalID: -4664811467885771665
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_29
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 306
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 954e7d578272df170800000000000000
+      internalID: 8213764350122910809
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_30
+      rect:
+        serializedVersion: 2
+        x: 1188
+        y: 306
+        width: 19
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78620365a987f8260800000000000000
+      internalID: 7102027741652854407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_31
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 258
+        width: 7
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e924cffc36967e50800000000000000
+      internalID: 6806793075550333410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_32
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 183
+        width: 39
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6654a251cc24192d0800000000000000
+      internalID: -3273762009825786522
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_33
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 111
+        width: 53
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44a58a2da973dbb90800000000000000
+      internalID: -7224557089133667772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_34
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 151
+        width: 17
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 644a85174dd325070800000000000000
+      internalID: 8093599462982198342
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_35
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 144
+        width: 19
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3aca9aae9a59f90f0800000000000000
+      internalID: -1108002426290852701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_36
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 136
+        width: 9
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 668f0958c00bb5480800000000000000
+      internalID: -8909333869995427738
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_37
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 128
+        width: 17
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1583f1430bbc462f0800000000000000
+      internalID: -980434861210781615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_38
+      rect:
+        serializedVersion: 2
+        x: 870
+        y: 101
+        width: 68
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c91bc379250e756b0800000000000000
+      internalID: -5307526990503562852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_39
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 110
+        width: 25
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 739cb60f3d9694740800000000000000
+      internalID: 5136753208985372983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_40
+      rect:
+        serializedVersion: 2
+        x: 410
+        y: 126
+        width: 7
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 316cb0774ca039ef0800000000000000
+      internalID: -102726527572261357
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_41
+      rect:
+        serializedVersion: 2
+        x: 488
+        y: 114
+        width: 23
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52891672699e48940800000000000000
+      internalID: 5297615892809619493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_42
+      rect:
+        serializedVersion: 2
+        x: 954
+        y: 134
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 682168369bfbfdd70800000000000000
+      internalID: 9070178977507054214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_43
+      rect:
+        serializedVersion: 2
+        x: 971
+        y: 130
+        width: 9
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5903e91867f187be0800000000000000
+      internalID: -1479397883749977963
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_44
+      rect:
+        serializedVersion: 2
+        x: 1011
+        y: 95
+        width: 69
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 66a70f7910fa08360800000000000000
+      internalID: 7169923028152777318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_45
+      rect:
+        serializedVersion: 2
+        x: 271
+        y: 115
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9510c2cb80cef5eb0800000000000000
+      internalID: -4728801561454837415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_46
+      rect:
+        serializedVersion: 2
+        x: 410
+        y: 114
+        width: 7
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b6acc21109c771c0800000000000000
+      internalID: -4505911895713339727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_47
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 117
+        width: 19
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54a088d573450dfe0800000000000000
+      internalID: -1166339706719827387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_48
+      rect:
+        serializedVersion: 2
+        x: 510
+        y: 117
+        width: 16
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e69b7bafac1f47a10800000000000000
+      internalID: 1906414396376594798
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_49
+      rect:
+        serializedVersion: 2
+        x: 834
+        y: 106
+        width: 21
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a22a827f3ea885e0800000000000000
+      internalID: -1907082854663576921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_50
+      rect:
+        serializedVersion: 2
+        x: 930
+        y: 110
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4eafec181c030090800000000000000
+      internalID: -8069592809613578676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_51
+      rect:
+        serializedVersion: 2
+        x: 947
+        y: 126
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f76bfb9d92e905bc0800000000000000
+      internalID: -3796360583289260417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_52
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 115
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4a0056790fc0baf0800000000000000
+      internalID: -382578328779879859
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_53
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 111
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe72b83069e634080800000000000000
+      internalID: -9204391622831560721
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_54
+      rect:
+        serializedVersion: 2
+        x: 323
+        y: 115
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 957e80077851ebe60800000000000000
+      internalID: 7979839261191497561
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_55
+      rect:
+        serializedVersion: 2
+        x: 436
+        y: 115
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e189100eea7397e30800000000000000
+      internalID: 4501690526755559454
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_56
+      rect:
+        serializedVersion: 2
+        x: 482
+        y: 65
+        width: 30
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0449cbc0090dd0180800000000000000
+      internalID: -9147425951012056000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_57
+      rect:
+        serializedVersion: 2
+        x: 504
+        y: 110
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d1bf03c022a86a60800000000000000
+      internalID: 7667556627193508313
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_58
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 81
+        width: 32
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bac4df0e822801390800000000000000
+      internalID: -7849631038421775189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_59
+      rect:
+        serializedVersion: 2
+        x: 537
+        y: 95
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f7a36ca9576e7080800000000000000
+      internalID: -9187792554947270670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_60
+      rect:
+        serializedVersion: 2
+        x: 890
+        y: 103
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f604abecb9ef34fe0800000000000000
+      internalID: -1205840330063462289
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_61
+      rect:
+        serializedVersion: 2
+        x: 611
+        y: 80
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8c46e860a6fbb240800000000000000
+      internalID: 4808708195963260047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_62
+      rect:
+        serializedVersion: 2
+        x: 617
+        y: 75
+        width: 14
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 38bc49204b798bd30800000000000000
+      internalID: 4447471431421578115
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_63
+      rect:
+        serializedVersion: 2
+        x: 844
+        y: 71
+        width: 13
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 734e92ad576e5f2e0800000000000000
+      internalID: -2092513057997986761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_64
+      rect:
+        serializedVersion: 2
+        x: 854
+        y: 50
+        width: 53
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d961f14efb460d730800000000000000
+      internalID: 4021825242570626717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_65
+      rect:
+        serializedVersion: 2
+        x: 948
+        y: 87
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a44c4aea2cf1fbd0800000000000000
+      internalID: -2598018248766372701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_66
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 64
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19af5f153262ce840800000000000000
+      internalID: 5254616798375312017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_67
+      rect:
+        serializedVersion: 2
+        x: 223
+        y: 65
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce2189a58ccb74890800000000000000
+      internalID: -7473797487898651924
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_68
+      rect:
+        serializedVersion: 2
+        x: 534
+        y: 59
+        width: 30
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f6b54c2d0a03ac20800000000000000
+      internalID: 3216425610566285048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_69
+      rect:
+        serializedVersion: 2
+        x: 898
+        y: 51
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13a7706f786700610800000000000000
+      internalID: 1585397395154762289
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_70
+      rect:
+        serializedVersion: 2
+        x: 504
+        y: 51
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ddef8acf4dafdf2a0800000000000000
+      internalID: -6701924877778485539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_71
+      rect:
+        serializedVersion: 2
+        x: 506
+        y: 46
+        width: 10
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8bb9a69640293e0c0800000000000000
+      internalID: -4547630651067950152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sleetseal_large_icon_72
+      rect:
+        serializedVersion: 2
+        x: 520
+        y: 33
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1310b76fa8f0a9ee0800000000000000
+      internalID: -1253672456754101967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable: {}
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -134,6 +134,8 @@ namespace Numeria.Game
 
         public static bool CanVisit(string id, Progress p)
         {
+            var depth = DepthCatalog.Find(id);
+            if (depth != null) return CanVisit(depth.ParentId, p) && Get(depth.ParentId).GateCleared(p);
             var maps = All();
             for (int i = 0; i < maps.Length; i++)
                 if (maps[i].Id == id) return i == 0 || maps[i - 1].GateCleared(p);

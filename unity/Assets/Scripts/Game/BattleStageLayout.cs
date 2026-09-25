@@ -14,6 +14,7 @@ namespace Numeria.Game
         private Vector2 _lastSize;
         private string _resource;
         private float _aspect;
+        private bool _giantPlayer, _giantEnemy;
 
         public static Vector2 CoverSize(Vector2 viewport, float aspect)
         {
@@ -35,12 +36,14 @@ namespace Numeria.Game
         }
 
         public static BattleStageLayout Build(RectTransform root, Image background, Image player, Image enemy,
-            RectTransform plate, string resource, Image lucas = null, Image trainer = null)
+            RectTransform plate, string resource, Image lucas = null, Image trainer = null,
+            bool giantPlayer = false, bool giantEnemy = false)
         {
             var layout = root.gameObject.AddComponent<BattleStageLayout>();
             layout._root = root; layout._background = background.rectTransform; layout._plate = plate;
             layout._player = player; layout._enemy = enemy; layout._resource = resource;
             layout._lucas = lucas; layout._trainer = trainer;
+            layout._giantPlayer = giantPlayer; layout._giantEnemy = giantEnemy;
             layout._aspect = background.sprite == null ? 16f / 9 : background.sprite.rect.width / background.sprite.rect.height;
             layout._playerShadow = layout.Shadow("PlayerContactShadow");
             layout._enemyShadow = layout.Shadow("EnemyContactShadow");
@@ -103,6 +106,7 @@ namespace Numeria.Game
             // The command dock occupies the bottom 312 canvas units. Move only within the open surface.
             foot.y = Mathf.Max(foot.y, -viewport.y * .5f + 346);
             float side = enemy ? 320 : 440;
+            if (enemy ? _giantEnemy : _giantPlayer) side *= 1.25f;
             float aspect = image.sprite == null ? 1 : image.sprite.rect.width / image.sprite.rect.height;
             var bounds = aspect >= 1 ? new Vector2(side, side / aspect) : new Vector2(side * aspect, side);
             float plateLeft = viewport.x * .5f - 28 - _plate.sizeDelta.x * .78f;
