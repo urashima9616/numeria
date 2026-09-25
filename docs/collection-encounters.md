@@ -1,7 +1,7 @@
 # Collection-aware wild encounters
 
 Original form-based rule installed in **1.4.0 (6)** on 2026-09-25; see [deployment verification](ipad-1.4.0.md).
-The family-based correction below is local, **not yet installed**; see [family DEX](family-dex.md).
+The family-based correction below is installed in **1.4.1 (7)**; see [family DEX](family-dex.md).
 
 ## Rule
 

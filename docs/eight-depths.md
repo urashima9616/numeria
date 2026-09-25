@@ -3,7 +3,7 @@
 Confirmed scope: 159 existing forms / 54 families + 80 new ordinary species + 8 giants = 247 forms / 142 families. New depth species are independent single-stage families; existing evolution lines are unchanged. Team remains 99; lifetime collection is separate from ownership. Giant rewards must survive a full team.
 
 DEX correction: **142 species/family entries**, each with internal evolution-form pages (247 total).
-See [family-dex.md](family-dex.md); this correction is not yet on the iPad, unlike the underlying expansion.
+See [family-dex.md](family-dex.md); this correction is installed on the iPad in 1.4.1 (7).
 
 ## Verdant Vault — forest
 

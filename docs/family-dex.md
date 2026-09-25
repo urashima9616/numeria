@@ -1,6 +1,7 @@
 # Family-based DEX correction — September 25, 2026
 
-Local implementation; **not yet installed on the iPad**. Installed 1.4.0 (6) still uses separate form entries.
+Installed on the iPad as **1.4.1 (7)**; [save integrity and deployment checks](ipad-1.4.1.md) passed.
+The user confirmed physical-device saved progress and form navigation are normal.
 
 The collection unit is one evolution family: **142 Mathmons**, containing **247 ordinary evolution forms**.
 Addmander → Sumdrake → Equadragon is one numbered entry, not three species to collect.

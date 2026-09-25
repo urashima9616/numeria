@@ -6,7 +6,7 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 
 > Current development: eight main worlds plus eight optional depths, a lifetime collection guide, and
 > **247 Mathmon forms / 142 families** (159 existing forms + 80 new ordinary species + 8 giants; Mega not counted).
-> Installed on iPad as **1.4.0 (6)** on September 25; **Lucas's iPad save is authoritative**.
+> Installed on iPad as **1.4.1 (7)** on September 25; **Lucas's iPad save is authoritative**.
 
 ![Numeria battle — Addmander casting math magic against Countipillar](docs/images/numeria-readme-cover.png)
 
@@ -23,16 +23,16 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 The latest local code passes **215/215 Unity EditMode tests** plus **15/15 Node prototype tests**;
 coverage and remaining device checks are tracked in [Eight Depths](docs/eight-depths.md).
 Saves now use **schema v13**, adding collection and giant-reward history without resetting previous fields.
-Version **1.4.0 (6)** was installed in place on September 25. All four saved files matched the fresh device
-backup byte-for-byte before launch. The user confirmed saved progress, DEX, visuals and sound work on the iPad.
-See [release and save-preservation evidence](docs/ipad-1.4.0.md). The reused signing profile expires September 27.
+Version **1.4.1 (7)** was installed in place on September 25. All four saved files matched the fresh device
+backup byte-for-byte before launch. The user confirmed saved progress and family-form navigation work on the iPad.
+See [release and save-preservation evidence](docs/ipad-1.4.1.md). The reused signing profile expires September 27.
 
-### Local DEX correction — family entries (not yet installed)
+### Installed DEX correction — family entries
 
 The DEX now counts **142 Mathmons**, with **247 evolution forms shown as pages inside their family entry**.
 Any acquired form registers the family once. Unknown form pages stay hidden; old collection history is preserved.
 The missing-Mathmon encounter assist now follows the same family definition. See [family DEX details](docs/family-dex.md).
-The installed 1.4.0 (6) still has the previous separate-form list until the next save-safe update.
+Installed 1.4.1 (7) replaces the previous separate-form list without rewriting collection history.
 
 ### Field Guide and Eight Depths
 
