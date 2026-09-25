@@ -5,6 +5,14 @@
 
 ---
 
+## 待安装：1.4.1 (7) 图鉴修正版（2026-09-25）
+
+用户要求安装验证，已完成 Unity 导出 Numeria-11、Xcode Release 编译和深度严格签名验证。
+安装包 `/tmp/numeria-family-ios-derived/Build/Products/Release-iphoneos/Numeria.app`；细节见 [ipad-1.4.1.md](ipad-1.4.1.md)。
+iPad 当前只有配对记录、无法连接，保存/解锁确认问题也尚未回复，因此 **未备份、未安装**，设备仍 1.4.0 (6)。
+`~/Documents/Numeria Save Backups/ipad-before-1.4.1-6xOWDSVL/` 只是准备好的空目录，不得当作有效备份。
+继续时先确认保存与连接、获取最新备份，再同 bundle 原位安装，首次启动前逐文件核对；签名仍 9 月 27 日 19:12 PDT 到期。
+
 ## 最新本地修正：DEX 按家族计数、内部形态分页（2026-09-25，未安装）
 
 用户明确要求一种 Mathmon 只占一个条目：现改为 **142 家族条目，内部 247 形态页**，不再把进化形态当独立种类。
