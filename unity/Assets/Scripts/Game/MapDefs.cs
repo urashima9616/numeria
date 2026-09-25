@@ -96,7 +96,7 @@ namespace Numeria.Game
         public const double CollectionPriorityShare = .60;
 
         /// <summary>
-        /// Mix 60% local missing-form ecology with 40% original ecology. Total weight
+        /// Mix 60% local missing-family ecology with 40% original ecology. Total weight
         /// and relative rarity inside each group are preserved. Collection is historical,
         /// not current team ownership: releasing a friend cannot renew the bonus.
         /// </summary>
@@ -110,14 +110,14 @@ namespace Numeria.Game
             {
                 weights[i] = Math.Max(0, Encounters[i].Weight);
                 total += weights[i];
-                if (progress != null && !progress.HasCollected(Encounters[i].SpeciesId)) missing += weights[i];
+                if (progress != null && !progress.HasCollectedFamily(Encounters[i].SpeciesId)) missing += weights[i];
             }
             if (total <= 0) throw new InvalidOperationException("Map has no positive wild encounter weights: " + Id);
-            // No missing forms (or all missing) means exactly the original ecology.
+            // No missing families (or all missing) means exactly the original ecology.
             if (missing > 0 && missing < total)
                 for (int i = 0; i < weights.Length; i++)
                     weights[i] *= 1 - CollectionPriorityShare +
-                        (progress.HasCollected(Encounters[i].SpeciesId) ? 0 : CollectionPriorityShare * total / missing);
+                        (progress.HasCollectedFamily(Encounters[i].SpeciesId) ? 0 : CollectionPriorityShare * total / missing);
             return weights;
         }
 

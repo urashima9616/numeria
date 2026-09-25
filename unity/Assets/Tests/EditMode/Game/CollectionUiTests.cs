@@ -35,7 +35,7 @@ namespace Numeria.Game.Tests
                 Button Find(string name)=>root.GetComponentsInChildren<Button>().Single(b=>b.name==name);
                 TMP_Text Text(string name)=>root.GetComponentsInChildren<TMP_Text>().Single(t=>t.name==name);
                 Find("Tab-collection").onClick.Invoke();
-                Assert.AreEqual("MATHMON FIELD GUIDE   1 / 247",Text("DexProgress").text);
+                Assert.AreEqual("MATHMON FIELD GUIDE   1 / 142",Text("DexProgress").text);
                 Find("DexNext").onClick.Invoke();Find("DexNext").onClick.Invoke();
                 string before=Text("DexPage").text;
                 var card=root.GetComponentsInChildren<Button>().First(b=>b.name.StartsWith("Dex-"));
@@ -45,6 +45,44 @@ namespace Numeria.Game.Tests
                 Assert.False(root.GetComponentsInChildren<Button>().Any(b=>b.name=="DexListen"));
                 Find("DexFilter1").onClick.Invoke();Assert.AreEqual("PAGE 1 / 1",Text("DexPage").text);
                 Assert.True(Text("DexTitle").text.Contains("Addmander"));
+            }
+            finally{Object.DestroyImmediate(root);Sfx.Enabled=sound;}
+        }
+
+        [Test] public void EvolutionPagesStayInsideOneFamilyWithoutChangingListPageOrCollectionCount()
+        {
+            var root=new GameObject("DexFormsTest",typeof(RectTransform),typeof(Canvas));
+            bool sound=Sfx.Enabled;Sfx.Enabled=false;
+            try
+            {
+                var p=new Progress();p.ApplyMigrations();p.RecordCollected("sumdrake");p.RecordCollected("numberfly");
+                MenuUi.Open((RectTransform)root.transform,p,()=>{},_=>{},_=>{},_=>{});
+                Button Find(string name)=>root.GetComponentsInChildren<Button>().Single(b=>b.name==name);
+                TMP_Text Text(string name)=>root.GetComponentsInChildren<TMP_Text>().Single(t=>t.name==name);
+                Find("Tab-collection").onClick.Invoke();
+                Assert.AreEqual("MATHMON FIELD GUIDE   2 / 142",Text("DexProgress").text);
+                Assert.False(root.GetComponentsInChildren<Button>().Any(b=>b.name=="Dex-sumdrake"));
+                string page=Text("DexPage").text,title=Text("DexTitle").text;
+                Find("DexFormNext").onClick.Invoke();
+                Assert.AreEqual("FORM 2 / 3",Text("DexFormPage").text);
+                Assert.AreEqual("Sumdrake",Text("DexFormName").text);
+                Assert.AreEqual(title,Text("DexTitle").text);Assert.AreEqual(page,Text("DexPage").text);
+                Assert.NotNull(Find("DexListen"));
+                Find("DexFormNext").onClick.Invoke();
+                Assert.AreEqual("FORM 3 / 3",Text("DexFormPage").text);
+                Assert.AreEqual("???",Text("DexFormName").text);
+                Assert.False(Find("DexFormNext").interactable);
+                Assert.False(root.GetComponentsInChildren<Image>().Any(i=>i.name=="DexArt"));
+                Assert.False(root.GetComponentsInChildren<Button>().Any(b=>b.name=="DexListen"));
+                Find("DexFilter1").onClick.Invoke();
+                Assert.AreEqual(2,root.GetComponentsInChildren<Button>().Count(b=>b.name.StartsWith("Dex-")));
+                Find("Dex-countipillar").onClick.Invoke();
+                Assert.AreEqual("Numberfly",Text("DexFormName").text);
+                Assert.AreEqual(CollectionBook.FirstCollectedForm(p,"countipillar")+1,
+                    int.Parse(Text("DexFormPage").text.Split(' ')[1]));
+                Find("DexFilter2").onClick.Invoke();
+                Assert.False(root.GetComponentsInChildren<Button>().Any(b=>b.name=="Dex-countipillar"));
+                Assert.False(root.GetComponentsInChildren<Button>().Any(b=>b.name=="Dex-addmander"));
             }
             finally{Object.DestroyImmediate(root);Sfx.Enabled=sound;}
         }

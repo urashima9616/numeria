@@ -20,20 +20,27 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 | P3 — Full game systems | 🔶 Playable / polishing | Eight main worlds + eight optional depths, 247 forms, collection guide, evolution, economy, Lucas story |
 | P4 — iOS delivery | 🔶 On-device / polishing | Signed iPad build and transferred progress confirmed playable; ongoing device QA and save-safe updates |
 
-The expansion passes **212/212 Unity EditMode tests** plus **15/15 Node prototype tests**;
+The latest local code passes **215/215 Unity EditMode tests** plus **15/15 Node prototype tests**;
 coverage and remaining device checks are tracked in [Eight Depths](docs/eight-depths.md).
 Saves now use **schema v13**, adding collection and giant-reward history without resetting previous fields.
 Version **1.4.0 (6)** was installed in place on September 25. All four saved files matched the fresh device
 backup byte-for-byte before launch. The user confirmed saved progress, DEX, visuals and sound work on the iPad.
 See [release and save-preservation evidence](docs/ipad-1.4.0.md). The reused signing profile expires September 27.
 
-### Installed expansion — Field Guide and Eight Depths
+### Local DEX correction — family entries (not yet installed)
 
-MENU → DEX lists every form, with unknown pictures/names hidden, introductions and offline narration,
+The DEX now counts **142 Mathmons**, with **247 evolution forms shown as pages inside their family entry**.
+Any acquired form registers the family once. Unknown form pages stay hidden; old collection history is preserved.
+The missing-Mathmon encounter assist now follows the same family definition. See [family DEX details](docs/family-dex.md).
+The installed 1.4.0 (6) still has the previous separate-form list until the next save-safe update.
+
+### Field Guide and Eight Depths
+
+MENU → DEX lists every family, with internal evolution pages, introductions and offline narration,
 collection filters and stable pagination. Catching and evolution permanently register a form; releasing a
 partner does not erase its record. Older saves seed only the current owned forms they can prove, not invented history.
 
-Wild encounters favor missing local forms: 60% collection-priority ecology + 40% original ecology,
+Wild encounters favor missing local families: 60% collection-priority ecology + 40% original ecology,
 returning to normal after the local collection is complete. Releasing a partner does not renew its bonus.
 Master probability, level ranges and giant challenges are unchanged. See [encounter rules](docs/collection-encounters.md).
 

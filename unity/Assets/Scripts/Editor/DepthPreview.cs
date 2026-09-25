@@ -11,6 +11,30 @@ namespace Numeria.Editor
     /// <summary>Read-only visual fixtures: synthetic progress only, never SaveSystem.Load/Save.</summary>
     public static class DepthPreview
     {
+        [MenuItem("Numeria/Preview Family Field Guide")]
+        public static void ExportFamilyCollection()
+        {
+            bool oldSfx=Sfx.Enabled,oldVoice=Voice.Enabled;Sfx.Enabled=false;Voice.Enabled=false;
+            try
+            {
+                Directory.CreateDirectory("/tmp/numeria-training-preview");
+                var scene=typeof(LearningPreview).GetMethod("Scene",BindingFlags.Static|BindingFlags.NonPublic);
+                foreach(int stage in new[]{0,1,2})
+                {
+                    Action<GameObject,RectTransform> build=(root,canvas)=>
+                    {
+                        var p=new Numeria.Core.Progress();p.ApplyMigrations();p.RecordCollected("sumdrake");
+                        MenuUi.Open(canvas,p,()=>{},_=>{},_=>{},_=>{});
+                        void Click(string name)
+                        {foreach(var button in root.GetComponentsInChildren<UnityEngine.UI.Button>())if(button.name==name){button.onClick.Invoke();break;}}
+                        Click("Tab-collection");for(int i=0;i<stage;i++)Click("DexFormNext");
+                    };
+                    scene.Invoke(null,new object[]{"family-dex-form-"+stage,new Vector2Int(1440,1080),build});
+                }
+            }
+            finally {Sfx.Enabled=oldSfx;Voice.Enabled=oldVoice;}
+        }
+
         [MenuItem("Numeria/Preview Field Guide and Depths")]
         public static void Export()
         {

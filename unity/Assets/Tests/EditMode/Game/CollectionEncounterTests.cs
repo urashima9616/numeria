@@ -47,11 +47,17 @@ namespace Numeria.Game.Tests
             CollectionAssert.AreEqual(map.WildEncounterWeights(), map.WildEncounterWeights(p));
         }
 
-        [Test] public void BonusUsesExactCollectedFormNotEvolutionFamily()
+        [Test] public void AnyCollectedEvolutionRemovesBonusForTheWholeFamily()
         {
             var map = Ecology(); map.Encounters[0].SpeciesId = "countipillar";
             map.Encounters[1].SpeciesId = "numberfly";
             var p = new Progress(); p.RecordCollected("countipillar");
+            CollectionAssert.AreEqual(new double[] {90,10}, map.WildEncounterWeights(p));
+            p.CollectedForms.Clear();p.RecordCollected("numberfly");
+            CollectionAssert.AreEqual(new double[] {90,10}, map.WildEncounterWeights(p));
+            // A genuinely new family remains eligible even alongside an uncollected
+            // form belonging to an already collected family.
+            map.Encounters[1].SpeciesId="dewhopper";
             Assert.AreEqual(64, map.WildEncounterWeights(p)[1], 1e-9);
         }
 

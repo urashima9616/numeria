@@ -2,6 +2,9 @@
 
 Confirmed scope: 159 existing forms / 54 families + 80 new ordinary species + 8 giants = 247 forms / 142 families. New depth species are independent single-stage families; existing evolution lines are unchanged. Team remains 99; lifetime collection is separate from ownership. Giant rewards must survive a full team.
 
+DEX correction: **142 species/family entries**, each with internal evolution-form pages (247 total).
+See [family-dex.md](family-dex.md); this correction is not yet on the iPad, unlike the underlying expansion.
+
 ## Verdant Vault — forest
 
 Seed channels: Open seed channels to grow living bridges. Fixed guardian Lv.12, ordinary Lv.4–10. Access after parent guardian victory; return portal always available. Parent chapter determines math bounds; no automatic grade increase.
@@ -150,7 +153,7 @@ Moon tides: Tune moon mirrors to lower the tide and reveal hidden islands. Fixed
 
 The 88 additions are single-stage base forms, including the eight giants. Separate Mega artwork is a follow-up scope; these newcomers do not offer the Mega button yet. All 159 pre-existing forms retain their Mega profiles and independent portraits unchanged. Never fake a new Mega by copying its base portrait.
 
-Local implementation complete, **not built or installed on the iPad**. Additive v13 migration records lifetime collection, defeated giants and pending rewards; existing world layouts, chest IDs, individual stats, equipment and learning settings are retained. Older saves can prove only the starter and each currently owned form, so historical released/evolved-away forms are not guessed. New catches and evolutions permanently register their exact forms.
+Expansion installed as **1.4.0 (6)**; see [device/save verification](ipad-1.4.0.md). Additive v13 migration records lifetime collection, defeated giants and pending rewards; existing world layouts, chest IDs, individual stats, equipment and learning settings are retained. Older saves can prove only the starter and each currently owned form, so historical released/evolved-away forms are not guessed. New catches and evolutions permanently register their exact forms.
 
 Back up the latest iPad Documents before any future install; never restore an older Mac/device snapshot. Keep the same bundle ID and install in place, never uninstall. Code can be reverted, but a v13 save must not be opened with the old v12 build; keep a pre-update device backup separately. No actual Mac or iPad player saves were loaded or modified during this work.
 

@@ -1,31 +1,33 @@
 # Collection-aware wild encounters
 
-Installed on iPad in **1.4.0 (6)** on 2026-09-25; see [deployment verification](ipad-1.4.0.md).
+Original form-based rule installed in **1.4.0 (6)** on 2026-09-25; see [deployment verification](ipad-1.4.0.md).
+The family-based correction below is local, **not yet installed**; see [family DEX](family-dex.md).
 
 ## Rule
 
 All 16 playable maps use the permanent DEX collection record to favor locally available,
-not-yet-collected **forms**, not entire evolution families or current party membership.
+not-yet-collected **evolution families**, not individual forms or current party membership.
+Any recorded form marks its entire family collected for encounter-assistance purposes.
 For catchable wild encounters, mix:
 
-- 60%: draw from positive-weight, uncollected entries in this map's existing encounter table.
+- 60%: draw from positive-weight entries belonging to uncollected families in this map's existing table.
 - 40%: draw from the full original positive-weight table.
 
-Both draws retain the authored relative rarity. The implementation combines these pools into
-one weighted draw. If `T` is total original weight and `U` is uncollected weight, an uncollected
-entry of weight `w` receives effective weight `w × (0.4 + 0.6 × T/U)`; a collected entry gets
+Both draws retain the authored relative form rarity. The implementation combines these pools into
+one weighted draw. If `T` is total original weight and `U` is the weight of missing families' entries,
+an entry in a missing family of weight `w` receives effective weight `w × (0.4 + 0.6 × T/U)`; a known-family entry gets
 `w × 0.4`. Total weight remains `T`.
 
-| Original combined probability of missing forms | Assisted probability |
+| Original combined probability of missing families | Assisted probability |
 | --- | --- |
 | 50% | 80% |
 | 20% | 68% |
 | 10% | 64% |
 | 1% | 60.4% |
 
-If all local forms are collected, or all are missing, retain the original distribution.
+If all local families are collected, or all are missing, retain the original distribution.
 Capture/evolution updates apply on the next encounter. Releasing a partner never renews its
-bonus. Merely seeing or defeating a missing form does not remove assistance. This is a
+bonus. Merely seeing or defeating a missing family's form does not remove assistance. This is a
 probability improvement, not a guaranteed encounter after a fixed number of battles.
 
 ## Boundaries
@@ -39,16 +41,16 @@ probability improvement, not a guaranteed encounter after a fixed number of batt
   encounters and fixed-level giant challenges are unchanged.
 - No new save fields or schema migration: this uses the existing v13 `CollectedForms`.
   Old-save history limitations still apply: a previously released form absent from historical
-  data cannot be inferred as collected.
+  data cannot establish collection unless another form in the same family is recorded.
 - Feature development did not access real player saves. Subsequent authorized installation backed up
   device saves and verified them byte-for-byte before first launch; see the deployment record above.
 
 ## Verification
 
-Unity EditMode **212/212**, Node prototype **15/15** passed on 2026-09-25.
+Unity EditMode **215/215**, Node prototype **15/15** passed on 2026-09-25 (including family correction).
 
 `CollectionEncounterTests` covers exact weights, empty/complete collections, immediate
-capture and release behavior, exact-form identity, relative rarity and disabled entries,
+capture and release behavior, family identity across forms, relative rarity and disabled entries,
 all sixteen maps' ecology/levels/Bosses, and the actual runtime wild/Master dispatch path
 over 8,000 seeded encounters. Existing save and progression tests remain in the full suite.
 

@@ -6,6 +6,37 @@ namespace Numeria.Core.Tests
 {
     public class CollectionDepthTests
     {
+        [Test] public void DexCountsFamiliesOnceButPreservesIndividualFormHistory()
+        {
+            var p=new Progress();p.ApplyMigrations();
+            Assert.AreEqual(1,p.CollectionCount);
+            p.RecordCollected("sumdrake");p.RecordCollected("equadragon");
+            Assert.AreEqual(1,p.CollectionCount);
+            p.AddCaught("numberfly",8);Assert.AreEqual(2,p.CollectionCount);
+            Assert.True(p.HasCollectedFamily("countipillar"));Assert.False(p.HasCollected("countipillar"));
+            var family=CollectionBook.FamilyEntry(p,"numberfly");
+            Assert.AreEqual("countipillar",family.Id);Assert.True(family.Collected);
+            Assert.AreEqual("numberfly",family.PortraitId);
+            var forms=CollectionBook.Forms(p,"countipillar");
+            Assert.AreEqual(GameData.LineFor("countipillar").StageIds.Length,forms.Length);
+            Assert.True(forms.All(f=>f.Number==family.Number));
+            Assert.AreEqual("???",forms[0].Name);Assert.IsNull(forms[0].PortraitId);
+            p.ConvertCaught("countipillar",MathmonConversionReward.Coins);Assert.AreEqual(2,p.CollectionCount);
+            Assert.True(p.HasCollectedFamily("numberfly"));
+        }
+
+        [Test] public void FamilyGuideContains142UniqueEntriesAnd247FormPages()
+        {
+            var p=new Progress();p.ApplyMigrations();
+            var entries=GameData.Lines.Select(l=>CollectionBook.FamilyEntry(p,l.BaseId)).ToArray();
+            Assert.AreEqual(142,entries.Length);Assert.AreEqual(142,entries.Select(e=>e.Id).Distinct().Count());
+            CollectionAssert.AreEqual(Enumerable.Range(1,142),entries.Select(e=>e.Number));
+            Assert.AreEqual(247,entries.Sum(e=>CollectionBook.Forms(p,e.Id).Length));
+            foreach(var species in GameData.Roster)p.RecordCollected(species.Id);
+            Assert.AreEqual(142,p.CollectionCount);
+            foreach(var world in DepthCatalog.Worlds)foreach(var s in world.Species)
+                Assert.AreEqual(1,CollectionBook.Forms(p,s.Id).Length);
+        }
         [Test] public void CatalogHasEightyOrdinaryAndEightUniqueGiants()
         {
             Assert.AreEqual(8,DepthCatalog.Worlds.Length);

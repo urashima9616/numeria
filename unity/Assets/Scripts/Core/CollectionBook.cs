@@ -12,13 +12,29 @@ namespace Numeria.Core
     }
     public static class CollectionBook
     {
+        public static CollectionEntry FamilyEntry(Progress p,string id)
+        {
+            var line=GameData.LineFor(id);if(line==null)return null;
+            bool found=p.HasCollectedFamily(id);
+            string portrait=line.StageIds.FirstOrDefault(p.HasCollected);
+            return new CollectionEntry {Id=line.BaseId,Number=GameData.Lines.ToList().FindIndex(l=>l.BaseId==line.BaseId)+1,
+                Collected=found,Name=found?GameData.SpeciesById(line.BaseId).Name:"???",
+                Element=found?line.Element:null,PortraitId=portrait};
+        }
+        public static CollectionEntry[] Forms(Progress p,string id) =>
+            GameData.LineFor(id)?.StageIds.Select(form=>Entry(p,form)).ToArray()??Array.Empty<CollectionEntry>();
+        public static int FirstCollectedForm(Progress p,string id)
+        {
+            var line=GameData.LineFor(id);
+            return line==null?0:Math.Max(0,Array.FindIndex(line.StageIds,p.HasCollected));
+        }
         public static string[] Narration(string id) => Description(id).Split('.')
             .Select(s=>s.Trim()).Where(s=>s.Length>0).Select(s=>s+".").ToArray();
         public static CollectionEntry Entry(Progress p,string id)
         {
             var mon=GameData.SpeciesById(id);if(mon==null)return null;
             bool found=p.HasCollected(id);
-            return new CollectionEntry {Id=id,Number=GameData.Roster.ToList().FindIndex(s=>s.Id==id)+1,Collected=found,
+            return new CollectionEntry {Id=id,Number=GameData.Lines.ToList().FindIndex(l=>l.BaseId==GameData.BaseId(id))+1,Collected=found,
                 Name=found?mon.Name:"???",Element=found?GameData.LineFor(id)?.Element:null,
                 Description=found?Description(id):null,PortraitId=found?id:null};
         }
@@ -45,7 +61,8 @@ namespace Numeria.Core
         public List<string> PendingGiants=new List<string>();
         public List<string> DefeatedGiants=new List<string>();
         public bool HasCollected(string id)=>id=="addmander"||(CollectedForms!=null&&CollectedForms.Contains(id));
-        public int CollectionCount=>GameData.Roster.Count(s=>HasCollected(s.Id));
+        public bool HasCollectedFamily(string id)=>GameData.LineFor(id)?.StageIds.Any(HasCollected)??false;
+        public int CollectionCount=>GameData.Lines.Count(line=>HasCollectedFamily(line.BaseId));
         public void RecordCollected(string id)
         {
             if(GameData.SpeciesById(id)==null)return;
