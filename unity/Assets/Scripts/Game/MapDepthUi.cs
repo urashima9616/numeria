@@ -52,12 +52,14 @@ namespace Numeria.Game
             int kind=Array.FindIndex(DepthCatalog.Worlds,w=>w.Id==_def.Id);
             int stage=Array.IndexOf(_def.Discoveries,discovery);
             var puzzle=new DepthMechanism(kind,stage);bool cancel=false;
-            _voice.Say(puzzle.Instruction);
+            _voice.Say(puzzle.Narration());
             var cover=Ui.Img(_hudCanvasRoot,"DepthMechanism",new Color(.02f,.04f,.06f,.82f));Ui.Stretch(cover.rectTransform);
             var panel=Ui.Img(cover.transform,"Challenge",Ui.PlateBg);
             Ui.PlaceCentered(panel.rectTransform,new Vector2(.5f,.5f),Vector2.zero,new Vector2(1060,790));Ui.AddOutline(panel.gameObject);
             var title=Ui.Label(panel.transform,"Title",discovery.Name.ToUpperInvariant(),34,Ui.Ink);
-            Ui.Place(title.rectTransform,new Vector2(.5f,1),new Vector2(0,-20),new Vector2(980,55));
+            Ui.Place(title.rectTransform,new Vector2(.5f,1),new Vector2(-35,-20),new Vector2(820,55));
+            var replay=QuestionReplay.Add(panel.transform,lines=>_voice.Replay(lines),puzzle.Narration);
+            Ui.Place(replay.GetComponent<RectTransform>(),new Vector2(1,1),new Vector2(-22,-12),new Vector2(88,64));
             var instructions=Ui.Label(panel.transform,"Instructions",puzzle.Instruction,27,Ui.Ink);
             instructions.textWrappingMode=TMPro.TextWrappingModes.Normal;
             Ui.Place(instructions.rectTransform,new Vector2(.5f,1),new Vector2(0,-83),new Vector2(960,85));
@@ -66,6 +68,7 @@ namespace Numeria.Game
             var buttons=new Button[9];var symbols=new DepthMechanismGraphic[9];
             void Refresh()
             {
+                replay.interactable=!puzzle.Solved;
                 hint.text=puzzle.Hint;
                 for(int j=0;j<9;j++)
                 {
@@ -97,7 +100,7 @@ namespace Numeria.Game
             reset.onClick.AddListener(()=>{puzzle.Reset();Refresh();});
             var back=Ui.Btn(panel.transform,"Back","COME BACK LATER",23);Ui.Place((RectTransform)back.transform,new Vector2(.5f,0),new Vector2(165,30),new Vector2(280,65));
             back.onClick.AddListener(()=>cancel=true);Refresh();
-            yield return new WaitUntil(()=>cancel||puzzle.Solved);Destroy(cover.gameObject);
+            yield return new WaitUntil(()=>cancel||puzzle.Solved);replay.interactable=false;_voice.Stop();Destroy(cover.gameObject);
             if(puzzle.Solved&&_progress.CollectDiscovery(discovery.Id))
             {
                 _progress.AddCoins(discovery.Coins);_progress.RecordPuzzle(true);

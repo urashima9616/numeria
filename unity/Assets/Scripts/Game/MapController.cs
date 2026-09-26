@@ -85,7 +85,7 @@ namespace Numeria.Game
             BuildWorld();
             BuildHud();
             _puzzles = new PuzzleUi(this, _hudCanvasRoot, _rng, lines => _voice.Say(lines),
-                solved => _progress.RecordPuzzle(solved), _progress.Learning, _def.Tier);
+                solved => _progress.RecordPuzzle(solved), _progress.Learning, _def.Tier, lines=>_voice.Replay(lines));
             SetupCamera();
             UpdateHud();
             Music.PlayMap(_def.ParentWorld ?? _def.Id);

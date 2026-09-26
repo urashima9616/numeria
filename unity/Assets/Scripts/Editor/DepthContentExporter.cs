@@ -28,7 +28,8 @@ namespace Numeria.Editor
                 lines.Add(map.BossLine);lines.Add(map.GateClearLine);
                 lines.Add($"A wild Giant {world.Giant.Name} appeared! It has a pattern shield!");
                 lines.Add($"You found {20+map.Tier*5} Numeria coins!");
-                lines.Add(new DepthMechanism(System.Array.IndexOf(DepthCatalog.Worlds,world),0).Instruction);
+                for(int stage=0;stage<3;stage++)
+                    foreach(string line in new DepthMechanism(System.Array.IndexOf(DepthCatalog.Worlds,world),stage).Narration())lines.Add(line);
             }
             lines.Add("You restored my home. Now show me your team's courage!");
             lines.Add("Defeat this world's guardian to open its hidden depths.");

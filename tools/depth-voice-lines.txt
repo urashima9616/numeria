@@ -161,6 +161,7 @@ Doublescale feels at home around remote valleys and forgotten ruins.
 Doublit feels at home around rocky ledges and crystal caves.
 Doublmoss feels at home around sunlit forest gardens.
 Douburn feels at home around warm volcanic paths.
+down
 Dracount feels at home around remote valleys and forgotten ruins.
 Draddit feels at home around remote valleys and forgotten ruins.
 Drifturtle is getting stronger!
@@ -176,6 +177,7 @@ Factorock feels at home around rocky ledges and crystal caves.
 Fernfawn is getting stronger!
 Flickerfin feels at home around glowing caves and stormy heights.
 Flurryfox is getting stronger!
+four
 Fourleaf feels at home around sunlit forest gardens.
 Frostfinch is getting stronger!
 Gearling feels at home around high peaks and floating ruins.
@@ -519,6 +521,7 @@ Its wings hide a matching pair of silver eyespots.
 Kitelet is getting stronger!
 Lanternray feels at home around clear streams and quiet pools.
 Layerock feels at home around rocky ledges and crystal caves.
+left
 Level up! Abacat is getting stronger!
 Level up! Acornib is getting stronger!
 Level up! Aerolotl is getting stronger!
@@ -655,6 +658,7 @@ Numite feels at home around rocky ledges and crystal caves.
 Oasisprout is getting stronger!
 Obsidianole is getting stronger!
 Ohmlet feels at home around glowing caves and stormy heights.
+one
 Open seed channels to grow living bridges.
 Orderchid feels at home around sunlit forest gardens.
 Ordinalion feels at home around sunlit forest gardens.
@@ -694,6 +698,7 @@ Relicub is getting stronger!
 Repeat mountain echoes to raise frozen crossings.
 Restore mosaic keys in order to open the sealed archive.
 Restore the mosaic to 1 through 9. Tap two tiles to swap them.
+right
 Rimehare is getting stronger!
 Ripplewisp is getting stronger!
 Rootter is getting stronger!
@@ -752,6 +757,10 @@ Symmetroak feels at home around sunlit forest gardens.
 Tallytitan feels at home around rocky ledges and crystal caves.
 Tallywing feels at home around open skies and windy cliffs.
 Tallywyrm feels at home around remote valleys and forgotten ruins.
+Tank three pours into tank one. Make each tank hold this many drops.
+Tap a channel to turn it. From left to right, match these directions.
+Tap the bells in this order.
+Tap the starting square to start again.
 Tectotitan feels at home around rocky ledges and crystal caves.
 Tenfin feels at home around clear streams and quiet pools.
 Tenswyrm feels at home around remote valleys and forgotten ruins.
@@ -760,6 +769,7 @@ Tesselkid is getting stronger!
 Tessellion feels at home around rocky ledges and crystal caves.
 This round cloud creature rests only on the tallest mountain cairns.
 This sleepy mushroom glows when nearby friends finish a pattern.
+three
 Thunderbear feels at home around glowing caves and stormy heights.
 Tidalten feels at home around clear streams and quiet pools.
 Tideshell is getting stronger!
@@ -775,6 +785,8 @@ Turn wind vanes to connect floating islands.
 Twiggle is getting stronger!
 Twinkelle feels at home around moonlit groves.
 Twinsting feels at home around remote valleys and forgotten ruins.
+two
+up
 Vanevulp is getting stronger!
 Veilkit feels at home around moonlit groves.
 Veilmoth is getting stronger!

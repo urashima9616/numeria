@@ -90,5 +90,22 @@ namespace Numeria.Core
         public string Hint => Kind==0?"ROUTE: "+string.Join(" / ",Goal.Take(3).Select(i=>new[]{"UP","RIGHT","DOWN","LEFT"}[i])):
             Kind==1?"ECHO: "+string.Join(" - ",Goal.Take(4+Stage).Select(i=>(i+1).ToString()))+"   "+Step+" / "+(4+Stage):
             Kind==5?"Equal tanks: "+(2+Stage)+" each":"Take your time. RESET is always free.";
+
+        // Read visible task information, not a computed solution or the player's last feedback.
+        public string[] Narration()
+        {
+            var lines=new System.Collections.Generic.List<string>{Instruction};
+            if(Kind==0)
+            {
+                lines.Add("Tap a channel to turn it. From left to right, match these directions.");
+                lines.AddRange(Goal.Take(3).Select(i=>new[]{"up","right","down","left"}[i]));
+            }
+            if(Kind==1)
+            {lines.Add("Tap the bells in this order.");foreach(int bell in Goal.Take(4+Stage))lines.AddRange(LearningSpeech.Number(bell+1));}
+            if(Kind==4)lines.Add("Tap the starting square to start again.");
+            if(Kind==5)
+            {lines.Add("Tank three pours into tank one. Make each tank hold this many drops.");lines.AddRange(LearningSpeech.Number(2+Stage));}
+            return lines.ToArray();
+        }
     }
 }

@@ -13,6 +13,7 @@ namespace Numeria.Game
         private AudioSource _audio;
         private Coroutine _routine;
         private int _voiceId;
+        private bool _ducking;
 
         private void Awake()
         {
@@ -22,20 +23,33 @@ namespace Numeria.Game
 
         public void Say(params string[] lines)
         {
-            if (!Enabled) return;
+            if (!Enabled) { Stop(); return; }
+            Replay(lines);
+        }
+
+        /// <summary>A deliberate Listen tap works even when automatic narration is off.</summary>
+        public void Replay(params string[] lines)
+        {
+            Stop();
+            _routine = StartCoroutine(SayRoutine(lines));
+        }
+
+        public void Stop()
+        {
             if (_routine != null)
             {
                 StopCoroutine(_routine);
-                _audio.Stop();
-                Music.SetVoiceActive(_voiceId, false);
+                _routine=null;
             }
-            _routine = StartCoroutine(SayRoutine(lines));
+            if(_audio!=null)_audio.Stop();
+            if(_ducking){Music.SetVoiceActive(_voiceId, false);_ducking=false;}
         }
 
         private IEnumerator SayRoutine(string[] lines)
         {
             _audio.Stop();
             Music.SetVoiceActive(_voiceId, true);
+            _ducking=true;
             foreach (string line in lines)
             {
                 var clip = Resources.Load<AudioClip>("Voice/" + VoiceKeys.Sanitize(line));
@@ -45,12 +59,13 @@ namespace Numeria.Game
                 yield return new WaitForSeconds(clip.length + 0.1f);
             }
             Music.SetVoiceActive(_voiceId, false);
+            _ducking=false;
             _routine = null;
         }
 
         private void OnDestroy()
         {
-            Music.SetVoiceActive(_voiceId, false);
+            Stop();
         }
     }
 }

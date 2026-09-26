@@ -90,7 +90,7 @@ namespace Numeria.Game
             _voice = gameObject.AddComponent<Voice>();
             BuildUi();
             _puzzles = new PuzzleUi(this, _canvasRoot, _rng, lines => _voice.Say(lines),
-                solved => _progress.RecordPuzzle(solved), progress.Learning, tier);
+                solved => _progress.RecordPuzzle(solved), progress.Learning, tier, lines=>_voice.Replay(lines));
             RenderAll();
             string opening = enemy.Shield.HasValue
                 ? _tier >= 3

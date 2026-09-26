@@ -39,7 +39,10 @@ namespace Numeria.Game
             var rt = card.rectTransform; rt.anchorMin = new Vector2(.08f, .08f); rt.anchorMax = new Vector2(.92f, .92f); rt.offsetMin = rt.offsetMax = Vector2.zero;
             var title = Ui.Label(card.transform, "Prompt", q.Prompt, 34, Ui.Hex("#253e2b"));
             title.enableAutoSizing = true; title.fontSizeMin = 22; title.fontSizeMax = 34;
-            Ui.PlaceCentered(title.rectTransform, new Vector2(.5f, .89f), Vector2.zero, new Vector2(1080, 76));
+            Ui.PlaceCentered(title.rectTransform, new Vector2(.5f, .89f), new Vector2(-40,0), new Vector2(1040, 76));
+            var narration=LearningSpeech.Lines(q);
+            var replay=QuestionReplay.Add(card.transform,_replay,()=>narration);
+            Ui.PlaceCentered(replay.GetComponent<RectTransform>(),new Vector2(.5f,.89f),new Vector2(565,0),new Vector2(88,76));
             var display = Ui.Label(card.transform, "Spell", q.Display, q.Diagram == null ? 58 : 30, Ui.Hex("#805220"));
             display.enableAutoSizing = true; display.fontSizeMin = 24; display.fontSizeMax = q.Diagram == null ? 58 : 34; display.textWrappingMode = TextWrappingModes.Normal;
             Ui.PlaceCentered(display.rectTransform, new Vector2(.5f, q.Diagram == null ? .61f : .77f), Vector2.zero, new Vector2(1080, q.Diagram == null ? 210 : 92));
@@ -107,6 +110,7 @@ namespace Numeria.Game
                     attempts++;hint.text=q.Hint;Say("Let's try again!",q.Hint);Sfx.Play(SfxCue.SoftMiss);
                     if(attempts>=2) {answer=false;hint.text="The answer is "+(interactive?string.Join(" + ",q.Expected.Select(x=>x.ToString())):q.Answer)+". "+q.Hint;}
                 }
+                if(answer.HasValue)replay.interactable=false;
             }
             for (int i = 0; i < (interactive?q.Tokens.Length:q.Options.Length); i++)
             {
@@ -148,7 +152,7 @@ namespace Numeria.Game
                     Submit(MathCurriculum.CheckSelection(q,picked));if(!answer.HasValue)Clear();
                 });
             }
-            _say(LearningSpeech.Lines(q));
+            _say(narration);
             while (!answer.HasValue) yield return null;
             foreach (var button in buttons) button.interactable = false;
             yield return new WaitForSeconds(answer.Value ? .5f : 2f);

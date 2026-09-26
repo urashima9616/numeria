@@ -18,18 +18,20 @@ namespace Numeria.Game
         private readonly RectTransform _canvasRoot;
         private readonly Rng _rng;
         private readonly Action<string[]> _say;
+        private readonly Action<string[]> _replay;
         private readonly Action<bool> _onCompleted;
         private static readonly Dictionary<ShapeKind, Sprite> ShapeSprites = new Dictionary<ShapeKind, Sprite>();
         private static readonly Dictionary<PatternToken, Sprite> PatternSprites =
             new Dictionary<PatternToken, Sprite>();
 
         public PuzzleUi(MonoBehaviour host, RectTransform canvasRoot, Rng rng, Action<string[]> say,
-            Action<bool> onCompleted = null, MathSettings math = null, int chapter = 1)
+            Action<bool> onCompleted = null, MathSettings math = null, int chapter = 1, Action<string[]> replay = null)
         {
             _host = host;
             _canvasRoot = canvasRoot;
             _rng = rng;
             _say = say;
+            _replay = replay ?? say;
             _onCompleted = onCompleted;
             _math = math;
             _chapter = chapter;
@@ -77,7 +79,11 @@ namespace Numeria.Game
             Ui.Stretch(overlay.rectTransform);
 
             var promptText = Ui.Label(overlay.transform, "Prompt", prompt, 34, Color.white);
-            Ui.Place(promptText.rectTransform, new Vector2(0.5f, 0.75f), Vector2.zero, new Vector2(1200, 60));
+            Ui.Place(promptText.rectTransform, new Vector2(0.5f, 0.75f), new Vector2(-40,0), new Vector2(1080, 72));
+            promptText.enableAutoSizing=true;promptText.fontSizeMin=24;promptText.fontSizeMax=34;
+            promptText.textWrappingMode=TextWrappingModes.Normal;
+            var replay=QuestionReplay.Add(overlay.transform,_replay,()=>new[]{prompt});
+            Ui.Place(replay.GetComponent<RectTransform>(),new Vector2(.5f,.75f),new Vector2(565,0),new Vector2(88,76));
 
             crystalRow = Ui.Node(overlay.transform, "Crystals");
             Ui.Place(crystalRow, new Vector2(0.5f, 0.38f), Vector2.zero, new Vector2(500, 100));
@@ -254,6 +260,7 @@ namespace Numeria.Game
 
             Say(p.Prompt);
             yield return new WaitUntil(() => result.HasValue);
+            QuestionReplay.Disable(overlay);
             yield return new WaitForSeconds(result.Value ? 0.65f : 0.4f);
             UnityEngine.Object.Destroy(overlay.gameObject);
             Complete(done, result.Value);
@@ -308,6 +315,7 @@ namespace Numeria.Game
             }
             Say(p.Prompt);
             yield return new WaitUntil(() => result.HasValue);
+            QuestionReplay.Disable(overlay);
             yield return new WaitForSeconds(result.Value ? 0.65f : 0.4f);
             UnityEngine.Object.Destroy(overlay.gameObject);
             Complete(done, result.Value);
@@ -392,6 +400,7 @@ namespace Numeria.Game
             }
             Say(p.Prompt);
             yield return new WaitUntil(() => result.HasValue);
+            QuestionReplay.Disable(overlay);
             yield return new WaitForSeconds(result.Value ? 0.65f : 0.4f);
             UnityEngine.Object.Destroy(overlay.gameObject);
             Complete(done, result.Value);
@@ -669,6 +678,7 @@ namespace Numeria.Game
 
             Say(p.Prompt);
             yield return new WaitUntil(() => result.HasValue);
+            QuestionReplay.Disable(overlay);
             yield return new WaitForSeconds(result.Value ? 0.6f : 0.4f);
             UnityEngine.Object.Destroy(overlay.gameObject);
             Complete(done, result.Value);
@@ -742,6 +752,7 @@ namespace Numeria.Game
             Choice("RIGHT", ComparisonSide.Right);
             Say(p.Prompt);
             yield return new WaitUntil(() => result.HasValue);
+            QuestionReplay.Disable(overlay);
             yield return new WaitForSeconds(result.Value ? 0.65f : 0.4f);
             UnityEngine.Object.Destroy(overlay.gameObject);
             Complete(done, result.Value);
@@ -802,6 +813,7 @@ namespace Numeria.Game
             }
             Say(prompt);
             yield return new WaitUntil(() => result.HasValue);
+            QuestionReplay.Disable(overlay);
             yield return new WaitForSeconds(result.Value ? 0.65f : 0.4f);
             UnityEngine.Object.Destroy(overlay.gameObject);
             Complete(done, result.Value);
@@ -926,6 +938,7 @@ namespace Numeria.Game
 
             Say(p.Prompt);
             yield return new WaitUntil(() => result.HasValue);
+            QuestionReplay.Disable(overlay);
             yield return new WaitForSeconds(result.Value ? 0.6f : 0.4f);
             UnityEngine.Object.Destroy(overlay.gameObject);
             Complete(done, result.Value);

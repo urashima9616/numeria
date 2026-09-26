@@ -20,12 +20,21 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 | P3 — Full game systems | 🔶 Playable / polishing | Eight main worlds + eight optional depths, 247 forms, collection guide, evolution, economy, Lucas story |
 | P4 — iOS delivery | 🔶 On-device / polishing | Signed iPad build and transferred progress confirmed playable; ongoing device QA and save-safe updates |
 
-The latest local code passes **215/215 Unity EditMode tests** plus **15/15 Node prototype tests**;
-coverage and remaining device checks are tracked in [Eight Depths](docs/eight-depths.md).
+The latest local code passes **223/223 Unity EditMode tests** plus **15/15 Node prototype tests**;
+latest accessibility checks and design findings are tracked in the [puzzle review](docs/puzzle-design-review.md).
 Saves now use **schema v13**, adding collection and giant-reward history without resetting previous fields.
 Version **1.4.1 (7)** was installed in place on September 25. All four saved files matched the fresh device
 backup byte-for-byte before launch. The user confirmed saved progress and family-form navigation work on the iPad.
 See [release and save-preservation evidence](docs/ipad-1.4.1.md). The reused signing profile expires September 27.
+
+### Local update — replay every question (not yet installed)
+
+All math-question interfaces and all eight depth mechanisms now offer a small speaker / **LISTEN** button.
+It rereads the current statement without changing the puzzle or selections, works offline, and can be used
+even when automatic narration is off. Depth narration includes visible direction/echo targets and key controls.
+The accompanying [design review](docs/puzzle-design-review.md) identifies unclear rules, copy-the-target mechanics
+and missing grade progression; those gameplay redesigns are **still pending**, not fixed by narration alone.
+Save schema remains v13; this local update has not touched Lucas's saves or been installed on the iPad.
 
 ### Installed DEX correction — family entries
 
