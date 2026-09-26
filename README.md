@@ -6,7 +6,7 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 
 > Current development: eight main worlds plus eight optional depths, a lifetime collection guide, and
 > **247 Mathmon forms / 142 families** (159 existing forms + 80 new ordinary species + 8 giants; Mega not counted).
-> Installed on iPad as **1.4.1 (7)** on September 25; **Lucas's iPad save is authoritative**.
+> Installed on iPad as **1.4.2 (8)** on September 25; **Lucas's iPad save is authoritative**.
 
 ![Numeria battle — Addmander casting math magic against Countipillar](docs/images/numeria-readme-cover.png)
 
@@ -23,18 +23,19 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 The latest local code passes **223/223 Unity EditMode tests** plus **15/15 Node prototype tests**;
 latest accessibility checks and design findings are tracked in the [puzzle review](docs/puzzle-design-review.md).
 Saves now use **schema v13**, adding collection and giant-reward history without resetting previous fields.
-Version **1.4.1 (7)** was installed in place on September 25. All four saved files matched the fresh device
-backup byte-for-byte before launch. The user confirmed saved progress and family-form navigation work on the iPad.
-See [release and save-preservation evidence](docs/ipad-1.4.1.md). The reused signing profile expires September 27.
+Version **1.4.2 (8)** was installed in place and launched on September 25. All four saved files matched the fresh
+device backup byte-for-byte before launch. Question-replay acceptance on the iPad is pending; progress and DEX
+navigation were user-verified in 1.4.1. See [release and save-preservation evidence](docs/ipad-1.4.2.md).
+The reused signing profile expires September 27.
 
-### Local update — replay every question (not yet installed)
+### Installed update — replay every question
 
 All math-question interfaces and all eight depth mechanisms now offer a small speaker / **LISTEN** button.
 It rereads the current statement without changing the puzzle or selections, works offline, and can be used
 even when automatic narration is off. Depth narration includes visible direction/echo targets and key controls.
 The accompanying [design review](docs/puzzle-design-review.md) identifies unclear rules, copy-the-target mechanics
 and missing grade progression; those gameplay redesigns are **still pending**, not fixed by narration alone.
-Save schema remains v13; this local update has not touched Lucas's saves or been installed on the iPad.
+Save schema remains v13; installation preserved all save files unchanged. On-device replay acceptance is pending.
 
 ### Installed DEX correction — family entries
 

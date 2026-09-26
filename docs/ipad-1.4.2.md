@@ -2,8 +2,10 @@
 
 ## Status (September 25, 2026)
 
-**Built and signature-verified; NOT installed yet.** Waiting for the user to confirm that Lucas has
-saved and returned to the main menu. Do not mistake a successful backup or build for deployment.
+**Installed in place and launched on September 25, 2026.** After the user confirmed saved/main-menu
+readiness, a fresh final Documents backup was taken and validated. After installation and before first
+launch, all four save files and their complete recursive inventory matched that backup byte-for-byte.
+Device inventory confirms 1.4.2 (8); launch succeeded. Physical-device replay/progress acceptance is pending.
 
 Includes `e43565d`: small speaker / LISTEN on all math UI and eight depth mechanisms, offline statement
 replay without resetting selections, seven new voice clips, and the puzzle-design audit. The proposed
@@ -20,15 +22,17 @@ Save schema remains v13. Bundle/team remain `com.yuankunxue.numeria` / `7B74WP6A
 - Existing provisioning expires **September 27, 2026, 19:12 PDT** (September 28 02:12:33 UTC).
   This build did not extend the signing period.
 
-## Preliminary device backup
+## Device backup and preservation evidence
 
 First read failed due to a connection reset, with no backup directory produced. Read-only retry succeeded:
 
 `/Users/yuankunxue/Documents/Numeria Save Backups/ipad-before-1.4.2-Z5QxIE58/initial-retry-Documents`
 
 Four files copied. Slot 2: **Verdant Vault, 3,664 coins, active Mushmellow**, v13, 61 recorded forms,
-59 caught entries plus starter, Lunabyss defeated. This is a preliminary snapshot, not an authorization
-to interrupt play or install. Progress on the iPad remains authoritative.
+59 caught entries plus starter, Lunabyss defeated. After user confirmation, `final-Documents` and then
+`post-install-Documents` were copied into the same parent directory. All three copies have the identical
+four files/hashes below. The post-install copy was taken before the first launch. No uninstall, save import,
+or Mac progress replacement occurred. Future progress on the iPad remains authoritative.
 
 | File | SHA-256 |
 | --- | --- |
@@ -37,11 +41,12 @@ to interrupt play or install. Progress on the iPad remains authoritative.
 | numeria-save-slot-2.json | `dcc96af6007347e372855dcd3a84c12688a83d4bea34c0fad68b4a8cf215cf95` |
 | numeria-save.json | `1be24b0ee0e177fa956606c6dfbb1395fcde1e03964316d8bbf0134dfe9dd7d7` |
 
-## Remaining installation steps
+## Deployment results and remaining acceptance
 
-1. Obtain save/main-menu readiness confirmation; device must stay connected and unlocked.
-2. Take a fresh final Documents copy and validate inventory/JSON before installing.
-3. Install this app in place. Never uninstall, change bundle identity, or import older Mac progress.
-4. Retrieve post-install Documents **before first launch** and compare all paths and bytes to the final backup.
-5. Verify installed version, launch, and ask the user to load Slot 2 and check progress plus question replay.
-6. Update this document and HANDOFF with actual results. Successful process launch alone is not audio/touch acceptance.
+- Installation: `/tmp/numeria-replay-install.json` (succeeded).
+- Installed version: `/tmp/numeria-replay-installed-after.json` (1.4.2 / 8).
+- Backup results: `/tmp/numeria-replay-final-backup.json`, `/tmp/numeria-replay-post-backup.json`.
+- Launch: `/tmp/numeria-replay-launch.json` (succeeded).
+- User asked to load SLOT 2, confirm Verdant Vault / 3,664 coins, then tap LISTEN on a math or mechanism
+  question and verify the complete statement is replayed. Acceptance remains pending; launch is not audio/touch QA.
+- Future updates must take another fresh device backup; never restore this older snapshot over later play.
