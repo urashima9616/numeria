@@ -5,6 +5,15 @@
 
 ---
 
+## 待安装：1.4.2 (8) 小喇叭更新（2026-09-25）
+
+用户要求继续安装，Unity 已导出 Numeria-12，Xcode Release 和严格深度签名验证通过。
+App：`/tmp/numeria-replay-ios-derived/Build/Products/Release-iphoneos/Numeria.app`。
+初次设备读取连接中断，重试备份成功；目录及四文件校验见 [ipad-1.4.2.md](ipad-1.4.2.md)。
+初步 Slot 2：Verdant Vault、3664 金币、Mushmellow、v13。**尚未覆盖安装/启动新版**，
+等待本轮“已保存并回主菜单”的确认，之后需再取 final 备份并安装前后逐字节验证。
+仍为原 bundle/team；签名沿用至 9 月 27 日 19:12 PDT，没有延长。设备最新进度为准。
+
 ## 最新本地开发：谜题审查与题目重听（2026-09-25，未安装）
 
 详见 [谜题设计审查](puzzle-design-review.md)。所有数学题共用 UI（战斗/地图/宝箱/进化等）、
