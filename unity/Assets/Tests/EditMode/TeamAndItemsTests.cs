@@ -145,16 +145,16 @@ namespace Numeria.Core.Tests
         }
 
         [Test]
-        public void TeamCapacity_IsNinetyNine_AndFullCatchRequiresAChoice()
+        public void TeamCapacity_IsThreeHundred_AndFullCatchRequiresAChoice()
         {
             var p = new Progress();
             Assert.AreEqual(1, p.TeamCount);
-            Assert.AreEqual(99, Progress.TeamCapacity);
+            Assert.AreEqual(300, Progress.TeamCapacity);
 
-            for (int i = 0; i < 98; i++)
+            for (int i = 0; i < Progress.TeamCapacity - 1; i++)
                 Assert.AreEqual(CatchRosterResult.Added, p.AddCaught($"future-family-{i}"));
 
-            Assert.AreEqual(99, p.TeamCount);
+            Assert.AreEqual(300, p.TeamCount);
             Assert.True(p.TeamIsFull);
             Assert.AreEqual(CatchRosterResult.Full, p.AddCaught("overflow-family"));
             Assert.AreEqual(CatchRosterResult.Duplicate, p.AddCaught("future-family-4"));
@@ -164,7 +164,7 @@ namespace Numeria.Core.Tests
         public void FullTeamReplacement_ReleasesGrowthAndUnequipsAccessories()
         {
             var p = new Progress();
-            for (int i = 0; i < 98; i++) p.Catch($"future-family-{i}");
+            for (int i = 0; i < Progress.TeamCapacity - 1; i++) p.Catch($"future-family-{i}");
             p.ActiveMonId = "future-family-3";
             p.AddAccessory("keepsake", "Counting Charm", 1, 0);
             Assert.True(p.EquipAccessory("keepsake", "future-family-3"));
@@ -172,7 +172,7 @@ namespace Numeria.Core.Tests
             var newcomer = GameData.CreateWild("stackstone", 14, new Rng(13));
             newcomer.AttackPower += 2;
             Assert.True(p.ReplaceCaught("future-family-3", newcomer));
-            Assert.AreEqual(99, p.TeamCount);
+            Assert.AreEqual(300, p.TeamCount);
             Assert.False(p.CaughtIds.Contains("future-family-3"));
             Assert.True(p.CaughtIds.Contains("pebblit"));
             Assert.AreEqual("pebblit", p.ActiveMonId);

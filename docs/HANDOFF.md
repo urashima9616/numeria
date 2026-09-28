@@ -5,6 +5,19 @@
 
 ---
 
+## 最新本地开发：队伍 300 上限 / 1.4.3 (9)（2026-09-28，续签受阻）
+
+`Progress.TeamCapacity=300`，包括 starter，仍每家族一位伙伴；全部 142 家族能同时保留。
+捕获、满员替换、巨型领奖与 UI 共用常量，存档仍 v13，无迁移/裁剪或等级上限改变。
+Unity 229/229、Node 15/15 通过，新增满 300 存取、旧 99 队伍继续捕获、全 roster 收集和 300 行滚动检查。
+详见 [team-capacity-300.md](team-capacity-300.md)；[部署进度](ipad-1.4.3.md)。
+初始 iPad 备份成功：Rime Gallery、5492 金币、Paircub 家族、99 位伙伴、106 记录形态。
+备份根目录 `~/Documents/Numeria Save Backups/ipad-before-1.4.3-T1Qebuj8/`，目前仅 initial；
+仍需保存就绪确认、最终备份、签名续期及安装前后核验，不得用旧 Mac 存档覆盖。
+Unity 已导出 Numeria-13；自动签名失败：Xcode 账号 keychain 凭据缺失（missing Xcode-Username），
+继而报 No Accounts / No profiles。已请用户在 Xcode Settings → Accounts 登录原 Apple 账号。
+正在独立验证 unsigned 原生编译，未安装；不要把 unsigned 产物当可安装包。
+
 ## 最新部署：1.4.2 (8) 小喇叭更新（2026-09-25，已安装启动）
 
 用户要求继续安装，Unity 已导出 Numeria-12，Xcode Release 和严格深度签名验证通过。

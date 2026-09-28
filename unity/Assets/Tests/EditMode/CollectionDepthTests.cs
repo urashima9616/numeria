@@ -73,11 +73,20 @@ namespace Numeria.Core.Tests
         [Test] public void GiantRewardsArePermanentClaimableAndIdempotent()
         {
             var p=new Progress();p.ApplyMigrations();string id=DepthCatalog.Worlds[0].Giant.Id;
-            foreach(var line in GameData.Lines.Where(l=>l.BaseId!="addmander"&&l.BaseId!=id).Take(98))p.AddCaught(line.BaseId);
+            for(int i=0;i<Progress.TeamCapacity-1;i++)p.AddCaught("future-family-"+i);
             Assert.True(p.TeamIsFull);Assert.True(p.AwardGiant(id));Assert.False(p.AwardGiant(id));
             Assert.True(p.HasCollected(id));Assert.True(p.PendingGiants.Contains(id));Assert.False(p.ClaimGiant(id));
             p.ConvertCaught(p.CaughtIds[0],MathmonConversionReward.Coins);Assert.True(p.ClaimGiant(id));
             Assert.True(p.Owns(id));Assert.False(p.PendingGiants.Contains(id));Assert.False(p.ClaimGiant(id));
+        }
+
+        [Test] public void EntireExistingCatalogFitsWithoutReleasingAnyFamily()
+        {
+            var p=new Progress();p.ApplyMigrations();
+            foreach(var line in GameData.Lines.Where(l=>l.BaseId!="addmander"))
+                Assert.AreEqual(CatchRosterResult.Added,p.AddCaught(line.BaseId),line.BaseId);
+            Assert.AreEqual(142,p.TeamCount);Assert.False(p.TeamIsFull);
+            Assert.AreEqual(142,p.CollectionCount);
         }
 
         [Test] public void ExistingMegasRemainAvailableAndDepthFormsDoNotUsePlaceholderMegas()

@@ -87,7 +87,7 @@ namespace Numeria.Core
         // v13 adds lifetime collection and durable giant rewards; earlier adventure fields are preserved.
         // Older builds must reject rather than silently dropping new progression fields.
         public const int CurrentSaveVersion = 13;
-        public const int TeamCapacity = 99;
+        public const int TeamCapacity = 300;
 
         public int SaveVersion = CurrentSaveVersion;
         public int Level = 1;
@@ -419,7 +419,7 @@ namespace Numeria.Core
         }
 
         /// <summary>
-        /// 尝试将野生伙伴加入最多 99 只的队伍。首次捕捉会保留野生等级与形态；
+        /// 尝试将野生伙伴加入最多 300 只的队伍。首次捕捉会保留野生等级与形态；
         /// 同家族更高等级或更高形态只报告 UpgradeAvailable，由 UI 让玩家决定替换或转经验。
         /// </summary>
         public CatchRosterResult AddCaught(CombatantDef captured)

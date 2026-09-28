@@ -111,20 +111,26 @@ namespace Numeria.Game.Tests
             foreach(string diagram in new[]{"dots","array","collection","compose","sequence","mirror","balance","fractionline","coordinate","box"})CollectionAssert.Contains(seen,diagram);
         }
 
-        [TestCase(0f)]
-        [TestCase(.37f)]
-        [TestCase(1f)]
-        public void SelectingTeammatesPreservesScrollPosition(float position)
+        [TestCase(0f,30)]
+        [TestCase(.37f,30)]
+        [TestCase(1f,30)]
+        [TestCase(0f,300)]
+        [TestCase(.37f,300)]
+        [TestCase(1f,300)]
+        public void SelectingTeammatesPreservesScrollPosition(float position,int size)
         {
             var p=new Progress();
-            foreach(var line in GameData.Lines.Take(30)) if(line.BaseId!="addmander") p.Catch(line.BaseId);
+            foreach(var line in GameData.Lines.Take(size)) if(line.BaseId!="addmander") p.Catch(line.BaseId);
+            for(int i=p.TeamCount;i<size;i++)p.Catch("future-family-"+i);
             var menu=Menu(p); Call(menu,"Build"); Canvas.ForceUpdateCanvases();
+            Assert.AreEqual(size,_root.GetComponentsInChildren<Button>().Count(b=>b.name.StartsWith("Mon-")));
+            Assert.True(_root.GetComponentsInChildren<TMP_Text>().Any(t=>t.text==$"YOUR TEAM  {size}/300"));
             var scroll=_root.GetComponentsInChildren<ScrollRect>().Single(s=>s.name=="LeftCol");
             Assert.Greater(scroll.content.rect.height,scroll.viewport.rect.height+1000);
             scroll.verticalNormalizedPosition=position;
             float offset=scroll.content.anchoredPosition.y;
             var history=p.CaughtIds.ToArray(); string active=p.ActiveMonId;
-            foreach(string id in p.SortedTeam().Skip(12).Take(3))
+            foreach(string id in p.SortedTeam().Skip(size-3))
             {
                 _root.GetComponentsInChildren<Button>().Single(b=>b.name=="Mon-"+id).onClick.Invoke();
                 Canvas.ForceUpdateCanvases();

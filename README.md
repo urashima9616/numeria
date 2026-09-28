@@ -20,8 +20,9 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 | P3 — Full game systems | 🔶 Playable / polishing | Eight main worlds + eight optional depths, 247 forms, collection guide, evolution, economy, Lucas story |
 | P4 — iOS delivery | 🔶 On-device / polishing | Signed iPad build and transferred progress confirmed playable; ongoing device QA and save-safe updates |
 
-The latest local code passes **223/223 Unity EditMode tests** plus **15/15 Node prototype tests**;
-latest accessibility checks and design findings are tracked in the [puzzle review](docs/puzzle-design-review.md).
+The latest local code passes **229/229 Unity EditMode tests** plus **15/15 Node prototype tests**;
+the local 1.4.3 update raises the team limit to **300**, including the starter, without changing the save schema.
+See [capacity verification](docs/team-capacity-300.md) and the [puzzle review](docs/puzzle-design-review.md).
 Saves now use **schema v13**, adding collection and giant-reward history without resetting previous fields.
 Version **1.4.2 (8)** was installed in place and launched on September 25. All four saved files matched the fresh
 device backup byte-for-byte before launch. Question-replay acceptance on the iPad is pending; progress and DEX
@@ -57,7 +58,7 @@ Master probability, level ranges and giant challenges are unchanged. See [encoun
 Each main-world guardian unlocks a nearby portal into a new layer: Verdant Vault, Rime Gallery, Zephyr Gardens,
 Dusk Oasis, Resonant Foundry, Ember Reservoir, Chronicle Archive and Moonwell Depths. Every layer contains ten
 ordinary species, three untimed environmental mechanisms and one fixed-level giant challenge. Winning befriends
-the giant directly; a full 99-partner team can claim it later through DEX. Return portals are always available.
+the giant directly; a full 300-partner team can claim it later through DEX. Return portals are always available.
 These 88 new species are single-stage; their separate Mega designs are deferred. Existing 159 Mega forms remain unchanged.
 See [the full roster, access rules, safeguards and validation](docs/eight-depths.md).
 
@@ -152,7 +153,7 @@ their original art direction. See [battle-stage correction and generated assets]
 
 - Catch can be attempted at any remaining HP.
 - Success follows a health-based curve from roughly **10% at full HP to 95% near zero HP**.
-- The traveling team holds at most **99 Mathmons**.
+- The traveling team holds at most **300 Mathmons**, including the starter (local 1.4.3 update).
 - If a catch would exceed the limit, the player chooses whether to release the newcomer or replace an existing
   companion. Addmander remains the protected starter, and released companions return equipped accessories.
 - Any non-starter companion can also be released from TEAM for either coins or Battle Buddy XP. Rewards rise at

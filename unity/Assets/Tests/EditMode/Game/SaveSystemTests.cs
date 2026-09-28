@@ -27,6 +27,35 @@ namespace Numeria.Game.Tests
         }
 
         [Test]
+        public void FullThreeHundredTeamRoundTripsWithoutLosingGrowthOrEquipment()
+        {
+            var p=new Progress {Coins=3664,CurrentMap="verdant_vault"};p.ApplyMigrations();
+            for(int i=0;i<Progress.TeamCapacity-1;i++)p.AddCaught("future-family-"+i,1+i%50);
+            p.ActiveMonId="future-family-298";
+            p.AddAccessory("full-team-charm","Counting Charm",1,0);
+            Assert.True(p.EquipAccessory("full-team-charm",p.ActiveMonId));
+            SaveSystem.SaveToSlot(p,2);var loaded=SaveSystem.LoadFromSlot(2);
+            Assert.AreEqual(300,loaded.TeamCount);Assert.True(loaded.TeamIsFull);
+            CollectionAssert.AreEqual(p.CaughtIds,loaded.CaughtIds);
+            foreach(string id in p.CaughtIds)Assert.AreEqual(p.FindGrowth(id).Level,loaded.FindGrowth(id).Level,id);
+            Assert.AreEqual(p.ActiveMonId,loaded.ActiveMonId);
+            Assert.AreEqual(p.ActiveMonId,loaded.Accessories[0].EquippedToBaseId);
+            Assert.AreEqual(3664,loaded.Coins);Assert.AreEqual("verdant_vault",loaded.CurrentMap);
+            Assert.AreEqual(13,loaded.SaveVersion);
+        }
+
+        [Test]
+        public void OldNinetyNineTeamCanCatchAgainAfterLoad()
+        {
+            var p=new Progress();p.ApplyMigrations();
+            for(int i=0;i<98;i++)p.AddCaught("future-family-"+i);
+            SaveSystem.SaveToSlot(p,2);var loaded=SaveSystem.LoadFromSlot(2);
+            Assert.AreEqual(99,loaded.TeamCount);Assert.False(loaded.TeamIsFull);
+            Assert.AreEqual(CatchRosterResult.Added,loaded.AddCaught("mushmellow",12));
+            Assert.AreEqual(100,loaded.TeamCount);Assert.AreEqual(12,loaded.FindGrowth("mushmellow").Level);
+        }
+
+        [Test]
         public void AllTenSlotsSaveLoadAndReportIndependentSummaries()
         {
             Assert.AreEqual(10, SaveSystem.SlotCount);
