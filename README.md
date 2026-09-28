@@ -6,7 +6,8 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 
 > Current development: eight main worlds plus eight optional depths, a lifetime collection guide, and
 > **247 Mathmon forms / 142 families** (159 existing forms + 80 new ordinary species + 8 giants; Mega not counted).
-> Installed on iPad as **1.4.2 (8)** on September 25; **Lucas's iPad save is authoritative**.
+> Installed on iPad as **1.4.3 (9)** on September 28; first launch awaits device trust verification.
+> **Lucas's iPad save is authoritative**.
 
 ![Numeria battle — Addmander casting math magic against Countipillar](docs/images/numeria-readme-cover.png)
 
@@ -21,13 +22,13 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 | P4 — iOS delivery | 🔶 On-device / polishing | Signed iPad build and transferred progress confirmed playable; ongoing device QA and save-safe updates |
 
 The latest local code passes **229/229 Unity EditMode tests** plus **15/15 Node prototype tests**;
-the local 1.4.3 update raises the team limit to **300**, including the starter, without changing the save schema.
+the 1.4.3 update raises the team limit to **300**, including the starter, without changing the save schema.
 See [capacity verification](docs/team-capacity-300.md) and the [puzzle review](docs/puzzle-design-review.md).
 Saves now use **schema v13**, adding collection and giant-reward history without resetting previous fields.
-Version **1.4.2 (8)** was installed in place and launched on September 25. All four saved files matched the fresh
-device backup byte-for-byte before launch. Question-replay acceptance on the iPad is pending; progress and DEX
-navigation were user-verified in 1.4.1. See [release and save-preservation evidence](docs/ipad-1.4.2.md).
-The reused signing profile expires September 27.
+Version **1.4.3 (9)** was installed in place on September 28. All four saved files matched the fresh device backup
+byte-for-byte before the first launch attempt. The iPad rejected launch with a security/trust error; local signing
+and profile checks pass, but device trust and gameplay acceptance remain pending. See
+[release and save-preservation evidence](docs/ipad-1.4.3.md). Renewed signing expires October 5 at 07:39 PDT.
 
 ### Installed update — replay every question
 
@@ -153,7 +154,7 @@ their original art direction. See [battle-stage correction and generated assets]
 
 - Catch can be attempted at any remaining HP.
 - Success follows a health-based curve from roughly **10% at full HP to 95% near zero HP**.
-- The traveling team holds at most **300 Mathmons**, including the starter (local 1.4.3 update).
+- The traveling team holds at most **300 Mathmons**, including the starter (1.4.3 update).
 - If a catch would exceed the limit, the player chooses whether to release the newcomer or replace an existing
   companion. Addmander remains the protected starter, and released companions return equipped accessories.
 - Any non-starter companion can also be released from TEAM for either coins or Battle Buddy XP. Rewards rise at

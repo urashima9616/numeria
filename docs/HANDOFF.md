@@ -5,18 +5,20 @@
 
 ---
 
-## 最新本地开发：队伍 300 上限 / 1.4.3 (9)（2026-09-28，续签受阻）
+## 最新部署：队伍 300 上限 / 1.4.3 (9)（2026-09-28，已安装，启动待设备信任）
 
 `Progress.TeamCapacity=300`，包括 starter，仍每家族一位伙伴；全部 142 家族能同时保留。
 捕获、满员替换、巨型领奖与 UI 共用常量，存档仍 v13，无迁移/裁剪或等级上限改变。
 Unity 229/229、Node 15/15 通过，新增满 300 存取、旧 99 队伍继续捕获、全 roster 收集和 300 行滚动检查。
 详见 [team-capacity-300.md](team-capacity-300.md)；[部署进度](ipad-1.4.3.md)。
 初始 iPad 备份成功：Rime Gallery、5492 金币、Paircub 家族、99 位伙伴、106 记录形态。
-备份根目录 `~/Documents/Numeria Save Backups/ipad-before-1.4.3-T1Qebuj8/`，目前仅 initial；
-仍需保存就绪确认、最终备份、签名续期及安装前后核验，不得用旧 Mac 存档覆盖。
-Unity 已导出 Numeria-13；自动签名失败：Xcode 账号 keychain 凭据缺失（missing Xcode-Username），
-继而报 No Accounts / No profiles。已请用户在 Xcode Settings → Accounts 登录原 Apple 账号。
-正在独立验证 unsigned 原生编译，未安装；不要把 unsigned 产物当可安装包。
+备份根目录 `~/Documents/Numeria Save Backups/ipad-before-1.4.3-T1Qebuj8/`，含 initial/final/post-install；
+首次启动尝试前四文件及清单逐字节一致。没有卸载、导入或覆盖存档，设备最新进度始终为准。
+Unity 已导出 Numeria-13；初次续签遇 Xcode 账号凭据失效，用户重新登录后 signed Release 成功。
+原 bundle/team 不变；签名有效至 **10 月 5 日 07:39 PDT**；App 在 `/tmp/numeria-team300-ios-derived/Build/Products/Release-iphoneos/Numeria.app`。
+设备确认 1.4.3 (9) 安装成功，但自动启动被 Security 拒绝（签名/entitlements/未信任的泛化提示）。
+本地严格签名、team、entitlements 和设备白名单均已核对；下一步请用户点开 App 查看实际提示，必要时在
+iPad 设置 → 通用 → VPN 与设备管理验证原开发者。**不能声称启动成功**；99/300 队伍与进度真机验收仍待做。
 
 ## 最新部署：1.4.2 (8) 小喇叭更新（2026-09-25，已安装启动）
 
