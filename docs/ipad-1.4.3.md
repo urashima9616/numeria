@@ -1,5 +1,29 @@
 # iPad 1.4.3 (9) — 300-member team
 
+## Latest renewal — October 12, 2026
+
+**Reinstalled in place with renewed signing.** User confirmed the iPad was ready; the existing Numeria-13
+export was rebuilt without changing game content, version, bundle/team or save schema. Signed Release and
+strict/deep signature validation passed. Device inventory confirms 1.4.3 (9).
+
+Before launch, the complete file inventory and all four save files were byte-for-byte identical to the fresh
+final device backup. No uninstall, import or restoration occurred. Latest Slot 2: **Rime Gallery, 5,552 coins,
+100 total partners, active Addmander family, 110 recorded forms, v13**. Earlier snapshots below are historical.
+
+- Backup root: `/Users/yuankunxue/Documents/Numeria Save Backups/ipad-before-renew-20261012-tmpLR6FZ/`.
+  Contains `initial-Documents`, `final-Documents`, `post-install-Documents`; all three match.
+- Slot 2 SHA-256: `9782e9f7f00e07c8b37b9b574500a093d2dbfe7d0e4a7b230eea9d4c78cbee83`.
+  Other three files retain the hashes in the September table below.
+- Renewed expiration: **October 19, 2026, 18:23 PDT** (October 20 01:23:47 UTC).
+- App: `/tmp/numeria-renew-20261012-derived/Build/Products/Release-iphoneos/Numeria.app`.
+- Build log: `/tmp/numeria-renew-20261012-xcode.log` (`BUILD SUCCEEDED`).
+- Evidence: `/tmp/numeria-renew-20261012-{initial-backup,final-backup,post-backup,install,installed-after,launch}.json`.
+
+Automatic launch was rejected because the iPad had locked (`FBSOpenApplicationErrorDomain` code 7, `Locked`),
+not the September signature/trust error. User asked to unlock/open the app and confirm Slot 2 progress, sound
+and visuals. **Launch and gameplay acceptance remain pending.** No new functional tests were rerun for this
+signing-only operation; existing 229/229 Unity and 15/15 Node verification applies to the unchanged release.
+
 ## Status — September 28, 2026
 
 **Installed in place; first launch blocked by iPad security/trust.** User reauthenticated the original Apple account.

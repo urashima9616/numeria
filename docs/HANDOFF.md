@@ -5,6 +5,18 @@
 
 ---
 
+## 最新续签：1.4.3 (9)（2026-10-12，重装完成，等待解锁启动）
+
+用户确认设备就绪后，复用 Numeria-13 重编译续签并原位重装，未修改玩法/版本/存档格式。
+严格深度签名及原 bundle/team 校验通过，签名有效至 **10 月 19 日 18:23 PDT**。
+备份根目录 `~/Documents/Numeria Save Backups/ipad-before-renew-20261012-tmpLR6FZ/`，
+含 initial/final/post-install；首次启动尝试前四文件和完整清单逐字节一致，没有卸载/导入/恢复旧进度。
+最新 Slot 2：Rime Gallery、5552 金币、Addmander 家族、100 位伙伴、110 记录形态、v13。
+App：`/tmp/numeria-renew-20261012-derived/Build/Products/Release-iphoneos/Numeria.app`。
+设备确认 1.4.3 (9)；自动启动因 iPad 锁屏（Locked/code 7）被拒，已请用户解锁后打开并验收。
+**不要把此前 9 月的信任错误当作本次错误，也不能声称本次已启动。** 详见 [ipad-1.4.3.md](ipad-1.4.3.md)。
+下次仍以设备最新进度为准；下面各日期的存档数字均为历史快照，禁止覆盖回来。
+
 ## 最新部署：队伍 300 上限 / 1.4.3 (9)（2026-09-28，已安装，启动待设备信任）
 
 `Progress.TeamCapacity=300`，包括 starter，仍每家族一位伙伴；全部 142 家族能同时保留。

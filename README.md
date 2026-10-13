@@ -6,7 +6,7 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 
 > Current development: eight main worlds plus eight optional depths, a lifetime collection guide, and
 > **247 Mathmon forms / 142 families** (159 existing forms + 80 new ordinary species + 8 giants; Mega not counted).
-> Installed on iPad as **1.4.3 (9)** on September 28; first launch awaits device trust verification.
+> **1.4.3 (9)** renewed and reinstalled on iPad on October 12; awaiting unlock and gameplay confirmation.
 > **Lucas's iPad save is authoritative**.
 
 ![Numeria battle — Addmander casting math magic against Countipillar](docs/images/numeria-readme-cover.png)
@@ -25,10 +25,10 @@ The latest local code passes **229/229 Unity EditMode tests** plus **15/15 Node 
 the 1.4.3 update raises the team limit to **300**, including the starter, without changing the save schema.
 See [capacity verification](docs/team-capacity-300.md) and the [puzzle review](docs/puzzle-design-review.md).
 Saves now use **schema v13**, adding collection and giant-reward history without resetting previous fields.
-Version **1.4.3 (9)** was installed in place on September 28. All four saved files matched the fresh device backup
-byte-for-byte before the first launch attempt. The iPad rejected launch with a security/trust error; local signing
-and profile checks pass, but device trust and gameplay acceptance remain pending. See
-[release and save-preservation evidence](docs/ipad-1.4.3.md). Renewed signing expires October 5 at 07:39 PDT.
+Version **1.4.3 (9)** was renewed and reinstalled in place on October 12 without gameplay changes. All four save
+files matched the fresh iPad backup byte-for-byte before the launch attempt (100 partners, 5,552 coins).
+The iPad was locked, so launch and gameplay confirmation are pending. See
+[release and save-preservation evidence](docs/ipad-1.4.3.md). Renewed signing expires October 19 at 18:23 PDT.
 
 ### Installed update — replay every question
 
