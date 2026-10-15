@@ -5,6 +5,17 @@
 
 ---
 
+## 新设计：Halloween 双地图与单阶段家族补全（2026-10-15，未实现）
+
+见 [双地图与 30 条新进化线](halloween-expansion-design.md)、[旧 88 家族逐条补全](depth-evolution-design.md)
+和 [四张 ImageGen 概念图/提示词](halloween-concept-assets.md)。Spooky Pumpkin Patch 与 Haunted House
+各设计 15 个三阶段家族；旧 80 普通 + 8 巨型家族各补两形态。目标 172 家族 / 513 形态，新增 266 形态。
+暂按 Moonwell Depths 对齐野怪 Lv.76–82、Boss 固定 Lv.84，参照地图选择仍待用户回答。
+保留旧基础 ID、形态、数值、装备与图鉴编号；新家族追加编号，未来实现计划升级 v14 拒绝旧程序误读。
+**本次仅设计与概念图，运行时代码、实际 266 张新立绘、地图/谜题实现及 iPad 安装均未进行。**
+实际游戏仍为下方 1.4.3 / v13 / 142 家族 / 247 形态；未读取或修改 Lucas 的存档。
+设计一致性检查：`node tools/validate-halloween-design.mjs`；这不代替 Unity/真机测试。
+
 ## 最新续签：1.4.3 (9)（2026-10-12，重装完成，等待解锁启动）
 
 用户确认设备就绪后，复用 Numeria-13 重编译续签并原位重装，未修改玩法/版本/存档格式。
