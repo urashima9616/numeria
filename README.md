@@ -40,6 +40,9 @@ The new worlds include painted terrain, independent battle backgrounds, six inte
 Mechanisms adapt within K–5: countable sharing and picture patterns, whole-number sequences, G4 fraction shares,
 G5 mass targets and coordinate reflections. Difficulty changes steps and constraints without adding another quiz.
 Visual and release acceptance is ongoing; **1.5.0 (10) is not installed on Lucas's iPad**.
+Implementation is committed/pushed as `936ba52`; the signed iOS build and an initial read-only device backup are ready.
+Final backup, in-place update and device acceptance still require saved/menu/unlocked confirmation.
+See the [1.5.0 delivery record](docs/ipad-1.5.0.md); the current profile expires October 19 at 18:23 PDT.
 See [implementation and verification](docs/halloween-implementation.md).
 
 ### Installed update — replay every question

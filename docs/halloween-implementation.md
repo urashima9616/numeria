@@ -1,6 +1,8 @@
 # Halloween implementation — work in progress
 
-2026-10-16. Local 1.5.0 (10), save schema v14. Not yet installed; no real iPad/Mac player slots accessed during development.
+2026-10-16. Local 1.5.0 (10), save schema v14. Feature commit `936ba52` pushed to `origin/codex/numeria`.
+Not yet installed. Development used synthetic slots; release preparation has now made a read-only initial iPad backup.
+No device saves modified. Current backup and remaining installation gates: [iPad release record](ipad-1.5.0.md).
 
 ## Implemented and checked
 
@@ -62,7 +64,6 @@ intended small increases consistently across Lv.12–99; explicit species-only p
 ## Open acceptance items — do not label the expansion finished yet
 
 - Final audio listening and device-scale interaction checks remain. On-device frame pacing, readability and touch feedback are not proven by Editor render snapshots.
-- Commit/push the complete feature and keep this release record synchronized with delivery evidence.
 - Device performance and touch/audio validation require the iPad. Before any update, take a fresh backup of its latest saves, verify the backup, and update the same bundle/team in place. Never uninstall or restore an old Mac snapshot.
 
 Asset prompts/provenance: `halloween-production-assets.json`, `halloween-atlas-assets.json`,

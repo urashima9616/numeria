@@ -2,9 +2,24 @@
 
 ## Current state — October 16, 2026
 
-**Signed build ready. Not installed; no current player saves accessed or modified.**
+**Signed build ready; feature commit `936ba52` pushed to `origin/codex/numeria`. Not installed.**
+An initial read-only iPad save backup succeeded; no device save has been modified.
 Implementation/evidence: [Halloween checklist](halloween-implementation.md).
 The connected device is an iPad (10th generation); connectivity alone does not confirm Lucas has saved.
+
+## Initial backup — not the final pre-install snapshot
+
+- Initial copy: a new, uniquely named local backup; all JSON files parse successfully.
+- Copy evidence: `/tmp/numeria-halloween-initial-backup.json`, successful.
+- Private progress details, file inventory and hashes are retained only in local backup records,
+  not published in this repository. The device snapshot is newer than the historical backup.
+- No Numeria process was running at the check (`/tmp/numeria-halloween-before-processes-full.json`).
+  The first connection attempt reset; the later tunnel/read succeeded. An intermediate filter attempt
+  failed because the process executable is a URL, not a string; the unfiltered JSON inventory succeeded.
+- Still waiting for the user's fresh saved/menu/unlocked confirmation. Do not install on the strength
+  of this initial snapshot or a prior process check; repeat the final checks immediately before installation.
+
+## Build evidence
 
 - Unity export: `unity/Builds/iOS/Numeria-15`.
 - Export log: `/tmp/numeria-halloween-final-ios-export.log`, successful.
@@ -53,4 +68,4 @@ game loading/saving; existing IDs/stats/history remain intact and evolution is n
 **Git revert is not save downgrade.** Do not install an old v13 app over a subsequently played v14 slot.
 Keep the pre-update backup, but never restore it over newer play without explicit informed permission.
 
-Installation, backup and user-acceptance evidence will be appended after these gates actually pass.
+Final-backup, installation and user-acceptance evidence will be appended after those gates actually pass.

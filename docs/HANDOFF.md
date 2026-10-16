@@ -21,8 +21,10 @@ iOS 最新候选 Numeria-15 导出及签名 Release 构建成功，严格深度�
 App 在 `/tmp/numeria-halloween-final-derived/Build/Products/Release-iphoneos/Numeria.app`。
 Xcode 沿用有效 profile，到期仍为 10 月 19 日 18:23 PDT；本次构建未延长有效期。见 [1.5.0 发布检查](ipad-1.5.0.md)。
 Numeria-14 是早期检查点，不可用于最终安装。
-详见 [实现与剩余验收](halloween-implementation.md)。本轮没有读取/修改真实玩家存档。
-本轮实现提交包含代码、生产美术、离线语音、测试和证据文档；cbad3dd 只有设计稿，不能用于安装新版。
+详见 [实现与剩余验收](halloween-implementation.md)。开发测试未使用真实存档；发布准备已只读备份 iPad，未修改设备进度。
+最新初备份已完整读取并计算 SHA-256；具体进度、清单与哈希仅保留本地，不发布到仓库。
+尚未安装，等待用户本次保存/主菜单/解锁确认；确认后仍需重新检查进程、做 final 备份，并在安装后首次启动前逐字节比较。
+实现提交 `936ba52` 已推送 `origin/codex/numeria`，包含代码、生产美术、离线语音、测试和证据文档；cbad3dd 只有设计稿。
 安装前必须取得当前保存状态确认并备份设备最新进度；下方 10 月 15 日段落是历史状态。
 
 ## 历史设计：Halloween 双地图与单阶段家族补全（2026-10-15）
