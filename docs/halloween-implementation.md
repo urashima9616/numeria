@@ -1,8 +1,9 @@
-# Halloween implementation — work in progress
+# Halloween implementation — installed, basic device acceptance confirmed
 
 2026-10-16. Local 1.5.0 (10), save schema v14. Feature commit `936ba52` pushed to `origin/codex/numeria`.
-Not yet installed. Development used synthetic slots; release preparation has now made a read-only initial iPad backup.
-No device saves modified. Current backup and remaining installation gates: [iPad release record](ipad-1.5.0.md).
+Installed and launched successfully on October 16. Development used synthetic slots; the actual update used a fresh
+device backup and every save byte was verified unchanged before first launch. No uninstall/import/reset occurred.
+User confirmed progress, new maps, DEX and sound are normal: [iPad release record](ipad-1.5.0.md).
 
 ## Implemented and checked
 
@@ -24,14 +25,15 @@ No device saves modified. Current backup and remaining installation gates: [iPad
 | --- | --- | --- |
 | Two distinct themed worlds, late-game peers, permanent way home | `HalloweenWorlds` / `HalloweenScene`; `NewWorldsUnlockTogetherAndEveryObjectiveChestHabitatAndExitIsReachable` checks both layouts and each completion stage | Walk both worlds on iPad |
 | 15 pumpkin + 15 ghost families, three stages each | `ExpansionCatalog`, all-family evolution/resource tests; existing `CollectionDepthTests` verifies 172 family entries / 513 form pages | Inspect TEAM/DEX at device scale |
-| Existing non-evolving families receive three stages | 88 original IDs retained, 176 appended forms; exact legacy curves and captured offsets tested, including Lv.99 voluntary evolution | Load Lucas's latest v13 slot after backup |
+| Existing non-evolving families receive three stages | 88 original IDs retained, 176 appended forms; exact legacy curves and captured offsets tested, including Lv.99 voluntary evolution; user confirmed loaded progress | None for save-load acceptance |
 | Comparable enemy level, trainable Boss challenge | Wild 76–82, fixed Boss 84; seeded ecology checks and 11,520 actual battle simulations across families/gear/levels; base DEF revised after simulation | Play one ordinary and one Boss battle per world |
 | Distinct art and skills, no placeholder release | 266 imported portraits, two panoramas, per-world props; all 30 seasonal family signatures and all 176 depth evolution effects tested and rendered | Observe frame pacing and small-icon readability |
 | Six meaningful, grade-aware mechanisms with replay | `HalloweenMechanism` / `MapHalloweenUi`; solvability, range, replay state, offline resource checks and 108 grade previews | Touch/drag, LISTEN and melody audio on device |
-| Progress/collection/equipment preservation | Append-only v14; migration/300-team/equipment/DEX regression suite; old species curves and Mega roster unchanged | Fresh device backup, byte-for-byte prelaunch comparison, user load confirmation |
-| Commit, push and safe iPad delivery | Unity export is ready; final native signing build and Git delivery tracked below | Do not install without confirmed saved state and verified backup |
+| Progress/collection/equipment preservation | Append-only v14; migration/300-team/equipment/DEX regression suite; old species curves and Mega roster unchanged; fresh final backup, complete prelaunch byte match and user load confirmation | None for installation/save-preservation acceptance |
+| Commit, push and safe iPad delivery | Code pushed, signed Release installed in place; full prelaunch save inventory/byte match, successful launch and basic user acceptance | Broader playthrough checks below |
 
-Editor snapshots and synthetic tests do not prove device audio, touch, memory or performance. These remain release-acceptance gates, not implicit passes.
+Editor snapshots and synthetic tests do not prove device audio, touch, memory or performance. User confirmation
+now covers basic installed behavior and sound, but not exhaustive per-mechanism touch or sustained performance checks.
 
 ## Evidence as of this checkpoint
 
@@ -46,7 +48,7 @@ Editor snapshots and synthetic tests do not prove device audio, touch, memory or
 - `/tmp/numeria-depth-restoration-preview-v2.log` completed successfully: 528 actual runtime depth frames (176 forms, charge/travel/impact), eight family/stage contact sheets, and 18 restoration frames. Contact sheets reviewed; corrected bell sound-ring imagery and crater flame-petal expansion. `WorldPresentationPreview.EvolutionAndRestoration` reproduces these without player slots.
 - Earlier preview compile failed on deprecated `GetInstanceID` in the new test only; replaced that test's dictionary key with the renderer reference. Subsequent preview and full test runs completed successfully.
 - `/tmp/numeria-halloween-grade-preview.log`: 108 actual UI previews spanning six grades, three explicit modes, sharing/pattern/mirror and both screen ratios. Reviewed G4 fraction baskets/patterns and G5 mass/coordinate views. Reproduce with `HalloweenPreview.GradeMechanisms`; preview data are synthetic, not player saves. The final bounded-distractor correction is covered by full-v12.
-- Final Unity iOS export: `unity/Builds/iOS/Numeria-15`, `/tmp/numeria-halloween-final-ios-export.log`, succeeded. Signed Xcode Release compilation succeeded (`/tmp/numeria-halloween-final-xcode.log`, exit 0). Strict/deep codesign verification passed; app/profile/entitlements retain `com.yuankunxue.numeria` and team `7B74WP6AR2`, version 1.5.0 (10). Xcode reused the valid profile expiring October 19, 2026 at 18:23 PDT; this build does not extend that date. See [iPad release checklist](ipad-1.5.0.md). Not installed yet.
+- Final Unity iOS export: `unity/Builds/iOS/Numeria-15`, `/tmp/numeria-halloween-final-ios-export.log`, succeeded. Signed Xcode Release compilation succeeded (`/tmp/numeria-halloween-final-xcode.log`, exit 0). Strict/deep codesign verification passed; app/profile/entitlements retain `com.yuankunxue.numeria` and team `7B74WP6AR2`, version 1.5.0 (10). Xcode reused the valid profile expiring October 19, 2026 at 18:23 PDT; this build does not extend that date. Installed and launched with prelaunch save-preservation verification; see [iPad release checklist](ipad-1.5.0.md).
 
 ## Balance adjustment
 
@@ -63,8 +65,8 @@ intended small increases consistently across Lv.12–99; explicit species-only p
 
 ## Open acceptance items — do not label the expansion finished yet
 
-- Final audio listening and device-scale interaction checks remain. On-device frame pacing, readability and touch feedback are not proven by Editor render snapshots.
-- Device performance and touch/audio validation require the iPad. Before any update, take a fresh backup of its latest saves, verify the backup, and update the same bundle/team in place. Never uninstall or restore an old Mac snapshot.
+- Basic user device acceptance passed for progress, new maps, DEX and sound. Full six-mechanism/Boss playthrough and sustained low-memory performance remain unverified; the user's concise confirmation is not expanded into those claims.
+- Future updates still require a fresh backup and same-bundle installation; the completed prelaunch save comparison applies only to this installation.
 
 Asset prompts/provenance: `halloween-production-assets.json`, `halloween-atlas-assets.json`,
 `halloween-bellbit-asset.json`, `halloween-environment-detail-assets.json`, `halloween-spell-assets.json`, `depth-spell-assets.json`. All raster art was generated with the built-in image tool;

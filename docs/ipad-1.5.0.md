@@ -2,10 +2,29 @@
 
 ## Current state — October 16, 2026
 
-**Signed build ready; feature commit `936ba52` pushed to `origin/codex/numeria`. Not installed.**
-An initial read-only iPad save backup succeeded; no device save has been modified.
+**Installed in place and launched successfully. User confirmed progress, new maps, DEX and sound are normal.**
+Feature commit `936ba52` is pushed to `origin/codex/numeria`.
+The complete file inventory and every save byte matched the fresh final device backup before first launch.
+No uninstall, save import, reset or restoration was performed.
 Implementation/evidence: [Halloween checklist](halloween-implementation.md).
-The connected device is an iPad (10th generation); connectivity alone does not confirm Lucas has saved.
+
+## Installation evidence
+
+The user requested installation on October 16. A fresh successful process inventory confirmed Numeria was not
+running; a fresh final Documents backup was then copied and verified before installation. Initial, final and
+post-install snapshots are retained locally. Private progress details and hashes are not published here.
+
+- Final process check: `/tmp/numeria-halloween-install-processes.json`.
+- Final backup: `/tmp/numeria-halloween-final-backup.json`, successful.
+- Installation: `/tmp/numeria-halloween-install.json`, successful, original bundle unchanged.
+- Installed inventory: `/tmp/numeria-halloween-installed-after.json`, confirms **1.5.0 (10)**.
+- Prelaunch post-install copy: `/tmp/numeria-halloween-post-backup.json`, successful; complete inventory and
+  byte comparison against the final backup passed before the first launch command.
+- Launch: `/tmp/numeria-halloween-launch.json`, successful at 12:03:58 PDT.
+- User was asked to load the active slot, confirm preserved progress, DEX family count, both new WORLD destinations,
+  visuals, touch and audio. The response confirmed progress, new maps, DEX and sound were all normal.
+  This is basic on-device acceptance, not evidence of an exhaustive six-mechanism/Boss playthrough or sustained
+  low-memory performance profiling. Those broader checks remain unverified.
 
 ## Initial backup — not the final pre-install snapshot
 
@@ -16,8 +35,8 @@ The connected device is an iPad (10th generation); connectivity alone does not c
 - No Numeria process was running at the check (`/tmp/numeria-halloween-before-processes-full.json`).
   The first connection attempt reset; the later tunnel/read succeeded. An intermediate filter attempt
   failed because the process executable is a URL, not a string; the unfiltered JSON inventory succeeded.
-- Still waiting for the user's fresh saved/menu/unlocked confirmation. Do not install on the strength
-  of this initial snapshot or a prior process check; repeat the final checks immediately before installation.
+- This initial snapshot was not used alone to justify installation. After the user requested installation,
+  the process check and final backup were repeated as recorded above.
 
 ## Build evidence
 
@@ -68,4 +87,5 @@ game loading/saving; existing IDs/stats/history remain intact and evolution is n
 **Git revert is not save downgrade.** Do not install an old v13 app over a subsequently played v14 slot.
 Keep the pre-update backup, but never restore it over newer play without explicit informed permission.
 
-Final-backup, installation and user-acceptance evidence will be appended after those gates actually pass.
+Basic user gameplay acceptance is recorded above. Future updates require a new backup;
+never treat these snapshots as more authoritative than subsequent device play.
