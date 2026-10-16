@@ -45,6 +45,7 @@ namespace Numeria.Editor
             camera.cullingMask = ~0;
             var progress = new Numeria.Core.Progress();
             if (def.Id == "forest") ForestScene.ApplyPassages(map, progress);
+            if (Array.IndexOf(HalloweenWorlds.Ids, def.Id) >= 0) HalloweenWorlds.Apply(map, def, progress);
             WorldScene.Build(root.transform, map, def, progress);
 
             for (int y = 0; y < map.Height; y++)

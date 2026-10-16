@@ -41,7 +41,7 @@ namespace Numeria.Game.Tests
             Assert.AreEqual(p.ActiveMonId,loaded.ActiveMonId);
             Assert.AreEqual(p.ActiveMonId,loaded.Accessories[0].EquippedToBaseId);
             Assert.AreEqual(3664,loaded.Coins);Assert.AreEqual("verdant_vault",loaded.CurrentMap);
-            Assert.AreEqual(13,loaded.SaveVersion);
+            Assert.AreEqual(14,loaded.SaveVersion);
         }
 
         [Test]

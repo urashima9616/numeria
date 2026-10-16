@@ -1,0 +1,2160 @@
+A colossal basalt salamander carries a sleeping caldera along its broad back.
+A gentle oak-backed tortoise shelters a whole garden beneath its canopy.
+A giant sandstone sphinx shades the oasis beneath a crown shaped like a sundial.
+A great woolly mammoth carries an entire blue glacier on its curved tusks.
+A guest is at x coordinate
+A monumental clockwork archivist keeps lost stories safe inside a rotating stone library.
+A patient guardian, it uses its strongest magic to keep its home safe.
+A towering iron bison pulls loose ore into orbit around its magnetic horns.
+A wild Abacalion appeared!
+A wild Abacaraoh appeared!
+A wild Abacat appeared!
+A wild Abacush appeared!
+A wild Acornib appeared!
+A wild Acornock appeared!
+A wild Aeriehound appeared!
+A wild Aerobranch appeared!
+A wild Aerolotl appeared!
+A wild Amethycrown appeared!
+A wild Amethyspark appeared!
+A wild Amethystot appeared!
+A wild Antlergourd appeared!
+A wild Arboracle appeared!
+A wild Arborwarden appeared!
+A wild Argentmoth appeared!
+A wild Argoturtle appeared!
+A wild Ashaxol appeared!
+A wild Ashfrond appeared!
+A wild Astraboa appeared!
+A wild Astraray appeared!
+A wild Aureohare appeared!
+A wild Auritoad appeared!
+A wild Auroravulp appeared!
+A wild Basaltier appeared!
+A wild Basaltot appeared!
+A wild Basaltower appeared!
+A wild Batboo appeared!
+A wild Beaconbeetle appeared!
+A wild Beaconkin appeared!
+A wild Beadlynx appeared!
+A wild Beadscarab appeared!
+A wild Bellbit appeared!
+A wild Bellibex appeared!
+A wild Bloomlark appeared!
+A wild Boglantern appeared!
+A wild Borealfinch appeared!
+A wild Boughbinder appeared!
+A wild Branchamble appeared!
+A wild Bronzewing appeared!
+A wild Brookroot appeared!
+A wild Cacthedral appeared!
+A wild Cactot appeared!
+A wild Cactower appeared!
+A wild Cairnwarden appeared!
+A wild Calderadon appeared!
+A wild Calderaegis appeared!
+A wild Caldercrest appeared!
+A wild Candelupus appeared!
+A wild Candlepup appeared!
+A wild Carillicorn appeared!
+A wild Carillord appeared!
+A wild Celesticetus appeared!
+A wild Chimegoat appeared!
+A wild Chimeraith appeared!
+A wild Chimneyspark appeared!
+A wild Chronocurator appeared!
+A wild Chronogolem appeared!
+A wild Chronophantom appeared!
+A wild Chronophantom appeared! It has a number shield!
+A wild Chronophantom appeared! It has a pattern shield!
+A wild Cinderchirp appeared!
+A wild Cindercricket appeared!
+A wild Cindermaw appeared!
+A wild Cinerolotl appeared!
+A wild Circuitbeetle appeared!
+A wild Cirrocairn appeared!
+A wild Cloudcalf appeared!
+A wild Coalcrab appeared!
+A wild Cobblekin appeared!
+A wild Codexwing appeared!
+A wild Cogcrab appeared!
+A wild Coilseed appeared!
+A wild Cokecarapace appeared!
+A wild Combkeeper appeared!
+A wild Constellotl appeared!
+A wild Copperbat appeared!
+A wild Coppervane appeared!
+A wild Creamkin appeared!
+A wild Crownkin appeared!
+A wild Crownkin appeared! It has a number shield!
+A wild Crownkin appeared! It has a pattern shield!
+A wild Cryptmouse appeared!
+A wild Crystaspine appeared!
+A wild Cucurguard appeared!
+A wild Cumulox appeared!
+A wild Cupraven appeared!
+A wild Cupwisp appeared!
+A wild Cyclogecko appeared!
+A wild Deltotter appeared!
+A wild Dewhopper appeared!
+A wild Dewleaper appeared!
+A wild Dewsymph appeared!
+A wild Drapewisp appeared!
+A wild Drifturtle appeared!
+A wild Duneguard appeared!
+A wild Duneling appeared!
+A wild Duneravel appeared!
+A wild Dunetumble appeared!
+A wild Dustmew appeared!
+A wild Echoveil appeared!
+A wild Emberfiddle appeared!
+A wild Emberfin appeared!
+A wild Emberhump appeared!
+A wild Emberwake appeared!
+A wild Epocholith appeared!
+A wild Escapacrab appeared!
+A wild Fernfawn appeared!
+A wild Fernhart appeared!
+A wild Ferronewt appeared!
+A wild Fjordmamm appeared!
+A wild Flakeglimmer appeared!
+A wild Floeseal appeared!
+A wild Floeursa appeared!
+A wild Floraplume appeared!
+A wild Flurryfox appeared!
+A wild Foliofloat appeared!
+A wild Frondstag appeared!
+A wild Frostfinch appeared!
+A wild Fumarasp appeared!
+A wild Galegrip appeared!
+A wild Gearclaw appeared!
+A wild Gemmarmot appeared!
+A wild Geodefort appeared!
+A wild Geodillo appeared!
+A wild Geodoroll appeared!
+A wild Germiguard appeared!
+A wild Glacierarch appeared!
+A wild Glacierfin appeared!
+A wild Glaciomamm appeared!
+A wild Glasscobra appeared!
+A wild Glazebear appeared!
+A wild Glintmarmot appeared!
+A wild Gloamray appeared!
+A wild Gloamveil appeared!
+A wild Glypharch appeared!
+A wild Glyphimp appeared!
+A wild Glyphsayer appeared!
+A wild Gourdaconda appeared!
+A wild Gourdcroak appeared!
+A wild Gourdfang appeared!
+A wild Gourdillo appeared!
+A wild Gourdmastiff appeared!
+A wild Gourdpounce appeared!
+A wild Gustgecko appeared!
+A wild Halohare appeared!
+A wild Harvestlynx appeared!
+A wild Hayhoot appeared!
+A wild Hearthclaw appeared!
+A wild Heliostela appeared!
+A wild Hexahive appeared!
+A wild Hexhusk appeared!
+A wild Hoarfrosthare appeared!
+A wild Honeyhex appeared!
+A wild Icicub appeared!
+A wild Inklit appeared!
+A wild Jetstreamray appeared!
+A wild Junctionwing appeared!
+A wild Keyboo appeared!
+A wild Kitelet appeared!
+A wild Kiterove appeared!
+A wild Lacustria appeared!
+A wild Lanterngeist appeared!
+A wild Lanternib appeared!
+A wild Lanternmoth appeared!
+A wild Latchling appeared!
+A wild Lockwarden appeared!
+A wild Lotusquid appeared!
+A wild Lotusveil appeared!
+A wild Lumenlug appeared!
+A wild Lumenweave appeared!
+A wild Luminarch appeared!
+A wild Lunabyss appeared!
+A wild Lunarotter appeared!
+A wild Lunatide appeared!
+A wild Magmattock appeared!
+A wild Magmole appeared!
+A wild Magnetarch appeared!
+A wild Magnetaur appeared!
+A wild Marionox appeared!
+A wild Marshwyrm appeared!
+A wild Meridianlynx appeared!
+A wild Miragecko appeared!
+A wild Miraglass appeared!
+A wild Miraguan appeared!
+A wild Mirrorimp appeared!
+A wild Mistfawn appeared!
+A wild Misthart appeared!
+A wild Mistmantle appeared!
+A wild Mittenmist appeared!
+A wild Moonbound appeared!
+A wild Moonjerboa appeared!
+A wild Moonotter appeared!
+A wild Mosaicarp appeared!
+A wild Mosaicfin appeared!
+A wild Mousoleum appeared!
+A wild Mushmellow appeared!
+A wild Mycocrown appeared!
+A wild Nacreon appeared!
+A wild Nebulink appeared!
+A wild Nelumara appeared!
+A wild Nickelcrest appeared!
+A wild Nickelnewt appeared!
+A wild Nimbusire appeared!
+A wild Nimbusquid appeared!
+A wild Oakwarden appeared!
+A wild Oasisbloom appeared!
+A wild Oasisprout appeared!
+A wild Obsidianole appeared!
+A wild Obsidrake appeared!
+A wild Obsidrill appeared!
+A wild Oremole appeared!
+A wild Pagepeek appeared!
+A wild Papyrill appeared!
+A wild Papyrion appeared!
+A wild Papyrune appeared!
+A wild Patchsage appeared!
+A wild Patchwing appeared!
+A wild Peakpuff appeared!
+A wild Pearlcrest appeared!
+A wild Pearlfin appeared!
+A wild Pearlroot appeared!
+A wild Penduloom appeared!
+A wild Petalark appeared!
+A wild Phantomlynx appeared!
+A wild Piemancer appeared!
+A wild Pipkin appeared!
+A wild Plumehound appeared!
+A wild Plumepup appeared!
+A wild Pluvioct appeared!
+A wild Podrillo appeared!
+A wild Polestaur appeared!
+A wild Porcelgeist appeared!
+A wild Prismaltar appeared!
+A wild Prismasp appeared!
+A wild Prismidol appeared!
+A wild Prismoracle appeared!
+A wild Prismquill appeared!
+A wild Pulpuff appeared!
+A wild Pumiguard appeared!
+A wild Pumihound appeared!
+A wild Pumipup appeared!
+A wild Pumprib appeared!
+A wild Pumpup appeared!
+A wild Puppetarch appeared!
+A wild Pyricroak appeared!
+A wild Pyritoad appeared!
+A wild Quartzquill appeared!
+A wild Quillshade appeared!
+A wild Quiltguard appeared!
+A wild Railrook appeared!
+A wild Reedrake appeared!
+A wild Reedweaver appeared!
+A wild Reflecter appeared!
+A wild Relayweevil appeared!
+A wild Reliclaw appeared!
+A wild Relicub appeared!
+A wild Reliquursa appeared!
+A wild Ribbonray appeared!
+A wild Riftmole appeared!
+A wild Rimebound appeared!
+A wild Rimehare appeared!
+A wild Rindbuck appeared!
+A wild Rindroller appeared!
+A wild Ringbound appeared!
+A wild Ripplehalo appeared!
+A wild Ripplewisp appeared!
+A wild Rootter appeared!
+A wild Saffronfox appeared!
+A wild Saffrontail appeared!
+A wild Sailturtle appeared!
+A wild Sandburrow appeared!
+A wild Sandib appeared!
+A wild Scarabacus appeared!
+A wild Scareowl appeared!
+A wild Scriptreign appeared!
+A wild Scrollcrest appeared!
+A wild Scrollfinch appeared!
+A wild Seedillo appeared!
+A wild Seedlet appeared!
+A wild Selenabyss appeared!
+A wild Shadowdial appeared!
+A wild Sheetot appeared!
+A wild Shroomantle appeared!
+A wild Sleetseal appeared!
+A wild Snowmote appeared!
+A wild Snowquill appeared!
+A wild Snowstellis appeared!
+A wild Snowtwirl appeared!
+A wild Sockling appeared!
+A wild Solarchon appeared!
+A wild Solardrom appeared!
+A wild Solarsphinx appeared!
+A wild Sonarshade appeared!
+A wild Sootsprite appeared!
+A wild Sootswirl appeared!
+A wild Speculord appeared!
+A wild Spiralsprig appeared!
+A wild Spookernel appeared!
+A wild Sprigsnail appeared!
+A wild Springhelix appeared!
+A wild Sproutimp appeared!
+A wild Squashkit appeared!
+A wild Starfrond appeared!
+A wild Starnewt appeared!
+A wild Steamink appeared!
+A wild Stemstag appeared!
+A wild Stonegourd appeared!
+A wild Stratocetus appeared!
+A wild Stratogarden appeared!
+A wild Stratosolotl appeared!
+A wild Strawloft appeared!
+A wild Sumharvest appeared!
+A wild Summitcloud appeared!
+A wild Suncamel appeared!
+A wild Sundialynx appeared!
+A wild Sunspice appeared!
+A wild Switchrook appeared!
+A wild Tallygourd appeared!
+A wild Teacreep appeared!
+A wild Tempestvulp appeared!
+A wild Terrapump appeared!
+A wild Tesselkid appeared!
+A wild Tesselkoi appeared!
+A wild Tessello appeared!
+A wild Tessellord appeared!
+A wild Tickaboo appeared!
+A wild Tidecarapace appeared!
+A wild Tidemonolith appeared!
+A wild Tideshell appeared!
+A wild Tomewarden appeared!
+A wild Toyboo appeared!
+A wild Tunnelmarshal appeared!
+A wild Twiggle appeared!
+A wild Vanevulp appeared!
+A wild Vaporink appeared!
+A wild Vaultwhisk appeared!
+A wild Veilcat appeared!
+A wild Veilflutter appeared!
+A wild Veilmoth appeared!
+A wild Veilstag appeared!
+A wild Veinmole appeared!
+A wild Velourgeist appeared!
+A wild Ventcoil appeared!
+A wild Ventviper appeared!
+A wild Vinebat appeared!
+A wild Vinehound appeared!
+A wild Vinejack appeared!
+A wild Vineserp appeared!
+A wild Vitraserp appeared!
+A wild Voltweevil appeared!
+A wild Wellsprig appeared!
+A wild Wickgourd appeared!
+A wild Wickwolf appeared!
+A wild Windbanner appeared!
+A wild Wispip appeared!
+A wild Worldarbor appeared!
+A wild Zephyray appeared!
+Abacalion is getting stronger!
+Abacaraoh is getting stronger!
+Abacat is evolving!
+Abacat is getting stronger!
+Abacush is evolving!
+Abacush is getting stronger!
+Acornib is evolving!
+Acornib is getting stronger!
+Acornock is evolving!
+Acornock is getting stronger!
+Add one pumpkin mass at a time. UNDO takes the last pumpkin back.
+Aeriehound is getting stronger!
+Aerobranch is evolving!
+Aerobranch is getting stronger!
+Aerolotl is evolving!
+Aerolotl is getting stronger!
+Amazing! Abacat evolved into Beadlynx!
+Amazing! Abacush evolved into Sumharvest!
+Amazing! Acornib evolved into Acornock!
+Amazing! Acornock evolved into Oakwarden!
+Amazing! Aerobranch evolved into Stratosolotl!
+Amazing! Aerolotl evolved into Aerobranch!
+Amazing! Amethyspark evolved into Amethycrown!
+Amazing! Amethystot evolved into Amethyspark!
+Amazing! Arboracle evolved into Arborwarden!
+Amazing! Arborwarden evolved into Worldarbor!
+Amazing! Ashaxol evolved into Ashfrond!
+Amazing! Ashfrond evolved into Cinerolotl!
+Amazing! Basaltier evolved into Basaltower!
+Amazing! Basaltot evolved into Basaltier!
+Amazing! Batboo evolved into Echoveil!
+Amazing! Beadlynx evolved into Abacalion!
+Amazing! Beadscarab evolved into Abacaraoh!
+Amazing! Bellbit evolved into Chimeraith!
+Amazing! Bellibex evolved into Carillicorn!
+Amazing! Bloomlark evolved into Floraplume!
+Amazing! Branchamble evolved into Boughbinder!
+Amazing! Bronzewing evolved into Cupraven!
+Amazing! Brookroot evolved into Deltotter!
+Amazing! Cactot evolved into Cactower!
+Amazing! Cactower evolved into Cacthedral!
+Amazing! Calderadon evolved into Caldercrest!
+Amazing! Caldercrest evolved into Calderaegis!
+Amazing! Candlepup evolved into Wickwolf!
+Amazing! Chimegoat evolved into Bellibex!
+Amazing! Chimeraith evolved into Carillord!
+Amazing! Chronocurator evolved into Epocholith!
+Amazing! Chronogolem evolved into Chronocurator!
+Amazing! Cinderchirp evolved into Emberfiddle!
+Amazing! Cindercricket evolved into Cinderchirp!
+Amazing! Cirrocairn evolved into Summitcloud!
+Amazing! Cloudcalf evolved into Cumulox!
+Amazing! Coalcrab evolved into Cokecarapace!
+Amazing! Cobblekin evolved into Stonegourd!
+Amazing! Cogcrab evolved into Gearclaw!
+Amazing! Coilseed evolved into Vineserp!
+Amazing! Cokecarapace evolved into Hearthclaw!
+Amazing! Combkeeper evolved into Hexahive!
+Amazing! Copperbat evolved into Bronzewing!
+Amazing! Coppervane evolved into Tempestvulp!
+Amazing! Creamkin evolved into Piemancer!
+Amazing! Cryptmouse evolved into Vaultwhisk!
+Amazing! Cumulox evolved into Nimbusire!
+Amazing! Cupwisp evolved into Porcelgeist!
+Amazing! Dewhopper evolved into Dewleaper!
+Amazing! Dewleaper evolved into Dewsymph!
+Amazing! Drapewisp evolved into Velourgeist!
+Amazing! Drifturtle evolved into Sailturtle!
+Amazing! Duneling evolved into Dunetumble!
+Amazing! Dunetumble evolved into Duneravel!
+Amazing! Dustmew evolved into Veilcat!
+Amazing! Echoveil evolved into Sonarshade!
+Amazing! Emberfin evolved into Emberwake!
+Amazing! Emberhump evolved into Solardrom!
+Amazing! Emberwake evolved into Cindermaw!
+Amazing! Fernfawn evolved into Fernhart!
+Amazing! Fernhart evolved into Frondstag!
+Amazing! Fjordmamm evolved into Glacierarch!
+Amazing! Flakeglimmer evolved into Snowstellis!
+Amazing! Floeseal evolved into Glacierfin!
+Amazing! Flurryfox evolved into Snowtwirl!
+Amazing! Foliofloat evolved into Tomewarden!
+Amazing! Frostfinch evolved into Snowquill!
+Amazing! Galegrip evolved into Cyclogecko!
+Amazing! Gearclaw evolved into Escapacrab!
+Amazing! Gemmarmot evolved into Cairnwarden!
+Amazing! Geodillo evolved into Geodoroll!
+Amazing! Geodoroll evolved into Geodefort!
+Amazing! Glaciomamm evolved into Fjordmamm!
+Amazing! Glasscobra evolved into Prismasp!
+Amazing! Glazebear evolved into Floeursa!
+Amazing! Glintmarmot evolved into Gemmarmot!
+Amazing! Gloamray evolved into Gloamveil!
+Amazing! Gloamveil evolved into Astraray!
+Amazing! Glyphimp evolved into Glyphsayer!
+Amazing! Glyphsayer evolved into Glypharch!
+Amazing! Gourdcroak evolved into Boglantern!
+Amazing! Gourdfang evolved into Patchwing!
+Amazing! Gourdillo evolved into Rindroller!
+Amazing! Gourdpounce evolved into Harvestlynx!
+Amazing! Gustgecko evolved into Galegrip!
+Amazing! Halohare evolved into Ringbound!
+Amazing! Hayhoot evolved into Strawloft!
+Amazing! Hexhusk evolved into Lanternmoth!
+Amazing! Honeyhex evolved into Combkeeper!
+Amazing! Icicub evolved into Glazebear!
+Amazing! Inklit evolved into Quillshade!
+Amazing! Keyboo evolved into Latchling!
+Amazing! Kitelet evolved into Kiterove!
+Amazing! Kiterove evolved into Windbanner!
+Amazing! Lanterngeist evolved into Luminarch!
+Amazing! Lanternib evolved into Wickgourd!
+Amazing! Latchling evolved into Lockwarden!
+Amazing! Lotusquid evolved into Lotusveil!
+Amazing! Lotusveil evolved into Nelumara!
+Amazing! Lumenlug evolved into Lumenweave!
+Amazing! Lumenweave evolved into Beaconbeetle!
+Amazing! Lunabyss evolved into Lunatide!
+Amazing! Lunatide evolved into Selenabyss!
+Amazing! Magmattock evolved into Riftmole!
+Amazing! Magmole evolved into Magmattock!
+Amazing! Magnetaur evolved into Polestaur!
+Amazing! Marionox evolved into Puppetarch!
+Amazing! Miragecko evolved into Miraglass!
+Amazing! Miraglass evolved into Miraguan!
+Amazing! Mirrorimp evolved into Reflecter!
+Amazing! Mistfawn evolved into Misthart!
+Amazing! Misthart evolved into Veilstag!
+Amazing! Mistmantle evolved into Pluvioct!
+Amazing! Mittenmist evolved into Quiltguard!
+Amazing! Moonbound evolved into Astraboa!
+Amazing! Moonjerboa evolved into Moonbound!
+Amazing! Moonotter evolved into Pearlroot!
+Amazing! Mosaicarp evolved into Mosaicfin!
+Amazing! Mosaicfin evolved into Tesselkoi!
+Amazing! Mousoleum evolved into Cryptmouse!
+Amazing! Mushmellow evolved into Shroomantle!
+Amazing! Nickelcrest evolved into Ferronewt!
+Amazing! Nickelnewt evolved into Nickelcrest!
+Amazing! Nimbusquid evolved into Mistmantle!
+Amazing! Oasisprout evolved into Wellsprig!
+Amazing! Obsidianole evolved into Obsidrill!
+Amazing! Obsidrill evolved into Obsidrake!
+Amazing! Oremole evolved into Veinmole!
+Amazing! Pagepeek evolved into Foliofloat!
+Amazing! Papyrill evolved into Papyrune!
+Amazing! Papyrune evolved into Papyrion!
+Amazing! Peakpuff evolved into Cirrocairn!
+Amazing! Pearlcrest evolved into Nacreon!
+Amazing! Pearlfin evolved into Pearlcrest!
+Amazing! Pearlroot evolved into Lunarotter!
+Amazing! Penduloom evolved into Chronophantom!
+Amazing! Petalark evolved into Bloomlark!
+Amazing! Pipkin evolved into Vinejack!
+Amazing! Plumehound evolved into Aeriehound!
+Amazing! Plumepup evolved into Plumehound!
+Amazing! Podrillo evolved into Germiguard!
+Amazing! Polestaur evolved into Magnetarch!
+Amazing! Prismaltar evolved into Prismoracle!
+Amazing! Prismasp evolved into Vitraserp!
+Amazing! Prismidol evolved into Prismaltar!
+Amazing! Prismquill evolved into Crystaspine!
+Amazing! Pulpuff evolved into Creamkin!
+Amazing! Pumihound evolved into Pumiguard!
+Amazing! Pumipup evolved into Pumihound!
+Amazing! Pumprib evolved into Gourdcroak!
+Amazing! Pumpup evolved into Vinehound!
+Amazing! Pyricroak evolved into Auritoad!
+Amazing! Pyritoad evolved into Pyricroak!
+Amazing! Quartzquill evolved into Prismquill!
+Amazing! Quillshade evolved into Scriptreign!
+Amazing! Railrook evolved into Switchrook!
+Amazing! Reedrake evolved into Reedweaver!
+Amazing! Reedweaver evolved into Marshwyrm!
+Amazing! Reflecter evolved into Speculord!
+Amazing! Relayweevil evolved into Circuitbeetle!
+Amazing! Reliclaw evolved into Reliquursa!
+Amazing! Relicub evolved into Reliclaw!
+Amazing! Ribbonray evolved into Jetstreamray!
+Amazing! Rimebound evolved into Hoarfrosthare!
+Amazing! Rimehare evolved into Rimebound!
+Amazing! Rindbuck evolved into Antlergourd!
+Amazing! Rindroller evolved into Cucurguard!
+Amazing! Ringbound evolved into Aureohare!
+Amazing! Ripplehalo evolved into Lacustria!
+Amazing! Ripplewisp evolved into Ripplehalo!
+Amazing! Rootter evolved into Brookroot!
+Amazing! Saffronfox evolved into Saffrontail!
+Amazing! Saffrontail evolved into Sunspice!
+Amazing! Sailturtle evolved into Argoturtle!
+Amazing! Sandburrow evolved into Duneguard!
+Amazing! Sandib evolved into Sandburrow!
+Amazing! Scarabacus evolved into Beadscarab!
+Amazing! Scrollcrest evolved into Codexwing!
+Amazing! Scrollfinch evolved into Scrollcrest!
+Amazing! Seedillo evolved into Podrillo!
+Amazing! Seedlet evolved into Sproutimp!
+Amazing! Shadowdial evolved into Meridianlynx!
+Amazing! Sheetot evolved into Drapewisp!
+Amazing! Shroomantle evolved into Mycocrown!
+Amazing! Sleetseal evolved into Floeseal!
+Amazing! Snowmote evolved into Flakeglimmer!
+Amazing! Snowquill evolved into Borealfinch!
+Amazing! Snowtwirl evolved into Auroravulp!
+Amazing! Sockling evolved into Mittenmist!
+Amazing! Solarchon evolved into Heliostela!
+Amazing! Solarsphinx evolved into Solarchon!
+Amazing! Sootsprite evolved into Sootswirl!
+Amazing! Sootswirl evolved into Chimneyspark!
+Amazing! Spiralsprig evolved into Springhelix!
+Amazing! Spookernel evolved into Hexhusk!
+Amazing! Sprigsnail evolved into Spiralsprig!
+Amazing! Sproutimp evolved into Patchsage!
+Amazing! Squashkit evolved into Gourdpounce!
+Amazing! Starfrond evolved into Constellotl!
+Amazing! Starnewt evolved into Starfrond!
+Amazing! Steamink evolved into Vaporink!
+Amazing! Stemstag evolved into Rindbuck!
+Amazing! Stonegourd evolved into Terrapump!
+Amazing! Stratocetus evolved into Stratogarden!
+Amazing! Stratogarden evolved into Celesticetus!
+Amazing! Strawloft evolved into Scareowl!
+Amazing! Suncamel evolved into Emberhump!
+Amazing! Sundialynx evolved into Shadowdial!
+Amazing! Switchrook evolved into Junctionwing!
+Amazing! Tallygourd evolved into Abacush!
+Amazing! Teacreep evolved into Cupwisp!
+Amazing! Tesselkid evolved into Tessello!
+Amazing! Tessello evolved into Tessellord!
+Amazing! Tickaboo evolved into Penduloom!
+Amazing! Tidecarapace evolved into Tidemonolith!
+Amazing! Tideshell evolved into Tidecarapace!
+Amazing! Toyboo evolved into Marionox!
+Amazing! Twiggle evolved into Branchamble!
+Amazing! Vanevulp evolved into Coppervane!
+Amazing! Vaporink evolved into Nebulink!
+Amazing! Veilcat evolved into Phantomlynx!
+Amazing! Veilflutter evolved into Argentmoth!
+Amazing! Veilmoth evolved into Veilflutter!
+Amazing! Veinmole evolved into Tunnelmarshal!
+Amazing! Ventcoil evolved into Fumarasp!
+Amazing! Ventviper evolved into Ventcoil!
+Amazing! Vinebat evolved into Gourdfang!
+Amazing! Vinehound evolved into Gourdmastiff!
+Amazing! Vinejack evolved into Crownkin!
+Amazing! Vineserp evolved into Gourdaconda!
+Amazing! Voltweevil evolved into Relayweevil!
+Amazing! Wellsprig evolved into Oasisbloom!
+Amazing! Wickgourd evolved into Beaconkin!
+Amazing! Wickwolf evolved into Candelupus!
+Amazing! Wispip evolved into Lanterngeist!
+Amazing! Zephyray evolved into Ribbonray!
+Amethycrown is getting stronger!
+Amethyspark is evolving!
+Amethyspark is getting stronger!
+Amethystot is evolving!
+Amethystot is getting stronger!
+An enormous sky whale carries floating gardens along the quiet upper winds.
+An immense moonlit plesiosaur watches over a lake reflected inside its luminous crest.
+and y coordinate
+Antlergourd is getting stronger!
+Arboracle is evolving!
+Arboracle is getting stronger!
+Arborwarden is evolving!
+Arborwarden is getting stronger!
+Argentmoth is getting stronger!
+Argoturtle is getting stronger!
+Ashaxol is evolving!
+Ashaxol is getting stronger!
+Ashfrond is evolving!
+Ashfrond is getting stronger!
+Astraboa is getting stronger!
+Astraray is getting stronger!
+At midnight, its three clock rings play a welcoming song.
+Aureohare is getting stronger!
+Auritoad is getting stronger!
+Auroravulp is getting stronger!
+Basaltier is evolving!
+Basaltier is getting stronger!
+Basaltot is evolving!
+Basaltot is getting stronger!
+Basaltower is getting stronger!
+Basket
+Batboo is evolving!
+Batboo is getting stronger!
+Beaconbeetle is getting stronger!
+Beaconkin is getting stronger!
+Beadlynx is evolving!
+Beadlynx is getting stronger!
+Beadscarab is evolving!
+Beadscarab is getting stronger!
+Bellbit is evolving!
+Bellbit is getting stronger!
+Bellibex is evolving!
+Bellibex is getting stronger!
+Bloomlark is evolving!
+Bloomlark is getting stronger!
+Blue channels carry water. Both seeds need a drink.
+Boglantern is getting stronger!
+Borealfinch is getting stronger!
+Boughbinder is getting stronger!
+Branchamble is evolving!
+Branchamble is getting stronger!
+Bronzewing is evolving!
+Bronzewing is getting stronger!
+Brookroot is evolving!
+Brookroot is getting stronger!
+Cacthedral is getting stronger!
+Cactot is evolving!
+Cactot is getting stronger!
+Cactower is evolving!
+Cactower is getting stronger!
+Cairnwarden is getting stronger!
+Calderadon is evolving!
+Calderadon is getting stronger!
+Calderaegis is getting stronger!
+Caldercrest is evolving!
+Caldercrest is getting stronger!
+Candelupus is getting stronger!
+Candlepup is evolving!
+Candlepup is getting stronger!
+candles comes immediately before the portrait with
+candles.
+Carillicorn is getting stronger!
+Carillord is getting stronger!
+Celesticetus is getting stronger!
+Chimegoat is evolving!
+Chimegoat is getting stronger!
+Chimeraith is evolving!
+Chimeraith is getting stronger!
+Chimneyspark is getting stronger!
+Chronocurator is evolving!
+Chronocurator is getting stronger!
+Chronogolem is evolving!
+Chronogolem is getting stronger!
+Chronophantom is getting stronger!
+Chronophantom remembers every friend who has visited the house.
+Chronophantom welcomes your challenge!
+Cinderchirp is evolving!
+Cinderchirp is getting stronger!
+Cindercricket is evolving!
+Cindercricket is getting stronger!
+Cindermaw is getting stronger!
+Cinerolotl is getting stronger!
+Circuitbeetle is getting stronger!
+Cirrocairn is evolving!
+Cirrocairn is getting stronger!
+Cloudcalf is evolving!
+Cloudcalf is getting stronger!
+Coalcrab is evolving!
+Coalcrab is getting stronger!
+Cobblekin is evolving!
+Cobblekin is getting stronger!
+Codexwing is getting stronger!
+Cogcrab is evolving!
+Cogcrab is getting stronger!
+Coilseed is evolving!
+Coilseed is getting stronger!
+Cokecarapace is evolving!
+Cokecarapace is getting stronger!
+Combkeeper is evolving!
+Combkeeper is getting stronger!
+Compare neighboring lanterns. Use the same change at every step.
+Compare the candles. The smallest group goes first.
+Constellotl is getting stronger!
+Copperbat is evolving!
+Copperbat is getting stronger!
+Coppervane is evolving!
+Coppervane is getting stronger!
+Creamkin is evolving!
+Creamkin is getting stronger!
+Crownkin is getting stronger!
+Crownkin joins the orchard lights into a glowing crown.
+Crownkin welcomes your challenge!
+Cryptmouse is evolving!
+Cryptmouse is getting stronger!
+Crystaspine is getting stronger!
+Cucurguard is getting stronger!
+Cumulox is evolving!
+Cumulox is getting stronger!
+Cupraven is getting stronger!
+Cupwisp is evolving!
+Cupwisp is getting stronger!
+Curious and playful, it is ready to explore with a friend.
+Cyclogecko is getting stronger!
+Deltotter is getting stronger!
+Dewhopper is evolving!
+Dewhopper is getting stronger!
+Dewleaper is evolving!
+Dewleaper is getting stronger!
+Dewsymph is getting stronger!
+Drapewisp is evolving!
+Drapewisp is getting stronger!
+Drifturtle is evolving!
+Drifturtle is getting stronger!
+Duneguard is getting stronger!
+Duneling is evolving!
+Duneling is getting stronger!
+Duneravel is getting stronger!
+Dunetumble is evolving!
+Dunetumble is getting stronger!
+Dustmew is evolving!
+Dustmew is getting stronger!
+Each branch on its antlers grows a matching leaf on the other side.
+Each pumpkin has a mass of
+Each pumpkin has the same mass. Fill each basket to its labeled mass.
+Each seed lights a tiny lantern in the pumpkin patch.
+Echoveil is evolving!
+Echoveil is getting stronger!
+eight
+eighteen
+eleven
+Emberfiddle is getting stronger!
+Emberfin is evolving!
+Emberfin is getting stronger!
+Emberhump is evolving!
+Emberhump is getting stronger!
+Emberwake is evolving!
+Emberwake is getting stronger!
+Epocholith is getting stronger!
+Escapacrab is getting stronger!
+Fernfawn is evolving!
+Fernfawn is getting stronger!
+Fernhart is evolving!
+Fernhart is getting stronger!
+Ferronewt is getting stronger!
+fifteen
+Find the missing lantern in the pattern.
+Find the missing number on the lanterns.
+five
+Fjordmamm is evolving!
+Fjordmamm is getting stronger!
+Flakeglimmer is evolving!
+Flakeglimmer is getting stronger!
+Floeseal is evolving!
+Floeseal is getting stronger!
+Floeursa is getting stronger!
+Floraplume is getting stronger!
+Flurryfox is evolving!
+Flurryfox is getting stronger!
+Foliofloat is evolving!
+Foliofloat is getting stronger!
+forty
+four
+fourteen
+Frondstag is getting stronger!
+Frostfinch is evolving!
+Frostfinch is getting stronger!
+Fully grown, it protects its home with the strongest form of its magic.
+Fumarasp is getting stronger!
+Galegrip is evolving!
+Galegrip is getting stronger!
+Gearclaw is evolving!
+Gearclaw is getting stronger!
+Gemmarmot is evolving!
+Gemmarmot is getting stronger!
+Geodefort is getting stronger!
+Geodillo is evolving!
+Geodillo is getting stronger!
+Geodoroll is evolving!
+Geodoroll is getting stronger!
+Germiguard is getting stronger!
+Glacierarch is getting stronger!
+Glacierfin is getting stronger!
+Glaciomamm is evolving!
+Glaciomamm is getting stronger!
+Glasscobra is evolving!
+Glasscobra is getting stronger!
+Glazebear is evolving!
+Glazebear is getting stronger!
+Glintmarmot is evolving!
+Glintmarmot is getting stronger!
+Gloamray is evolving!
+Gloamray is getting stronger!
+Gloamveil is evolving!
+Gloamveil is getting stronger!
+Glypharch is getting stronger!
+Glyphimp is evolving!
+Glyphimp is getting stronger!
+Glyphsayer is evolving!
+Glyphsayer is getting stronger!
+Gotcha! Abacalion wants to travel with you!
+Gotcha! Abacaraoh wants to travel with you!
+Gotcha! Abacat wants to travel with you!
+Gotcha! Abacush wants to travel with you!
+Gotcha! Acornib wants to travel with you!
+Gotcha! Acornock wants to travel with you!
+Gotcha! Aeriehound wants to travel with you!
+Gotcha! Aerobranch wants to travel with you!
+Gotcha! Aerolotl wants to travel with you!
+Gotcha! Amethycrown wants to travel with you!
+Gotcha! Amethyspark wants to travel with you!
+Gotcha! Amethystot wants to travel with you!
+Gotcha! Antlergourd wants to travel with you!
+Gotcha! Arboracle wants to travel with you!
+Gotcha! Arborwarden wants to travel with you!
+Gotcha! Argentmoth wants to travel with you!
+Gotcha! Argoturtle wants to travel with you!
+Gotcha! Ashaxol wants to travel with you!
+Gotcha! Ashfrond wants to travel with you!
+Gotcha! Astraboa wants to travel with you!
+Gotcha! Astraray wants to travel with you!
+Gotcha! Aureohare wants to travel with you!
+Gotcha! Auritoad wants to travel with you!
+Gotcha! Auroravulp wants to travel with you!
+Gotcha! Basaltier wants to travel with you!
+Gotcha! Basaltot wants to travel with you!
+Gotcha! Basaltower wants to travel with you!
+Gotcha! Batboo wants to travel with you!
+Gotcha! Beaconbeetle wants to travel with you!
+Gotcha! Beaconkin wants to travel with you!
+Gotcha! Beadlynx wants to travel with you!
+Gotcha! Beadscarab wants to travel with you!
+Gotcha! Bellbit wants to travel with you!
+Gotcha! Bellibex wants to travel with you!
+Gotcha! Bloomlark wants to travel with you!
+Gotcha! Boglantern wants to travel with you!
+Gotcha! Borealfinch wants to travel with you!
+Gotcha! Boughbinder wants to travel with you!
+Gotcha! Branchamble wants to travel with you!
+Gotcha! Bronzewing wants to travel with you!
+Gotcha! Brookroot wants to travel with you!
+Gotcha! Cacthedral wants to travel with you!
+Gotcha! Cactot wants to travel with you!
+Gotcha! Cactower wants to travel with you!
+Gotcha! Cairnwarden wants to travel with you!
+Gotcha! Calderadon wants to travel with you!
+Gotcha! Calderaegis wants to travel with you!
+Gotcha! Caldercrest wants to travel with you!
+Gotcha! Candelupus wants to travel with you!
+Gotcha! Candlepup wants to travel with you!
+Gotcha! Carillicorn wants to travel with you!
+Gotcha! Carillord wants to travel with you!
+Gotcha! Celesticetus wants to travel with you!
+Gotcha! Chimegoat wants to travel with you!
+Gotcha! Chimeraith wants to travel with you!
+Gotcha! Chimneyspark wants to travel with you!
+Gotcha! Chronocurator wants to travel with you!
+Gotcha! Chronogolem wants to travel with you!
+Gotcha! Chronophantom wants to travel with you!
+Gotcha! Cinderchirp wants to travel with you!
+Gotcha! Cindercricket wants to travel with you!
+Gotcha! Cindermaw wants to travel with you!
+Gotcha! Cinerolotl wants to travel with you!
+Gotcha! Circuitbeetle wants to travel with you!
+Gotcha! Cirrocairn wants to travel with you!
+Gotcha! Cloudcalf wants to travel with you!
+Gotcha! Coalcrab wants to travel with you!
+Gotcha! Cobblekin wants to travel with you!
+Gotcha! Codexwing wants to travel with you!
+Gotcha! Cogcrab wants to travel with you!
+Gotcha! Coilseed wants to travel with you!
+Gotcha! Cokecarapace wants to travel with you!
+Gotcha! Combkeeper wants to travel with you!
+Gotcha! Constellotl wants to travel with you!
+Gotcha! Copperbat wants to travel with you!
+Gotcha! Coppervane wants to travel with you!
+Gotcha! Creamkin wants to travel with you!
+Gotcha! Crownkin wants to travel with you!
+Gotcha! Cryptmouse wants to travel with you!
+Gotcha! Crystaspine wants to travel with you!
+Gotcha! Cucurguard wants to travel with you!
+Gotcha! Cumulox wants to travel with you!
+Gotcha! Cupraven wants to travel with you!
+Gotcha! Cupwisp wants to travel with you!
+Gotcha! Cyclogecko wants to travel with you!
+Gotcha! Deltotter wants to travel with you!
+Gotcha! Dewhopper wants to travel with you!
+Gotcha! Dewleaper wants to travel with you!
+Gotcha! Dewsymph wants to travel with you!
+Gotcha! Drapewisp wants to travel with you!
+Gotcha! Drifturtle wants to travel with you!
+Gotcha! Duneguard wants to travel with you!
+Gotcha! Duneling wants to travel with you!
+Gotcha! Duneravel wants to travel with you!
+Gotcha! Dunetumble wants to travel with you!
+Gotcha! Dustmew wants to travel with you!
+Gotcha! Echoveil wants to travel with you!
+Gotcha! Emberfiddle wants to travel with you!
+Gotcha! Emberfin wants to travel with you!
+Gotcha! Emberhump wants to travel with you!
+Gotcha! Emberwake wants to travel with you!
+Gotcha! Epocholith wants to travel with you!
+Gotcha! Escapacrab wants to travel with you!
+Gotcha! Fernfawn wants to travel with you!
+Gotcha! Fernhart wants to travel with you!
+Gotcha! Ferronewt wants to travel with you!
+Gotcha! Fjordmamm wants to travel with you!
+Gotcha! Flakeglimmer wants to travel with you!
+Gotcha! Floeseal wants to travel with you!
+Gotcha! Floeursa wants to travel with you!
+Gotcha! Floraplume wants to travel with you!
+Gotcha! Flurryfox wants to travel with you!
+Gotcha! Foliofloat wants to travel with you!
+Gotcha! Frondstag wants to travel with you!
+Gotcha! Frostfinch wants to travel with you!
+Gotcha! Fumarasp wants to travel with you!
+Gotcha! Galegrip wants to travel with you!
+Gotcha! Gearclaw wants to travel with you!
+Gotcha! Gemmarmot wants to travel with you!
+Gotcha! Geodefort wants to travel with you!
+Gotcha! Geodillo wants to travel with you!
+Gotcha! Geodoroll wants to travel with you!
+Gotcha! Germiguard wants to travel with you!
+Gotcha! Glacierarch wants to travel with you!
+Gotcha! Glacierfin wants to travel with you!
+Gotcha! Glaciomamm wants to travel with you!
+Gotcha! Glasscobra wants to travel with you!
+Gotcha! Glazebear wants to travel with you!
+Gotcha! Glintmarmot wants to travel with you!
+Gotcha! Gloamray wants to travel with you!
+Gotcha! Gloamveil wants to travel with you!
+Gotcha! Glypharch wants to travel with you!
+Gotcha! Glyphimp wants to travel with you!
+Gotcha! Glyphsayer wants to travel with you!
+Gotcha! Gourdaconda wants to travel with you!
+Gotcha! Gourdcroak wants to travel with you!
+Gotcha! Gourdfang wants to travel with you!
+Gotcha! Gourdillo wants to travel with you!
+Gotcha! Gourdmastiff wants to travel with you!
+Gotcha! Gourdpounce wants to travel with you!
+Gotcha! Gustgecko wants to travel with you!
+Gotcha! Halohare wants to travel with you!
+Gotcha! Harvestlynx wants to travel with you!
+Gotcha! Hayhoot wants to travel with you!
+Gotcha! Hearthclaw wants to travel with you!
+Gotcha! Heliostela wants to travel with you!
+Gotcha! Hexahive wants to travel with you!
+Gotcha! Hexhusk wants to travel with you!
+Gotcha! Hoarfrosthare wants to travel with you!
+Gotcha! Honeyhex wants to travel with you!
+Gotcha! Icicub wants to travel with you!
+Gotcha! Inklit wants to travel with you!
+Gotcha! Jetstreamray wants to travel with you!
+Gotcha! Junctionwing wants to travel with you!
+Gotcha! Keyboo wants to travel with you!
+Gotcha! Kitelet wants to travel with you!
+Gotcha! Kiterove wants to travel with you!
+Gotcha! Lacustria wants to travel with you!
+Gotcha! Lanterngeist wants to travel with you!
+Gotcha! Lanternib wants to travel with you!
+Gotcha! Lanternmoth wants to travel with you!
+Gotcha! Latchling wants to travel with you!
+Gotcha! Lockwarden wants to travel with you!
+Gotcha! Lotusquid wants to travel with you!
+Gotcha! Lotusveil wants to travel with you!
+Gotcha! Lumenlug wants to travel with you!
+Gotcha! Lumenweave wants to travel with you!
+Gotcha! Luminarch wants to travel with you!
+Gotcha! Lunabyss wants to travel with you!
+Gotcha! Lunarotter wants to travel with you!
+Gotcha! Lunatide wants to travel with you!
+Gotcha! Magmattock wants to travel with you!
+Gotcha! Magmole wants to travel with you!
+Gotcha! Magnetarch wants to travel with you!
+Gotcha! Magnetaur wants to travel with you!
+Gotcha! Marionox wants to travel with you!
+Gotcha! Marshwyrm wants to travel with you!
+Gotcha! Meridianlynx wants to travel with you!
+Gotcha! Miragecko wants to travel with you!
+Gotcha! Miraglass wants to travel with you!
+Gotcha! Miraguan wants to travel with you!
+Gotcha! Mirrorimp wants to travel with you!
+Gotcha! Mistfawn wants to travel with you!
+Gotcha! Misthart wants to travel with you!
+Gotcha! Mistmantle wants to travel with you!
+Gotcha! Mittenmist wants to travel with you!
+Gotcha! Moonbound wants to travel with you!
+Gotcha! Moonjerboa wants to travel with you!
+Gotcha! Moonotter wants to travel with you!
+Gotcha! Mosaicarp wants to travel with you!
+Gotcha! Mosaicfin wants to travel with you!
+Gotcha! Mousoleum wants to travel with you!
+Gotcha! Mushmellow wants to travel with you!
+Gotcha! Mycocrown wants to travel with you!
+Gotcha! Nacreon wants to travel with you!
+Gotcha! Nebulink wants to travel with you!
+Gotcha! Nelumara wants to travel with you!
+Gotcha! Nickelcrest wants to travel with you!
+Gotcha! Nickelnewt wants to travel with you!
+Gotcha! Nimbusire wants to travel with you!
+Gotcha! Nimbusquid wants to travel with you!
+Gotcha! Oakwarden wants to travel with you!
+Gotcha! Oasisbloom wants to travel with you!
+Gotcha! Oasisprout wants to travel with you!
+Gotcha! Obsidianole wants to travel with you!
+Gotcha! Obsidrake wants to travel with you!
+Gotcha! Obsidrill wants to travel with you!
+Gotcha! Oremole wants to travel with you!
+Gotcha! Pagepeek wants to travel with you!
+Gotcha! Papyrill wants to travel with you!
+Gotcha! Papyrion wants to travel with you!
+Gotcha! Papyrune wants to travel with you!
+Gotcha! Patchsage wants to travel with you!
+Gotcha! Patchwing wants to travel with you!
+Gotcha! Peakpuff wants to travel with you!
+Gotcha! Pearlcrest wants to travel with you!
+Gotcha! Pearlfin wants to travel with you!
+Gotcha! Pearlroot wants to travel with you!
+Gotcha! Penduloom wants to travel with you!
+Gotcha! Petalark wants to travel with you!
+Gotcha! Phantomlynx wants to travel with you!
+Gotcha! Piemancer wants to travel with you!
+Gotcha! Pipkin wants to travel with you!
+Gotcha! Plumehound wants to travel with you!
+Gotcha! Plumepup wants to travel with you!
+Gotcha! Pluvioct wants to travel with you!
+Gotcha! Podrillo wants to travel with you!
+Gotcha! Polestaur wants to travel with you!
+Gotcha! Porcelgeist wants to travel with you!
+Gotcha! Prismaltar wants to travel with you!
+Gotcha! Prismasp wants to travel with you!
+Gotcha! Prismidol wants to travel with you!
+Gotcha! Prismoracle wants to travel with you!
+Gotcha! Prismquill wants to travel with you!
+Gotcha! Pulpuff wants to travel with you!
+Gotcha! Pumiguard wants to travel with you!
+Gotcha! Pumihound wants to travel with you!
+Gotcha! Pumipup wants to travel with you!
+Gotcha! Pumprib wants to travel with you!
+Gotcha! Pumpup wants to travel with you!
+Gotcha! Puppetarch wants to travel with you!
+Gotcha! Pyricroak wants to travel with you!
+Gotcha! Pyritoad wants to travel with you!
+Gotcha! Quartzquill wants to travel with you!
+Gotcha! Quillshade wants to travel with you!
+Gotcha! Quiltguard wants to travel with you!
+Gotcha! Railrook wants to travel with you!
+Gotcha! Reedrake wants to travel with you!
+Gotcha! Reedweaver wants to travel with you!
+Gotcha! Reflecter wants to travel with you!
+Gotcha! Relayweevil wants to travel with you!
+Gotcha! Reliclaw wants to travel with you!
+Gotcha! Relicub wants to travel with you!
+Gotcha! Reliquursa wants to travel with you!
+Gotcha! Ribbonray wants to travel with you!
+Gotcha! Riftmole wants to travel with you!
+Gotcha! Rimebound wants to travel with you!
+Gotcha! Rimehare wants to travel with you!
+Gotcha! Rindbuck wants to travel with you!
+Gotcha! Rindroller wants to travel with you!
+Gotcha! Ringbound wants to travel with you!
+Gotcha! Ripplehalo wants to travel with you!
+Gotcha! Ripplewisp wants to travel with you!
+Gotcha! Rootter wants to travel with you!
+Gotcha! Saffronfox wants to travel with you!
+Gotcha! Saffrontail wants to travel with you!
+Gotcha! Sailturtle wants to travel with you!
+Gotcha! Sandburrow wants to travel with you!
+Gotcha! Sandib wants to travel with you!
+Gotcha! Scarabacus wants to travel with you!
+Gotcha! Scareowl wants to travel with you!
+Gotcha! Scriptreign wants to travel with you!
+Gotcha! Scrollcrest wants to travel with you!
+Gotcha! Scrollfinch wants to travel with you!
+Gotcha! Seedillo wants to travel with you!
+Gotcha! Seedlet wants to travel with you!
+Gotcha! Selenabyss wants to travel with you!
+Gotcha! Shadowdial wants to travel with you!
+Gotcha! Sheetot wants to travel with you!
+Gotcha! Shroomantle wants to travel with you!
+Gotcha! Sleetseal wants to travel with you!
+Gotcha! Snowmote wants to travel with you!
+Gotcha! Snowquill wants to travel with you!
+Gotcha! Snowstellis wants to travel with you!
+Gotcha! Snowtwirl wants to travel with you!
+Gotcha! Sockling wants to travel with you!
+Gotcha! Solarchon wants to travel with you!
+Gotcha! Solardrom wants to travel with you!
+Gotcha! Solarsphinx wants to travel with you!
+Gotcha! Sonarshade wants to travel with you!
+Gotcha! Sootsprite wants to travel with you!
+Gotcha! Sootswirl wants to travel with you!
+Gotcha! Speculord wants to travel with you!
+Gotcha! Spiralsprig wants to travel with you!
+Gotcha! Spookernel wants to travel with you!
+Gotcha! Sprigsnail wants to travel with you!
+Gotcha! Springhelix wants to travel with you!
+Gotcha! Sproutimp wants to travel with you!
+Gotcha! Squashkit wants to travel with you!
+Gotcha! Starfrond wants to travel with you!
+Gotcha! Starnewt wants to travel with you!
+Gotcha! Steamink wants to travel with you!
+Gotcha! Stemstag wants to travel with you!
+Gotcha! Stonegourd wants to travel with you!
+Gotcha! Stratocetus wants to travel with you!
+Gotcha! Stratogarden wants to travel with you!
+Gotcha! Stratosolotl wants to travel with you!
+Gotcha! Strawloft wants to travel with you!
+Gotcha! Sumharvest wants to travel with you!
+Gotcha! Summitcloud wants to travel with you!
+Gotcha! Suncamel wants to travel with you!
+Gotcha! Sundialynx wants to travel with you!
+Gotcha! Sunspice wants to travel with you!
+Gotcha! Switchrook wants to travel with you!
+Gotcha! Tallygourd wants to travel with you!
+Gotcha! Teacreep wants to travel with you!
+Gotcha! Tempestvulp wants to travel with you!
+Gotcha! Terrapump wants to travel with you!
+Gotcha! Tesselkid wants to travel with you!
+Gotcha! Tesselkoi wants to travel with you!
+Gotcha! Tessello wants to travel with you!
+Gotcha! Tessellord wants to travel with you!
+Gotcha! Tickaboo wants to travel with you!
+Gotcha! Tidecarapace wants to travel with you!
+Gotcha! Tidemonolith wants to travel with you!
+Gotcha! Tideshell wants to travel with you!
+Gotcha! Tomewarden wants to travel with you!
+Gotcha! Toyboo wants to travel with you!
+Gotcha! Tunnelmarshal wants to travel with you!
+Gotcha! Twiggle wants to travel with you!
+Gotcha! Vanevulp wants to travel with you!
+Gotcha! Vaporink wants to travel with you!
+Gotcha! Vaultwhisk wants to travel with you!
+Gotcha! Veilcat wants to travel with you!
+Gotcha! Veilflutter wants to travel with you!
+Gotcha! Veilmoth wants to travel with you!
+Gotcha! Veilstag wants to travel with you!
+Gotcha! Veinmole wants to travel with you!
+Gotcha! Velourgeist wants to travel with you!
+Gotcha! Ventcoil wants to travel with you!
+Gotcha! Ventviper wants to travel with you!
+Gotcha! Vinebat wants to travel with you!
+Gotcha! Vinehound wants to travel with you!
+Gotcha! Vinejack wants to travel with you!
+Gotcha! Vineserp wants to travel with you!
+Gotcha! Vitraserp wants to travel with you!
+Gotcha! Voltweevil wants to travel with you!
+Gotcha! Wellsprig wants to travel with you!
+Gotcha! Wickgourd wants to travel with you!
+Gotcha! Wickwolf wants to travel with you!
+Gotcha! Windbanner wants to travel with you!
+Gotcha! Wispip wants to travel with you!
+Gotcha! Worldarbor wants to travel with you!
+Gotcha! Zephyray wants to travel with you!
+Gourdaconda is getting stronger!
+Gourdcroak is evolving!
+Gourdcroak is getting stronger!
+Gourdfang is evolving!
+Gourdfang is getting stronger!
+Gourdillo is evolving!
+Gourdillo is getting stronger!
+Gourdmastiff is getting stronger!
+Gourdpounce is evolving!
+Gourdpounce is getting stronger!
+Gustgecko is evolving!
+Gustgecko is getting stronger!
+Halohare is evolving!
+Halohare is getting stronger!
+Harvestlynx is getting stronger!
+Hayhoot is evolving!
+Hayhoot is getting stronger!
+Hearthclaw is getting stronger!
+Heliostela is getting stronger!
+Hexahive is getting stronger!
+Hexhusk is evolving!
+Hexhusk is getting stronger!
+Hoarfrosthare is getting stronger!
+Honeyhex is evolving!
+Honeyhex is getting stronger!
+Icicub is evolving!
+Icicub is getting stronger!
+Inklit is evolving!
+Inklit is getting stronger!
+It balances on one feather and counts down before gliding.
+It builds root dams and checks that every stream gets a fair share.
+It carries a little garden on a shell made of pumpkin and stone.
+It carries broken statues to a quiet corner and patiently rebuilds them.
+It carries warm coal in a shell that never burns its friends.
+It checks that every reflection has a matching partner.
+It chirps a repeating rhythm whenever a vent is ready to cool.
+It collects crooked twigs and turns them into straight number paths.
+It copies ancient marks and spots the one symbol that does not belong.
+It counts each turn to guide lost friends home.
+It counts its crystal quills to make sure none were lost in a tumble.
+It counts its pawprints before pouncing across the pumpkin rows.
+It counts the little doors in its stone shelter.
+It curls around warm vents and releases heat in careful little breaths.
+It digs cool shelters with entrances arranged in matching pairs.
+It digs side channels so hot streams never flood a friend's burrow.
+It draws bright circles in the air to guide lost guests.
+It draws bright rings on still water without making a sound.
+It draws one bright mark for each story it remembers.
+It draws temporary arrows in clouds of gentle steam.
+It drifts in matching snowflake pairs and never leaves a friend behind.
+It finds missing pages and puts every story back in order.
+It fits six-sided honey rooms together without leaving any gaps.
+It folds its soft cloth wings into matching shapes.
+It follows moonlit footprints and always finds its way home.
+It follows returning echoes to find the shortest hallway.
+It follows the shadow of its tail to find the coolest route home.
+It gathers small clouds into fluffy groups before falling asleep.
+It glides just above the lake and gathers reflected stars.
+It grows beside hidden wells and folds its leaves at noon.
+It guards glittering fool's gold but happily trades for smooth pebbles.
+It hops between dewdrops and leaves tiny counting trails on leaves.
+It joins broken wires with the two tips of its glowing snout.
+It keeps every pumpkin safe inside a circle of curling vines.
+It knows which key shape fits each door in the house.
+It lights a row of candles with the tip of its little tail.
+It lights one lantern for every friend returning home.
+It makes gentle rings in the water with its glowing pumpkin throat.
+It measures gusts with the long ribbons at the tips of its wings.
+It measures the garden paths with its long curling vine.
+It packs shiny stones into warm burrows in equal-sized groups.
+It plants seeds in tidy rows and leaves room for every sprout.
+It polishes one pearl for every new friend it meets.
+It pours equal cups of warm tea for its ghostly guests.
+It puffs little cloud stairs so smaller friends can climb with it.
+It rides mine carts and calls out the order of each junction.
+It rolls bright beads along its shell like a living counting frame.
+It rolls up into a hollow geode when a tunnel gets noisy.
+It sails between islands on a shell shaped like a tiny airship.
+It shares its pumpkin pie so every friend gets a fair piece.
+It shares round moonstones by making equal piles along the bank.
+It slides between ice circles and judges which route is shorter.
+It slides golden beads along its whiskers while watching the stars.
+It slides pumpkin seeds into groups before adding them together.
+It slips through narrow seams and polishes them with its silver tail.
+It sorts acorns into tidy piles before sharing them with the forest.
+It sorts the lost mittens into pairs before bedtime.
+It stacks black stones into small towers beside cooling lava.
+It steps between islands on paths made from low silver mist.
+It stores water in round pads and shares one pad at a time.
+It sweeps soot into star shapes before the morning lamps are lit.
+It swims through glowing pools without disturbing their calm surface.
+It swims through mist and ties raindrops into neat little loops.
+It taps snowy steps in order before making its longest leap.
+It taps tunnel walls and listens for the richest echo.
+It teaches the toys to take their dance steps in order.
+It traces equal wings in the snow with every careful landing.
+It turns one shaft of light into a carefully ordered rainbow.
+It unrolls its tail feathers to show the route it flew yesterday.
+It wakes at dusk to trace star patterns with its long jumping feet.
+It walks sideways through old gears without missing a single beat.
+It watches the fields and counts the bundles of golden straw.
+It weaves reeds into little bridges for creatures that cannot swim.
+Its airy stone paws let it float across warm pools.
+Its armored seed plates roll apart to make space for a new sprout.
+Its back lights up in constellations that change when the tide turns.
+Its bells ring in repeating patterns when friends arrive.
+Its clear hood catches sunlight and splits it into colored shapes.
+Its colored scales fit together like pieces of a river mosaic.
+Its copper ears turn together whenever the wind changes direction.
+Its copper-lined wings carry sparks between distant cave lamps.
+Its crystal horns ring a different note for each safe ledge.
+Its feathery gills sift warm ash into soft piles.
+Its fern antlers unfurl one matching leaf on each side.
+Its gentle ticking reminds the toys when it is time to sleep.
+Its glassy scales reflect paths that disappear when viewed from the wrong side.
+Its glossy scales mirror the orange glow of underground rivers.
+Its glowing ear rings make matching circles in the evening sky.
+Its glowing hump keeps travelers warm after the desert sun sets.
+Its growing magic now helps younger friends explore safely.
+Its ice paws leave little square prints along the frozen stream.
+Its kite-shaped tail points toward the next safe gust.
+Its lantern belly lights one square of the tunnel at a time.
+Its leaf wings fold into two matching halves.
+Its long shadow points to the safest doorway in the archive.
+Its parchment wings preserve tiny stories from forgotten classrooms.
+Its petal arms open together when moonlight touches the lake.
+Its petal wings scatter seeds in repeating colored rows.
+Its pumpkin armor fits together without leaving a single gap.
+Its purple crystals pulse together when a circuit is complete.
+Its sandy curls change shape when it rolls down a new dune.
+Its shell records each rising tide with another pale ring.
+Its six glowing wing marks help travelers find the orchard.
+Its spiral shell stores a cool drop for each thirsty seed.
+Its tail paints curling snow trails that always return to the start.
+Its tiled coat rearranges itself into patterns with no empty spaces.
+Its wide toe pads cling to moving stones high above the clouds.
+Its wings hide a matching pair of silver eyespots.
+Jetstreamray is getting stronger!
+Junctionwing is getting stronger!
+Keep the same y coordinate. Matching guests are equally far from the mirror.
+Keyboo is evolving!
+Keyboo is getting stronger!
+kilograms.
+Kitelet is evolving!
+Kitelet is getting stronger!
+Kiterove is evolving!
+Kiterove is getting stronger!
+Lacustria is getting stronger!
+Lanterngeist is evolving!
+Lanterngeist is getting stronger!
+Lanternib is evolving!
+Lanternib is getting stronger!
+Lanternmoth is getting stronger!
+Latchling is evolving!
+Latchling is getting stronger!
+Level up! Abacalion is getting stronger!
+Level up! Abacaraoh is getting stronger!
+Level up! Abacat is getting stronger!
+Level up! Abacush is getting stronger!
+Level up! Acornib is getting stronger!
+Level up! Acornock is getting stronger!
+Level up! Aeriehound is getting stronger!
+Level up! Aerobranch is getting stronger!
+Level up! Aerolotl is getting stronger!
+Level up! Amethycrown is getting stronger!
+Level up! Amethyspark is getting stronger!
+Level up! Amethystot is getting stronger!
+Level up! Antlergourd is getting stronger!
+Level up! Arboracle is getting stronger!
+Level up! Arborwarden is getting stronger!
+Level up! Argentmoth is getting stronger!
+Level up! Argoturtle is getting stronger!
+Level up! Ashaxol is getting stronger!
+Level up! Ashfrond is getting stronger!
+Level up! Astraboa is getting stronger!
+Level up! Astraray is getting stronger!
+Level up! Aureohare is getting stronger!
+Level up! Auritoad is getting stronger!
+Level up! Auroravulp is getting stronger!
+Level up! Basaltier is getting stronger!
+Level up! Basaltot is getting stronger!
+Level up! Basaltower is getting stronger!
+Level up! Batboo is getting stronger!
+Level up! Beaconbeetle is getting stronger!
+Level up! Beaconkin is getting stronger!
+Level up! Beadlynx is getting stronger!
+Level up! Beadscarab is getting stronger!
+Level up! Bellbit is getting stronger!
+Level up! Bellibex is getting stronger!
+Level up! Bloomlark is getting stronger!
+Level up! Boglantern is getting stronger!
+Level up! Borealfinch is getting stronger!
+Level up! Boughbinder is getting stronger!
+Level up! Branchamble is getting stronger!
+Level up! Bronzewing is getting stronger!
+Level up! Brookroot is getting stronger!
+Level up! Cacthedral is getting stronger!
+Level up! Cactot is getting stronger!
+Level up! Cactower is getting stronger!
+Level up! Cairnwarden is getting stronger!
+Level up! Calderadon is getting stronger!
+Level up! Calderaegis is getting stronger!
+Level up! Caldercrest is getting stronger!
+Level up! Candelupus is getting stronger!
+Level up! Candlepup is getting stronger!
+Level up! Carillicorn is getting stronger!
+Level up! Carillord is getting stronger!
+Level up! Celesticetus is getting stronger!
+Level up! Chimegoat is getting stronger!
+Level up! Chimeraith is getting stronger!
+Level up! Chimneyspark is getting stronger!
+Level up! Chronocurator is getting stronger!
+Level up! Chronogolem is getting stronger!
+Level up! Chronophantom is getting stronger!
+Level up! Cinderchirp is getting stronger!
+Level up! Cindercricket is getting stronger!
+Level up! Cindermaw is getting stronger!
+Level up! Cinerolotl is getting stronger!
+Level up! Circuitbeetle is getting stronger!
+Level up! Cirrocairn is getting stronger!
+Level up! Cloudcalf is getting stronger!
+Level up! Coalcrab is getting stronger!
+Level up! Cobblekin is getting stronger!
+Level up! Codexwing is getting stronger!
+Level up! Cogcrab is getting stronger!
+Level up! Coilseed is getting stronger!
+Level up! Cokecarapace is getting stronger!
+Level up! Combkeeper is getting stronger!
+Level up! Constellotl is getting stronger!
+Level up! Copperbat is getting stronger!
+Level up! Coppervane is getting stronger!
+Level up! Creamkin is getting stronger!
+Level up! Crownkin is getting stronger!
+Level up! Cryptmouse is getting stronger!
+Level up! Crystaspine is getting stronger!
+Level up! Cucurguard is getting stronger!
+Level up! Cumulox is getting stronger!
+Level up! Cupraven is getting stronger!
+Level up! Cupwisp is getting stronger!
+Level up! Cyclogecko is getting stronger!
+Level up! Deltotter is getting stronger!
+Level up! Dewhopper is getting stronger!
+Level up! Dewleaper is getting stronger!
+Level up! Dewsymph is getting stronger!
+Level up! Drapewisp is getting stronger!
+Level up! Drifturtle is getting stronger!
+Level up! Duneguard is getting stronger!
+Level up! Duneling is getting stronger!
+Level up! Duneravel is getting stronger!
+Level up! Dunetumble is getting stronger!
+Level up! Dustmew is getting stronger!
+Level up! Echoveil is getting stronger!
+Level up! Emberfiddle is getting stronger!
+Level up! Emberfin is getting stronger!
+Level up! Emberhump is getting stronger!
+Level up! Emberwake is getting stronger!
+Level up! Epocholith is getting stronger!
+Level up! Escapacrab is getting stronger!
+Level up! Fernfawn is getting stronger!
+Level up! Fernhart is getting stronger!
+Level up! Ferronewt is getting stronger!
+Level up! Fjordmamm is getting stronger!
+Level up! Flakeglimmer is getting stronger!
+Level up! Floeseal is getting stronger!
+Level up! Floeursa is getting stronger!
+Level up! Floraplume is getting stronger!
+Level up! Flurryfox is getting stronger!
+Level up! Foliofloat is getting stronger!
+Level up! Frondstag is getting stronger!
+Level up! Frostfinch is getting stronger!
+Level up! Fumarasp is getting stronger!
+Level up! Galegrip is getting stronger!
+Level up! Gearclaw is getting stronger!
+Level up! Gemmarmot is getting stronger!
+Level up! Geodefort is getting stronger!
+Level up! Geodillo is getting stronger!
+Level up! Geodoroll is getting stronger!
+Level up! Germiguard is getting stronger!
+Level up! Glacierarch is getting stronger!
+Level up! Glacierfin is getting stronger!
+Level up! Glaciomamm is getting stronger!
+Level up! Glasscobra is getting stronger!
+Level up! Glazebear is getting stronger!
+Level up! Glintmarmot is getting stronger!
+Level up! Gloamray is getting stronger!
+Level up! Gloamveil is getting stronger!
+Level up! Glypharch is getting stronger!
+Level up! Glyphimp is getting stronger!
+Level up! Glyphsayer is getting stronger!
+Level up! Gourdaconda is getting stronger!
+Level up! Gourdcroak is getting stronger!
+Level up! Gourdfang is getting stronger!
+Level up! Gourdillo is getting stronger!
+Level up! Gourdmastiff is getting stronger!
+Level up! Gourdpounce is getting stronger!
+Level up! Gustgecko is getting stronger!
+Level up! Halohare is getting stronger!
+Level up! Harvestlynx is getting stronger!
+Level up! Hayhoot is getting stronger!
+Level up! Hearthclaw is getting stronger!
+Level up! Heliostela is getting stronger!
+Level up! Hexahive is getting stronger!
+Level up! Hexhusk is getting stronger!
+Level up! Hoarfrosthare is getting stronger!
+Level up! Honeyhex is getting stronger!
+Level up! Icicub is getting stronger!
+Level up! Inklit is getting stronger!
+Level up! Jetstreamray is getting stronger!
+Level up! Junctionwing is getting stronger!
+Level up! Keyboo is getting stronger!
+Level up! Kitelet is getting stronger!
+Level up! Kiterove is getting stronger!
+Level up! Lacustria is getting stronger!
+Level up! Lanterngeist is getting stronger!
+Level up! Lanternib is getting stronger!
+Level up! Lanternmoth is getting stronger!
+Level up! Latchling is getting stronger!
+Level up! Lockwarden is getting stronger!
+Level up! Lotusquid is getting stronger!
+Level up! Lotusveil is getting stronger!
+Level up! Lumenlug is getting stronger!
+Level up! Lumenweave is getting stronger!
+Level up! Luminarch is getting stronger!
+Level up! Lunabyss is getting stronger!
+Level up! Lunarotter is getting stronger!
+Level up! Lunatide is getting stronger!
+Level up! Magmattock is getting stronger!
+Level up! Magmole is getting stronger!
+Level up! Magnetarch is getting stronger!
+Level up! Magnetaur is getting stronger!
+Level up! Marionox is getting stronger!
+Level up! Marshwyrm is getting stronger!
+Level up! Meridianlynx is getting stronger!
+Level up! Miragecko is getting stronger!
+Level up! Miraglass is getting stronger!
+Level up! Miraguan is getting stronger!
+Level up! Mirrorimp is getting stronger!
+Level up! Mistfawn is getting stronger!
+Level up! Misthart is getting stronger!
+Level up! Mistmantle is getting stronger!
+Level up! Mittenmist is getting stronger!
+Level up! Moonbound is getting stronger!
+Level up! Moonjerboa is getting stronger!
+Level up! Moonotter is getting stronger!
+Level up! Mosaicarp is getting stronger!
+Level up! Mosaicfin is getting stronger!
+Level up! Mousoleum is getting stronger!
+Level up! Mushmellow is getting stronger!
+Level up! Mycocrown is getting stronger!
+Level up! Nacreon is getting stronger!
+Level up! Nebulink is getting stronger!
+Level up! Nelumara is getting stronger!
+Level up! Nickelcrest is getting stronger!
+Level up! Nickelnewt is getting stronger!
+Level up! Nimbusire is getting stronger!
+Level up! Nimbusquid is getting stronger!
+Level up! Oakwarden is getting stronger!
+Level up! Oasisbloom is getting stronger!
+Level up! Oasisprout is getting stronger!
+Level up! Obsidianole is getting stronger!
+Level up! Obsidrake is getting stronger!
+Level up! Obsidrill is getting stronger!
+Level up! Oremole is getting stronger!
+Level up! Pagepeek is getting stronger!
+Level up! Papyrill is getting stronger!
+Level up! Papyrion is getting stronger!
+Level up! Papyrune is getting stronger!
+Level up! Patchsage is getting stronger!
+Level up! Patchwing is getting stronger!
+Level up! Peakpuff is getting stronger!
+Level up! Pearlcrest is getting stronger!
+Level up! Pearlfin is getting stronger!
+Level up! Pearlroot is getting stronger!
+Level up! Penduloom is getting stronger!
+Level up! Petalark is getting stronger!
+Level up! Phantomlynx is getting stronger!
+Level up! Piemancer is getting stronger!
+Level up! Pipkin is getting stronger!
+Level up! Plumehound is getting stronger!
+Level up! Plumepup is getting stronger!
+Level up! Pluvioct is getting stronger!
+Level up! Podrillo is getting stronger!
+Level up! Polestaur is getting stronger!
+Level up! Porcelgeist is getting stronger!
+Level up! Prismaltar is getting stronger!
+Level up! Prismasp is getting stronger!
+Level up! Prismidol is getting stronger!
+Level up! Prismoracle is getting stronger!
+Level up! Prismquill is getting stronger!
+Level up! Pulpuff is getting stronger!
+Level up! Pumiguard is getting stronger!
+Level up! Pumihound is getting stronger!
+Level up! Pumipup is getting stronger!
+Level up! Pumprib is getting stronger!
+Level up! Pumpup is getting stronger!
+Level up! Puppetarch is getting stronger!
+Level up! Pyricroak is getting stronger!
+Level up! Pyritoad is getting stronger!
+Level up! Quartzquill is getting stronger!
+Level up! Quillshade is getting stronger!
+Level up! Quiltguard is getting stronger!
+Level up! Railrook is getting stronger!
+Level up! Reedrake is getting stronger!
+Level up! Reedweaver is getting stronger!
+Level up! Reflecter is getting stronger!
+Level up! Relayweevil is getting stronger!
+Level up! Reliclaw is getting stronger!
+Level up! Relicub is getting stronger!
+Level up! Reliquursa is getting stronger!
+Level up! Ribbonray is getting stronger!
+Level up! Riftmole is getting stronger!
+Level up! Rimebound is getting stronger!
+Level up! Rimehare is getting stronger!
+Level up! Rindbuck is getting stronger!
+Level up! Rindroller is getting stronger!
+Level up! Ringbound is getting stronger!
+Level up! Ripplehalo is getting stronger!
+Level up! Ripplewisp is getting stronger!
+Level up! Rootter is getting stronger!
+Level up! Saffronfox is getting stronger!
+Level up! Saffrontail is getting stronger!
+Level up! Sailturtle is getting stronger!
+Level up! Sandburrow is getting stronger!
+Level up! Sandib is getting stronger!
+Level up! Scarabacus is getting stronger!
+Level up! Scareowl is getting stronger!
+Level up! Scriptreign is getting stronger!
+Level up! Scrollcrest is getting stronger!
+Level up! Scrollfinch is getting stronger!
+Level up! Seedillo is getting stronger!
+Level up! Seedlet is getting stronger!
+Level up! Selenabyss is getting stronger!
+Level up! Shadowdial is getting stronger!
+Level up! Sheetot is getting stronger!
+Level up! Shroomantle is getting stronger!
+Level up! Sleetseal is getting stronger!
+Level up! Snowmote is getting stronger!
+Level up! Snowquill is getting stronger!
+Level up! Snowstellis is getting stronger!
+Level up! Snowtwirl is getting stronger!
+Level up! Sockling is getting stronger!
+Level up! Solarchon is getting stronger!
+Level up! Solardrom is getting stronger!
+Level up! Solarsphinx is getting stronger!
+Level up! Sonarshade is getting stronger!
+Level up! Sootsprite is getting stronger!
+Level up! Sootswirl is getting stronger!
+Level up! Speculord is getting stronger!
+Level up! Spiralsprig is getting stronger!
+Level up! Spookernel is getting stronger!
+Level up! Sprigsnail is getting stronger!
+Level up! Springhelix is getting stronger!
+Level up! Sproutimp is getting stronger!
+Level up! Squashkit is getting stronger!
+Level up! Starfrond is getting stronger!
+Level up! Starnewt is getting stronger!
+Level up! Steamink is getting stronger!
+Level up! Stemstag is getting stronger!
+Level up! Stonegourd is getting stronger!
+Level up! Stratocetus is getting stronger!
+Level up! Stratogarden is getting stronger!
+Level up! Stratosolotl is getting stronger!
+Level up! Strawloft is getting stronger!
+Level up! Sumharvest is getting stronger!
+Level up! Summitcloud is getting stronger!
+Level up! Suncamel is getting stronger!
+Level up! Sundialynx is getting stronger!
+Level up! Sunspice is getting stronger!
+Level up! Switchrook is getting stronger!
+Level up! Tallygourd is getting stronger!
+Level up! Teacreep is getting stronger!
+Level up! Tempestvulp is getting stronger!
+Level up! Terrapump is getting stronger!
+Level up! Tesselkid is getting stronger!
+Level up! Tesselkoi is getting stronger!
+Level up! Tessello is getting stronger!
+Level up! Tessellord is getting stronger!
+Level up! Tickaboo is getting stronger!
+Level up! Tidecarapace is getting stronger!
+Level up! Tidemonolith is getting stronger!
+Level up! Tideshell is getting stronger!
+Level up! Tomewarden is getting stronger!
+Level up! Toyboo is getting stronger!
+Level up! Tunnelmarshal is getting stronger!
+Level up! Twiggle is getting stronger!
+Level up! Vanevulp is getting stronger!
+Level up! Vaporink is getting stronger!
+Level up! Vaultwhisk is getting stronger!
+Level up! Veilcat is getting stronger!
+Level up! Veilflutter is getting stronger!
+Level up! Veilmoth is getting stronger!
+Level up! Veilstag is getting stronger!
+Level up! Veinmole is getting stronger!
+Level up! Velourgeist is getting stronger!
+Level up! Ventcoil is getting stronger!
+Level up! Ventviper is getting stronger!
+Level up! Vinebat is getting stronger!
+Level up! Vinehound is getting stronger!
+Level up! Vinejack is getting stronger!
+Level up! Vineserp is getting stronger!
+Level up! Vitraserp is getting stronger!
+Level up! Voltweevil is getting stronger!
+Level up! Wellsprig is getting stronger!
+Level up! Wickgourd is getting stronger!
+Level up! Wickwolf is getting stronger!
+Level up! Windbanner is getting stronger!
+Level up! Wispip is getting stronger!
+Level up! Worldarbor is getting stronger!
+Level up! Zephyray is getting stronger!
+LISTEN plays the melody again. Take your time.
+Listen to the bells. Then play the same melody.
+Lockwarden is getting stronger!
+Look for the part that repeats.
+Lotusquid is evolving!
+Lotusquid is getting stronger!
+Lotusveil is evolving!
+Lotusveil is getting stronger!
+Lumenlug is evolving!
+Lumenlug is getting stronger!
+Lumenweave is evolving!
+Lumenweave is getting stronger!
+Luminarch is getting stronger!
+Lunabyss is evolving!
+Lunabyss is getting stronger!
+Lunarotter is getting stronger!
+Lunatide is evolving!
+Lunatide is getting stronger!
+Magmattock is evolving!
+Magmattock is getting stronger!
+Magmole is evolving!
+Magmole is getting stronger!
+Magnetarch is getting stronger!
+Magnetaur is evolving!
+Magnetaur is getting stronger!
+Make the right side a mirror of the left side.
+Marionox is evolving!
+Marionox is getting stronger!
+Marshwyrm is getting stronger!
+Meet Chronophantom.
+Meet Crownkin.
+Meridianlynx is getting stronger!
+Miragecko is evolving!
+Miragecko is getting stronger!
+Miraglass is evolving!
+Miraglass is getting stronger!
+Miraguan is getting stronger!
+Mirrorimp is evolving!
+Mirrorimp is getting stronger!
+Mistfawn is evolving!
+Mistfawn is getting stronger!
+Misthart is evolving!
+Misthart is getting stronger!
+Mistmantle is evolving!
+Mistmantle is getting stronger!
+Mittenmist is evolving!
+Mittenmist is getting stronger!
+Moonbound is evolving!
+Moonbound is getting stronger!
+Moonjerboa is evolving!
+Moonjerboa is getting stronger!
+Moonotter is evolving!
+Moonotter is getting stronger!
+Mosaicarp is evolving!
+Mosaicarp is getting stronger!
+Mosaicfin is evolving!
+Mosaicfin is getting stronger!
+Mousoleum is evolving!
+Mousoleum is getting stronger!
+Mushmellow is evolving!
+Mushmellow is getting stronger!
+Mycocrown is getting stronger!
+Nacreon is getting stronger!
+Nebulink is getting stronger!
+needs
+Nelumara is getting stronger!
+Nickelcrest is evolving!
+Nickelcrest is getting stronger!
+Nickelnewt is evolving!
+Nickelnewt is getting stronger!
+Nimbusire is getting stronger!
+Nimbusquid is evolving!
+Nimbusquid is getting stronger!
+nine
+nineteen
+Oakwarden is getting stronger!
+Oasisbloom is getting stronger!
+Oasisprout is evolving!
+Oasisprout is getting stronger!
+Obsidianole is evolving!
+Obsidianole is getting stronger!
+Obsidrake is getting stronger!
+Obsidrill is evolving!
+Obsidrill is getting stronger!
+of the whole harvest.
+On harvest night, it makes sure every friend receives a fair share.
+one
+Oremole is evolving!
+Oremole is getting stronger!
+over
+Pagepeek is evolving!
+Pagepeek is getting stronger!
+Papyrill is evolving!
+Papyrill is getting stronger!
+Papyrion is getting stronger!
+Papyrune is evolving!
+Papyrune is getting stronger!
+Patchsage is getting stronger!
+Patchwing is getting stronger!
+Peakpuff is evolving!
+Peakpuff is getting stronger!
+Pearlcrest is evolving!
+Pearlcrest is getting stronger!
+Pearlfin is evolving!
+Pearlfin is getting stronger!
+Pearlroot is evolving!
+Pearlroot is getting stronger!
+Penduloom is evolving!
+Penduloom is getting stronger!
+Penduloom swings its clock from side to side.
+Petalark is evolving!
+Petalark is getting stronger!
+Phantomlynx is getting stronger!
+Piemancer is getting stronger!
+Pipkin is evolving!
+Pipkin is getting stronger!
+Pipkin shares its seeds with every new friend.
+Plumehound is evolving!
+Plumehound is getting stronger!
+Plumepup is evolving!
+Plumepup is getting stronger!
+plus
+Pluvioct is getting stronger!
+Podrillo is evolving!
+Podrillo is getting stronger!
+point
+Polestaur is evolving!
+Polestaur is getting stronger!
+Porcelgeist is getting stronger!
+Prismaltar is evolving!
+Prismaltar is getting stronger!
+Prismasp is evolving!
+Prismasp is getting stronger!
+Prismidol is evolving!
+Prismidol is getting stronger!
+Prismoracle is getting stronger!
+Prismquill is evolving!
+Prismquill is getting stronger!
+Pulpuff is evolving!
+Pulpuff is getting stronger!
+Pumiguard is getting stronger!
+Pumihound is evolving!
+Pumihound is getting stronger!
+Pumipup is evolving!
+Pumipup is getting stronger!
+Pumprib is evolving!
+Pumprib is getting stronger!
+Pumpup is evolving!
+Pumpup is getting stronger!
+Puppetarch is getting stronger!
+Put the portraits in order, from fewest candles to most candles. Tap two portraits to swap them.
+Pyricroak is evolving!
+Pyricroak is getting stronger!
+Pyritoad is evolving!
+Pyritoad is getting stronger!
+Quartzquill is evolving!
+Quartzquill is getting stronger!
+Quillshade is evolving!
+Quillshade is getting stronger!
+Quiltguard is getting stronger!
+Railrook is evolving!
+Railrook is getting stronger!
+Reach level 12 to evolve!
+Reach level 16 to evolve!
+Reach level 20 to evolve!
+Reach level 22 to evolve!
+Reach level 26 to evolve!
+Reach level 30 to evolve!
+Reach level 32 to evolve!
+Reach level 34 to evolve!
+Reach level 38 to evolve!
+Reach level 40 to evolve!
+Reach level 42 to evolve!
+Reach level 46 to evolve!
+Reach level 50 to evolve!
+Reach level 52 to evolve!
+Reach level 56 to evolve!
+Reach level 60 to evolve!
+Reach level 62 to evolve!
+Reach level 66 to evolve!
+Reach level 70 to evolve!
+Reach level 72 to evolve!
+Reach level 74 to evolve!
+Reach level 78 to evolve!
+Reach level 82 to evolve!
+Reach level 84 to evolve!
+Reach level 88 to evolve!
+Reach level 92 to evolve!
+Reach level 94 to evolve!
+Reedrake is evolving!
+Reedrake is getting stronger!
+Reedweaver is evolving!
+Reedweaver is getting stronger!
+Reflect the guests across the mirror line. Use the grid coordinates to check their places.
+Reflecter is evolving!
+Reflecter is getting stronger!
+Relayweevil is evolving!
+Relayweevil is getting stronger!
+Reliclaw is evolving!
+Reliclaw is getting stronger!
+Relicub is evolving!
+Relicub is getting stronger!
+Reliquursa is getting stronger!
+Restore the Growing Channels.
+Restore the Harvest Shares.
+Restore the Lantern Pattern.
+Restore the Midnight Melody.
+Restore the Mirror Guests.
+Restore the Portrait Places.
+Ribbonray is evolving!
+Ribbonray is getting stronger!
+Riftmole is getting stronger!
+Rimebound is evolving!
+Rimebound is getting stronger!
+Rimehare is evolving!
+Rimehare is getting stronger!
+Rindbuck is evolving!
+Rindbuck is getting stronger!
+Rindroller is evolving!
+Rindroller is getting stronger!
+Ringbound is evolving!
+Ringbound is getting stronger!
+Ripplehalo is evolving!
+Ripplehalo is getting stronger!
+Ripplewisp is evolving!
+Ripplewisp is getting stronger!
+Rootter is evolving!
+Rootter is getting stronger!
+Saffronfox is evolving!
+Saffronfox is getting stronger!
+Saffrontail is evolving!
+Saffrontail is getting stronger!
+Sailturtle is evolving!
+Sailturtle is getting stronger!
+Sandburrow is evolving!
+Sandburrow is getting stronger!
+Sandib is evolving!
+Sandib is getting stronger!
+Scarabacus is evolving!
+Scarabacus is getting stronger!
+Scareowl is getting stronger!
+Scriptreign is getting stronger!
+Scrollcrest is evolving!
+Scrollcrest is getting stronger!
+Scrollfinch is evolving!
+Scrollfinch is getting stronger!
+Seedillo is evolving!
+Seedillo is getting stronger!
+Seedlet is evolving!
+Seedlet is getting stronger!
+Selenabyss is getting stronger!
+seven
+seventeen
+Shadowdial is evolving!
+Shadowdial is getting stronger!
+Share all the pumpkins equally between the baskets.
+Share the harvest. Give each basket its labeled fraction of all the pumpkins.
+Sheetot is evolving!
+Sheetot is getting stronger!
+Shroomantle is evolving!
+Shroomantle is getting stronger!
+six
+sixteen
+Sleetseal is evolving!
+Sleetseal is getting stronger!
+Snowmote is evolving!
+Snowmote is getting stronger!
+Snowquill is evolving!
+Snowquill is getting stronger!
+Snowstellis is getting stronger!
+Snowtwirl is evolving!
+Snowtwirl is getting stronger!
+Sockling is evolving!
+Sockling is getting stronger!
+Solarchon is evolving!
+Solarchon is getting stronger!
+Solardrom is getting stronger!
+Solarsphinx is evolving!
+Solarsphinx is getting stronger!
+Sonarshade is getting stronger!
+Sootsprite is evolving!
+Sootsprite is getting stronger!
+Sootswirl is evolving!
+Sootswirl is getting stronger!
+Speculord is getting stronger!
+Spiralsprig is evolving!
+Spiralsprig is getting stronger!
+Spookernel is evolving!
+Spookernel is getting stronger!
+Sprigsnail is evolving!
+Sprigsnail is getting stronger!
+Springhelix is getting stronger!
+Sproutimp is evolving!
+Sproutimp is getting stronger!
+Squashkit is evolving!
+Squashkit is getting stronger!
+Starfrond is evolving!
+Starfrond is getting stronger!
+Starnewt is evolving!
+Starnewt is getting stronger!
+Steamink is evolving!
+Steamink is getting stronger!
+Stemstag is evolving!
+Stemstag is getting stronger!
+Stonegourd is evolving!
+Stonegourd is getting stronger!
+Stratocetus is evolving!
+Stratocetus is getting stronger!
+Stratogarden is evolving!
+Stratogarden is getting stronger!
+Stratosolotl is getting stronger!
+Strawloft is evolving!
+Strawloft is getting stronger!
+Sumharvest is getting stronger!
+Summitcloud is getting stronger!
+Suncamel is evolving!
+Suncamel is getting stronger!
+Sundialynx is evolving!
+Sundialynx is getting stronger!
+Sunspice is getting stronger!
+Switchrook is evolving!
+Switchrook is getting stronger!
+Tallygourd is evolving!
+Tallygourd is getting stronger!
+Tap a basket to add one pumpkin. UNDO takes the last one back.
+Teacreep is evolving!
+Teacreep is getting stronger!
+Tempestvulp is getting stronger!
+ten
+Terrapump is getting stronger!
+Tesselkid is evolving!
+Tesselkid is getting stronger!
+Tesselkoi is getting stronger!
+Tessello is evolving!
+Tessello is getting stronger!
+Tessellord is getting stronger!
+Thank you for helping my friends. Let us celebrate with a friendly challenge!
+The harvest lights are shining!
+The midnight party is ready!
+The mirror is halfway between x equals two and x equals three.
+The mirror line is in the middle. Look at matching places.
+The portrait with
+The toys follow its steady beat to learn their dance steps.
+The whole is the harvest pile. Divide it into equal parts, then combine the parts you need.
+There are 10 pumpkins and 2 baskets.
+There are 10 pumpkins and 3 baskets.
+There are 11 pumpkins and 2 baskets.
+There are 11 pumpkins and 3 baskets.
+There are 12 pumpkins and 2 baskets.
+There are 12 pumpkins and 3 baskets.
+There are 13 pumpkins and 2 baskets.
+There are 13 pumpkins and 3 baskets.
+There are 14 pumpkins and 2 baskets.
+There are 14 pumpkins and 3 baskets.
+There are 15 pumpkins and 2 baskets.
+There are 15 pumpkins and 3 baskets.
+There are 16 pumpkins and 2 baskets.
+There are 16 pumpkins and 3 baskets.
+There are 17 pumpkins and 2 baskets.
+There are 17 pumpkins and 3 baskets.
+There are 18 pumpkins and 2 baskets.
+There are 18 pumpkins and 3 baskets.
+There are 4 pumpkins and 2 baskets.
+There are 4 pumpkins and 3 baskets.
+There are 5 pumpkins and 2 baskets.
+There are 5 pumpkins and 3 baskets.
+There are 6 pumpkins and 2 baskets.
+There are 6 pumpkins and 3 baskets.
+There are 7 pumpkins and 2 baskets.
+There are 7 pumpkins and 3 baskets.
+There are 8 pumpkins and 2 baskets.
+There are 8 pumpkins and 3 baskets.
+There are 9 pumpkins and 2 baskets.
+There are 9 pumpkins and 3 baskets.
+thirteen
+thirty
+This round cloud creature rests only on the tallest mountain cairns.
+This sleepy mushroom glows when nearby friends finish a pattern.
+three
+Tickaboo is evolving!
+Tickaboo is getting stronger!
+Tickaboo keeps a little pocket watch.
+Tidecarapace is evolving!
+Tidecarapace is getting stronger!
+Tidemonolith is getting stronger!
+Tideshell is evolving!
+Tideshell is getting stronger!
+Tomewarden is getting stronger!
+Toyboo is evolving!
+Toyboo is getting stronger!
+Tunnelmarshal is getting stronger!
+Turn the channels. Carry water from the spring to both seeds.
+twelve
+twenty
+Twiggle is evolving!
+Twiggle is getting stronger!
+two
+Use the clues to arrange the portraits. Tap two portraits to swap them.
+Vanevulp is evolving!
+Vanevulp is getting stronger!
+Vaporink is evolving!
+Vaporink is getting stronger!
+Vaultwhisk is getting stronger!
+Veilcat is evolving!
+Veilcat is getting stronger!
+Veilflutter is evolving!
+Veilflutter is getting stronger!
+Veilmoth is evolving!
+Veilmoth is getting stronger!
+Veilstag is getting stronger!
+Veinmole is evolving!
+Veinmole is getting stronger!
+Velourgeist is getting stronger!
+Ventcoil is evolving!
+Ventcoil is getting stronger!
+Ventviper is evolving!
+Ventviper is getting stronger!
+Vinebat is evolving!
+Vinebat is getting stronger!
+Vinehound is evolving!
+Vinehound is getting stronger!
+Vinejack carries lanterns on its curling branches.
+Vinejack is evolving!
+Vinejack is getting stronger!
+Vineserp is evolving!
+Vineserp is getting stronger!
+Vitraserp is getting stronger!
+Voltweevil is evolving!
+Voltweevil is getting stronger!
+Welcome to Haunted House! Help the friendly ghosts restore their midnight party!
+Welcome to Spooky Pumpkin Patch! Bring water and lantern light back to the harvest!
+Wellsprig is evolving!
+Wellsprig is getting stronger!
+what
+Wickgourd is evolving!
+Wickgourd is getting stronger!
+Wickwolf is evolving!
+Wickwolf is getting stronger!
+Windbanner is getting stronger!
+Wispip is evolving!
+Wispip is getting stronger!
+With practice, its magic has grown strong enough to help younger friends.
+Worldarbor is getting stronger!
+You did it!
+You found 75 Numeria coins!
+Your kindness and courage will always be welcome here.
+Your new friends are waiting. Explore and complete your Field Guide!
+Zephyray is evolving!
+Zephyray is getting stronger!
+zero

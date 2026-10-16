@@ -19,6 +19,7 @@ namespace Numeria.Game
         private readonly bool _mega;
         private readonly SpellTrace _trace;
         private readonly AfterstorySpell _afterstory;
+        private readonly HalloweenSpell _halloween;
 
         public static Sprite Material(string atlas, int index)
         {
@@ -33,10 +34,14 @@ namespace Numeria.Game
         }
 
         public SpellChoreography(Transform parent, RectTransform caster, SkillVisualKind kind, Vector2 from,
-            Vector2 to, SpellTrace trace, float scale, bool mega)
+            Vector2 to, SpellTrace trace, float scale, bool mega, int stage = 0)
         {
             _kind = kind; _from = from; _to = to; _scale = scale; _mega = mega; _trace = trace;
             _caster = caster; _casterPosition = caster.localPosition; _sign = Mathf.Sign(to.x - from.x);
+            if(HalloweenSpell.Supports(kind))
+            {
+                _halloween=new HalloweenSpell(parent,kind,from,to,scale,caster,stage);return;
+            }
             if (kind >= SkillVisualKind.MosaicMarch && kind <= SkillVisualKind.LotusSequence)
             {
                 _afterstory = new AfterstorySpell(parent, kind, from, to, trace, scale);
@@ -110,6 +115,7 @@ namespace Numeria.Game
 
         public void Sample(float seconds)
         {
+            if (_halloween != null) { _halloween.Sample(seconds); return; }
             if (_afterstory != null) { _afterstory.Sample(seconds); return; }
             float charge = Mathf.Clamp01(seconds / .65f);
             float release = Mathf.Clamp01((seconds - .65f) / (SpellSequence.ImpactTime - .65f));

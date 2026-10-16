@@ -136,7 +136,7 @@ namespace Numeria.Core.Tests
         [Test]
         public void EveryRegisteredMathmonAutomaticallyGetsAStableMegaProfile()
         {
-Assert.AreEqual(247, GameData.Roster.Count);
+Assert.AreEqual(513, GameData.Roster.Count);
             foreach (var species in GameData.Roster)
             {
                 var player = GameData.PlayerMon(GameData.BaseId(species.Id),

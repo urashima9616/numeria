@@ -24,6 +24,12 @@ namespace Numeria.Game
             if (biome == "forest") return ForestScene.Prop(index);
             string key = biome + "/" + index;
             if (Sprites.TryGetValue(key, out var cached) && cached != null) return cached;
+            if(HalloweenWorlds.Contains(biome))
+            {
+                var art=Resources.Load<Texture2D>("generated/Exploration/"+biome+"-prop-"+index);
+                if(art==null)return null;
+                return Sprites[key]=Sprite.Create(art,new Rect(0,0,art.width,art.height),new Vector2(.5f,.12f),100,0,SpriteMeshType.FullRect);
+            }
             var texture = Resources.Load<Texture2D>("generated/Exploration/" + biome + "_props");
             if (texture == null) return null;
             // Upper sprites on the delivered sky/alpine atlases extend slightly below the halfway line.
@@ -62,7 +68,8 @@ namespace Numeria.Game
             var scene = root.AddComponent<WorldScene>();
             scene._biome = def.ParentWorld ?? def.Id;
             scene._depth = def.IsDepth;
-            if (def.Id == "forest") ForestScene.Build(root.transform, map, progress);
+            if (def.IsHalloween) HalloweenScene.Build(root.transform, map, def, progress);
+            else if (def.Id == "forest") ForestScene.Build(root.transform, map, progress);
             else
             {
                 scene.Terrain(map);

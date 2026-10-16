@@ -43,13 +43,16 @@ namespace Numeria.Editor
             if (assetPath.EndsWith("/generated/UI/tackle.png")) importer.maxTextureSize = 256;
             if (assetPath.EndsWith("/generated/UI/field_guide.png")) importer.maxTextureSize = 128;
             string stem = Path.GetFileNameWithoutExtension(assetPath);
+            if(stem.StartsWith("depth-spell-"))importer.maxTextureSize=256;
             string monId = stem.Replace("_large_icon", "").Replace("_mega_icon", "");
-            if (Numeria.Core.DepthCatalog.Species(monId) != null) importer.maxTextureSize = 512;
+            if (Numeria.Core.DepthCatalog.Species(monId) != null || Numeria.Core.ExpansionCatalog.Family(monId) != null)
+                importer.maxTextureSize = 512;
             // UI 素材必须 100 PPU:UGUI 切片边框按 Canvas 参考 PPU(100)/精灵 PPU 缩放,
             // 16 PPU 会把 9-slice 边角放大 6.25 倍,面板直接崩坏
             importer.spritePixelsPerUnit = assetPath.Contains("/UI/") ? 100 : 16;
             if (assetPath.Contains("/Exploration/") || assetPath.Contains("/Backgrounds/Painted/"))
             {
+                if (assetPath.EndsWith("_tiles.png")) importer.isReadable = true;
                 importer.filterMode = FilterMode.Bilinear;
                 importer.spritePixelsPerUnit = 100;
                 var settings = new TextureImporterSettings();

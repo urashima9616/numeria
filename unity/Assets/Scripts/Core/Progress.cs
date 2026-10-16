@@ -86,7 +86,7 @@ namespace Numeria.Core
     {
         // v13 adds lifetime collection and durable giant rewards; earlier adventure fields are preserved.
         // Older builds must reject rather than silently dropping new progression fields.
-        public const int CurrentSaveVersion = 13;
+        public const int CurrentSaveVersion = 14;
         public const int TeamCapacity = 300;
 
         public int SaveVersion = CurrentSaveVersion;

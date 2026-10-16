@@ -24,6 +24,12 @@ bake() {
 }
 
 # Optional collection / depth narration can be baked independently of the large learning bank.
+if [[ -f tools/halloween-voice-lines.txt ]]; then
+  while IFS= read -r line; do
+    [[ -n "$line" ]] && bake "$line"
+  done < tools/halloween-voice-lines.txt
+fi
+if [[ "${1:-}" == "--halloween-only" ]]; then exit 0; fi
 if [[ -f tools/depth-voice-lines.txt ]]; then
   while IFS= read -r line; do
     [[ -n "$line" ]] && bake "$line"

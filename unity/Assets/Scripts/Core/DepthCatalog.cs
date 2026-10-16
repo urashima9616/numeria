@@ -130,11 +130,20 @@ namespace Numeria.Core
         };
         public static DepthWorld Find(string id) => Worlds.FirstOrDefault(w=>w.Id==id);
         public static DepthWorld ForParent(string id) => Worlds.FirstOrDefault(w=>w.ParentId==id);
-        public static DepthSpecies Species(string id) => Worlds.SelectMany(w=>w.Species).FirstOrDefault(s=>s.Id==id);
+        public static DepthSpecies Species(string id)
+        {
+            string first=ExpansionCatalog.DepthBase(id);
+            return first==null?null:Worlds.SelectMany(w=>w.Species).FirstOrDefault(s=>s.Id==first);
+        }
         public static IEnumerable<EvolutionLineDef> Lines() => Worlds.SelectMany(w=>w.Species).Select((s,i)=>new EvolutionLineDef
         { BaseId=s.Id,Element=s.Element,AffinityLabel=new[]{"number bonds","patterns","counting","symmetry","addition","equal groups"}[i%6],
           Affinity=new[]{PuzzleAffinity.MakeTen,PuzzleAffinity.Pattern,PuzzleAffinity.Counting,PuzzleAffinity.Symmetry,PuzzleAffinity.Formula,PuzzleAffinity.RepeatedAddition}[i%6],
-          StageIds=new[]{s.Id},EvolutionLevels=Array.Empty<int>() });
+          StageIds=ExpansionCatalog.DepthStages(s.Id),EvolutionLevels=EvolutionLevels(s) });
+        private static int[] EvolutionLevels(DepthSpecies s)
+        {
+            int level=Worlds.First(w=>w.Species.Contains(s)).Level;
+            return s.Giant?new[]{level+4,level+10}:new[]{level,level+8};
+        }
         public static IEnumerable<SpeciesDef> Roster() => Worlds.SelectMany(w=>w.Species).Select((s,i)=>new SpeciesDef
         {Id=s.Id,Name=s.Name,MaxHp=s.Giant?22:12+i%5,AttackPower=s.Giant?5:3+i%3,DefensePower=s.Giant?4:2+i%3,
          HpGrowth=s.Giant?13:10+i%4,AttackGrowth=5,DefenseGrowth=4,BaseXp=s.Giant?28:12+i%6,

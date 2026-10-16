@@ -138,5 +138,26 @@ namespace Numeria.Game.Tests
                 CollectionAssert.AreEqual(new[]{q.Prompt},LearningSpeech.Lines(q),diagram);
             }
         }
+
+        [Test] public void EverySeasonalOverlayHasReplayAndResetWithoutReopeningOrSpendingProgress()
+        {
+            var flags=BindingFlags.Instance|BindingFlags.NonPublic;
+            foreach(string id in HalloweenWorlds.Ids)foreach(var discovery in Maps.Get(id).Discoveries)
+            {
+                Clear();var host=new GameObject("SeasonalFixture");host.transform.SetParent(_root.transform,false);
+                var controller=host.AddComponent<MapController>();var def=Maps.Get(id);var p=new Progress{Coins=3278};p.ApplyMigrations();
+                void Field(string name,object value)=>typeof(MapController).GetField(name,flags).SetValue(controller,value);
+                Field("_def",def);Field("_hudCanvasRoot",(RectTransform)_root.transform);Field("_voice",host.AddComponent<Voice>());
+                Field("_progress",p);Field("_rng",new Rng(42));
+                var routine=(IEnumerator)typeof(MapController).GetMethod("HalloweenMechanismRoutine",flags).Invoke(controller,new object[]{discovery});
+                Assert.True(routine.MoveNext());Assert.True(Replay().interactable);Assert.NotNull(Replay().GetComponentInChildren<QuestionSpeakerGraphic>());
+                var buttons=_root.GetComponentsInChildren<Button>();
+                foreach(string name in new[]{"Undo","Reset","Back"})Assert.NotNull(buttons.Single(b=>b.name==name),discovery.Name);
+                buttons.Single(b=>b.name=="Reset").onClick.Invoke();
+                Assert.AreEqual(3278,p.Coins);Assert.False(p.CollectedDiscoveries.Contains(discovery.Id));
+                var clips=_root.GetComponentInChildren<HalloweenPuzzleAudio>().Clips.ToArray();
+                Clear();Assert.True(clips.All(c=>c==null),"Closing an overlay must release all generated audio clips.");
+            }
+        }
     }
 }

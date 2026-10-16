@@ -18,7 +18,7 @@ namespace Numeria.Game
             labelObject.transform.position=world+Vector3.up*1.1f;
             var label=labelObject.AddComponent<TMPro.TextMeshPro>();
             label.font=Ui.DefaultTmpFont;
-            label.text=_def.IsDepth?"RETURN":DepthCatalog.ForParent(_def.Id).Name;
+            label.text=_def.IsDepth||_def.IsHalloween?"RETURN":DepthCatalog.ForParent(_def.Id).Name;
             label.fontSize=3;label.alignment=TMPro.TextAlignmentOptions.Center;
             label.rectTransform.sizeDelta=new Vector2(5,1);label.color=new Color(1,.93f,.65f);
             label.GetComponent<MeshRenderer>().sortingOrder=14000;
@@ -27,8 +27,8 @@ namespace Numeria.Game
         private IEnumerator DepthEntranceRoutine()
         {
             _busy=true;
-            string target=_def.IsDepth?_def.ParentWorld:DepthCatalog.ForParent(_def.Id).Id;
-            if(!_def.IsDepth&&!Maps.CanVisit(target,_progress))
+            string target=_def.IsHalloween?"veilmoon_lake":_def.IsDepth?_def.ParentWorld:DepthCatalog.ForParent(_def.Id).Id;
+            if(!_def.IsDepth&&!_def.IsHalloween&&!Maps.CanVisit(target,_progress))
             {
                 yield return DialogueRoutine("HIDDEN PASSAGE","Defeat this world's guardian to open its hidden depths.",
                     SpriteLib.One("generated/Story/digit_crystal"));_busy=false;yield break;

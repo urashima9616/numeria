@@ -9,7 +9,7 @@ namespace Numeria.Game.Tests
     {
         [Test] public void EveryDepthHasSequentialReachableMechanismsAndAnAlwaysOpenExit()
         {
-            Assert.AreEqual(16,Maps.AllPlayable().Length);
+            Assert.AreEqual(18,Maps.AllPlayable().Length);
             Assert.AreEqual(8,DepthCatalog.Worlds.Select(w=>string.Join("\n",Maps.Get(w.Id).Rows)).Distinct().Count());
             foreach(var world in DepthCatalog.Worlds)
             {

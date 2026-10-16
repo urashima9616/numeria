@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Numeria.Core;
 using TMPro;
 using UnityEngine;
@@ -67,7 +68,7 @@ namespace Numeria.Game
             _name.fontSize = 23;
             _coins.text = $"{p.Coins} G";
             _region.text = map.DisplayName;
-            _objective.text = map.IsDepth ? (map.GateCleared(p) ? "Your giant friend awaits new adventures!" : DepthCatalog.Find(map.Id).Objective) : map.IsAfterstory ? AfterstoryJourney.Objective(map, p) : map.Id == "forest" ? ForestJourney.Objective(p) :
+            _objective.text = map.IsHalloween ? HalloweenWorlds.Objective(map,p) : map.IsDepth ? (map.GateCleared(p) ? "Your giant friend awaits new adventures!" : DepthCatalog.Find(map.Id).Objective) : map.IsAfterstory ? AfterstoryJourney.Objective(map, p) : map.Id == "forest" ? ForestJourney.Objective(p) :
                 map.GateCleared(p) ? "The portal is open! A new world awaits!" : "Explore, find treasure, meet Mathmons.";
             _xp.rectTransform.anchorMax = new Vector2(Mathf.Clamp01(p.ActiveGrowth.Xp / (float)p.ActiveGrowth.XpToNext), 1);
         }
@@ -77,22 +78,23 @@ namespace Numeria.Game
             var shade = Ui.Img(_root, "WorldAtlas", Ui.Hex("#0b2422f2"));
             Ui.Stretch(shade.rectTransform);
             var title = Ui.Label(shade.transform, "Title", $"NUMERIA   ·   {p.DigitCrystalCount}/6 CRYSTALS   ·   " +
-                $"{(p.ClearedGates.Contains("ancient_ruins") ? 1 : 0) + (p.ClearedGates.Contains("veilmoon_lake") ? 1 : 0)}/2 BADGES", 36, Paper);
+                $"{new[]{"ancient_ruins","veilmoon_lake","spooky_pumpkin_patch","haunted_house"}.Count(p.ClearedGates.Contains)}/4 BADGES", 36, Paper);
             Ui.Place(title.rectTransform, new Vector2(.5f, 1), new Vector2(0, -48), new Vector2(950, 65));
-            MapDef[] maps = Maps.All();
+            MapDef[] maps = Maps.All().Concat(HalloweenWorlds.Ids.Select(HalloweenWorlds.Build)).ToArray();
             for (int i = 0; i < maps.Length; i++)
             {
                 MapDef map = maps[i];
                 bool unlocked = Maps.CanVisit(map.Id, p);
                 var tile = Ui.Img(shade.transform, "Region-" + map.Id, Ui.Hex("#35534e"));
                 Ui.PlaceCentered(tile.rectTransform, new Vector2(.5f, .5f),
-                    new Vector2((i % 4 - 1.5f) * 290, 132 - (i / 4) * 263), new Vector2(270, 240));
+                    new Vector2((i % 5 - 2f) * 245, 132 - (i / 5) * 263), new Vector2(230, 240));
                 var art = Ui.SpriteImg(tile.transform, "Terrain", WorldScene.Prop(map.Id, 1));
                 art.preserveAspect = true;
                 art.color = unlocked ? Color.white : new Color(.4f, .5f, .5f, 1);
                 Ui.PlaceCentered(art.rectTransform, Vector2.one * .5f, new Vector2(0, 24), new Vector2(200, 175));
                 var name = Ui.Label(tile.transform, "Name", unlocked ? map.DisplayName : "UNDISCOVERED", 25, Paper);
-                Ui.Place(name.rectTransform, new Vector2(.5f, 0), new Vector2(0, 13), new Vector2(255, 40));
+                Ui.Place(name.rectTransform, new Vector2(.5f, 0), new Vector2(0, 13), new Vector2(220, 50));
+                name.enableAutoSizing=true;name.fontSizeMin=18;name.fontSizeMax=25;
                 var button = tile.gameObject.AddComponent<Button>();
                 button.interactable = unlocked;
                 button.onClick.AddListener(() => { UnityEngine.Object.Destroy(shade.gameObject); travel(map.Id); });

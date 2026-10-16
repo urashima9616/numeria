@@ -35,7 +35,7 @@ namespace Numeria.Game.Tests
                 Button Find(string name)=>root.GetComponentsInChildren<Button>().Single(b=>b.name==name);
                 TMP_Text Text(string name)=>root.GetComponentsInChildren<TMP_Text>().Single(t=>t.name==name);
                 Find("Tab-collection").onClick.Invoke();
-                Assert.AreEqual("MATHMON FIELD GUIDE   1 / 142",Text("DexProgress").text);
+                Assert.AreEqual("MATHMON FIELD GUIDE   1 / 172",Text("DexProgress").text);
                 Find("DexNext").onClick.Invoke();Find("DexNext").onClick.Invoke();
                 string before=Text("DexPage").text;
                 var card=root.GetComponentsInChildren<Button>().First(b=>b.name.StartsWith("Dex-"));
@@ -60,7 +60,7 @@ namespace Numeria.Game.Tests
                 Button Find(string name)=>root.GetComponentsInChildren<Button>().Single(b=>b.name==name);
                 TMP_Text Text(string name)=>root.GetComponentsInChildren<TMP_Text>().Single(t=>t.name==name);
                 Find("Tab-collection").onClick.Invoke();
-                Assert.AreEqual("MATHMON FIELD GUIDE   2 / 142",Text("DexProgress").text);
+                Assert.AreEqual("MATHMON FIELD GUIDE   2 / 172",Text("DexProgress").text);
                 Assert.False(root.GetComponentsInChildren<Button>().Any(b=>b.name=="Dex-sumdrake"));
                 string page=Text("DexPage").text,title=Text("DexTitle").text;
                 Find("DexFormNext").onClick.Invoke();

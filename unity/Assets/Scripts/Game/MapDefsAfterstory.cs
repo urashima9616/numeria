@@ -134,6 +134,7 @@ namespace Numeria.Game
 
         public static bool CanVisit(string id, Progress p)
         {
+            if(HalloweenWorlds.Contains(id))return VeilmoonLake().GateCleared(p);
             var depth = DepthCatalog.Find(id);
             if (depth != null) return CanVisit(depth.ParentId, p) && Get(depth.ParentId).GateCleared(p);
             var maps = All();

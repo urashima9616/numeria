@@ -62,6 +62,17 @@ namespace Numeria.Core
         LanternCurrent,
         MirrorWaltz,
         LotusSequence,
+        SeedVolley,
+        VineLantern,
+        HarvestCrown,
+        GhostOrbit,
+        PendulumArc,
+        MidnightChime,
+        RindPounce, RindRam, SeedArray, ShellRoll, LanternBeam, TerracePulse,
+        SliceSwirl, VineSwoop, StrawSpiral, PondRings, CoilCount, BranchCharge,
+        PetalHex, SeedSum, WispOrbit, CurtainSweep, KeyTurn, InkArc,
+        SilhouetteLeap, BellEcho, SilverFold, PuppetParade, WickRush, PageFan,
+        TeaSpiral, EchoSweep, PatchworkWave, SecretPassage,
     }
 
     public class SkillDef
@@ -118,7 +129,7 @@ namespace Numeria.Core
     {
         // Depth creatures launch as single-stage collectibles. Their separate Mega designs
         // are deliberately not substituted with a recolored/reused base portrait.
-        public static bool Supports(string id) => GameData.SpeciesById(id) != null && DepthCatalog.Species(id) == null;
+        public static bool Supports(string id) => GameData.SpeciesById(id) != null && DepthCatalog.Species(id) == null && ExpansionCatalog.Family(id) == null;
         public const int RequiredGems = 7;
         public const int MinimumBonusPercent = 25;
         public const int MaximumBonusPercent = 35;

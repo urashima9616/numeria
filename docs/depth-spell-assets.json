@@ -1,0 +1,162 @@
+{
+  "tool": "built-in image_gen",
+  "grid": {
+    "columns": 3,
+    "rows": 4
+  },
+  "assets": [
+    {
+      "world": "verdant_vault",
+      "path": "art/halloween-atlases/depth-spells-verdant_vault.png",
+      "motifs": [
+        "one acorn with a tiny connected sprout",
+        "one shining dewdrop",
+        "one symmetric pair of curled fern fronds",
+        "one small luminous golden mushroom cap",
+        "one forked branching tree root",
+        "one pink flower feather",
+        "one golden honeycomb hexagon",
+        "one gently bent leafy twig",
+        "one blue spiral water swirl",
+        "one opened seed pod shield",
+        "one broad branching root arch",
+        "one bright oak leaf"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: Numeria RPG transparent battle-particle sprite atlas. Exactly THREE columns and FOUR rows, twelve isolated motifs in strict equal cells, row-major order. Each cell has 25% empty padding on ALL sides so no object touches any cell boundary. Genuine transparent alpha background. Polished hand-painted pixel-art edges, fine dark outlines, soft highlights, readable silhouettes at 64px, friendly storybook RPG. Palette: moss green, bark brown, amber, dewdrop turquoise. Exact motifs, in row-major order: 1: one acorn with a tiny connected sprout; 2: one shining dewdrop; 3: one symmetric pair of curled fern fronds; 4: one small luminous golden mushroom cap; 5: one forked branching tree root; 6: one pink flower feather; 7: one golden honeycomb hexagon; 8: one gently bent leafy twig; 9: one blue spiral water swirl; 10: one opened seed pod shield; 11: one broad branching root arch; 12: one bright oak leaf. Objects ONLY, no creatures or UI buttons. No scene, no text, no numbers, no grid lines, no panels, no labels, no loose sparkles between cells. Keep rings open with transparent centers. Each motif centered, separate, completely contained in its cell."
+    },
+    {
+      "world": "rime_gallery",
+      "path": "art/halloween-atlases/depth-spells-rime_gallery.png",
+      "motifs": [
+        "one six-point snowflake",
+        "one rabbit snow paw print",
+        "one translucent square ice slab",
+        "one small crystal bell",
+        "one frosted feather",
+        "one rounded stone with quartz glint",
+        "one curved aurora ribbon",
+        "one pointed quartz crystal",
+        "one thin oval ice ring",
+        "one stone supported on a little cloud",
+        "one arched glacier ice gateway",
+        "one tiny bright ice spark"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: Numeria RPG transparent battle-particle sprite atlas. Exactly THREE columns and FOUR rows, twelve isolated motifs in strict equal cells, row-major order. Each cell has 25% empty padding on ALL sides so no object touches any cell boundary. Genuine transparent alpha background. Polished hand-painted pixel-art edges, fine dark outlines, soft highlights, readable silhouettes at 64px, friendly storybook RPG. Palette: icy cyan, silver, frosted lavender, cool stone. Exact motifs, in row-major order: 1: one six-point snowflake; 2: one rabbit snow paw print; 3: one translucent square ice slab; 4: one small crystal bell; 5: one frosted feather; 6: one rounded stone with quartz glint; 7: one curved aurora ribbon; 8: one pointed quartz crystal; 9: one thin oval ice ring; 10: one stone supported on a little cloud; 11: one arched glacier ice gateway; 12: one tiny bright ice spark. Objects ONLY, no creatures or UI buttons. No scene, no text, no numbers, no grid lines, no panels, no labels, no loose sparkles between cells. Keep rings open with transparent centers. Each motif centered, separate, completely contained in its cell."
+    },
+    {
+      "world": "zephyr_gardens",
+      "path": "art/halloween-atlases/depth-spells-zephyr_gardens.png",
+      "motifs": [
+        "one curling kite tail ribbon",
+        "one puffy cloud with two curved horns",
+        "one compact wind vortex",
+        "one ring of rainwater",
+        "one copper weather-vane arrow",
+        "one white flight feather",
+        "one thin golden halo ring",
+        "one small billowing sail",
+        "one long turquoise wind ribbon",
+        "one flat cloud stepping stone",
+        "one floating garden island",
+        "one pale wind crescent"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: Numeria RPG transparent battle-particle sprite atlas. Exactly THREE columns and FOUR rows, twelve isolated motifs in strict equal cells, row-major order. Each cell has 25% empty padding on ALL sides so no object touches any cell boundary. Genuine transparent alpha background. Polished hand-painted pixel-art edges, fine dark outlines, soft highlights, readable silhouettes at 64px, friendly storybook RPG. Palette: sky blue, cloud white, brass, mint. Exact motifs, in row-major order: 1: one curling kite tail ribbon; 2: one puffy cloud with two curved horns; 3: one compact wind vortex; 4: one ring of rainwater; 5: one copper weather-vane arrow; 6: one white flight feather; 7: one thin golden halo ring; 8: one small billowing sail; 9: one long turquoise wind ribbon; 10: one flat cloud stepping stone; 11: one floating garden island; 12: one pale wind crescent. Objects ONLY, no creatures or UI buttons. No scene, no text, no numbers, no grid lines, no panels, no labels, no loose sparkles between cells. Keep rings open with transparent centers. Each motif centered, separate, completely contained in its cell."
+    },
+    {
+      "world": "dusk_oasis",
+      "path": "art/halloween-atlases/depth-spells-dusk_oasis.png",
+      "motifs": [
+        "one oval sandy burrow ring",
+        "one spiral of golden sand",
+        "one round cactus pad with pink flower",
+        "one faceted transparent mirage prism",
+        "one golden abacus bead",
+        "one bright solar flame crescent",
+        "one cupped oasis leaf holding water",
+        "one triangular glass crystal",
+        "one curved saffron fire tail",
+        "one small crescent moon with a star",
+        "one sandstone sundial gateway",
+        "one golden sun disk without text"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: Numeria RPG transparent battle-particle sprite atlas. Exactly THREE columns and FOUR rows, twelve isolated motifs in strict equal cells, row-major order. Each cell has 25% empty padding on ALL sides so no object touches any cell boundary. Genuine transparent alpha background. Polished hand-painted pixel-art edges, fine dark outlines, soft highlights, readable silhouettes at 64px, friendly storybook RPG. Palette: sand gold, terracotta, teal, sunset violet. Exact motifs, in row-major order: 1: one oval sandy burrow ring; 2: one spiral of golden sand; 3: one round cactus pad with pink flower; 4: one faceted transparent mirage prism; 5: one golden abacus bead; 6: one bright solar flame crescent; 7: one cupped oasis leaf holding water; 8: one triangular glass crystal; 9: one curved saffron fire tail; 10: one small crescent moon with a star; 11: one sandstone sundial gateway; 12: one golden sun disk without text. Objects ONLY, no creatures or UI buttons. No scene, no text, no numbers, no grid lines, no panels, no labels, no loose sparkles between cells. Keep rings open with transparent centers. Each motif centered, separate, completely contained in its cell."
+    },
+    {
+      "world": "resonant_foundry",
+      "actualGrid": { "columns": 4, "rows": 3 },
+      "path": "art/halloween-atlases/depth-spells-resonant_foundry.png",
+      "motifs": [
+        "one branching glowing mineral vein",
+        "one curved copper feather",
+        "one cut-open round geode",
+        "one copper circuit connector with two terminals",
+        "one glowing coal chunk",
+        "one amethyst crystal flower",
+        "one forked miniature rail junction",
+        "one narrow silver electric ribbon",
+        "one small amber lantern glass tile",
+        "one gold pyrite pebble",
+        "one horseshoe magnet holding an iron ore stone",
+        "one compact electric spark"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: Numeria RPG transparent battle-particle sprite atlas. Exactly THREE columns and FOUR rows, twelve isolated motifs in strict equal cells, row-major order. Each cell has 25% empty padding on ALL sides so no object touches any cell boundary. Genuine transparent alpha background. Polished hand-painted pixel-art edges, fine dark outlines, soft highlights, readable silhouettes at 64px, friendly storybook RPG. Palette: copper, purple amethyst, silver, warm gold. Exact motifs, in row-major order: 1: one branching glowing mineral vein; 2: one curved copper feather; 3: one cut-open round geode; 4: one copper circuit connector with two terminals; 5: one glowing coal chunk; 6: one amethyst crystal flower; 7: one forked miniature rail junction; 8: one narrow silver electric ribbon; 9: one small amber lantern glass tile; 10: one gold pyrite pebble; 11: one horseshoe magnet holding an iron ore stone; 12: one compact electric spark. Objects ONLY, no creatures or UI buttons. No scene, no text, no numbers, no grid lines, no panels, no labels, no loose sparkles between cells. Keep rings open with transparent centers. Each motif centered, separate, completely contained in its cell."
+    },
+    {
+      "world": "ember_reservoir",
+      "path": "art/halloween-atlases/depth-spells-ember_reservoir.png",
+      "motifs": [
+        "one warm glowing ash puff",
+        "one hexagonal basalt block",
+        "one small musical ember note without text",
+        "one curling steam brushstroke",
+        "one pointed obsidian crystal scale",
+        "one branching orange magma fissure",
+        "one curved molten wave",
+        "one short curled thermal plume",
+        "one light porous pumice stone",
+        "one star-shaped soot spark",
+        "one volcanic crater ring",
+        "one warm fire petal"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: Numeria RPG transparent battle-particle sprite atlas. Exactly THREE columns and FOUR rows, twelve isolated motifs in strict equal cells, row-major order. Each cell has 25% empty padding on ALL sides so no object touches any cell boundary. Genuine transparent alpha background. Polished hand-painted pixel-art edges, fine dark outlines, soft highlights, readable silhouettes at 64px, friendly storybook RPG. Palette: warm ember orange, basalt gray, obsidian violet, steam white. Exact motifs, in row-major order: 1: one warm glowing ash puff; 2: one hexagonal basalt block; 3: one small musical ember note without text; 4: one curling steam brushstroke; 5: one pointed obsidian crystal scale; 6: one branching orange magma fissure; 7: one curved molten wave; 8: one short curled thermal plume; 9: one light porous pumice stone; 10: one star-shaped soot spark; 11: one volcanic crater ring; 12: one warm fire petal. Objects ONLY, no creatures or UI buttons. No scene, no text, no numbers, no grid lines, no panels, no labels, no loose sparkles between cells. Keep rings open with transparent centers. Each motif centered, separate, completely contained in its cell."
+    },
+    {
+      "world": "chronicle_archive",
+      "path": "art/halloween-atlases/depth-spells-chronicle_archive.png",
+      "motifs": [
+        "one carved abstract rune tablet without letters",
+        "one interlocking mosaic tile",
+        "one folded ivory paper wing",
+        "one brass cogwheel",
+        "one small sundial disk without numbers",
+        "one colorful mosaic fish scale",
+        "one golden abacus bead",
+        "one fragment of an engraved stone shield",
+        "one partly unrolled parchment scroll",
+        "one triangular rainbow prism",
+        "one stone library ring with tiny books",
+        "one bright geometric diamond"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: Numeria RPG transparent battle-particle sprite atlas. Exactly THREE columns and FOUR rows, twelve isolated motifs in strict equal cells, row-major order. Each cell has 25% empty padding on ALL sides so no object touches any cell boundary. Genuine transparent alpha background. Polished hand-painted pixel-art edges, fine dark outlines, soft highlights, readable silhouettes at 64px, friendly storybook RPG. Palette: aged gold, ivory parchment, turquoise mosaic, violet light. Exact motifs, in row-major order: 1: one carved abstract rune tablet without letters; 2: one interlocking mosaic tile; 3: one folded ivory paper wing; 4: one brass cogwheel; 5: one small sundial disk without numbers; 6: one colorful mosaic fish scale; 7: one golden abacus bead; 8: one fragment of an engraved stone shield; 9: one partly unrolled parchment scroll; 10: one triangular rainbow prism; 11: one stone library ring with tiny books; 12: one bright geometric diamond. Objects ONLY, no creatures or UI buttons. No scene, no text, no numbers, no grid lines, no panels, no labels, no loose sparkles between cells. Keep rings open with transparent centers. Each motif centered, separate, completely contained in its cell."
+    },
+    {
+      "world": "moonwell_depths",
+      "path": "art/halloween-atlases/depth-spells-moonwell_depths.png",
+      "motifs": [
+        "one thin lunar water ring",
+        "one luminous moonstone pebble",
+        "one pink lotus petal",
+        "one symmetric pair of silver moth eye markings",
+        "one pearl in a small shell",
+        "one mist-covered crescent stepping stone",
+        "one woven reed bridge segment",
+        "one ridged shell ring",
+        "one curved starry wing ribbon",
+        "one small four-point star",
+        "one oval lake-mirror crown",
+        "one blue moonlit wave crescent"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: Numeria RPG transparent battle-particle sprite atlas. Exactly THREE columns and FOUR rows, twelve isolated motifs in strict equal cells, row-major order. Each cell has 25% empty padding on ALL sides so no object touches any cell boundary. Genuine transparent alpha background. Polished hand-painted pixel-art edges, fine dark outlines, soft highlights, readable silhouettes at 64px, friendly storybook RPG. Palette: moon silver, deep teal, pearl white, lavender. Exact motifs, in row-major order: 1: one thin lunar water ring; 2: one luminous moonstone pebble; 3: one pink lotus petal; 4: one symmetric pair of silver moth eye markings; 5: one pearl in a small shell; 6: one mist-covered crescent stepping stone; 7: one woven reed bridge segment; 8: one ridged shell ring; 9: one curved starry wing ribbon; 10: one small four-point star; 11: one oval lake-mirror crown; 12: one blue moonlit wave crescent. Objects ONLY, no creatures or UI buttons. No scene, no text, no numbers, no grid lines, no panels, no labels, no loose sparkles between cells. Keep rings open with transparent centers. Each motif centered, separate, completely contained in its cell."
+    }
+  ]
+}

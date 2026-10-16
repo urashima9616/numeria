@@ -1,0 +1,993 @@
+fileFormatVersion: 2
+guid: c43ac7f0db44b4b9c98b9045c874a8ea
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7758513807884663155
+    second: crownkin_large_icon_0
+  - first:
+      213: -8255544445288819808
+    second: crownkin_large_icon_1
+  - first:
+      213: 8204589961658396717
+    second: crownkin_large_icon_2
+  - first:
+      213: -2425097376716715526
+    second: crownkin_large_icon_3
+  - first:
+      213: -2138028863815451513
+    second: crownkin_large_icon_4
+  - first:
+      213: 8139423304524942038
+    second: crownkin_large_icon_5
+  - first:
+      213: -7049942004071901944
+    second: crownkin_large_icon_6
+  - first:
+      213: -6193914186990264087
+    second: crownkin_large_icon_7
+  - first:
+      213: 975573008879491706
+    second: crownkin_large_icon_8
+  - first:
+      213: -1689746903172027605
+    second: crownkin_large_icon_9
+  - first:
+      213: -3989714972974724077
+    second: crownkin_large_icon_10
+  - first:
+      213: -6695382301974718048
+    second: crownkin_large_icon_11
+  - first:
+      213: 136927627779666710
+    second: crownkin_large_icon_12
+  - first:
+      213: -1887426870984515007
+    second: crownkin_large_icon_13
+  - first:
+      213: 8706659102326499178
+    second: crownkin_large_icon_14
+  - first:
+      213: 5655072210093296186
+    second: crownkin_large_icon_15
+  - first:
+      213: -420146885249533863
+    second: crownkin_large_icon_16
+  - first:
+      213: 7679597995511752641
+    second: crownkin_large_icon_17
+  - first:
+      213: 2079503917262406817
+    second: crownkin_large_icon_18
+  - first:
+      213: -5136708212742857820
+    second: crownkin_large_icon_19
+  - first:
+      213: 591949378331028809
+    second: crownkin_large_icon_20
+  - first:
+      213: -2188376903664996431
+    second: crownkin_large_icon_21
+  - first:
+      213: 6238728766198409348
+    second: crownkin_large_icon_22
+  - first:
+      213: 7135684731230976947
+    second: crownkin_large_icon_23
+  - first:
+      213: -2059798558608956297
+    second: crownkin_large_icon_24
+  - first:
+      213: 1166885541060371524
+    second: crownkin_large_icon_25
+  - first:
+      213: -3270093577402143122
+    second: crownkin_large_icon_26
+  - first:
+      213: 4226503390585646086
+    second: crownkin_large_icon_27
+  - first:
+      213: 7973124450520938019
+    second: crownkin_large_icon_28
+  - first:
+      213: -4117909240904041000
+    second: crownkin_large_icon_29
+  - first:
+      213: 6204627554639326798
+    second: crownkin_large_icon_30
+  - first:
+      213: -3436681705045877876
+    second: crownkin_large_icon_31
+  - first:
+      213: 8492808617884446509
+    second: crownkin_large_icon_32
+  - first:
+      213: -1030139914551483490
+    second: crownkin_large_icon_33
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 512
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: crownkin_large_icon_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1241
+        height: 1233
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 379bdefa337cbab60800000000000000
+      internalID: 7758513807884663155
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_1
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 1006
+        width: 60
+        height: 224
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a35c17111a6e6d80800000000000000
+      internalID: -8255544445288819808
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_2
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 1062
+        width: 13
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d207260b91f8cd170800000000000000
+      internalID: 8204589961658396717
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_3
+      rect:
+        serializedVersion: 2
+        x: 1121
+        y: 1070
+        width: 28
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af9811bd8c2585ed0800000000000000
+      internalID: -2425097376716715526
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_4
+      rect:
+        serializedVersion: 2
+        x: 1133
+        y: 1062
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78c7fbc73123452e0800000000000000
+      internalID: -2138028863815451513
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_5
+      rect:
+        serializedVersion: 2
+        x: 1147
+        y: 1078
+        width: 12
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6daceb6fe5a05f070800000000000000
+      internalID: 8139423304524942038
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_6
+      rect:
+        serializedVersion: 2
+        x: 1150
+        y: 1104
+        width: 25
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80550387913992e90800000000000000
+      internalID: -7049942004071901944
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_7
+      rect:
+        serializedVersion: 2
+        x: 1155
+        y: 1090
+        width: 20
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e0613b1ddbca0aa0800000000000000
+      internalID: -6193914186990264087
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_8
+      rect:
+        serializedVersion: 2
+        x: 1155
+        y: 1054
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7a98b69b7ee98d00800000000000000
+      internalID: 975573008879491706
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_9
+      rect:
+        serializedVersion: 2
+        x: 1163
+        y: 1052
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2b6d1ce420dc88e0800000000000000
+      internalID: -1689746903172027605
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 857
+        width: 5
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31cc8c8de5fa1a8c0800000000000000
+      internalID: -3989714972974724077
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_11
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 732
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a91c5f15493513a0800000000000000
+      internalID: -6695382301974718048
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_12
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 728
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6137eb5b3f676e100800000000000000
+      internalID: 136927627779666710
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_13
+      rect:
+        serializedVersion: 2
+        x: 1127
+        y: 628
+        width: 14
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 142e077c2438ec5e0800000000000000
+      internalID: -1887426870984515007
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_14
+      rect:
+        serializedVersion: 2
+        x: 1155
+        y: 566
+        width: 12
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a67a79ed25444d870800000000000000
+      internalID: 8706659102326499178
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_15
+      rect:
+        serializedVersion: 2
+        x: 1155
+        y: 537
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3a4bc5963ada7e40800000000000000
+      internalID: 5655072210093296186
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_16
+      rect:
+        serializedVersion: 2
+        x: 1155
+        y: 521
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 958f63742a65b2af0800000000000000
+      internalID: -420146885249533863
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_17
+      rect:
+        serializedVersion: 2
+        x: 1161
+        y: 513
+        width: 14
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c7a74c40b9639a60800000000000000
+      internalID: 7679597995511752641
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_18
+      rect:
+        serializedVersion: 2
+        x: 1161
+        y: 503
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a485798bc1ebdc10800000000000000
+      internalID: 2079503917262406817
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_19
+      rect:
+        serializedVersion: 2
+        x: 1166
+        y: 509
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ab51a0981fb6b8b0800000000000000
+      internalID: -5136708212742857820
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_20
+      rect:
+        serializedVersion: 2
+        x: 1198
+        y: 455
+        width: 15
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94d2f64c2d6073800800000000000000
+      internalID: 591949378331028809
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_21
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 393
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1bfe066fcc251a1e0800000000000000
+      internalID: -2188376903664996431
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_22
+      rect:
+        serializedVersion: 2
+        x: 1180
+        y: 389
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 488644732ca649650800000000000000
+      internalID: 6238728766198409348
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_23
+      rect:
+        serializedVersion: 2
+        x: 1190
+        y: 387
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3bb7332e47b070360800000000000000
+      internalID: 7135684731230976947
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_24
+      rect:
+        serializedVersion: 2
+        x: 1198
+        y: 387
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 774604dcf102a63e0800000000000000
+      internalID: -2059798558608956297
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_25
+      rect:
+        serializedVersion: 2
+        x: 1180
+        y: 288
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4446178973c913010800000000000000
+      internalID: 1166885541060371524
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_26
+      rect:
+        serializedVersion: 2
+        x: 1155
+        y: 262
+        width: 14
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6ea8a0973b4e92d0800000000000000
+      internalID: -3270093577402143122
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_27
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 242
+        width: 25
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60c67d5d07e87aa30800000000000000
+      internalID: 4226503390585646086
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_28
+      rect:
+        serializedVersion: 2
+        x: 1145
+        y: 243
+        width: 12
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 326384fb17a36ae60800000000000000
+      internalID: 7973124450520938019
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_29
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 168
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ddbd9eec5f3ad6c0800000000000000
+      internalID: -4117909240904041000
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_30
+      rect:
+        serializedVersion: 2
+        x: 1165
+        y: 156
+        width: 8
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4ea0ed23e34b1650800000000000000
+      internalID: 6204627554639326798
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_31
+      rect:
+        serializedVersion: 2
+        x: 1172
+        y: 156
+        width: 8
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8b18a492347e40d0800000000000000
+      internalID: -3436681705045877876
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_32
+      rect:
+        serializedVersion: 2
+        x: 102
+        y: 95
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2fe06ee0748cd570800000000000000
+      internalID: 8492808617884446509
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crownkin_large_icon_33
+      rect:
+        serializedVersion: 2
+        x: 1190
+        y: 102
+        width: 9
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e932534a43534b1f0800000000000000
+      internalID: -1030139914551483490
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    outline: []
+    customData:
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices:
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable: {}
+  mipmapLimitGroupName:
+  pSDRemoveMatte: 0
+  userData:
+  assetBundleName:
+  assetBundleVariant:

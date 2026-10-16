@@ -34,6 +34,7 @@ namespace Numeria.Game
 
         public static (int x, int y)? Entrance(MapDef def)
         {
+            if(def.IsHalloween)return HalloweenWorlds.ReturnCell(def.Id);
             if (def.IsDepth) return (4,20);
             if (DepthCatalog.ForParent(def.Id) == null) return null;
             var map = GridMap.Parse(def.Rows);
@@ -53,7 +54,8 @@ namespace Numeria.Game
 
     public static partial class Maps
     {
-        public static MapDef[] AllPlayable() => All().Concat(DepthCatalog.Worlds.Select(Expansion)).ToArray();
+        public static MapDef[] AllPlayable() => All().Concat(DepthCatalog.Worlds.Select(Expansion))
+            .Concat(HalloweenWorlds.Ids.Select(HalloweenWorlds.Build)).ToArray();
 
         public static MapDef Expansion(DepthWorld world)
         {

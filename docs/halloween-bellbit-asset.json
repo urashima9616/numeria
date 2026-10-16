@@ -1,0 +1,6 @@
+{
+  "generator": "builtin image_gen",
+  "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-d35fc7a7-0d49-4f5d-9410-eb1cebfd2de9.png",
+  "destination": "unity/Assets/Resources/generated/bellbit_large_icon.png",
+  "prompt": "Use case: stylized-concept. Production transparent game character portrait for Numeria. Single Bellbit, a tiny friendly haunted brass handbell spirit, broad flared bell skirt, visible dangling clapper, joyful amber eyes on brass bell body, small lavender ghost arms and wispy tail, a blue ribbon at top. Polished detailed pixel-painted RPG sprite with crisp dark outline matching supplied style reference. Image 1 is style reference only, NOT identity: do NOT depict a clock, pocket watch, clock face, numbers or hands. Full body centered square, 15 percent clean margin, isolated genuine transparent RGBA background, no scene, no text, no border, no other creatures or stray fragments. Child-friendly, not frightening."
+}

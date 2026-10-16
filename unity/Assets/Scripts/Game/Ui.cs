@@ -87,6 +87,8 @@ namespace Numeria.Game
             TextAnchor anchor = TextAnchor.MiddleCenter)
         {
             var rt = Node(parent, name);
+            // Assign our bundled font before TMP's OnEnable attempts to load an absent default font.
+            rt.gameObject.SetActive(false);
             var t = rt.gameObject.AddComponent<TextMeshProUGUI>();
             t.font = DefaultTmpFont;
             t.text = text;
@@ -98,6 +100,7 @@ namespace Numeria.Game
             t.overflowMode = TextOverflowModes.Overflow;
             t.raycastTarget = false;
             t.extraPadding = true;
+            rt.gameObject.SetActive(true);
             return t;
         }
 

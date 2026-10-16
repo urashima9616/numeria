@@ -4,8 +4,8 @@
 are magic. Players befriend original creatures called **Mathmons**, solve adjustable K–5 math puzzles to power
 their skills, and help Lucas restore six Digit Crystals so he can reopen the legendary gate home.
 
-> Current development: eight main worlds plus eight optional depths, a lifetime collection guide, and
-> **247 Mathmon forms / 142 families** (159 existing forms + 80 new ordinary species + 8 giants; Mega not counted).
+> Current local development: ten main/side worlds plus eight optional depths, a lifetime collection guide, and
+> **513 Mathmon forms / 172 families** (Mega not counted). Halloween development is not yet installed.
 > **1.4.3 (9)** renewed and reinstalled on iPad on October 12; awaiting unlock and gameplay confirmation.
 > **Lucas's iPad save is authoritative**.
 
@@ -18,17 +18,29 @@ their skills, and help Lucas restore six Digit Crystals so he can reopen the leg
 | P0 — Project foundation | ✅ Complete | Repository, Unity project, asset pipelines |
 | P1 — Battle core | ✅ Complete | Skills, gems, number shields, ATK/DEF combat, VFX, narration |
 | P2 — Forest vertical slice | ✅ Complete | Exploration, encounters, catching, growth, chests, saving |
-| P3 — Full game systems | 🔶 Playable / polishing | Eight main worlds + eight optional depths, 247 forms, collection guide, evolution, economy, Lucas story |
+| P3 — Full game systems | 🔶 Playable / polishing | Ten main/side worlds + eight optional depths, 513 forms, collection guide, evolution, economy, Lucas story |
 | P4 — iOS delivery | 🔶 On-device / polishing | Signed iPad build and transferred progress confirmed playable; ongoing device QA and save-safe updates |
 
-The latest local code passes **229/229 Unity EditMode tests** plus **15/15 Node prototype tests**;
-the 1.4.3 update raises the team limit to **300**, including the starter, without changing the save schema.
+The Halloween local development branch passes **248/248 Unity EditMode tests** plus **15/15 Node prototype tests**.
+The team limit remains **300**, including the starter. Local save schema is **v14**; the installed 1.4.3 app still uses v13.
 See [capacity verification](docs/team-capacity-300.md) and the [puzzle review](docs/puzzle-design-review.md).
-Saves now use **schema v13**, adding collection and giant-reward history without resetting previous fields.
+Installed saves use **schema v13**. The v14 migration preserves existing species IDs, captured stats, levels, equipment and history.
 Version **1.4.3 (9)** was renewed and reinstalled in place on October 12 without gameplay changes. All four save
 files matched the fresh iPad backup byte-for-byte before the launch attempt (100 partners, 5,552 coins).
 The iPad was locked, so launch and gameplay confirmation are pending. See
 [release and save-preservation evidence](docs/ipad-1.4.3.md). Renewed signing expires October 19 at 18:23 PDT.
+
+### In development — Halloween worlds and three-stage depth evolutions
+
+Spooky Pumpkin Patch and Haunted House each add **15 families with three stages**. They unlock together
+after Veilmoon Lake; wild encounters are Lv.76–82 and their Bosses stay at Lv.84. The previous 88 single-stage
+depth families also receive two evolutions, including the eight giants. Evolution is voluntary, not automatic on load.
+The DEX still counts one entry per family and shows forms as pages. All 266 added portraits are imported.
+The new worlds include painted terrain, independent battle backgrounds, six interactive mechanisms and offline LISTEN narration.
+Mechanisms adapt within K–5: countable sharing and picture patterns, whole-number sequences, G4 fraction shares,
+G5 mass targets and coordinate reflections. Difficulty changes steps and constraints without adding another quiz.
+Visual and release acceptance is ongoing; **1.5.0 (10) is not installed on Lucas's iPad**.
+See [implementation and verification](docs/halloween-implementation.md).
 
 ### Installed update — replay every question
 
@@ -60,7 +72,8 @@ Each main-world guardian unlocks a nearby portal into a new layer: Verdant Vault
 Dusk Oasis, Resonant Foundry, Ember Reservoir, Chronicle Archive and Moonwell Depths. Every layer contains ten
 ordinary species, three untimed environmental mechanisms and one fixed-level giant challenge. Winning befriends
 the giant directly; a full 300-partner team can claim it later through DEX. Return portals are always available.
-These 88 new species are single-stage; their separate Mega designs are deferred. Existing 159 Mega forms remain unchanged.
+These 88 species are single-stage in installed 1.4.3; local 1.5.0 adds ordinary three-stage evolution.
+Their separate Mega designs remain deferred. Existing 159 Mega forms remain unchanged.
 See [the full roster, access rules, safeguards and validation](docs/eight-depths.md).
 
 ### Installed update — trainers, safer team management and K–5 learning

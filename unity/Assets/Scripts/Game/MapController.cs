@@ -79,6 +79,7 @@ namespace Numeria.Game
             if (_def.Id == "forest") ForestScene.ApplyPassages(_map, _progress);
             AfterstoryJourney.Apply(_map, _def, _progress);
             DepthJourney.Apply(_map, _def, _progress);
+            HalloweenWorlds.Apply(_map, _def, _progress);
             _rng = new Rng((uint)System.Environment.TickCount);
             _voice = gameObject.AddComponent<Voice>();
 
@@ -175,6 +176,7 @@ namespace Numeria.Game
             sr.sortingOrder = SortOrder(TileWorld(_pos.x, _pos.y).y) + 40;
             avatarGo.transform.position = TileWorld(_pos.x, _pos.y);
             _avatar = avatarGo.transform;
+            _worldScene.GetComponentInChildren<HalloweenScene>()?.Observe(_avatar);
             ApplyAvatarSprite();
             RefreshPortalState();
         }
@@ -269,7 +271,7 @@ namespace Numeria.Game
 
             _explorationHud = new ExplorationHud(_hudCanvasRoot, OpenMenu, () =>
             {
-                if (!_busy) _voice.Say(_def.IsAfterstory ? AfterstoryJourney.Objective(_def, _progress) :
+                if (!_busy) _voice.Say(_def.IsHalloween ? HalloweenWorlds.Objective(_def,_progress) : _def.IsAfterstory ? AfterstoryJourney.Objective(_def, _progress) :
                     _def.Id == "forest" ? ForestJourney.Objective(_progress) : _def.WelcomeLine);
             }, () =>
             {
@@ -439,7 +441,7 @@ namespace Numeria.Game
                 case Tile.Bush:
                     if (_rng.Next() < EncounterChance)
                     {
-                        StartBattle(_def.RollRandomEncounter(_progress, _rng), false);
+                        StartBattle(_def.RollRandomEncounter(_progress, _rng,x,y), false);
                         return true;
                     }
                     return false;
@@ -719,6 +721,13 @@ namespace Numeria.Game
                     else if (isBoss && !_def.GateCleared(_progress))
                     {
                         _progress.Records.BossesDefeated++;
+                        if(_def.IsHalloween)
+                        {
+                            _def.ClearGate(_progress);SaveSystem.Save(_progress);RefreshPortalState();
+                            yield return DialogueRoutine(_def.GuardianName,_def.GateClearLine,
+                                SpriteLib.EnemyBattleSprite(_def.BossSpeciesId));
+                            break;
+                        }
                         if (_def.IsDepth)
                         {
                             _def.ClearGate(_progress);
@@ -1001,6 +1010,11 @@ namespace Numeria.Game
         /// </summary>
         private IEnumerator DiscoveryRoutine(DiscoveryDef discovery)
         {
+            if(_def.IsHalloween)
+            {
+                yield return HalloweenMechanismRoutine(discovery);
+                yield break;
+            }
             if (_def.IsDepth)
             {
                 yield return DepthMechanismRoutine(discovery);
@@ -1195,6 +1209,11 @@ namespace Numeria.Game
 
         private IEnumerator BossLockedRoutine()
         {
+            if(_def.IsHalloween)
+            {
+                _busy=true;yield return DialogueRoutine(_def.DisplayName,HalloweenWorlds.Objective(_def,_progress),
+                    SpriteLib.EnemyBattleSprite(_def.BossSpeciesId));_busy=false;yield break;
+            }
             if (_def.IsDepth)
             {
                 _busy = true;

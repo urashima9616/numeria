@@ -1,0 +1,15 @@
+{
+  "generator": "builtin image_gen",
+  "assets": [
+    {
+      "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-eea9b92b-f7db-4748-b293-bf1615322b13.png",
+      "destination": "art/halloween-atlases/pumpkin-details.png",
+      "prompt": "Use case: stylized-concept. Production asset atlas for Numeria Spooky Pumpkin Patch explorable top down RPG. Exactly SIX separate props in two columns and three rows, true transparent background, each occupies at most 70% of its cell, huge clear gutters. Same polished pixel-painted warm orange amber gold and dark-plum fantasy game art. Orthographic three-quarter top-down view, clear silhouette. Row 1 left small wooden farm market stall with pumpkin baskets, right little red timber harvest barn with straw roof and door. Row 2 left cluster of hay bales with friendly pumpkin scarecrow, right low timber fence corner with autumn vines. Row 3 left wooden harvest cart filled with gourds, right three slender lantern posts strung with orange jack-o-lanterns. Objects only, no ground rectangle, no people, no text, no UI, no watermark. Soft warm evening lighting, crisp detailed texture, child friendly. Do not let objects cross cell borders."
+    },
+    {
+      "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-574c5160-b459-45be-ae85-bee2e38a0721.png",
+      "destination": "art/halloween-atlases/house-details.png",
+      "prompt": "Use case: stylized-concept. Production asset atlas Numeria Haunted House friendly ghost mansion top down RPG. Exactly SIX independent props two columns three rows, each at most 70% of cell, clear wide gutters, genuine transparent RGBA background. Polished detailed pixel-painted game sprite, crisp outline, orthographic three-quarter overhead viewpoint, indigo and lavender wood, warm brass, gentle candle glow. Row 1 left small upright piano with candlestick and bench, right a toy rocking horse and teddy bear cluster. Row 2 left ornate oval framed mirror with cyan magical reflection, right a small round tea table with teapot and two cups and two chairs. Row 3 left tall arched moonlit window with purple curtains (freestanding ornament no wall rectangle), right three touching gold-framed cheerful ghost portraits leaning together. No characters except ghost faces in portraits, no ground rectangle, no backdrop, no UI, no text or watermark. Cozy mysterious not scary. Full silhouettes contained inside cells."
+    }
+  ]
+}

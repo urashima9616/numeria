@@ -23,7 +23,7 @@ namespace Numeria.Game.Tests
         [Test]
         public void EverySpeciesNormalAndMegaSkillHasAuthoredPresentation()
         {
-Assert.AreEqual(247, GameData.Roster.Count);
+Assert.AreEqual(513, GameData.Roster.Count);
             foreach (var species in GameData.Roster)
             {
                 var player = GameData.PlayerMon(species.Id, GameData.StageIndex(species.Id), 20);

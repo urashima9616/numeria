@@ -54,8 +54,8 @@ namespace Numeria.Game.Tests
                 Assert.IsNotNull(Resources.Load<Sprite>(theme.IconResource),
                     $"Missing imported theme icon: {theme.IconResource}");
             }
-            Assert.AreEqual(16, paths.Count,
-                "Launch families have 11 icons; the five expanded elements each add one visual language.");
+            Assert.AreEqual(46, paths.Count,
+                "Sixteen legacy theme icons plus thirty distinct seasonal family motifs.");
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace Numeria.Game.Tests
         [Test]
         public void EveryMegaEligibleMathmonHasAnIndependentTransparentMegaSprite()
         {
-            Assert.AreEqual(247, GameData.Roster.Count);
+            Assert.AreEqual(513, GameData.Roster.Count);
             Assert.AreEqual(159, GameData.Roster.Count(s => MegaSystem.Supports(s.Id)));
             foreach (var species in GameData.Roster)
             {

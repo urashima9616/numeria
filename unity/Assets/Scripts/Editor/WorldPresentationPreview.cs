@@ -48,7 +48,7 @@ namespace Numeria.Editor
             FinishSheet("afterstory-worlds");
             BeginSheet(3, 2);
             foreach (SkillVisualKind kind in Enum.GetValues(typeof(SkillVisualKind)))
-                if (kind >= SkillVisualKind.MosaicMarch) Spell(kind);
+                if (kind >= SkillVisualKind.MosaicMarch && kind <= SkillVisualKind.LotusSequence) Spell(kind);
             FinishSheet("afterstory-skills");
             bool spoken = Voice.Enabled; Voice.Enabled = false;
             try
@@ -90,6 +90,90 @@ namespace Numeria.Editor
         private static void FinishSheet(string name)
         { _sheet.Apply(); File.WriteAllBytes(Path.Combine(Output, name + ".png"), _sheet.EncodeToPNG()); Object.DestroyImmediate(_sheet); }
 
+        public static void Seasonal()
+        {
+            Directory.CreateDirectory(Output);
+            BeginSheet(2,1);
+            foreach(string id in HalloweenWorlds.Ids) World(Maps.Get(id));
+            FinishSheet("seasonal-worlds");
+            var kinds=Enum.GetValues(typeof(SkillVisualKind)).Cast<SkillVisualKind>().Where(HalloweenSpell.Supports).ToArray();
+            for(int page=0;page*8<kinds.Length;page++)
+            {
+                BeginSheet(4,2);
+                foreach(var kind in kinds.Skip(page*8).Take(8))Spell(kind);
+                FinishSheet("seasonal-skills-"+page);
+            }
+            Debug.Log("Seasonal gameplay-scale worlds and all 34 signatures rendered without player saves.");
+        }
+
+        public static void EvolutionAndRestoration()
+        {
+            HalloweenAssetImporter.ImportDepthSpellMotifs();
+            DepthEvolutions();
+            SeasonalRestorations();
+        }
+
+        public static void DepthEvolutions()
+        {
+            Directory.CreateDirectory(Output);
+            foreach(var world in DepthCatalog.Worlds)
+            {
+                // Each family: stage two charge/travel, then stage three charge/travel.
+                BeginSheet(4,11);
+                foreach(var species in world.Species)foreach(string id in ExpansionCatalog.DepthStages(species.Id).Skip(1))
+                {
+                    var root=new GameObject("DepthEvolutionPreview-"+id);
+                    try
+                    {
+                        var camera=CameraFor(root.transform);var canvas=CanvasFor(root.transform,camera);
+                        var bg=Ui.SpriteImg(canvas,"Battle",SpriteLib.One(Maps.Get(world.ParentId).BattleBg));Ui.Stretch(bg.rectTransform);
+                        var caster=Ui.SpriteImg(canvas,"Caster",SpriteLib.PlayerBattleSprite(id));caster.preserveAspect=true;
+                        Ui.PlaceCentered(caster.rectTransform,new Vector2(.22f,.28f),Vector2.zero,new Vector2(260,290));
+                        var target=Ui.SpriteImg(canvas,"Target",SpriteLib.EnemyBattleSprite(species.Id));target.preserveAspect=true;
+                        Ui.PlaceCentered(target.rectTransform,new Vector2(.76f,.65f),Vector2.zero,new Vector2(260,230));
+                        var label=Ui.Label(canvas,"Name",id+" / stage "+(GameData.StageIndex(id)+1),30,Color.white);
+                        Ui.Place(label.rectTransform,new Vector2(.5f,1),new Vector2(0,-35),new Vector2(1100,50));
+                        Canvas.ForceUpdateCanvases();
+                        var kind=GameData.PlayerMon(id,GameData.StageIndex(id),80).Skills.Last().Visual;
+                        var sequence=SpellSequence.Create(canvas,caster.rectTransform,target.rectTransform,kind,
+                            new SpellTrace{A=3,B=4,Total=7},true,id);
+                        sequence.Sample(.52f);Capture(camera,"depth-"+id+"-charge",true,960,720);
+                        sequence.Sample(1.05f);Capture(camera,"depth-"+id+"-travel",true,960,720);
+                        sequence.Sample(1.3f);Capture(camera,"depth-"+id+"-impact",false,960,720);
+                        sequence.Cancel();
+                    }
+                    finally{Object.DestroyImmediate(root);}
+                }
+                FinishSheet("depth-evolutions-"+world.Id);
+            }
+            Debug.Log("All 176 evolved depth forms rendered at charge, travel and impact; player slots untouched.");
+        }
+
+        public static void SeasonalRestorations()
+        {
+            Directory.CreateDirectory(Output);BeginSheet(3,6);
+            foreach(string id in HalloweenWorlds.Ids)
+            {
+                var root=new GameObject("RestorationPreview");
+                try
+                {
+                    var def=Maps.Get(id);var p=new Progress();var grid=GridMap.Parse(def.Rows);
+                    foreach(var task in def.Discoveries)p.CollectDiscovery(task.Id);
+                    HalloweenWorlds.Apply(grid,def,p);HalloweenScene.Build(root.transform,grid,def,p);
+                    var scene=root.GetComponentInChildren<HalloweenScene>();var camera=CameraFor(root.transform);
+                    camera.orthographicSize=5;
+                    foreach(var task in def.Discoveries)
+                    {
+                        Vector3 focus=scene.RestorationFocus(task.Id);camera.transform.position=new Vector3(focus.x,focus.y,-10);
+                        foreach(float t in new[]{0f,.5f,1f})
+                        {scene.SampleRestoration(task.Id,t);Capture(camera,"restoration-"+task.Id+"-"+(int)(t*100),true,960,720);}
+                    }
+                }
+                finally{Object.DestroyImmediate(root);}
+            }
+            FinishSheet("seasonal-restorations");
+        }
+
         private static Camera CameraFor(Transform root)
         {
             var camera = new GameObject("PreviewCamera").AddComponent<Camera>();
@@ -120,6 +204,7 @@ namespace Numeria.Editor
                 var map = GridMap.Parse(def.Rows);
                 if (def.Id == "forest") ForestScene.ApplyPassages(map, progress);
                 if (def.IsAfterstory) AfterstoryJourney.Apply(map, def, progress);
+                if (Array.IndexOf(HalloweenWorlds.Ids,def.Id)>=0) HalloweenWorlds.Apply(map,def,progress);
                 WorldScene.Build(root.transform, map, def, progress);
                 var camera = CameraFor(root.transform);
                 camera.backgroundColor = Ui.Hex(def.CameraBg);
@@ -146,8 +231,9 @@ namespace Numeria.Editor
                             float distance = Vector2.Distance(new Vector2(x, map.Height - 1 - y), (Vector2)focus + Vector2.down * 2);
                             if (distance < best) { location = (x, y); best = distance; }
                         }
-                Actor(root.transform, SpriteLib.LucasExplorer(), new Vector3(location.x, map.Height - 1 - location.y, 0), 1.35f);
-                Actor(root.transform, SpriteLib.One(def.Merchant.SpriteResource), new Vector3(def.Merchant.X, map.Height - 1 - def.Merchant.Y, 0), 1.4f);
+                var avatar=Actor(root.transform, SpriteLib.LucasExplorer(), new Vector3(location.x, map.Height - 1 - location.y, 0), 1.35f);
+                root.GetComponentInChildren<HalloweenScene>()?.UpdateOcclusion(avatar.transform.position+Vector3.up*.45f,avatar.sortingOrder,1);
+                if(def.Merchant!=null)Actor(root.transform, SpriteLib.One(def.Merchant.SpriteResource), new Vector3(def.Merchant.X, map.Height - 1 - def.Merchant.Y, 0), 1.4f);
                 foreach (var d in def.Discoveries)
                     Actor(root.transform, SpriteLib.One("generated/Story/digit_crystal"), new Vector3(d.X, map.Height - 1 - d.Y, 0), .55f);
                 var canvas = CanvasFor(root.transform, camera);
@@ -157,12 +243,13 @@ namespace Numeria.Editor
             finally { Object.DestroyImmediate(root); }
         }
 
-        private static void Actor(Transform parent, Sprite sprite, Vector3 p, float height)
+        private static SpriteRenderer Actor(Transform parent, Sprite sprite, Vector3 p, float height)
         {
             var sr = new GameObject("PreviewActor").AddComponent<SpriteRenderer>();
             sr.transform.SetParent(parent, false); sr.transform.position = p;
             sr.sprite = sprite; sr.sortingOrder = PaintedTerrainRenderer.SortOrder(p.y) + 40;
             if (sprite != null) sr.transform.localScale = Vector3.one * (height / sprite.bounds.size.y);
+            return sr;
         }
 
         private static void BattleLayout()

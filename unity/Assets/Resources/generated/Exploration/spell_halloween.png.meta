@@ -1,0 +1,4768 @@
+fileFormatVersion: 2
+guid: 5ae7d3a091225483e8ff33380b34f2ae
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7060666605389094542
+    second: spell_halloween_0
+  - first:
+      213: 5201838322557320405
+    second: spell_halloween_1
+  - first:
+      213: 6024032236978942817
+    second: spell_halloween_2
+  - first:
+      213: -5340144403170769160
+    second: spell_halloween_3
+  - first:
+      213: -5538011914276527984
+    second: spell_halloween_4
+  - first:
+      213: -199667219927259166
+    second: spell_halloween_5
+  - first:
+      213: 5471129698825231102
+    second: spell_halloween_6
+  - first:
+      213: -7493799469037993574
+    second: spell_halloween_7
+  - first:
+      213: -6383464217183559869
+    second: spell_halloween_8
+  - first:
+      213: -7649998018952800315
+    second: spell_halloween_9
+  - first:
+      213: 1991417365818461712
+    second: spell_halloween_10
+  - first:
+      213: -6463160084280387859
+    second: spell_halloween_11
+  - first:
+      213: -2396731658133465481
+    second: spell_halloween_12
+  - first:
+      213: -3512361821636205391
+    second: spell_halloween_13
+  - first:
+      213: -5208175905843638080
+    second: spell_halloween_14
+  - first:
+      213: 881474681133264159
+    second: spell_halloween_15
+  - first:
+      213: 415569348122968429
+    second: spell_halloween_16
+  - first:
+      213: -5509908675696584479
+    second: spell_halloween_17
+  - first:
+      213: -2569274830786441973
+    second: spell_halloween_18
+  - first:
+      213: -1900124035625191840
+    second: spell_halloween_19
+  - first:
+      213: 4567609375074598044
+    second: spell_halloween_20
+  - first:
+      213: -3285393683353052922
+    second: spell_halloween_21
+  - first:
+      213: -7447269650541343092
+    second: spell_halloween_22
+  - first:
+      213: 7547633272882694485
+    second: spell_halloween_23
+  - first:
+      213: -6822444467518312323
+    second: spell_halloween_24
+  - first:
+      213: -2970915864574574880
+    second: spell_halloween_25
+  - first:
+      213: 6241888847083347988
+    second: spell_halloween_26
+  - first:
+      213: -2007109117081637507
+    second: spell_halloween_27
+  - first:
+      213: 405223052795832441
+    second: spell_halloween_28
+  - first:
+      213: 8677714642845706504
+    second: spell_halloween_29
+  - first:
+      213: 1853621982174301951
+    second: spell_halloween_30
+  - first:
+      213: -7768147144013225866
+    second: spell_halloween_31
+  - first:
+      213: 8615717589988671517
+    second: spell_halloween_32
+  - first:
+      213: -5542412297368879198
+    second: spell_halloween_33
+  - first:
+      213: 7117515501122334417
+    second: spell_halloween_34
+  - first:
+      213: -7390790314056237289
+    second: spell_halloween_35
+  - first:
+      213: -8668558213301251044
+    second: spell_halloween_36
+  - first:
+      213: -3600504807296703484
+    second: spell_halloween_37
+  - first:
+      213: -6831248623589361003
+    second: spell_halloween_38
+  - first:
+      213: -2233224093576746525
+    second: spell_halloween_39
+  - first:
+      213: -6994616041733444244
+    second: spell_halloween_40
+  - first:
+      213: -6441534612837167611
+    second: spell_halloween_41
+  - first:
+      213: 3553008400798866324
+    second: spell_halloween_42
+  - first:
+      213: 6212992686990306906
+    second: spell_halloween_43
+  - first:
+      213: -5578175726924386569
+    second: spell_halloween_44
+  - first:
+      213: -4566434043915729897
+    second: spell_halloween_45
+  - first:
+      213: 8367228979980625454
+    second: spell_halloween_46
+  - first:
+      213: 476246315888612210
+    second: spell_halloween_47
+  - first:
+      213: 2136261287040596889
+    second: spell_halloween_48
+  - first:
+      213: 2771155610677241505
+    second: spell_halloween_49
+  - first:
+      213: 1128478770040507331
+    second: spell_halloween_50
+  - first:
+      213: 6557000370658832086
+    second: spell_halloween_51
+  - first:
+      213: 146103738402690112
+    second: spell_halloween_52
+  - first:
+      213: -8225427975123788056
+    second: spell_halloween_53
+  - first:
+      213: 3054324284512910614
+    second: spell_halloween_54
+  - first:
+      213: 4642434422213749596
+    second: spell_halloween_55
+  - first:
+      213: 3154795003143210434
+    second: spell_halloween_56
+  - first:
+      213: -2256320946781287722
+    second: spell_halloween_57
+  - first:
+      213: -2177671206823834943
+    second: spell_halloween_58
+  - first:
+      213: 8922280059858421979
+    second: spell_halloween_59
+  - first:
+      213: 1936606301608696929
+    second: spell_halloween_60
+  - first:
+      213: 7447271669542151288
+    second: spell_halloween_61
+  - first:
+      213: -8281361256179526607
+    second: spell_halloween_62
+  - first:
+      213: 5088946996150197236
+    second: spell_halloween_63
+  - first:
+      213: -568456572067819091
+    second: spell_halloween_64
+  - first:
+      213: -6516714329011218976
+    second: spell_halloween_65
+  - first:
+      213: -1837357309910025063
+    second: spell_halloween_66
+  - first:
+      213: 6535326230649786734
+    second: spell_halloween_67
+  - first:
+      213: -5596291741447183722
+    second: spell_halloween_68
+  - first:
+      213: 3768716413001995691
+    second: spell_halloween_69
+  - first:
+      213: -1902596425027293631
+    second: spell_halloween_70
+  - first:
+      213: 311431070464164404
+    second: spell_halloween_71
+  - first:
+      213: 1020636701362494518
+    second: spell_halloween_72
+  - first:
+      213: 3681869952242788885
+    second: spell_halloween_73
+  - first:
+      213: 60089572892539600
+    second: spell_halloween_74
+  - first:
+      213: 8094410026513029992
+    second: spell_halloween_75
+  - first:
+      213: -2959517388053895762
+    second: spell_halloween_76
+  - first:
+      213: -3518327897044066548
+    second: spell_halloween_77
+  - first:
+      213: -1848157960299701937
+    second: spell_halloween_78
+  - first:
+      213: -6226832569905641779
+    second: spell_halloween_79
+  - first:
+      213: 4403833233314663182
+    second: spell_halloween_80
+  - first:
+      213: 7981020192474430626
+    second: spell_halloween_81
+  - first:
+      213: 5694005216316154581
+    second: spell_halloween_82
+  - first:
+      213: -1168867950840907547
+    second: spell_halloween_83
+  - first:
+      213: 4724969695595119066
+    second: spell_halloween_84
+  - first:
+      213: -7773112056168476132
+    second: spell_halloween_85
+  - first:
+      213: -2798144316572564017
+    second: spell_halloween_86
+  - first:
+      213: -201517166324504274
+    second: spell_halloween_87
+  - first:
+      213: 8845942907321027117
+    second: spell_halloween_88
+  - first:
+      213: -6455163474024039876
+    second: spell_halloween_89
+  - first:
+      213: 7522819384695345403
+    second: spell_halloween_90
+  - first:
+      213: -9155120360431343754
+    second: spell_halloween_91
+  - first:
+      213: -3450906309064121170
+    second: spell_halloween_92
+  - first:
+      213: -6717241008248503100
+    second: spell_halloween_93
+  - first:
+      213: 2718366903448496711
+    second: spell_halloween_94
+  - first:
+      213: 4845455815926104539
+    second: spell_halloween_95
+  - first:
+      213: -831972248413461048
+    second: spell_halloween_96
+  - first:
+      213: 7793375828201320694
+    second: spell_halloween_97
+  - first:
+      213: 7888882267897805744
+    second: spell_halloween_98
+  - first:
+      213: -5436626256891231597
+    second: spell_halloween_99
+  - first:
+      213: -3320695900767034656
+    second: spell_halloween_100
+  - first:
+      213: 5843555726847062239
+    second: spell_halloween_101
+  - first:
+      213: 7761196010474728945
+    second: spell_halloween_102
+  - first:
+      213: 4802305275772301733
+    second: spell_halloween_103
+  - first:
+      213: -8993088315313688569
+    second: spell_halloween_104
+  - first:
+      213: 5173404318267615220
+    second: spell_halloween_105
+  - first:
+      213: 8833879333511018472
+    second: spell_halloween_106
+  - first:
+      213: 958975603514902632
+    second: spell_halloween_107
+  - first:
+      213: -3269028647555493666
+    second: spell_halloween_108
+  - first:
+      213: 7547493650690698706
+    second: spell_halloween_109
+  - first:
+      213: 7979400912342623991
+    second: spell_halloween_110
+  - first:
+      213: -8297084410770959035
+    second: spell_halloween_111
+  - first:
+      213: -1070063827982608572
+    second: spell_halloween_112
+  - first:
+      213: -3158570652114499472
+    second: spell_halloween_113
+  - first:
+      213: -9140941541028138463
+    second: spell_halloween_114
+  - first:
+      213: -2777149707631731318
+    second: spell_halloween_115
+  - first:
+      213: 3727756158893363187
+    second: spell_halloween_116
+  - first:
+      213: -1014389106101616063
+    second: spell_halloween_117
+  - first:
+      213: -3721058432102429060
+    second: spell_halloween_118
+  - first:
+      213: -5567803293191157014
+    second: spell_halloween_119
+  - first:
+      213: -6039361269338311837
+    second: spell_halloween_120
+  - first:
+      213: 1533209413887940987
+    second: spell_halloween_121
+  - first:
+      213: 5155511395847464418
+    second: spell_halloween_122
+  - first:
+      213: 3838109625884669552
+    second: spell_halloween_123
+  - first:
+      213: -1085231686149206082
+    second: spell_halloween_124
+  - first:
+      213: 8171554092208032685
+    second: spell_halloween_125
+  - first:
+      213: -8897620767615602997
+    second: spell_halloween_126
+  - first:
+      213: 3833386362577415823
+    second: spell_halloween_127
+  - first:
+      213: 8161666313655863127
+    second: spell_halloween_128
+  - first:
+      213: -3192624477751040446
+    second: spell_halloween_129
+  - first:
+      213: 1871375854847595382
+    second: spell_halloween_130
+  - first:
+      213: -6202939751069444737
+    second: spell_halloween_131
+  - first:
+      213: 7288659129391207369
+    second: spell_halloween_132
+  - first:
+      213: -8367250419237831354
+    second: spell_halloween_133
+  - first:
+      213: 8941181217387743610
+    second: spell_halloween_134
+  - first:
+      213: -4119643018932701825
+    second: spell_halloween_135
+  - first:
+      213: 6887927298368756946
+    second: spell_halloween_136
+  - first:
+      213: -1922624626855156757
+    second: spell_halloween_137
+  - first:
+      213: -9196500579713855183
+    second: spell_halloween_138
+  - first:
+      213: -254335998219274915
+    second: spell_halloween_139
+  - first:
+      213: 2740220780742353196
+    second: spell_halloween_140
+  - first:
+      213: 808548443152733966
+    second: spell_halloween_141
+  - first:
+      213: 4025321759914617250
+    second: spell_halloween_142
+  - first:
+      213: 411763527717444919
+    second: spell_halloween_143
+  - first:
+      213: -6713816955931253623
+    second: spell_halloween_144
+  - first:
+      213: 2375419690280171739
+    second: spell_halloween_145
+  - first:
+      213: 7771386411458501977
+    second: spell_halloween_146
+  - first:
+      213: 9121378716895687054
+    second: spell_halloween_147
+  - first:
+      213: 5240670626950697093
+    second: spell_halloween_148
+  - first:
+      213: -2677662002935549408
+    second: spell_halloween_149
+  - first:
+      213: 3879373230875149691
+    second: spell_halloween_150
+  - first:
+      213: -4930819515258952767
+    second: spell_halloween_151
+  - first:
+      213: 3398108722670951686
+    second: spell_halloween_152
+  - first:
+      213: 2809237245179351297
+    second: spell_halloween_153
+  - first:
+      213: -9558476731896237
+    second: spell_halloween_154
+  - first:
+      213: 6849857477367120961
+    second: spell_halloween_155
+  - first:
+      213: 3642002409360303290
+    second: spell_halloween_156
+  - first:
+      213: 6391570476303900196
+    second: spell_halloween_157
+  - first:
+      213: -8656364281604605836
+    second: spell_halloween_158
+  - first:
+      213: 581834078528891600
+    second: spell_halloween_159
+  - first:
+      213: -3103305997406166122
+    second: spell_halloween_160
+  - first:
+      213: -7273998928355115994
+    second: spell_halloween_161
+  - first:
+      213: 8657890496942411707
+    second: spell_halloween_162
+  - first:
+      213: -21166310640755201
+    second: spell_halloween_163
+  - first:
+      213: 5082651191657124100
+    second: spell_halloween_164
+  - first:
+      213: 594785968115022236
+    second: spell_halloween_165
+  - first:
+      213: 5798607409825948692
+    second: spell_halloween_166
+  - first:
+      213: 3383477030508300906
+    second: spell_halloween_167
+  - first:
+      213: 4804669345975153361
+    second: spell_halloween_168
+  - first:
+      213: -75968350580166538
+    second: spell_halloween_169
+  - first:
+      213: -7613414765805332088
+    second: spell_halloween_170
+  - first:
+      213: 1997034897914499437
+    second: spell_halloween_171
+  - first:
+      213: -6942121229207837076
+    second: spell_halloween_172
+  - first:
+      213: 8157958318131010939
+    second: spell_halloween_173
+  - first:
+      213: -2497742321511729817
+    second: spell_halloween_174
+  - first:
+      213: 3993765039075300058
+    second: spell_halloween_175
+  - first:
+      213: 6148353247550215598
+    second: spell_halloween_176
+  - first:
+      213: 2273366394238040038
+    second: spell_halloween_177
+  - first:
+      213: -4201869002005673192
+    second: spell_halloween_178
+  - first:
+      213: 4743254884224463195
+    second: spell_halloween_179
+  - first:
+      213: 2228284869276780800
+    second: spell_halloween_180
+  - first:
+      213: -7417540285204890907
+    second: spell_halloween_181
+  - first:
+      213: -8822443796115615155
+    second: spell_halloween_182
+  - first:
+      213: -647648035334992215
+    second: spell_halloween_183
+  - first:
+      213: 3257426102810533748
+    second: spell_halloween_184
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: spell_halloween_0
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 1242
+        width: 21
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 271e154a129730e90800000000000000
+      internalID: -7060666605389094542
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_1
+      rect:
+        serializedVersion: 2
+        x: 190
+        y: 1236
+        width: 14
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5dcfa03d464a03840800000000000000
+      internalID: 5201838322557320405
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_2
+      rect:
+        serializedVersion: 2
+        x: 197
+        y: 1209
+        width: 47
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 163b1a02769a99350800000000000000
+      internalID: 6024032236978942817
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_3
+      rect:
+        serializedVersion: 2
+        x: 603
+        y: 1142
+        width: 75
+        height: 110
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f647b765fef3e5b0800000000000000
+      internalID: -5340144403170769160
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_4
+      rect:
+        serializedVersion: 2
+        x: 689
+        y: 1230
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 090aaaf61870523b0800000000000000
+      internalID: -5538011914276527984
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_5
+      rect:
+        serializedVersion: 2
+        x: 754
+        y: 1218
+        width: 37
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e722faa8b3aa3df0800000000000000
+      internalID: -199667219927259166
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_6
+      rect:
+        serializedVersion: 2
+        x: 1043
+        y: 1239
+        width: 19
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: efa519a497b5deb40800000000000000
+      internalID: 5471129698825231102
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_7
+      rect:
+        serializedVersion: 2
+        x: 1061
+        y: 1237
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a91caf5361da00890800000000000000
+      internalID: -7493799469037993574
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1122
+        width: 114
+        height: 110
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34f5b529d116967a0800000000000000
+      internalID: -6383464217183559869
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_9
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 1228
+        width: 13
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c750eb455fb5d590800000000000000
+      internalID: -7649998018952800315
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_10
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 1205
+        width: 35
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01e47211b8fe2ab10800000000000000
+      internalID: 1991417365818461712
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_11
+      rect:
+        serializedVersion: 2
+        x: 289
+        y: 1215
+        width: 34
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de6dbf9852e3e46a0800000000000000
+      internalID: -6463160084280387859
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_12
+      rect:
+        serializedVersion: 2
+        x: 321
+        y: 1173
+        width: 80
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 776950f51491dbed0800000000000000
+      internalID: -2396731658133465481
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_13
+      rect:
+        serializedVersion: 2
+        x: 410
+        y: 1219
+        width: 29
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b4eab25885914fc0800000000000000
+      internalID: -3512361821636205391
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_14
+      rect:
+        serializedVersion: 2
+        x: 410
+        y: 1191
+        width: 63
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c011749b97d8b7b0800000000000000
+      internalID: -5208175905843638080
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_15
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 1213
+        width: 16
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1de27f5d80ab3c00800000000000000
+      internalID: 881474681133264159
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_16
+      rect:
+        serializedVersion: 2
+        x: 552
+        y: 1160
+        width: 38
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d61096ece1664c500800000000000000
+      internalID: 415569348122968429
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_17
+      rect:
+        serializedVersion: 2
+        x: 611
+        y: 519
+        width: 566
+        height: 718
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e81340904fd883b0800000000000000
+      internalID: -5509908675696584479
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_18
+      rect:
+        serializedVersion: 2
+        x: 667
+        y: 1122
+        width: 98
+        height: 119
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b0d4f9c672a185cd0800000000000000
+      internalID: -2569274830786441973
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_19
+      rect:
+        serializedVersion: 2
+        x: 1005
+        y: 1205
+        width: 39
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 066f063c14761a5e0800000000000000
+      internalID: -1900124035625191840
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_20
+      rect:
+        serializedVersion: 2
+        x: 1065
+        y: 905
+        width: 178
+        height: 333
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9cb012c688636f30800000000000000
+      internalID: 4567609375074598044
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_21
+      rect:
+        serializedVersion: 2
+        x: 1115
+        y: 1227
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 609dd6c0adfe762d0800000000000000
+      internalID: -3285393683353052922
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_22
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 1191
+        width: 15
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8e8fecc5bbf5a890800000000000000
+      internalID: -7447269650541343092
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_23
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 1143
+        width: 59
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 559871df8749eb860800000000000000
+      internalID: 7547633272882694485
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_24
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 1211
+        width: 15
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d70fdb557eec151a0800000000000000
+      internalID: -6822444467518312323
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_25
+      rect:
+        serializedVersion: 2
+        x: 454
+        y: 1126
+        width: 80
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0eeb57203cf25c6d0800000000000000
+      internalID: -2970915864574574880
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_26
+      rect:
+        serializedVersion: 2
+        x: 490
+        y: 1203
+        width: 27
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41020e1e5d4af9650800000000000000
+      internalID: 6241888847083347988
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_27
+      rect:
+        serializedVersion: 2
+        x: 520
+        y: 1211
+        width: 6
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7da6e264e05524e0800000000000000
+      internalID: -2007109117081637507
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_28
+      rect:
+        serializedVersion: 2
+        x: 541
+        y: 1207
+        width: 13
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 978e1b43834af9500800000000000000
+      internalID: 405223052795832441
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_29
+      rect:
+        serializedVersion: 2
+        x: 667
+        y: 1205
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 809260dbd7f6d6870800000000000000
+      internalID: 8677714642845706504
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_30
+      rect:
+        serializedVersion: 2
+        x: 922
+        y: 1195
+        width: 9
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ffeca533f5369b910800000000000000
+      internalID: 1853621982174301951
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_31
+      rect:
+        serializedVersion: 2
+        x: 930
+        y: 1203
+        width: 6
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6706026745ff13490800000000000000
+      internalID: -7768147144013225866
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_32
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 1100
+        width: 76
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d100c54008d219770800000000000000
+      internalID: 8615717589988671517
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_33
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 1177
+        width: 9
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2af329861656513b0800000000000000
+      internalID: -5542412297368879198
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_34
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 646
+        width: 485
+        height: 549
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1deabb753ae76c260800000000000000
+      internalID: 7117515501122334417
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_35
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 1161
+        width: 18
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71fb7411e53ae6990800000000000000
+      internalID: -7390790314056237289
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_36
+      rect:
+        serializedVersion: 2
+        x: 661
+        y: 1169
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c145265ab3813b780800000000000000
+      internalID: -8668558213301251044
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_37
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 1122
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4046efc34ff680ec0800000000000000
+      internalID: -3600504807296703484
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_38
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 1125
+        width: 9
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59a749202978231a0800000000000000
+      internalID: -6831248623589361003
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_39
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 1122
+        width: 25
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e9a38ed48ef101e0800000000000000
+      internalID: -2233224093576746525
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_40
+      rect:
+        serializedVersion: 2
+        x: 577
+        y: 1074
+        width: 45
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6daa34e4c12eee90800000000000000
+      internalID: -6994616041733444244
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_41
+      rect:
+        serializedVersion: 2
+        x: 627
+        y: 1076
+        width: 41
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50e0579f5621b96a0800000000000000
+      internalID: -6441534612837167611
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_42
+      rect:
+        serializedVersion: 2
+        x: 665
+        y: 1090
+        width: 35
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49b589dd052de4130800000000000000
+      internalID: 3553008400798866324
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_43
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 1124
+        width: 9
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5e28245eebf83650800000000000000
+      internalID: 6212992686990306906
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_44
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1085
+        width: 41
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7fe27f51bb65692b0800000000000000
+      internalID: -5578175726924386569
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_45
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 1066
+        width: 17
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 714072a5e64c0a0c0800000000000000
+      internalID: -4566434043915729897
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_46
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 968
+        width: 110
+        height: 131
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2669120d6e5e1470800000000000000
+      internalID: 8367228979980625454
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_47
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 1086
+        width: 24
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27311244087fb9600800000000000000
+      internalID: 476246315888612210
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_48
+      rect:
+        serializedVersion: 2
+        x: 555
+        y: 1090
+        width: 9
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99b3979725685ad10800000000000000
+      internalID: 2136261287040596889
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_49
+      rect:
+        serializedVersion: 2
+        x: 611
+        y: 1092
+        width: 25
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a66fbf785f157620800000000000000
+      internalID: 2771155610677241505
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_50
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 966
+        width: 20
+        height: 111
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3cb85d0667929af00800000000000000
+      internalID: 1128478770040507331
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_51
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 1010
+        width: 33
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6de693db8152ffa50800000000000000
+      internalID: 6557000370658832086
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_52
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 1066
+        width: 23
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04459d37390170200800000000000000
+      internalID: 146103738402690112
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_53
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 1046
+        width: 17
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ee9f2936d869dd80800000000000000
+      internalID: -8225427975123788056
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_54
+      rect:
+        serializedVersion: 2
+        x: 583
+        y: 1028
+        width: 43
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61dbd3711c3236a20800000000000000
+      internalID: 3054324284512910614
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_55
+      rect:
+        serializedVersion: 2
+        x: 1246
+        y: 1065
+        width: 8
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5ba815a28d3d6040800000000000000
+      internalID: 4642434422213749596
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_56
+      rect:
+        serializedVersion: 2
+        x: 607
+        y: 986
+        width: 47
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c5478d275518cb20800000000000000
+      internalID: 3154795003143210434
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_57
+      rect:
+        serializedVersion: 2
+        x: 619
+        y: 1020
+        width: 13
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6da04dbad00ffa0e0800000000000000
+      internalID: -2256320946781287722
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_58
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 809
+        width: 114
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ca4baf339b57c1e0800000000000000
+      internalID: -2177671206823834943
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_59
+      rect:
+        serializedVersion: 2
+        x: 1190
+        y: 922
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd88962317e42db70800000000000000
+      internalID: 8922280059858421979
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_60
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 889
+        width: 15
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16c5b25bb2530ea10800000000000000
+      internalID: 1936606301608696929
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_61
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 875
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 874e3e840260a5760800000000000000
+      internalID: 7447271669542151288
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_62
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 867
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1349cb460d1b21d80800000000000000
+      internalID: -8281361256179526607
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_63
+      rect:
+        serializedVersion: 2
+        x: 1214
+        y: 851
+        width: 23
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4fbd252a4529f9640800000000000000
+      internalID: 5088946996150197236
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_64
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 801
+        width: 44
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da159af62cf6c18f0800000000000000
+      internalID: -568456572067819091
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_65
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 849
+        width: 14
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e5969448daff85a0800000000000000
+      internalID: -6516714329011218976
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_66
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 799
+        width: 25
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99c7859e2456086e0800000000000000
+      internalID: -1837357309910025063
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_67
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 801
+        width: 27
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e615c25c49422ba50800000000000000
+      internalID: 6535326230649786734
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_68
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 795
+        width: 21
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 692a693cf4af552b0800000000000000
+      internalID: -5596291741447183722
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_69
+      rect:
+        serializedVersion: 2
+        x: 625
+        y: 803
+        width: 35
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba51b203c9b2d4430800000000000000
+      internalID: 3768716413001995691
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_70
+      rect:
+        serializedVersion: 2
+        x: 1212
+        y: 809
+        width: 19
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14ee15fb1ae9895e0800000000000000
+      internalID: -1902596425027293631
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_71
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 636
+        width: 134
+        height: 166
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 432490798ec625400800000000000000
+      internalID: 311431070464164404
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_72
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 748
+        width: 9
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63c107d1ca70a2e00800000000000000
+      internalID: 1020636701362494518
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_73
+      rect:
+        serializedVersion: 2
+        x: 578
+        y: 763
+        width: 16
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51aad94d631a81330800000000000000
+      internalID: 3681869952242788885
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_74
+      rect:
+        serializedVersion: 2
+        x: 625
+        y: 770
+        width: 7
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0daf6fee52b75d000800000000000000
+      internalID: 60089572892539600
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_75
+      rect:
+        serializedVersion: 2
+        x: 631
+        y: 771
+        width: 23
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86b5ba8780f155070800000000000000
+      internalID: 8094410026513029992
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_76
+      rect:
+        serializedVersion: 2
+        x: 659
+        y: 791
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea5a472ad9eade6d0800000000000000
+      internalID: -2959517388053895762
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_77
+      rect:
+        serializedVersion: 2
+        x: 690
+        y: 763
+        width: 8
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c0f57552b636c2fc0800000000000000
+      internalID: -3518327897044066548
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_78
+      rect:
+        serializedVersion: 2
+        x: 1174
+        y: 755
+        width: 21
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f49968780260a56e0800000000000000
+      internalID: -1848157960299701937
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_79
+      rect:
+        serializedVersion: 2
+        x: 1204
+        y: 755
+        width: 35
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc601f2d4c8d599a0800000000000000
+      internalID: -6226832569905641779
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_80
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 737
+        width: 15
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0bc7c14efe8d1d30800000000000000
+      internalID: 4403833233314663182
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_81
+      rect:
+        serializedVersion: 2
+        x: 578
+        y: 738
+        width: 12
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ac78ad649742ce60800000000000000
+      internalID: 7981020192474430626
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_82
+      rect:
+        serializedVersion: 2
+        x: 607
+        y: 692
+        width: 21
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d2eebb739b250f40800000000000000
+      internalID: 5694005216316154581
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_83
+      rect:
+        serializedVersion: 2
+        x: 1178
+        y: 624
+        width: 59
+        height: 126
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e8f9c8aac857cfe0800000000000000
+      internalID: -1168867950840907547
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_84
+      rect:
+        serializedVersion: 2
+        x: 627
+        y: 715
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad1ce6877e6729140800000000000000
+      internalID: 4724969695595119066
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_85
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 676
+        width: 37
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1295c4c4cb502490800000000000000
+      internalID: -7773112056168476132
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_86
+      rect:
+        serializedVersion: 2
+        x: 697
+        y: 690
+        width: 11
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc50a6cb19efa29d0800000000000000
+      internalID: -2798144316572564017
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_87
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 650
+        width: 10
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e29a5157431143df0800000000000000
+      internalID: -201517166324504274
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_88
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 660
+        width: 10
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2a8146d43a13ca70800000000000000
+      internalID: 8845942907321027117
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_89
+      rect:
+        serializedVersion: 2
+        x: 1045
+        y: 644
+        width: 19
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3a78b37507aa66a0800000000000000
+      internalID: -6455163474024039876
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_90
+      rect:
+        serializedVersion: 2
+        x: 1121
+        y: 640
+        width: 31
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf0503e6f5c666860800000000000000
+      internalID: 7522819384695345403
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_91
+      rect:
+        serializedVersion: 2
+        x: 1176
+        y: 648
+        width: 13
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6772b80c98a72f080800000000000000
+      internalID: -9155120360431343754
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_92
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 642
+        width: 12
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea4241fdefaeb10d0800000000000000
+      internalID: -3450906309064121170
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_93
+      rect:
+        serializedVersion: 2
+        x: 1188
+        y: 629
+        width: 9
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c449a874e097c2a0800000000000000
+      internalID: -6717241008248503100
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_94
+      rect:
+        serializedVersion: 2
+        x: 1196
+        y: 632
+        width: 9
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74ae931db4499b520800000000000000
+      internalID: 2718366903448496711
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_95
+      rect:
+        serializedVersion: 2
+        x: 1204
+        y: 626
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd1402b64648e3340800000000000000
+      internalID: 4845455815926104539
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_96
+      rect:
+        serializedVersion: 2
+        x: 1222
+        y: 642
+        width: 9
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c52556e5ad3474f0800000000000000
+      internalID: -831972248413461048
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_97
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 401
+        width: 240
+        height: 239
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f03e015602a72c60800000000000000
+      internalID: 7793375828201320694
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_98
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 45
+        width: 471
+        height: 571
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0bb3de420a0fa7d60800000000000000
+      internalID: 7888882267897805744
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_99
+      rect:
+        serializedVersion: 2
+        x: 613
+        y: 0
+        width: 641
+        height: 619
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 392cf6d49393d84b0800000000000000
+      internalID: -5436626256891231597
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_100
+      rect:
+        serializedVersion: 2
+        x: 655
+        y: 583
+        width: 19
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e26fab0ca48ae1d0800000000000000
+      internalID: -3320695900767034656
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_101
+      rect:
+        serializedVersion: 2
+        x: 1220
+        y: 578
+        width: 34
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd03beb19fa781150800000000000000
+      internalID: 5843555726847062239
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_102
+      rect:
+        serializedVersion: 2
+        x: 1214
+        y: 566
+        width: 9
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1fd6684a6ae45bb60800000000000000
+      internalID: 7761196010474728945
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_103
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 550
+        width: 9
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a17461643735a240800000000000000
+      internalID: 4802305275772301733
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_104
+      rect:
+        serializedVersion: 2
+        x: 543
+        y: 471
+        width: 59
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 700f20c13d1223380800000000000000
+      internalID: -8993088315313688569
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_105
+      rect:
+        serializedVersion: 2
+        x: 538
+        y: 533
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f720dd41df9bc740800000000000000
+      internalID: 5173404318267615220
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_106
+      rect:
+        serializedVersion: 2
+        x: 619
+        y: 538
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e7b69e237e389a70800000000000000
+      internalID: 8833879333511018472
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_107
+      rect:
+        serializedVersion: 2
+        x: 623
+        y: 527
+        width: 9
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86885c30b37fe4d00800000000000000
+      internalID: 958975603514902632
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_108
+      rect:
+        serializedVersion: 2
+        x: 530
+        y: 468
+        width: 18
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed011edd3c312a2d0800000000000000
+      internalID: -3269028647555493666
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_109
+      rect:
+        serializedVersion: 2
+        x: 601
+        y: 497
+        width: 15
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2dd6fe9ac751eb860800000000000000
+      internalID: 7547493650690698706
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_110
+      rect:
+        serializedVersion: 2
+        x: 611
+        y: 465
+        width: 41
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f62c946ad68cbe60800000000000000
+      internalID: 7979400912342623991
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_111
+      rect:
+        serializedVersion: 2
+        x: 655
+        y: 487
+        width: 7
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 545d09030b5dadc80800000000000000
+      internalID: -8297084410770959035
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_112
+      rect:
+        serializedVersion: 2
+        x: 661
+        y: 487
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4471a1e2e9e5621f0800000000000000
+      internalID: -1070063827982608572
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_113
+      rect:
+        serializedVersion: 2
+        x: 1218
+        y: 499
+        width: 19
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 078cdba0ab08a24d0800000000000000
+      internalID: -3158570652114499472
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_114
+      rect:
+        serializedVersion: 2
+        x: 1236
+        y: 491
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 122f766691ad42180800000000000000
+      internalID: -9140941541028138463
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_115
+      rect:
+        serializedVersion: 2
+        x: 563
+        y: 441
+        width: 19
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8dd78c0e059579d0800000000000000
+      internalID: -2777149707631731318
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_116
+      rect:
+        serializedVersion: 2
+        x: 575
+        y: 437
+        width: 37
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ff0d1cd976abb330800000000000000
+      internalID: 3727756158893363187
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_117
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 379
+        width: 85
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14289c28b7a2ce1f0800000000000000
+      internalID: -1014389106101616063
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_118
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 379
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7e001e22152c5cc0800000000000000
+      internalID: -3721058432102429060
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_119
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 391
+        width: 22
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aea471287603bb2b0800000000000000
+      internalID: -5567803293191157014
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_120
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 377
+        width: 11
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36376d66ce0ef2ca0800000000000000
+      internalID: -6039361269338311837
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_121
+      rect:
+        serializedVersion: 2
+        x: 617
+        y: 359
+        width: 13
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b795311b6dd074510800000000000000
+      internalID: 1533209413887940987
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_122
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 373
+        width: 17
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e567f8ac4e0c8740800000000000000
+      internalID: 5155511395847464418
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_123
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 369
+        width: 28
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 076fcdb9e54b34530800000000000000
+      internalID: 3838109625884669552
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_124
+      rect:
+        serializedVersion: 2
+        x: 102
+        y: 371
+        width: 20
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ebf0410088b70f0f0800000000000000
+      internalID: -1085231686149206082
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_125
+      rect:
+        serializedVersion: 2
+        x: 571
+        y: 373
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dab03f0f621376170800000000000000
+      internalID: 8171554092208032685
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_126
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 337
+        width: 34
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bce2220bd0d458480800000000000000
+      internalID: -8897620767615602997
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_127
+      rect:
+        serializedVersion: 2
+        x: 595
+        y: 296
+        width: 47
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8ee04c269ce23530800000000000000
+      internalID: 3833386362577415823
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_128
+      rect:
+        serializedVersion: 2
+        x: 637
+        y: 335
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 757cab81540144170800000000000000
+      internalID: 8161666313655863127
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_129
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 312
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 246ae66e3f481b3d0800000000000000
+      internalID: -3192624477751040446
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_130
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 207
+        width: 13
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6731f6dcc6678f910800000000000000
+      internalID: 1871375854847595382
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_131
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 250
+        width: 68
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f751b56392bbae9a0800000000000000
+      internalID: -6202939751069444737
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_132
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 0
+        width: 317
+        height: 292
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c355487cd4862560800000000000000
+      internalID: 7288659129391207369
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_133
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 150
+        width: 78
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64d3796431e81eb80800000000000000
+      internalID: -8367250419237831354
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_134
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 255
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a798aced1f4751c70800000000000000
+      internalID: 8941181217387743610
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_135
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 294
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f753917408614d6c0800000000000000
+      internalID: -4119643018932701825
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_136
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 287
+        width: 16
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2dc5cf15265d69f50800000000000000
+      internalID: 6887927298368756946
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_137
+      rect:
+        serializedVersion: 2
+        x: 547
+        y: 251
+        width: 31
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be361ef96177155e0800000000000000
+      internalID: -1922624626855156757
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_138
+      rect:
+        serializedVersion: 2
+        x: 561
+        y: 212
+        width: 17
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1315b79a2777f5080800000000000000
+      internalID: -9196500579713855183
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_139
+      rect:
+        serializedVersion: 2
+        x: 522
+        y: 177
+        width: 26
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d55bb84d1ca687cf0800000000000000
+      internalID: -254335998219274915
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_140
+      rect:
+        serializedVersion: 2
+        x: 653
+        y: 180
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c21aa422848370620800000000000000
+      internalID: 2740220780742353196
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_141
+      rect:
+        serializedVersion: 2
+        x: 524
+        y: 130
+        width: 22
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0750d1768a883b00800000000000000
+      internalID: 808548443152733966
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_142
+      rect:
+        serializedVersion: 2
+        x: 557
+        y: 152
+        width: 13
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a96c5640d0dcd730800000000000000
+      internalID: 4025321759914617250
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_143
+      rect:
+        serializedVersion: 2
+        x: 653
+        y: 146
+        width: 37
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73d5f013fb0e6b500800000000000000
+      internalID: 411763527717444919
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_144
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 109
+        width: 38
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98429b6cc0bb3d2a0800000000000000
+      internalID: -6713816955931253623
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_145
+      rect:
+        serializedVersion: 2
+        x: 599
+        y: 134
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd83e9f6f9f27f020800000000000000
+      internalID: 2375419690280171739
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_146
+      rect:
+        serializedVersion: 2
+        x: 601
+        y: 126
+        width: 17
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95d184344c289db60800000000000000
+      internalID: 7771386411458501977
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_147
+      rect:
+        serializedVersion: 2
+        x: 1214
+        y: 128
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e81306aad95a59e70800000000000000
+      internalID: 9121378716895687054
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_148
+      rect:
+        serializedVersion: 2
+        x: 605
+        y: 116
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58058304b2a9ab840800000000000000
+      internalID: 5240670626950697093
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_149
+      rect:
+        serializedVersion: 2
+        x: 609
+        y: 95
+        width: 53
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 022377e589807dad0800000000000000
+      internalID: -2677662002935549408
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_150
+      rect:
+        serializedVersion: 2
+        x: 669
+        y: 99
+        width: 25
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b750971566d46d530800000000000000
+      internalID: 3879373230875149691
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_151
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 12
+        width: 132
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c32d6586c5329bb0800000000000000
+      internalID: -4930819515258952767
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_152
+      rect:
+        serializedVersion: 2
+        x: 1222
+        y: 111
+        width: 11
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60d55fa11e1882f20800000000000000
+      internalID: 3398108722670951686
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_153
+      rect:
+        serializedVersion: 2
+        x: 414
+        y: 46
+        width: 35
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10156b8f36a6cf620800000000000000
+      internalID: 2809237245179351297
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_154
+      rect:
+        serializedVersion: 2
+        x: 488
+        y: 21
+        width: 30
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35e2dc5bd9a0edff0800000000000000
+      internalID: -9558476731896237
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_155
+      rect:
+        serializedVersion: 2
+        x: 508
+        y: 0
+        width: 92
+        height: 104
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 144458465159f0f50800000000000000
+      internalID: 6849857477367120961
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_156
+      rect:
+        serializedVersion: 2
+        x: 577
+        y: 88
+        width: 17
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ab4a90925edfa8230800000000000000
+      internalID: 3642002409360303290
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_157
+      rect:
+        serializedVersion: 2
+        x: 667
+        y: 81
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42ed7f4fb7b63b850800000000000000
+      internalID: 6391570476303900196
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_158
+      rect:
+        serializedVersion: 2
+        x: 1125
+        y: 65
+        width: 20
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 478f39c9c8a6ed780800000000000000
+      internalID: -8656364281604605836
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_159
+      rect:
+        serializedVersion: 2
+        x: 524
+        y: 47
+        width: 26
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0da6ee00307131800800000000000000
+      internalID: 581834078528891600
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_160
+      rect:
+        serializedVersion: 2
+        x: 635
+        y: 47
+        width: 25
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 693244b23a7dee4d0800000000000000
+      internalID: -3103305997406166122
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_161
+      rect:
+        serializedVersion: 2
+        x: 1057
+        y: 45
+        width: 37
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62c32d293809d0b90800000000000000
+      internalID: -7273998928355115994
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_162
+      rect:
+        serializedVersion: 2
+        x: 1165
+        y: 63
+        width: 8
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bbf8b761981072870800000000000000
+      internalID: 8657890496942411707
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_163
+      rect:
+        serializedVersion: 2
+        x: 1202
+        y: 31
+        width: 35
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ffd5d054a5dc4bff0800000000000000
+      internalID: -21166310640755201
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_164
+      rect:
+        serializedVersion: 2
+        x: 394
+        y: 47
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40150fb6454398640800000000000000
+      internalID: 5082651191657124100
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_165
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 47
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c99f1eacfaa114800800000000000000
+      internalID: 594785968115022236
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_166
+      rect:
+        serializedVersion: 2
+        x: 446
+        y: 33
+        width: 25
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 414af9687bac87050800000000000000
+      internalID: 5798607409825948692
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_167
+      rect:
+        serializedVersion: 2
+        x: 673
+        y: 49
+        width: 9
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a6a042dce6684fe20800000000000000
+      internalID: 3383477030508300906
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_168
+      rect:
+        serializedVersion: 2
+        x: 1107
+        y: 21
+        width: 23
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d2be0e505d9da240800000000000000
+      internalID: 4804669345975153361
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_169
+      rect:
+        serializedVersion: 2
+        x: 1163
+        y: 49
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6703f79003b12fef0800000000000000
+      internalID: -75968350580166538
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_170
+      rect:
+        serializedVersion: 2
+        x: 1171
+        y: 55
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 889957cab97b75690800000000000000
+      internalID: -7613414765805332088
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_171
+      rect:
+        serializedVersion: 2
+        x: 366
+        y: 13
+        width: 71
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d61904ea8a4e6bb10800000000000000
+      internalID: 1997034897914499437
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_172
+      rect:
+        serializedVersion: 2
+        x: 458
+        y: 18
+        width: 11
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c666e51e581a8af90800000000000000
+      internalID: -6942121229207837076
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_173
+      rect:
+        serializedVersion: 2
+        x: 1083
+        y: 23
+        width: 9
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7d54ac1ed3e63170800000000000000
+      internalID: 8157958318131010939
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_174
+      rect:
+        serializedVersion: 2
+        x: 1091
+        y: 33
+        width: 9
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76575d9979c365dd0800000000000000
+      internalID: -2497742321511729817
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_175
+      rect:
+        serializedVersion: 2
+        x: 1099
+        y: 33
+        width: 9
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad21576a424bc6730800000000000000
+      internalID: 3993765039075300058
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_176
+      rect:
+        serializedVersion: 2
+        x: 1184
+        y: 39
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea599d904b6535550800000000000000
+      internalID: 6148353247550215598
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_177
+      rect:
+        serializedVersion: 2
+        x: 1196
+        y: 29
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e77ed4d0be9c8f10800000000000000
+      internalID: 2273366394238040038
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_178
+      rect:
+        serializedVersion: 2
+        x: 321
+        y: 15
+        width: 34
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 81b0ab6b766ffa5c0800000000000000
+      internalID: -4201869002005673192
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_179
+      rect:
+        serializedVersion: 2
+        x: 357
+        y: 0
+        width: 126
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b51f555bf2d63d140800000000000000
+      internalID: 4743254884224463195
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_180
+      rect:
+        serializedVersion: 2
+        x: 812
+        y: 15
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 009ce9b58457cee10800000000000000
+      internalID: 2228284869276780800
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_181
+      rect:
+        serializedVersion: 2
+        x: 1127
+        y: 21
+        width: 6
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ea7631196a9f0990800000000000000
+      internalID: -7417540285204890907
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_182
+      rect:
+        serializedVersion: 2
+        x: 1131
+        y: 19
+        width: 16
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d421ea95c12609580800000000000000
+      internalID: -8822443796115615155
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_183
+      rect:
+        serializedVersion: 2
+        x: 1155
+        y: 18
+        width: 18
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9aec0621b871307f0800000000000000
+      internalID: -647648035334992215
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spell_halloween_184
+      rect:
+        serializedVersion: 2
+        x: 1172
+        y: 21
+        width: 9
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47f5b1c28c3b43d20800000000000000
+      internalID: 3257426102810533748
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    outline: []
+    customData:
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices:
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable: {}
+  mipmapLimitGroupName:
+  pSDRemoveMatte: 0
+  userData:
+  assetBundleName:
+  assetBundleVariant:

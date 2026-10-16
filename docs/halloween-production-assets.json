@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Pipkin",
+    "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-5502683a-a5b1-45a6-bd87-bad85f478f90.png",
+    "path": "unity/Assets/Resources/generated/pipkin_large_icon.png",
+    "prompt": "Use case: stylized-concept. Production battle portrait for Numeria. Reference is the approved evolution concept: render ONLY the leftmost tiny pumpkin, named Pipkin, as a SINGLE full-body independent creature. Preserve its face, silhouette, anatomy, colors, materials and precise maturity stage; do not include the other two creatures. Detailed hand-painted crisp pixel sprite shading and stepped dark outline. Three-quarter front facing slightly left. Center in square canvas, entire body and appendages fully visible with 12 percent transparent padding on ALL sides. TRUE transparent RGBA background. No ground, no shadow disk, no surrounding glow haze, no labels, no text, no interface. Keep glow confined to luminous parts of the creature so empty background is truly transparent. One character only."
+  },
+  {
+    "name": "Vinejack",
+    "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-5e6c59c4-0b27-4a49-80c7-c6d1d36a9969.png",
+    "path": "unity/Assets/Resources/generated/vinejack_large_icon.png",
+    "prompt": "Use case: stylized-concept. Production battle portrait for Numeria. Reference is the approved evolution concept: render ONLY the middle four-root-legged pumpkin guardian, named Vinejack, as a SINGLE full-body independent creature. Preserve its face, silhouette, anatomy, colors, materials and precise maturity stage; do not include the other two creatures. Detailed hand-painted crisp pixel sprite shading and stepped dark outline. Three-quarter front facing slightly left. Center in square canvas, entire body and appendages fully visible with 12 percent transparent padding on ALL sides. TRUE transparent RGBA background. No ground, no shadow disk, no surrounding glow haze, no labels, no text, no interface. Keep glow confined to luminous parts of the creature so empty background is truly transparent. One character only."
+  },
+  {
+    "name": "Crownkin",
+    "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-8117fee2-2cb4-4721-ba19-daefcd2ee203.png",
+    "path": "unity/Assets/Resources/generated/crownkin_large_icon.png",
+    "prompt": "Use case: stylized-concept. Production battle portrait for Numeria. Reference is the approved evolution concept: render ONLY the rightmost mature antlered pumpkin king, named Crownkin, as a SINGLE full-body independent creature. Preserve its face, silhouette, anatomy, colors, materials and precise maturity stage; do not include the other two creatures. Detailed hand-painted crisp pixel sprite shading and stepped dark outline. Three-quarter front facing slightly left. Center in square canvas, entire body and appendages fully visible with 12 percent transparent padding on ALL sides. TRUE transparent RGBA background. No ground, no shadow disk, no surrounding glow haze, no labels, no text, no interface. Keep glow confined to luminous parts of the creature so empty background is truly transparent. One character only."
+  },
+  {
+    "name": "Tickaboo",
+    "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-9d436b43-d119-4775-9c7f-5a8d30067864.png",
+    "path": "unity/Assets/Resources/generated/tickaboo_large_icon.png",
+    "prompt": "Use case: stylized-concept. Production battle portrait for Numeria. Reference is the approved evolution concept: render ONLY the leftmost small pocket watch ghost, named Tickaboo, as a SINGLE full-body independent creature. Preserve its face, silhouette, anatomy, colors, materials and precise maturity stage; do not include the other two creatures. Detailed hand-painted crisp pixel sprite shading and stepped dark outline. Three-quarter front facing slightly left. Center in square canvas, entire body and appendages fully visible with 12 percent transparent padding on ALL sides. TRUE transparent RGBA background. No ground, no shadow disk, no surrounding glow haze, no labels, no text, no interface. Keep glow confined to luminous parts of the creature so empty background is truly transparent. One character only."
+  },
+  {
+    "name": "Penduloom",
+    "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-3a4ceb77-9647-41b2-93e4-8607f882a074.png",
+    "path": "unity/Assets/Resources/generated/penduloom_large_icon.png",
+    "prompt": "Use case: stylized-concept. Production battle portrait for Numeria. Reference is the approved evolution concept: render ONLY the middle floating pendulum clock, named Penduloom, as a SINGLE full-body independent creature. Preserve its face, silhouette, anatomy, colors, materials and precise maturity stage; do not include the other two creatures. Detailed hand-painted crisp pixel sprite shading and stepped dark outline. Three-quarter front facing slightly left. Center in square canvas, entire body and appendages fully visible with 12 percent transparent padding on ALL sides. TRUE transparent RGBA background. No ground, no shadow disk, no surrounding glow haze, no labels, no text, no interface. Keep glow confined to luminous parts of the creature so empty background is truly transparent. One character only."
+  },
+  {
+    "name": "Chronophantom",
+    "source": "/Users/yuankunxue/.codex/generated_images/019fc0fd-43dc-70b0-b457-214a92d43491/exec-5d7afb55-6952-4c6f-a3e8-c38f3edbfeb5.png",
+    "path": "unity/Assets/Resources/generated/chronophantom_large_icon.png",
+    "prompt": "Use case: stylized-concept. Production battle portrait for Numeria. Reference is the approved evolution concept: render ONLY the rightmost large grandfather clock guardian, named Chronophantom, as a SINGLE full-body independent creature. Preserve its face, silhouette, anatomy, colors, materials and precise maturity stage; do not include the other two creatures. Detailed hand-painted crisp pixel sprite shading and stepped dark outline. Three-quarter front facing slightly left. Center in square canvas, entire body and appendages fully visible with 12 percent transparent padding on ALL sides. TRUE transparent RGBA background. No ground, no shadow disk, no surrounding glow haze, no labels, no text, no interface. Keep glow confined to luminous parts of the creature so empty background is truly transparent. One character only."
+  }
+]

@@ -63,6 +63,7 @@ namespace Numeria.Game
         public int Tier;
         public int WildMaxLevel;
         public bool IsAfterstory;
+        public bool IsHalloween;
         public string ParentWorld;
         public bool IsDepth => ParentWorld != null;
         public string BattleBg;
@@ -143,8 +144,11 @@ namespace Numeria.Game
                 GrowthSystem.ClampLevel(rng.Pick(min, max)), rng);
         }
 
-        public CombatantDef RollRandomEncounter(Progress progress, Rng rng)
+        public CombatantDef RollRandomEncounter(Progress progress, Rng rng, int x=-1, int y=-1)
         {
+            if(IsHalloween && x>=0 && y>=0)
+                return new MapDef { WildMaxLevel=WildMaxLevel,
+                    Encounters=HalloweenWorlds.Ecology(Id,HalloweenWorlds.Zone(Id,x,y)) }.RollRandomEncounter(progress,rng);
             // Decide Master using the original ecology and existing drought protection.
             // Only catchable wild encounters receive collection assistance; never tease
             // a missing form by preferentially handing it to an uncatchable trainer.
@@ -170,7 +174,7 @@ namespace Numeria.Game
 
         public string ChestId(int x, int y) => StableChestIds != null && StableChestIds.TryGetValue((x, y), out var id)
             ? id : $"{Id}-chest-{x}-{y}";
-        public bool GuardianReady(Progress progress) => IsDepth ? DepthJourney.Ready(this, progress) : IsAfterstory ? AfterstoryJourney.Ready(this, progress) : Id == "forest"
+        public bool GuardianReady(Progress progress) => IsHalloween ? HalloweenWorlds.Ready(this, progress) : IsDepth ? DepthJourney.Ready(this, progress) : IsAfterstory ? AfterstoryJourney.Ready(this, progress) : Id == "forest"
             ? ForestJourney.GuardianReady(progress) : AllChestsOpened(progress);
 
         public bool AllChestsOpened(Progress progress)
@@ -212,6 +216,7 @@ namespace Numeria.Game
 
         public static MapDef Get(string id)
         {
+            if(HalloweenWorlds.Contains(id))return HalloweenWorlds.Build(id);
             var depth = DepthCatalog.Find(id);
             if (depth != null) return Expansion(depth);
             switch (id)

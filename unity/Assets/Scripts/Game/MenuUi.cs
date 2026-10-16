@@ -76,6 +76,8 @@ namespace Numeria.Game
                 case "EARTH": return (element, Ui.Hex("#a97745"));
                 case "MIND": return (element, Ui.Hex("#8b68b5"));
                 case "FAIRY": return (element, Ui.Hex("#d96bb5"));
+                case "PUMPKIN": return (element, Ui.Hex("#ca6a20"));
+                case "GHOST": return (element, Ui.Hex("#7863b6"));
                 case "DRAGON": return (element, Ui.Hex("#7861c9"));
                 case "ELECTRIC": return (element, Ui.Hex("#d39d20"));
                 case "FLYING": return (element, Ui.Hex("#6b9fd0"));

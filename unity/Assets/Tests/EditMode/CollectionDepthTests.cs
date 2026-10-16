@@ -25,23 +25,23 @@ namespace Numeria.Core.Tests
             Assert.True(p.HasCollectedFamily("numberfly"));
         }
 
-        [Test] public void FamilyGuideContains142UniqueEntriesAnd247FormPages()
+        [Test] public void FamilyGuideContains172UniqueEntriesAnd513FormPages()
         {
             var p=new Progress();p.ApplyMigrations();
             var entries=GameData.Lines.Select(l=>CollectionBook.FamilyEntry(p,l.BaseId)).ToArray();
-            Assert.AreEqual(142,entries.Length);Assert.AreEqual(142,entries.Select(e=>e.Id).Distinct().Count());
-            CollectionAssert.AreEqual(Enumerable.Range(1,142),entries.Select(e=>e.Number));
-            Assert.AreEqual(247,entries.Sum(e=>CollectionBook.Forms(p,e.Id).Length));
+            Assert.AreEqual(172,entries.Length);Assert.AreEqual(172,entries.Select(e=>e.Id).Distinct().Count());
+            CollectionAssert.AreEqual(Enumerable.Range(1,172),entries.Select(e=>e.Number));
+            Assert.AreEqual(513,entries.Sum(e=>CollectionBook.Forms(p,e.Id).Length));
             foreach(var species in GameData.Roster)p.RecordCollected(species.Id);
-            Assert.AreEqual(142,p.CollectionCount);
+            Assert.AreEqual(172,p.CollectionCount);
             foreach(var world in DepthCatalog.Worlds)foreach(var s in world.Species)
-                Assert.AreEqual(1,CollectionBook.Forms(p,s.Id).Length);
+                Assert.AreEqual(3,CollectionBook.Forms(p,s.Id).Length);
         }
         [Test] public void CatalogHasEightyOrdinaryAndEightUniqueGiants()
         {
             Assert.AreEqual(8,DepthCatalog.Worlds.Length);
-            Assert.AreEqual(247,GameData.Roster.Count);Assert.AreEqual(142,GameData.Lines.Count);
-            Assert.AreEqual(247,GameData.Roster.Select(s=>s.Id).Distinct().Count());
+            Assert.AreEqual(513,GameData.Roster.Count);Assert.AreEqual(172,GameData.Lines.Count);
+            Assert.AreEqual(513,GameData.Roster.Select(s=>s.Id).Distinct().Count());
             foreach(var world in DepthCatalog.Worlds)
             {
                 Assert.AreEqual(10,world.Species.Count(s=>!s.Giant));Assert.AreEqual(1,world.Species.Count(s=>s.Giant));
@@ -85,8 +85,8 @@ namespace Numeria.Core.Tests
             var p=new Progress();p.ApplyMigrations();
             foreach(var line in GameData.Lines.Where(l=>l.BaseId!="addmander"))
                 Assert.AreEqual(CatchRosterResult.Added,p.AddCaught(line.BaseId),line.BaseId);
-            Assert.AreEqual(142,p.TeamCount);Assert.False(p.TeamIsFull);
-            Assert.AreEqual(142,p.CollectionCount);
+            Assert.AreEqual(172,p.TeamCount);Assert.False(p.TeamIsFull);
+            Assert.AreEqual(172,p.CollectionCount);
         }
 
         [Test] public void ExistingMegasRemainAvailableAndDepthFormsDoNotUsePlaceholderMegas()

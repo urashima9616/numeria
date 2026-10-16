@@ -44,6 +44,48 @@ namespace Numeria.Game
             }
             switch(Kind)
             {
+                case 8:
+                    // Actual pipe ports, clockwise from up. Blue means reachable from the spring.
+                    Color water=Active?blue:Ui.Hex("#857966");
+                    if((Value&1)!=0)Box(-6,0,12,40,water);
+                    if((Value&2)!=0)Box(0,-6,40,12,water);
+                    if((Value&4)!=0)Box(-6,-40,12,40,water);
+                    if((Value&8)!=0)Box(-40,-6,40,12,water);
+                    if(Value!=0)Disk(0,0,9,water);
+                    break;
+                case 9:
+                    if(Value==1){Poly(gold,new Vector2(0,28),new Vector2(24,0),new Vector2(0,-28),new Vector2(-24,0));Disk(0,0,9,blue);}
+                    else {Box(-25,-25,50,3,pale);Box(-25,22,50,3,pale);}
+                    break;
+                case 10:case 13:
+                    if(Kind==10)
+                    {Poly(Ui.Hex("#9a6944"),new Vector2(-38,-25),new Vector2(38,-25),new Vector2(30,-39),new Vector2(-30,-39));Box(-38,-27,76,4,ink);}
+                    for(int i=0;i<Value;i++)
+                    {
+                        float x=Kind==13&&Value==1?0:-28+i%5*14,y=Kind==13&&Value==1?0:27-i/5*18;
+                        Disk(x,y,6,Ui.Hex("#d97b2b"));Box(x-1,y+4,2,5,ink);
+                    }
+                    break;
+                case 12:
+                    Box(-39,-39,78,78,gold);Box(-35,-35,70,70,pale);
+                    Disk(0,25,10,Ui.Hex("#a7d9ea"));Disk(-3,26,1.6f,ink);Disk(3,26,1.6f,ink);
+                    for(int i=0;i<Value;i++)
+                    {
+                        float x=-26+i%5*13,y=3-i/5*17;
+                        Box(x-3,y-4,6,7,Ui.Hex("#aa6aa8"));
+                        Poly(gold,new Vector2(x-3,y+5),new Vector2(x,y+10),new Vector2(x+3,y+5));
+                    }
+                    break;
+                case 14:
+                    Disk(0,-9,23,blue);
+                    Poly(blue,new Vector2(-22,-3),new Vector2(0,35),new Vector2(22,-3));
+                    Disk(-7,-8,6,Ui.Hex("#bfe7f4"));break;
+                case 11:
+                    Box(-2,27,4,9,ink);
+                    if(Value==0)Disk(0,0,25,gold);
+                    else if(Value==1)Poly(blue,new Vector2(0,27),new Vector2(28,-24),new Vector2(-28,-24));
+                    else Poly(Ui.Hex("#aa6aa8"),new Vector2(0,29),new Vector2(27,0),new Vector2(0,-29),new Vector2(-27,0));
+                    break;
                 case 0:Arrow(Value,blue);break;
                 case 1:
                     Disk(0,28,6,ink);Poly(gold,new Vector2(-25,-17),new Vector2(-18,22),new Vector2(18,22),new Vector2(25,-17));

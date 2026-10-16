@@ -40,7 +40,7 @@ namespace Numeria.Core
         }
         public static string Description(string id)
         {
-            var depth=DepthCatalog.Species(id);if(depth!=null)return depth.Description;
+            var expansion=ExpansionCatalog.Description(id);if(expansion!=null)return expansion;
             var species=GameData.SpeciesById(id);var line=GameData.LineFor(id);if(species==null||line==null)return "";
             var habitats=new Dictionary<string,string> {
                 {"FIRE","warm volcanic paths"},{"WATER","clear streams and quiet pools"},{"GRASS","sunlit forest gardens"},
@@ -82,7 +82,7 @@ namespace Numeria.Core
         }
         public bool AwardGiant(string id)
         {
-            if(DepthCatalog.Species(id)?.Giant!=true||DefeatedGiants.Contains(id))return false;
+            if(DepthCatalog.Species(id)?.Giant!=true||ExpansionCatalog.DepthBase(id)!=id||DefeatedGiants.Contains(id))return false;
             DefeatedGiants.Add(id);RecordCollected(id);PendingGiants.Add(id);ClaimGiant(id);return true;
         }
         public bool ClaimGiant(string id)

@@ -17,6 +17,8 @@ namespace Numeria.Game
         private Vector3 _casterPosition;
         private float _styleScale = 1;
         private SpellChoreography _authored;
+        private DepthEvolutionSpell _depthEvolution;
+        private string _speciesId;
         private bool _mega;
         private bool _landed;
         private Vector2 _start, _end;
@@ -28,6 +30,7 @@ namespace Numeria.Game
         private static readonly Sprite[] Materials = new Sprite[3];
         private CanvasGroup _group;
         private bool _powered;
+        private int _stage;
         private int _groupA;
         private bool _subtract;
         private static Sprite _glow;
@@ -35,6 +38,7 @@ namespace Numeria.Game
 
         public static bool Supports(SkillVisualKind visual)
         {
+            if (HalloweenSpell.Supports(visual)) return true;
             switch (visual)
             {
                 case SkillVisualKind.Physical: case SkillVisualKind.EquationFlame: case SkillVisualKind.MakeTenWave:
@@ -44,7 +48,9 @@ namespace Numeria.Game
                 case SkillVisualKind.FairyGlimmer: case SkillVisualKind.DragonSpiral: case SkillVisualKind.ElectricBolt:
                 case SkillVisualKind.GrassBloom: case SkillVisualKind.FlyingGust:
                 case SkillVisualKind.MosaicMarch: case SkillVisualKind.BalanceBeam: case SkillVisualKind.PatternFlight:
-                case SkillVisualKind.LanternCurrent: case SkillVisualKind.MirrorWaltz: case SkillVisualKind.LotusSequence: return true;
+                case SkillVisualKind.LanternCurrent: case SkillVisualKind.MirrorWaltz: case SkillVisualKind.LotusSequence:
+                case SkillVisualKind.SeedVolley: case SkillVisualKind.VineLantern: case SkillVisualKind.HarvestCrown:
+                case SkillVisualKind.GhostOrbit: case SkillVisualKind.PendulumArc: case SkillVisualKind.MidnightChime: return true;
                 default: return false; // New kinds must be deliberately authored and covered by tests.
             }
         }
@@ -67,6 +73,8 @@ namespace Numeria.Game
             sequence._end = root.InverseTransformPoint(target.position);
             sequence._powered = powered;
             sequence._mega = mega;
+            sequence._speciesId = speciesId;
+            sequence._stage = Mathf.Max(0, GameData.StageIndex(speciesId));
             sequence._styleScale = 1 + Mathf.Max(0, GameData.StageIndex(speciesId)) * .10f + (mega ? .25f : 0);
             sequence.Build(trace);
             sequence.Sample(0);
@@ -77,6 +85,12 @@ namespace Numeria.Game
         {
             _group = gameObject.AddComponent<CanvasGroup>();
             _group.blocksRaycasts = false;
+            if (DepthEvolutionSpell.Applies(_speciesId, Kind))
+            {
+                _depthEvolution = new DepthEvolutionSpell(transform, _caster, _speciesId, _start, _end,
+                    _styleScale * (_powered ? 1 : .72f));
+                return;
+            }
             if (_mega)
             {
                 _megaSeal = Ui.SpriteImg(transform, "MegaResonance", SpellChoreography.Material("arcane", 3));
@@ -85,7 +99,7 @@ namespace Numeria.Game
             if (Kind != SkillVisualKind.EquationFlame && Kind != SkillVisualKind.MakeTenWave && Kind != SkillVisualKind.SymmetryBeam)
             {
                 _authored = new SpellChoreography(transform, _caster, Kind, _start, _end, _powered ? trace : null,
-                    _styleScale * (_powered ? 1 : .72f), _mega);
+                    _styleScale * (_powered ? 1 : .72f), _mega, _stage);
                 return;
             }
             _ribbon = Ui.SpriteImg(transform, "ElementBody", Glow());
@@ -181,9 +195,10 @@ namespace Numeria.Game
             _group.alpha = 1 - aftermath;
             _caster.localScale = Vector3.Scale(_casterScale, new Vector3(1 + .035f * Mathf.Sin(charge * Mathf.PI),
                 1 - .065f * Mathf.Sin(charge * Mathf.PI), 1));
-            if (_authored != null)
+            if (_authored != null || _depthEvolution != null)
             {
-                _authored.Sample(seconds);
+                if (_depthEvolution != null) _depthEvolution.Sample(seconds);
+                else _authored.Sample(seconds);
                 float recoil = Mathf.Sin(aftermath * Mathf.PI) * (_powered ? 1 : .6f);
                 _target.localPosition = _targetPosition + new Vector3(Mathf.Sign(_end.x - _start.x) * 22, 8, 0) * recoil;
                 return;
@@ -333,14 +348,29 @@ namespace Numeria.Game
                 float envelope = Mathf.Sin(Mathf.PI * t / Duration);
                 float impact = Mathf.Exp(-Mathf.Max(0, t - ImpactTime) * 12) * (t >= ImpactTime ? 1 : 0);
                 float pitch = 180 + index * 47;
-                bool rock = kind == SkillVisualKind.DoubleBoulder || kind == SkillVisualKind.TallyStone || kind == SkillVisualKind.Physical;
-                bool airy = kind == SkillVisualKind.MakeTenWave || kind == SkillVisualKind.FlyingGust || kind == SkillVisualKind.PatternLeaf;
+                bool rock = kind == SkillVisualKind.DoubleBoulder || kind == SkillVisualKind.TallyStone || kind == SkillVisualKind.Physical ||
+                    kind == SkillVisualKind.RindRam || kind == SkillVisualKind.ShellRoll || kind == SkillVisualKind.TerracePulse;
+                bool airy = kind == SkillVisualKind.MakeTenWave || kind == SkillVisualKind.FlyingGust || kind == SkillVisualKind.PatternLeaf ||
+                    kind == SkillVisualKind.StrawSpiral || kind == SkillVisualKind.CurtainSweep || kind == SkillVisualKind.PageFan || kind == SkillVisualKind.EchoSweep;
                 bool bell = kind == SkillVisualKind.FairyGlimmer || kind == SkillVisualKind.SymmetryBeam || kind == SkillVisualKind.GeometryPrism;
                 float value = rock ? previous * .5f + Mathf.Sin(t * 185) * impact * .7f :
                     airy ? previous * .9f + Mathf.Sin(t * (pitch - t * 90)) * .12f :
                     bell ? (Mathf.Sin(t * pitch * 4) + Mathf.Sin(t * pitch * 6)) * .1f :
                     noise * (.07f + .08f * impact) + Mathf.Sin(t * pitch * (1 + t * .12f)) * .16f;
                 data[i] = value * envelope * .6f;
+                if(kind==SkillVisualKind.BellEcho||kind==SkillVisualKind.MidnightChime||kind==SkillVisualKind.PendulumArc)
+                {
+                    // Short, pitched chimes aligned to charge/release/impact rather than continuous noise.
+                    float chime=0;
+                    for(int strike=0;strike<3;strike++)
+                    {
+                        float dt=t-(strike==0?.16f:strike==1?.65f:ImpactTime);
+                        if(dt<0)continue;
+                        float hz=(kind==SkillVisualKind.MidnightChime?330:660)*(strike==1?1.25f:strike==2?1.5f:1);
+                        chime+=(Mathf.Sin(dt*2*Mathf.PI*hz)+.3f*Mathf.Sin(dt*2*Mathf.PI*hz*2.76f))*Mathf.Exp(-dt*7)*Mathf.Clamp01(dt/.008f);
+                    }
+                    data[i]=chime*.22f*Mathf.Clamp01((Duration-t)/.12f);
+                }
             }
             Clips[index] = AudioClip.Create("NumeriaSpell-" + kind, data.Length, 1, rate, false);
             Clips[index].SetData(data, 0);

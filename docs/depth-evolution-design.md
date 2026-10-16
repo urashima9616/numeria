@@ -1,6 +1,6 @@
 # Eight Depths evolution designs
 
-日期：2026-10-15。状态：**设计，尚未接入运行时**。配套 [Halloween worlds](halloween-expansion-design.md)。
+设计日期：2026-10-15。2026-10-16 状态：三阶段 ID、立绘、进化门槛、数值与图鉴已在本地接入；88 家族的二/三阶特征素材与动作映射已实现，176 形态双向施法/单次结算/归位测试和渲染检查通过。**整体扩展仍未完成全部验收，未安装**。配套 [Halloween worlds](halloween-expansion-design.md) 与 [实现证据](halloween-implementation.md)。
 
 当前 `DepthCatalog` 的 88 个基础形态全部保留；下表逐一补第二、第三阶段，共 176 个新形态。ID 取名字的 ASCII 小写。每行仍是一个 DEX 家族；不改旧基础 ID，不改变已收集状态或八只巨型的领奖标记。
 

@@ -30,6 +30,9 @@ namespace Numeria.Core
         public int HpGrowth;
         public int AttackGrowth;
         public int DefenseGrowth;
+        // Applied to the species curve before captured/training/equipment offsets. Defaults preserve every legacy curve.
+        public int HpScalePercent = 100;
+        public int CombatScalePercent = 100;
         public int BaseXp;
         public string SkillName;
         public int SkillPower;
@@ -38,13 +41,14 @@ namespace Numeria.Core
         public ConsumableType PreferredDrop;
     }
 
-    /// <summary>247 个数灵形态、142 条家族线及所有战斗成长的唯一真理源。</summary>
+    /// <summary>513 个数灵形态、172 条家族线及所有战斗成长的唯一真理源。</summary>
     public static class GameData
     {
         static GameData()
         {
-            EvolutionLines=EvolutionLines.Concat(DepthCatalog.Lines()).ToArray();
-            Species=Species.Concat(DepthCatalog.Roster()).ToArray();
+            EvolutionLines=EvolutionLines.Concat(DepthCatalog.Lines()).Concat(ExpansionCatalog.Lines()).ToArray();
+            Species=Species.Concat(DepthCatalog.Roster()).Concat(ExpansionCatalog.DepthEvolutions())
+                .Concat(ExpansionCatalog.Roster()).ToArray();
         }
         private static readonly EvolutionLineDef[] EvolutionLines =
         {
@@ -502,6 +506,9 @@ namespace Numeria.Core
             return CreateWild(template.Id, level, rng);
         }
 
+        private static int ScaleSpeciesStat(int value, int percent) => percent == 100 ? value :
+            Math.Max(value + 1, (value * percent + 50) / 100);
+
         private static CombatantDef ToCombatant(SpeciesDef species, int level, bool catchable, int? shield,
             bool includeSkills, bool boss)
         {
@@ -512,9 +519,9 @@ namespace Numeria.Core
                 Id = species.Id,
                 Name = species.Name,
                 Level = clamped,
-                MaxHp = GrowthSystem.StatAtLevel(species.MaxHp, species.HpGrowth, clamped),
-                AttackPower = GrowthSystem.StatAtLevel(species.AttackPower, species.AttackGrowth, clamped),
-                DefensePower = GrowthSystem.StatAtLevel(species.DefensePower, species.DefenseGrowth, clamped),
+                MaxHp = ScaleSpeciesStat(GrowthSystem.StatAtLevel(species.MaxHp, species.HpGrowth, clamped), species.HpScalePercent),
+                AttackPower = ScaleSpeciesStat(GrowthSystem.StatAtLevel(species.AttackPower, species.AttackGrowth, clamped), species.CombatScalePercent),
+                DefensePower = ScaleSpeciesStat(GrowthSystem.StatAtLevel(species.DefensePower, species.DefenseGrowth, clamped), species.CombatScalePercent),
                 BaseXp = species.BaseXp,
                 IsBoss = boss,
                 DropChance = species.DropChance,
@@ -539,6 +546,12 @@ namespace Numeria.Core
         /// </summary>
         private static SkillDef ThemeSkill(SpeciesDef species)
         {
+            var seasonal=ExpansionCatalog.Family(species.Id);
+            if(seasonal!=null)return new SkillDef {
+                Id=species.Id+"-magic",Name=species.SkillName,Cost=3,Power=species.SkillPower,BasePower=2,
+                Type=SkillType.Formula,IconResource=ExpansionCatalog.SkillIcon(species.Id),
+                Visual=ExpansionCatalog.Visual(species.Id)
+            };
             string baseId = BaseId(species.Id);
             string skillId;
             string icon;
